@@ -1,0 +1,14 @@
+name: ramp-vis-flask-dashboard
+channels:
+  - defaults
+dependencies:
+  - python=3.8.3
+  - sqlite=3.32.3
+  - pip:
+    - email-validator==1.1.1
+    - flask==1.1.2
+    - flask-login==0.5.0
+    - flask-migrate==2.5.3
+    - flask-sqlalchemy==2.4.3
+    - flask-wtf==0.14.3
+    - gunicorn==20.0.4
