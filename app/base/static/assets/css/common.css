@@ -1,0 +1,31 @@
+.dashboard-container {
+    padding: 25px;
+}
+.dashboard-title {
+    font-size: 28px;
+    font-weight: bold;
+}
+.desc {
+    font-size: 16px;
+}
+.sub-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+.title-text {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.vis-title {
+    font-size: x-large;
+    font-weight: 500;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+.vis-description {
+    font-size: medium;
+    font-style: italic;
+    margin-bottom: 10px;
+}
