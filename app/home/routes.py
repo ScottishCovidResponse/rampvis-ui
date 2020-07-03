@@ -1,11 +1,13 @@
 from app.home import blueprint
 from flask import render_template, redirect, url_for
+from flask_login import login_required, current_user
 from jinja2 import TemplateNotFound
 
 
-@blueprint.route('/dashboard')
+@login_required
+@blueprint.route('/portal')
 def index():
-    return render_template('dashboard.html')
+    return render_template('portal.html')
 
 
 @blueprint.route('/<page>')
