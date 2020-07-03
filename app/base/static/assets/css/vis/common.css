@@ -29,3 +29,11 @@
     font-style: italic;
     margin-bottom: 10px;
 }
+.fa-star {
+    color: lightgray;
+    cursor: pointer;
+}
+
+.checked {
+    color: orange;
+}
