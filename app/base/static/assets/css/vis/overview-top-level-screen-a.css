@@ -1,4 +1,4 @@
-#main-grid {
+#chart {
     max-width: 1000px;
     display: grid;
     grid-template-columns: auto auto auto;
