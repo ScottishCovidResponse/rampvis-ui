@@ -25,21 +25,14 @@ TopLevelOverviewScreenA.variables = {
 };
 
 TopLevelOverviewScreenA.prototype = {
-    init: function() {
-        TopLevelOverviewScreenA.prototype.data().then(data => {
-            TopLevelOverviewScreenA.prototype.createGridLayout();
-            TopLevelOverviewScreenA.prototype.createTimeSeries(data);
-        });
+    init: function(options) {
+        TopLevelOverviewScreenA.prototype.createGridLayout(options.element);
+        TopLevelOverviewScreenA.prototype.createTimeSeries(options.data);
     },
 
-    // Getting data
-    data: async () => {
-        var response =  await fetch('http://vis.scrc.uk/api/v1/scotland/cumulative');
-        return response.json();
-    },
 
-    createGridLayout: function() {
-        var main_grid = document.getElementById('main-grid');
+    createGridLayout: function(element) {
+        var main_grid = document.getElementById(element);
 
         $.each(TopLevelOverviewScreenA.variables.boards, function(index, item) {
             var div = '<div class="col item" id="grid-' + index + '">' +

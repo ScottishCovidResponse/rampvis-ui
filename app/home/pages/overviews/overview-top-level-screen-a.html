@@ -1,17 +1,12 @@
 {% extends "base-site.html" %}
 
-{% block head %}
-    {{ super() }}
-{#    <link href="{{ url_for('static', filename='/assets/css/common.css') }}" rel="stylesheet">#}
-{#    <link href="{{ url_for('static', filename='/assets/css/overview-top-level-screen-a.css') }}" rel="stylesheet">#}
-{% endblock %}
-
 {% block title %} Cumulative Number of Cases Tested Positive for COVID-19 {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
+
     <div class="dashboard-container">
         <div class="row">
             <div class="col-xs-12">
@@ -19,19 +14,32 @@
                 <p class="desc">(Click on location label to go to regional overview and on the chart to a detailed view)</p>
             </div>
         </div>
-        <div class="row" id="main-grid">
+        <div class="row" id="chart">
         </div>
     </div>
+
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
-{#    <script type="text/javascript" src="{{ url_for('static', filename='/assets/js/lib/d3/d3.min.js') }}"></script>#}
-{#    <script type="text/javascript" src="{{ url_for('static', filename='/assets/js/vis/overview-top-level-screen-a.js') }}"></script>#}
+
     <script>
         $(document).ready(function() {
-            // Javascript method's body
-            TopLevelOverviewScreenA.prototype.init();
+
+            let apiUrl = 'http://vis.scrc.uk/api/v1/scotland/cumulative';
+            let chartId = 'chart'
+
+            fetch(apiUrl)
+            .then((resp) => resp.json())
+            .then(data => {
+                console.log(data);
+                TopLevelOverviewScreenA.prototype.init({
+                    element: chartId,
+                    data: data
+                });
+            });
+
         });
     </script>
+
 {% endblock javascripts %}
