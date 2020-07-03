@@ -2,6 +2,8 @@ from flask import Flask, url_for
 from importlib import import_module
 from logging import basicConfig, DEBUG, getLogger, StreamHandler
 from os import path
+from flask_login import LoginManager
+from flask_sqlalchemy import SQLAlchemy
 
 
 def register_blueprints(app):
@@ -10,6 +12,29 @@ def register_blueprints(app):
         app.register_blueprint(module.blueprint)
 
 
+#
+# Database
+#
+db = SQLAlchemy()
+login_manager = LoginManager()
+
+def register_extensions(app):
+    db.init_app(app)
+    login_manager.init_app(app)
+
+def configure_database(app):
+
+    @app.before_first_request
+    def initialize_database():
+        db.create_all()
+
+    @app.teardown_request
+    def shutdown_session(exception=None):
+        db.session.remove()
+
+#
+# Error logs
+#
 def configure_logs(app):
     # soft logging
     try:
@@ -19,13 +44,14 @@ def configure_logs(app):
     except:
         pass
 
+
 def apply_themes(app):
     """
     Add support for themes.
 
     If DEFAULT_THEME is set then all calls to
       url_for('static', filename='')
-      will modfify the url to include the theme name
+      will modiffy the url to include the theme name
 
     The theme parameter can be set directly in url_for as well:
       ex. url_for('static', filename='', theme='')
@@ -53,10 +79,15 @@ def create_app(config, selenium=False):
     app = Flask(__name__, static_folder='base/static')
     app.config.from_object(config)
 
-    # if selenium:
-    # app.config['LOGIN_DISABLED'] = True
+    if selenium:
+        app.config['LOGIN_DISABLED'] = True
 
-    register_blueprints(app)
+    register_extensions(app)
+    configure_database(app)
+
     configure_logs(app)
     apply_themes(app)
+
+    register_blueprints(app)
+
     return app

@@ -29,6 +29,7 @@ Access the dashboard in browser: http://127.0.0.1:5000/
     |--- app/base/static/assets                         # CSS, JavaScript, Img files
     |--- app/base/templates                             # Jinja2 files  
     |                |--- base-site.html                <-- Add reference of our vis CSS here 
+    |                |--- login                         # Dir for login and registration page  
     |                |---<errors>                       # Dir - Error pages: 404, 500
     |                |---<site_template>                # Dir - Components: footer, sidebar, header
     |                              |--- scripts.html    <-- Add reference of our vis JavaScripts here 
@@ -39,6 +40,7 @@ Access the dashboard in browser: http://127.0.0.1:5000/
     |--- app/home/                                      # The staic HTML pages
     |--- app/home/pages                                 # Jinja2 files (Pages): ...
     |                |---- dashboard.html               # Main dashboard page
+    |                |---- page-user.html               # User profile
     |                |----                              <-- The staic HTML pages 
     |
     |--- .env                                           # store env variables
