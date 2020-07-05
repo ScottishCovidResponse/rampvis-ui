@@ -2,7 +2,7 @@ import requests
 import json
 import jwt
 
-BASE_URL = 'http://localhost:2000/api/v1/internal'
+BASE_URL = 'http://localhost:2000/api/v1/'
 
 
 def login_github(github_id, github_login):
