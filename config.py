@@ -1,18 +1,16 @@
 import os
-from   os import environ
+from os import environ
+
 
 class Config(object):
-
-    basedir    = os.path.abspath(os.path.dirname(__file__))
+    basedir = os.path.abspath(os.path.dirname(__file__))
 
     SECRET_KEY = 'key'
 
     # This will create a file in <app> FOLDER
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'database.db')
-
     # For 'in memory' database, please use:
     # SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
-            
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # THEME SUPPORT
@@ -21,6 +19,13 @@ class Config(object):
     #    /static/<DEFAULT_THEME>/filename
     # DEFAULT_THEME = "themes/dark"
     DEFAULT_THEME = None
+
+    GITHUB_CLIENT_ID = environ.get('GITHUB_CLIENT_ID', 'cbca0ff10ae66019dab4')
+    GITHUB_CLIENT_SECRET = environ.get('GITHUB_CLIENT_SECRET', 'f08df3d31535c903d38f57dba0e790a346418496')
+    GITHUB_BASE_URL = environ.get('GITHUB_BASE_URL', 'https://api.github.com/')
+    GITHUB_AUTH_URL = environ.get('GITHUB_AUTH_URL', 'https://github.com/login/oauth/')
+
+    MONGO_URI = environ.get('MONGO_URI', 'mongodb+srv://dbuser:dbuserpass@cluster0.hil75.mongodb.net/development?retryWrites=true&w=majority')
 
 
 class ProductionConfig(Config):

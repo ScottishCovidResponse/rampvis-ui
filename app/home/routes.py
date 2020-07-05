@@ -4,9 +4,16 @@ from flask_login import login_required, current_user
 from jinja2 import TemplateNotFound
 
 
-@login_required
+# @blueprint.route('/')
+# @login_required
+# def route_default():
+#     return redirect(url_for('home_blueprint.portal'))
+
 @blueprint.route('/portal')
-def index():
+@login_required
+def portal():
+    # if not current_user.is_authenticated:
+    #     return redirect(url_for('base_blueprint.login'))
     return render_template('portal.html')
 
 
@@ -20,7 +27,6 @@ def route_template(page):
     
     except:
         return render_template('page-500.html'), 500
-
 
 @blueprint.route('/overviews/<page>')
 def route_template_overview(page):

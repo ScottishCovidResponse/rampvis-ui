@@ -10,7 +10,12 @@
     <div class="dashboard-container">
         <div class="row">
             <div class="col-xs-12">
-                <h1 class="dashboard-title"><span id="dashboard-title">Cumulative Number of Cases Tested Positive for COVID-19</span> {% if current_user.is_authenticated %}<span class="fa fa-star" id="fav-vis"></span>{% endif %}</h1>
+                <h1 class="dashboard-title">
+                  <span id="dashboard-title">Cumulative Number of Cases Tested Positive for COVID-19</span>
+                  {% if current_user.is_authenticated %}
+                    <span class="fa fa-star" id="fav-vis"></span>
+                  {% endif %}
+                </h1>
                 <p class="desc">(Click on location label to go to regional overview and on the chart to a detailed view)</p>
             </div>
         </div>

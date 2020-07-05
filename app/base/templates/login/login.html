@@ -52,16 +52,20 @@
 
             <br />
 
-            <button type="submit" name="login" class="btn btn-primary pull-left">Login</button>
-
-            &nbsp; &nbsp; 
+            &nbsp; &nbsp;
+            <span class="pull-left">
+              {# Don't have an account? <a href={{ url_for('base_blueprint.create_user') }} class="text-primary">Create</a> #}
+              <a href={{ url_for('base_blueprint.login_github') }} class="text-primary"><i class="material-icons">coronavirus</i> Login wih Github</a>
+            </span>
             <span class="pull-right">
-              Don't have an account? <a href={{ url_for('base_blueprint.create_user') }} class="text-primary">Create</a>
+              <button type="submit" name="login" class="btn btn-primary btn-sm pull-left">Login</button>
             </span>
 
             <div class="clearfix"></div>
 
           </form>
+
+
         </div>
       </div>
     </div>

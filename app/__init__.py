@@ -1,9 +1,22 @@
-from flask import Flask, url_for
 from importlib import import_module
-from logging import basicConfig, DEBUG, getLogger, StreamHandler
 from os import path
+from logging import basicConfig, DEBUG, getLogger, StreamHandler
+
+from flask import Flask, url_for, request, g, session, redirect, url_for
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+
+from app.service.github import initialize_github_login
+
+db = SQLAlchemy()
+
+login_manager = LoginManager()
+
+
+def register_extensions(app):
+    db.init_app(app)
+    # Associate Flask-Login manager with current app
+    login_manager.init_app(app)
 
 
 def register_blueprints(app):
@@ -12,18 +25,7 @@ def register_blueprints(app):
         app.register_blueprint(module.blueprint)
 
 
-#
-# Database
-#
-db = SQLAlchemy()
-login_manager = LoginManager()
-
-def register_extensions(app):
-    db.init_app(app)
-    login_manager.init_app(app)
-
 def configure_database(app):
-
     @app.before_first_request
     def initialize_database():
         db.create_all()
@@ -31,6 +33,22 @@ def configure_database(app):
     @app.teardown_request
     def shutdown_session(exception=None):
         db.session.remove()
+
+    #
+    # As part of github login
+    # TODO review
+    #
+    # @app.before_request
+    # def before_request():
+    #     g.user = None
+    #     if 'github_login' in session:
+    #         g.user = User.query.get(session['github_login'])
+    #
+    # @app.after_request
+    # def after_request(response):
+    #     db.session.remove()
+    #     return response
+
 
 #
 # Error logs
@@ -60,6 +78,7 @@ def apply_themes(app):
       the url will not be modified and the file is expected to be
       in the default /static/ location
     """
+
     @app.context_processor
     def override_url_for():
         return dict(url_for=_generate_url_for_theme)
@@ -67,7 +86,7 @@ def apply_themes(app):
     def _generate_url_for_theme(endpoint, **values):
         if endpoint.endswith('static'):
             themename = values.get('theme', None) or \
-                app.config.get('DEFAULT_THEME', None)
+                        app.config.get('DEFAULT_THEME', None)
             if themename:
                 theme_file = "{}/{}".format(themename, values.get('filename', ''))
                 if path.isfile(path.join(app.static_folder, theme_file)):
@@ -76,6 +95,7 @@ def apply_themes(app):
 
 
 def create_app(config, selenium=False):
+    global app
     app = Flask(__name__, static_folder='base/static')
     app.config.from_object(config)
 
@@ -87,6 +107,8 @@ def create_app(config, selenium=False):
 
     configure_logs(app)
     apply_themes(app)
+
+    initialize_github_login(app)
 
     register_blueprints(app)
 
