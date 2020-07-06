@@ -4,10 +4,10 @@ from flask_login import login_required, current_user
 from jinja2 import TemplateNotFound
 
 
-# @blueprint.route('/')
-# @login_required
-# def route_default():
-#     return redirect(url_for('home_blueprint.portal'))
+@blueprint.route('/')
+@login_required
+def route_default():
+    return redirect(url_for('home_blueprint.portal'))
 
 @blueprint.route('/portal')
 @login_required

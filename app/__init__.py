@@ -6,10 +6,8 @@ from flask import Flask, url_for, request, g, session, redirect, url_for
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
-from app.service.github import initialize_github_login
 
 db = SQLAlchemy()
-
 login_manager = LoginManager()
 
 
@@ -33,21 +31,6 @@ def configure_database(app):
     @app.teardown_request
     def shutdown_session(exception=None):
         db.session.remove()
-
-    #
-    # As part of github login
-    # TODO review
-    #
-    # @app.before_request
-    # def before_request():
-    #     g.user = None
-    #     if 'github_login' in session:
-    #         g.user = User.query.get(session['github_login'])
-    #
-    # @app.after_request
-    # def after_request(response):
-    #     db.session.remove()
-    #     return response
 
 
 #
@@ -107,8 +90,6 @@ def create_app(config, selenium=False):
 
     configure_logs(app)
     apply_themes(app)
-
-    initialize_github_login(app)
 
     register_blueprints(app)
 

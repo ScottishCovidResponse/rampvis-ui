@@ -4,10 +4,10 @@ from flask_login import (current_user, login_required, login_user, logout_user)
 from app.base.forms import LoginForm, CreateAccountForm
 from app.base import blueprint
 
-from app.service.github import github
 from app.base.user import User
 from app import db, login_manager
-import app.service.service  as service
+import app.service.service as service
+
 
 @blueprint.route('/')
 def route_default():
@@ -41,6 +41,46 @@ def not_found_error(error):
 @blueprint.errorhandler(500)
 def internal_error(error):
     return render_template('errors/500.html'), 500
+
+
+#
+# GitHub login
+#
+
+@blueprint.route('/github-login', methods=['GET', 'POST'])
+def github_login():
+    return service.github_login()
+
+
+@blueprint.route('/github-callback/', methods=['GET', 'POST'])
+def github_callback():
+    token = request.args.get('token')
+    print('github_callback: token = ', token)
+
+    user = service.user_info(token)
+    print('github_callback: user = ', user)
+
+    if token is None or user is None:
+        login_form = LoginForm(request.form)
+        return render_template('login/login.html', msg='Wrong user or password', form=login_form)
+
+    _user = User.query.filter_by(user_id=user['id']).first()
+    if _user is None:
+        _user = User(user['id'], user['githubId'], user['githubUsername'])
+        db.session.add(_user)
+        db.session.commit()
+
+    print('github_callback: _user = ', _user)
+    login_user(_user)
+
+    return redirect(url_for('home_blueprint.portal'))
+
+
+@blueprint.route('/logout')
+def logout():
+    session.pop('token', None)
+    logout_user()
+    return redirect(url_for('base_blueprint.login'))
 
 
 #
@@ -93,72 +133,6 @@ def login():
             return render_template('login/login.html', form=login_form)
 
         #    return redirect(url_for('home_blueprint.index'))
-
-
-#
-# GitHub login
-#
-
-@blueprint.route('/login-github', methods=['GET', 'POST'])
-def login_github():
-    return github.authorize()
-
-
-@blueprint.route('/callback-github', methods=['GET', 'POST'])
-@github.authorized_handler
-def authorized(access_token):
-    print('callback: authorized: access_token = ', access_token)
-    # print('callback: authorized: profile = ', github.get_profile(oauth_token))
-
-    if access_token is None:
-        login_form = LoginForm(request.form)
-        return render_template('login/login.html', msg='Wrong user or password', form=login_form)
-
-    user = User.query.filter_by(github_access_token=access_token).first()
-    if user is None:
-        user = User(access_token)
-
-    user.github_access_token = access_token
-    g.user = user
-    info = github.get('/user')
-    github_id = info['id']
-    username = info['login']
-
-    existing_user = User.query.filter_by(username=username).first()
-    print('authorized: existing_user = ', existing_user)
-    if existing_user is None:
-        db.session.add(user)
-        user.github_id = github_id
-        user.username = username
-        user.login_count = 0
-        login_user(user)
-
-    else:
-        existing_user.github_id = github_id
-        existing_user.username = username
-        existing_user.login_count += 1
-        login_user(existing_user)
-
-    db.session.commit()
-
-    token = service.login_github(github_id, username)
-    session['token'] = token
-    print('authorized: user = ', user, 'token = ', token)
-    return redirect(url_for('home_blueprint.portal'))
-
-
-@github.access_token_getter
-def token_getter():
-    user = g.user
-    if user is not None:
-        return user.github_access_token
-
-
-@blueprint.route('/logout')
-def logout():
-    session.pop('token', None)
-    logout_user()
-    return redirect(url_for('base_blueprint.login'))
 
 
 #
