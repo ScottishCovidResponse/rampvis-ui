@@ -57,7 +57,7 @@ def github_callback():
     token = request.args.get('token')
     print('github_callback: token = ', token)
 
-    user = service.user_info(token)
+    user = service.get_user(token)
     print('github_callback: user = ', user)
 
     if token is None or user is None:
@@ -71,6 +71,7 @@ def github_callback():
         db.session.commit()
 
     print('github_callback: _user = ', _user)
+    session['token'] = token
     login_user(_user)
 
     return redirect(url_for('home_blueprint.portal'))

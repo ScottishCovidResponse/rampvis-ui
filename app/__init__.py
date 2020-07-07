@@ -2,7 +2,7 @@ from importlib import import_module
 from os import path
 from logging import basicConfig, DEBUG, getLogger, StreamHandler
 
-from flask import Flask, url_for, request, g, session, redirect, url_for
+from flask import Flask, url_for
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
@@ -11,7 +11,7 @@ db = SQLAlchemy()
 login_manager = LoginManager()
 
 
-def register_extensions(app):
+def init_extensions(app):
     db.init_app(app)
     # Associate Flask-Login manager with current app
     login_manager.init_app(app)
@@ -23,7 +23,7 @@ def register_blueprints(app):
         app.register_blueprint(module.blueprint)
 
 
-def configure_database(app):
+def init_database(app):
     @app.before_first_request
     def initialize_database():
         db.create_all()
@@ -36,7 +36,7 @@ def configure_database(app):
 #
 # Error logs
 #
-def configure_logs(app):
+def init_logs(app):
     # soft logging
     try:
         basicConfig(filename='error.log', level=DEBUG)
@@ -46,7 +46,7 @@ def configure_logs(app):
         pass
 
 
-def apply_themes(app):
+def init_themes(app):
     """
     Add support for themes.
 
@@ -78,19 +78,16 @@ def apply_themes(app):
 
 
 def create_app(config, selenium=False):
-    global app
     app = Flask(__name__, static_folder='base/static')
     app.config.from_object(config)
 
     if selenium:
         app.config['LOGIN_DISABLED'] = True
 
-    register_extensions(app)
-    configure_database(app)
-
-    configure_logs(app)
-    apply_themes(app)
-
+    init_extensions(app)
+    init_database(app)
+    init_logs(app)
+    init_themes(app)
     register_blueprints(app)
 
     return app

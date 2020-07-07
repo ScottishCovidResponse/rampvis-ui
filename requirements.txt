@@ -11,3 +11,4 @@ sqlalchemy~=1.3.18
 jinja2~=2.11.2
 requests~=2.24.0
 Flask-JWT-Extended
+beautifulsoup4

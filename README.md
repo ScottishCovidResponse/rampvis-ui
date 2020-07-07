@@ -8,7 +8,7 @@
 pip3 install -r requirements.txt
 
 # Using conda insteadof conda 
-# conda activate ramp-vis-flask-dashboard
+conda activate ramp-vis-flask-dashboard
 
 export FLASK_APP=run.py
 # Set up the DEBUG environment

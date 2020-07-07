@@ -26,8 +26,12 @@ TopLevelOverviewScreenA.variables = {
 
 TopLevelOverviewScreenA.prototype = {
     init: function(options) {
-        TopLevelOverviewScreenA.prototype.createGridLayout(options.element);
+        TopLevelOverviewScreenA.prototype.createGridLayout(options.chartElement);
         TopLevelOverviewScreenA.prototype.createTimeSeries(options.data);
+
+         $(document.getElementById(options.bookmarkElement)).on('click', ()=> {
+            console.log('onClickBookmark: ');
+        });
     },
 
 

@@ -41,20 +41,18 @@
           Common.prototype.init();
 
           let dataUrl = '{{ option.data.url }}'
+          let args = {
+              chartElement: 'chart',
+              bookmarkElement: 'bookmark',
+              data: data,
+              token: '{{ session.token }}',
+              username: '{{ current_user.username }}'
+          };
 
           fetch(dataUrl)
               .then((resp) => resp.json())
               .then(data => {
                   console.log(data);
-
-                  let args = {
-                      chartElement: 'chart',
-                      bookmarkElement: 'bookmark',
-                      data: data,
-                      token: '{{ session.token }}',
-                      username: '{{ current_user.username }}'
-                  };
-
                   TopLevelOverviewScreenA.prototype.init(args);
               });
 

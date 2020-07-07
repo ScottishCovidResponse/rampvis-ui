@@ -8,12 +8,16 @@ Common.prototype = {
     },
 
     favouriteButtonClicked: function() {
-        $('#fav-vis').on('click', function(event) {
+
+        $('#bookmark').on('click', function(event) {
+
+            console.log('onClickBookmark 1: ', "{{ session['token'] }}", "{{ current_user['username' }}")
+
             event.preventDefault();
-            if ($('#fav-vis').hasClass('checked')) {
-                $('#fav-vis').removeClass('checked');
+            if ($('#bookmark').hasClass('checked')) {
+                $('#bookmark').removeClass('checked');
             } else {
-                $('#fav-vis').addClass('checked');
+                $('#bookmark').addClass('checked');
             }
         });
     },
