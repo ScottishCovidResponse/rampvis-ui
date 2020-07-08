@@ -75,7 +75,7 @@ od = {
     },
     "page": {
         'name': 'overview-top-level-screen-a1.html',
-        'type': 'test',
+        'type': 'test_saiful',
         'links': ''
     }
 }
