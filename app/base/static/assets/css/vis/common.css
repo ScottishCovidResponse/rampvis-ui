@@ -29,11 +29,9 @@
     font-style: italic;
     margin-bottom: 10px;
 }
-.fa-star {
-    color: lightgray;
+#bookmark {
     cursor: pointer;
 }
-
 .checked {
     color: orange;
 }
