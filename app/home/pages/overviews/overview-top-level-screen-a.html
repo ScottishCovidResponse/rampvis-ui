@@ -12,7 +12,7 @@
 
       <!-- Card title -->
       <h3 class="card-header card-header-primary">
-        {{ option.data.title }}
+        Cumulative Number of Cases Tested Positive for COVID-19
         <span>
           <!-- Bookmark -->
           {% if current_user.is_authenticated %}
@@ -21,9 +21,9 @@
           </span>
       </h3>
       <div class="card-body">
-        <h4 class="card-title">{{ option.data.description }}</h4>
+        <h4 class="card-title"> </h4>
         <!-- Description -->
-        <p class="card-text">{{ option.vis.description }}</p>
+        <p class="card-text">(Click on location label to go to regional overview and on the chart to a detailed view)</p>
         <!-- Chart -->
         <div id="chart"></div>
       </div>
@@ -40,7 +40,7 @@
       $(document).ready(function () {
           Common.prototype.init();
 
-          let dataUrl = '{{ option.data.url }}'
+          let dataUrl = 'http://vis.scrc.uk/api/v1/scotland/cumulative'
 
           fetch(dataUrl)
               .then((resp) => resp.json())

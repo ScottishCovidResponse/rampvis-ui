@@ -29,27 +29,27 @@ def route_template(page):
     except:
         return render_template('page-500.html'), 500
 
-
+#
+# Alfie's
+#
 @blueprint.route('/overviews/<page>')
 def route_template_overviews(page):
-    onto_data = {
-        "data": {
-            'url': 'http://vis.scrc.uk/api/v1/scotland/cumulative',
-            'title': 'Cumulative Number of Cases Tested Positive for COVID-19',
-            'description': 'Cumulative Number of Cases Tested Positive for COVID-19 in all 14 Scotland regions',
-        },
-        "vis": {
-            'description': '(Click on location label to go to regional overview and on the chart to a detailed view)',
-        },
-        "page": {
-            'name': 'overview-top-level-screen-a.html',
-            'type': 'overview',
-            'links': ''
-        }
-    }
-
     try:
-        return render_template('overviews/' + page + '.html', option=onto_data)
+        return render_template('overviews/' + page + '.html')
+
+    except TemplateNotFound:
+        return render_template('page-404.html'), 404
+
+    except:
+        return render_template('page-500.html'), 500
+
+#
+# Ben's
+#
+@blueprint.route('/ben/<page>')
+def route_template_ben(page):
+    try:
+        return render_template('ben/' + page + '.html')
 
     except TemplateNotFound:
         return render_template('page-404.html'), 404
@@ -58,6 +58,9 @@ def route_template_overviews(page):
         return render_template('page-500.html'), 500
 
 
+#
+# Saiful's
+#
 @blueprint.route('/test/<page>')
 def route_template_overview(page):
     onto_data = {
@@ -71,7 +74,7 @@ def route_template_overview(page):
         },
         "page": {
             'name': 'overview-top-level-screen-a.html',
-            'type': 'test',
+            'type': 'test_saiful',
             'links': ''
         }
     }

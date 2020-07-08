@@ -1,11 +1,12 @@
 {% extends "base-site.html" %}
 
-{% block title %} Login {% endblock %} 
+{% block title %} Login {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
+
 
   <div class="row">
     <div class="col-md-5">
@@ -18,17 +19,21 @@
         <div class="card-body">
 
           <h6 class="card-category">
-              {% if msg %}
-                <span class="text-danger">{{ msg | safe }}</span>
-              {% else %}
-              {% endif %}
+            {% if msg %}
+              <span class="text-danger">{{ msg | safe }}</span>
+            {% else %}
+            {% endif %}
           </h6>
-          
-          <br />
 
+          <br/>
+
+          <div class="text-lg-center">
+            <a href={{ url_for('base_blueprint.github_login') }} class="text-primary"><i class="material-icons">coronavirus</i> Login wih Github</a>
+          </div>
+
+          {#
           <form role="form" method="post" action="">
-              
-            {{ form.hidden_tag() }} 
+            {{ form.hidden_tag() }}
 
             <div class="row">
               <div class="col-md-12">
@@ -39,7 +44,7 @@
               </div>
             </div>
 
-            <br />
+            <br/>
 
             <div class="row">
               <div class="col-md-12">
@@ -50,13 +55,8 @@
               </div>
             </div>
 
-            <br />
+            <br/>
 
-            &nbsp; &nbsp;
-            <span class="pull-left">
-              {# Don't have an account? <a href={{ url_for('base_blueprint.create_user') }} class="text-primary">Create</a> #}
-              <a href={{ url_for('base_blueprint.github_login') }} class="text-primary"><i class="material-icons">coronavirus</i> Login wih Github</a>
-            </span>
             <span class="pull-right">
               <button type="submit" name="login" class="btn btn-primary btn-sm pull-left">Login</button>
             </span>
@@ -64,7 +64,7 @@
             <div class="clearfix"></div>
 
           </form>
-
+          #}
 
         </div>
       </div>

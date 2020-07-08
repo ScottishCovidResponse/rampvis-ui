@@ -66,21 +66,27 @@ class Generator:
 
 od = {
     "data": {
-        'url': 'http://vis.scrc.uk/api/v1/scotland/cumulative',
+        'endpoint': 'http://vis.scrc.uk/api/v1/scotland/cumulative',
         'title': 'Cumulative Number of Cases Tested Positive for COVID-19',
         'description': 'Cumulative Number of Cases Tested Positive for COVID-19 in all 14 Scotland regions',
+        'labels': ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        'datasets': [{
+            'label': '# of Votes',
+            'data': [12, 19, 3, 5, 2, 3],
+        }]
     },
     "vis": {
+        'type': 'bar',
         'description': '(Click on location label to go to regional overview and on the chart to a detailed view)',
     },
     "page": {
         'name': 'overview-top-level-screen-a1.html',
-        'type': 'test_saiful',
+        'type': 'overview',  # overview | detail
         'links': ''
     }
 }
 
 SRC_HTML_PATH = 'template/template.html'
-DST_HTML_PATH = '../app/home/pages/' + od['page']['type'] + '/' + od['page']['name']
+DST_HTML_PATH = '../app/home/pages/test/' + od['page']['type'] + '/' + od['page']['name']
 
 Generator.copy(SRC_HTML_PATH, DST_HTML_PATH)
