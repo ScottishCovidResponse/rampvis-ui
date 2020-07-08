@@ -74,13 +74,13 @@ od = {
         'description': '(Click on location label to go to regional overview and on the chart to a detailed view)',
     },
     "page": {
-        'name': 'overview-top-level-screen-a.html',
-        'type': 'overview',
+        'name': 'overview-top-level-screen-a1.html',
+        'type': 'test',
         'links': ''
     }
 }
 
 SRC_HTML_PATH = 'template/template.html'
-DST_HTML_PATH = '../app/home/pages/' + od['page']['type']
+DST_HTML_PATH = '../app/home/pages/' + od['page']['type'] + '/' + od['page']['name']
 
 Generator.copy(SRC_HTML_PATH, DST_HTML_PATH)
