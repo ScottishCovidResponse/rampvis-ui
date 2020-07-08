@@ -1,0 +1,37 @@
+{
+  "pages": [
+    {
+      "id": "p1",
+      "name": "overview-top-level-screen-a1",
+      "type": "overview",
+      "link": "",
+      "hyperlinks": "",
+      "vis_id": "v1",
+      "data_id": "d1"
+    },
+    {
+    }
+  ],
+  "data": [
+    {
+      "id": "d1",
+      "title": "Cumulative Number of Cases Tested Positive for COVID-19",
+      "description": "Cumulative Number of Cases Tested Positive for COVID-19 in all 14 Scotland regions",
+      "endpoint": "http://vis.scrc.uk/api/v1/scotland/cumulative",
+      "url_params:": "",
+      "body_params": ""
+    },
+    {
+    }
+  ],
+  "vis": [
+    {
+      "id": "v1",
+      "type": "TopLevelOverviewScreenA",
+      "class": "line_chart",
+      "description": "(Click on location label to go to regional overview and on the chart to a detailed view)"
+    },
+    {
+    }
+  ]
+}

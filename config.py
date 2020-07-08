@@ -20,6 +20,8 @@ class Config(object):
     # DEFAULT_THEME = "themes/dark"
     DEFAULT_THEME = None
 
+    ONTOLOGY_JSON_DB = os.path.join(basedir, 'TODO/ontology.json')
+
 class ProductionConfig(Config):
     DEBUG = False
 

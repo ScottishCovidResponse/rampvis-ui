@@ -2,6 +2,9 @@ from app.home import blueprint
 from flask import render_template, redirect, url_for
 from flask_login import login_required, current_user
 from jinja2 import TemplateNotFound
+import json
+import os
+import app.service.service as service
 
 
 @blueprint.route('/')
@@ -29,6 +32,7 @@ def route_template(page):
     except:
         return render_template('page-500.html'), 500
 
+
 #
 # Alfie's
 #
@@ -42,6 +46,7 @@ def route_template_overviews(page):
 
     except:
         return render_template('page-500.html'), 500
+
 
 #
 # Ben's
@@ -61,26 +66,14 @@ def route_template_ben(page):
 #
 # Saiful's
 #
-@blueprint.route('/test/<page>')
-def route_template_overview(page):
-    onto_data = {
-        "data": {
-            'url': 'http://vis.scrc.uk/api/v1/scotland/cumulative',
-            'title': 'Cumulative Number of Cases Tested Positive for COVID-19',
-            'description': 'Cumulative Number of Cases Tested Positive for COVID-19 in all 14 Scotland regions',
-        },
-        "vis": {
-            'description': '(Click on location label to go to regional overview and on the chart to a detailed view)',
-        },
-        "page": {
-            'name': 'overview-top-level-screen-a.html',
-            'type': 'test_saiful',
-            'links': ''
-        }
-    }
+@blueprint.route('/test/<page_id>')
+def route_template_test(page_id):
+
+    data = service.get_ontology_data(page_id)
+    print('page_id = ', page_id, '\ndata = ', data)
 
     try:
-        return render_template('test/' + page + '.html', option=onto_data)
+        return render_template('test/' + 'template.html', option=data)
 
     except TemplateNotFound:
         return render_template('page-404.html'), 404

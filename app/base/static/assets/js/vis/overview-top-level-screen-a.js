@@ -26,6 +26,9 @@ TopLevelOverviewScreenA.variables = {
 
 TopLevelOverviewScreenA.prototype = {
     init: function(options) {
+
+        console.log('TopLevelOverviewScreenA: init: options = ');
+
         TopLevelOverviewScreenA.prototype.createGridLayout(options.chartElement);
         TopLevelOverviewScreenA.prototype.createTimeSeries(options.data);
 
