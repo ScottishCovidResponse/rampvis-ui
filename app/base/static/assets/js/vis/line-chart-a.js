@@ -34,7 +34,7 @@ class LineChartA {
         var svg = d3.select(canvas).append("svg")
             .attr("width", CHART_WIDTH)
             .attr("height", CHART_HEIGHT)
-            .attr("viewBox", '0 0' +(CHART_WIDTH + margin.left + margin.right) + ' ' + (CHART_HEIGHT))
+            .attr("viewBox", '0 0 ' +(CHART_WIDTH + margin.left + margin.right) + ' ' + (CHART_HEIGHT))
             .attr("preserveAspectRatio", "xMinYMid meet")
             .append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')

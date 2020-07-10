@@ -15,7 +15,7 @@ class BarChartA {
 
 
         // set the dimensions and margins of the graph
-        var margin = {top: 20, right: 45, bottom: 58, left: 60},
+        var margin = {top: 20, right: 45, bottom: 65, left: 60},
             width = CHART_WIDTH - margin.left - margin.right,
             height = CHART_HEIGHT - margin.top - margin.bottom;
 
@@ -30,7 +30,7 @@ class BarChartA {
       var svg = d3.select(canvas).append("svg")
             .attr("width", CHART_WIDTH)
             .attr("height", CHART_HEIGHT)
-            .attr("viewBox", '0 0' +(CHART_WIDTH + margin.left + margin.right) + ' ' + (CHART_HEIGHT))
+            .attr("viewBox", '0 0 ' +(CHART_WIDTH + margin.left + margin.right) + ' ' + (CHART_HEIGHT))
             .attr("preserveAspectRatio", "xMinYMid meet")
             .append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')

@@ -35,5 +35,38 @@
     "title": "Scotland - Cumulative Number of Cases Tested Positive for COVID-19",
     "description": "",
     "links": []
+  },
+  {
+    "id": 4,
+    "name": "sco-icu_patients",
+    "type": "details",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "scotland" }, "description": "" }
+    ],
+    "title": "Scotland - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
+    "description": "",
+    "links": []
+  },
+  {
+    "id": 5,
+    "name": "sco-hospconfirmed",
+    "type": "details",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "scotland" }, "description": "" }
+    ],
+    "title": "Scotland - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
+    "description": "",
+    "links": []
+  },
+  {
+    "id": 6,
+    "name": "sco-hospsuspected",
+    "type": "details",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "scotland" }, "description": "" }
+    ],
+    "title": "Scotland - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
+    "description": "",
+    "links": []
   }
 ]
