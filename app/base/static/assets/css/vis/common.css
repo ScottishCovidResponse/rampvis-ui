@@ -1,3 +1,34 @@
+.svg-container.overview-a {
+    display: inline-block;
+    position: relative;
+    width: 1000px;
+    height: 500px;
+    /*padding-bottom: 100%;*/
+    vertical-align: top;
+    overflow: hidden;
+}
+
+.svg-container.overview-b {
+    display: inline-block;
+    position: relative;
+    width: 1000px;
+    height: 2000px;
+    /*padding-bottom: 100%;*/
+    vertical-align: top;
+    overflow: hidden;
+}
+
+.svg-container.details {
+    display: inline-block;
+    position: relative;
+    width: 1000px;
+    height: 500px;
+    /*padding-bottom: 100%;*/
+    vertical-align: top;
+    overflow: hidden;
+}
+
+
 .dashboard-container {
     padding: 25px;
 }

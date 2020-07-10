@@ -1,0 +1,39 @@
+[
+  {
+    "id": 1,
+    "name": "top-level-overview-screen-a",
+    "type": "overview-a",
+    "bind": [
+      { "vis_id": 1, "data_id": 2, "query_params": { "table": "cumulative_cases" }, "description": "" }
+    ],
+    "title": "Cumulative Number of Cases Tested Positive for COVID-19",
+    "description": "(Click on location label to go to regional overview and on the chart to a detailed view)",
+    "links": [3]
+  },
+  {
+    "id": 2,
+    "name": "sco-regional",
+    "type": "overview-b",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "scotland" }, "description": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "scotland" }, "description": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "scotland" }, "description": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "scotland" }, "description": "Hospital Suspected" }
+
+    ],
+    "title": "Scotland - Overview",
+    "description": "(Click on the chart to go to a detailed view)",
+    "links": []
+  },
+  {
+    "id": 3,
+    "name": "sco-cumulative",
+    "type": "details",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "scotland" }, "description": "" }
+    ],
+    "title": "Scotland - Cumulative Number of Cases Tested Positive for COVID-19",
+    "description": "",
+    "links": []
+  }
+]

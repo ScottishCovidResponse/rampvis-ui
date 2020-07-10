@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "function": "TopLevelOverviewScreenA",
+    "type": "line_chart",
+    "description": "this chart is ..."
+  },
+  {
+    "id": 2,
+    "function": "BarChartA",
+    "type": "bar_chart",
+    "description": ""
+  },
+  {
+    "id": 3,
+    "function": "LineChartA",
+    "type": "line_chart",
+    "description": ""
+  }
+]

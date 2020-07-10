@@ -1,3 +1,80 @@
+import os
+import json
+import urllib.parse
+
+#
+# Arg: page_name
+# Returns:
+# {
+#   page: { id: , type: , title: , description: }
+#   bind: [{ endpoint:  , function:,  description: },
+#          { endpoint:  , function:,  description: },
+#          ... ]
+# }
+#
+SRC_DIR = os.path.dirname(os.path.abspath(__file__))
+PAGES = os.path.join(SRC_DIR, 'database/pages.json')
+DATA = os.path.join(SRC_DIR, 'database/data.json')
+VIS = os.path.join(SRC_DIR, 'database/vis.json')
+
+with open(PAGES) as json_file:
+    pages = json.load(json_file)
+with open(DATA) as json_file:
+    data = json.load(json_file)
+with open(VIS) as json_file:
+    vis = json.load(json_file)
+
+
+def get_page_data(page_name):
+    # print('get_ontology_data: page_name = ', page_name)
+
+    found_page = [x for x in pages if x.get('name') == page_name]
+    if len(found_page) == 0:
+        return None
+    page_obj = found_page[0]
+
+    response = dict({
+        'page': {
+            'id': page_obj.get('id'),
+            'type': page_obj.get('type'),
+            'title': page_obj.get('title'),
+            'description': page_obj.get('description')
+        },
+        'bind': []
+    })
+
+    for bind_obj in page_obj.get('bind'):
+        # print(bind_obj, bind_obj.get('vis_id'), bind_obj.get('data_id'))
+        vis_obj = [x for x in vis if x.get('id') == bind_obj.get('vis_id')][0]
+        # print(vis_obj.get('function'), vis_obj.get('description'), )
+        data_obj = [x for x in data if x.get('id') == bind_obj.get('data_id')][0]
+
+        #
+        # create endpoint
+        # TODO validation required
+        #
+        endpoint = data_obj.get('endpoint')
+        if data_obj.get('query_string'):
+            url = (data_obj.get('endpoint') + data_obj.get('query_string'))
+            url_parts = list(urllib.parse.urlparse(url))
+            query = dict(urllib.parse.parse_qsl(url_parts[4]))
+            query.update(bind_obj.get('query_params'))
+            url_parts[4] = urllib.parse.urlencode(query)
+            endpoint = urllib.parse.urlunparse(url_parts)
+
+        response.setdefault('bind', []).append({
+            'endpoint': endpoint,
+            'function': vis_obj.get('function'),
+            'description': bind_obj.get('description')
+        })
+
+    return response
+
+
+#
+# TODO: use proper database
+#
+
 from py2neo import Graph
 
 
@@ -17,10 +94,6 @@ class Ontology:
         self.graph.close()
 
     def query(self):
-        # q = 'MATCH (actor:Person)-[rel:ACTED_IN]->(movie:Movie) ' \
-        #     'RETURN actor, rel, movie ' \
-        #     'LIMIT 10'
-
         q = 'MATCH (data:Data)-[r1]->(url:URL)<-[r2]-(vis:Vis) ' \
             'RETURN data, url, vis'
 
@@ -29,5 +102,4 @@ class Ontology:
         print('query: q: ', q)
         cursor = self.graph.run(q)
         while cursor.forward():
-            # print(type(cursor.current))
             print(cursor.current)

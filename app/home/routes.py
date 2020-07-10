@@ -4,7 +4,7 @@ from flask_login import login_required, current_user
 from jinja2 import TemplateNotFound
 import json
 import os
-import app.service.service as service
+import app.service.ontology as ontology
 
 
 @blueprint.route('/')
@@ -66,14 +66,26 @@ def route_template_ben(page):
 #
 # Saiful's
 #
-@blueprint.route('/test/<page_id>')
-def route_template_test(page_id):
+@blueprint.route('/test/<page_name>')
+def route_template_test(page_name):
+    print('page_name = ', page_name)
 
-    data = service.get_ontology_data(page_id)
-    print('page_id = ', page_id, '\ndata = ', data)
+    page_data = ontology.get_page_data(page_name)
+    page_type = page_data.get('page', {}).get('type')
+
+    print('route_template_test: page_data = ', page_data)
+    print('route_template_test: page.type = ', page_data.get('page', {}).get('type'))
 
     try:
-        return render_template('test/' + 'template.html', option=data)
+        if page_type == 'overview-a':
+            return render_template('test/' + 'template-overview-a.html', option=page_data)
+        elif page_type == 'overview-b':
+            return render_template('test/' + 'template-overview-b.html', option=page_data)
+        elif page_type == 'details':
+            return render_template('test/' + 'template-details.html', option=page_data)
+
+        else:
+            return render_template('page-404.html'), 404
 
     except TemplateNotFound:
         return render_template('page-404.html'), 404

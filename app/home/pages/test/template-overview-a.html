@@ -12,7 +12,7 @@
 
       <!-- Card title -->
       <h3 class="card-header card-header-primary">
-        {{ option.data.title }}
+        {{ option.page.title }}
         <span>
           <!-- Bookmark -->
           {% if current_user.is_authenticated %}
@@ -21,9 +21,8 @@
           </span>
       </h3>
       <div class="card-body">
-        <h4 class="card-title">{{ option.data.description }}</h4>
         <!-- Description -->
-        <p class="card-text">{{ option.vis.description }}</p>
+        <p class="card-text">{{ option.page.description }}</p>
         <!-- Chart -->
         <div id="chart"></div>
       </div>
@@ -38,32 +37,33 @@
 
   <script>
       $(document).ready(function () {
-
-          console.log('Template: \n page = ', '{{ option.page  }}', '\ndata = ', '{{ option.data  }}', '\nvis = ', '{{ option.vis  }}')
-
+          // initialize in different place / factory
           Common.prototype.init();
 
-          let dataUrl = '{{ option.data.endpoint }}'
+          let varOption = {{ option | safe }};
+          console.log(varOption);
 
+          varOption.bind.forEach((d) => {
+              let dataUrl = d['endpoint'];
 
-          fetch(dataUrl)
-              .then((resp) => resp.json())
-              .then(data => {
+              fetch(dataUrl)
+                  .then((resp) => resp.json())
+                  .then(data => {
+                      let args = {
+                          chartElement: `chart`,
+                          bookmarkElement: 'bookmark',
+                          data: data,
+                          token: '{{ session.token }}',
+                          username: '{{ current_user.username }}'
+                      };
+                      new VisFunctionFactory(d['function'], args);
+                      console.log('template-overview.html:', d['function'], data);
 
-                  let args = {
-                      chartElement: 'chart',
-                      bookmarkElement: 'bookmark',
-                      data: data,
-                      token: '{{ session.token }}',
-                      username: '{{ current_user.username }}'
-                  };
-
-                  console.log(data);
-
-                  new VisFunctionFactory('{{  option.vis.type }}', args)
-              });
+                  });
+          });
 
       });
+
 
       // debug logs
       console.log('option = ', '{{ option }}');
