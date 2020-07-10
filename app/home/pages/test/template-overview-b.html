@@ -45,13 +45,18 @@
 
           // add divs
           let idx = 0;
+          let my_row;
           varOption.bind.forEach((d) => {
               //console.log('template-overview.html: ', d,  d['endpoint']);
-              let htmlStr = `<div class="row">`;
-              htmlStr += `<div id="chart-${idx}" ></div>`
-              htmlStr += `</div>`;
-              $('#charts').append(htmlStr);
-               idx++;
+              if (idx === 0 || idx % 2 === 0) {
+                  my_row = document.createElement('div');
+                  my_row.setAttribute('class', 'row');
+              }
+              let my_item = document.createElement('div');
+              my_item.setAttribute('id', 'chart-' + idx);
+              my_row.append(my_item);
+              $('#charts').append(my_row);
+              idx++;
             });
 
           // draw charts
