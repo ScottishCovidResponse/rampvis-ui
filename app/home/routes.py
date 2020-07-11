@@ -76,17 +76,7 @@ def route_template_test(page_name):
     print('route_template_test: page.type = ', page_data.get('page', {}).get('type'))
 
     try:
-        if page_type == 'overview-a':
-            return render_template('test/' + 'template-overview-a.html', option=page_data)
-        elif page_type == 'overview-b':
-            return render_template('test/' + 'template-overview-b.html', option=page_data)
-        elif page_type == 'overview-c':
-            return render_template('test/' + 'template-overview-c.html', option=page_data)
-        elif page_type == 'details':
-            return render_template('test/' + 'template-details.html', option=page_data)
-
-        else:
-            return render_template('page-404.html'), 404
+       return render_template('test/' + 'template.html', option=page_data)
 
     except TemplateNotFound:
         return render_template('page-404.html'), 404

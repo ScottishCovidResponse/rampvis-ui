@@ -1,0 +1,193 @@
+{% extends "base-site.html" %}
+
+{% block title %} Overview {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+  <div class="dashboard-container">
+    <div class="card card-nav-tabs text-center">
+
+      <!-- Card title -->
+      <h3 class="card-header card-header-primary">
+        {{ option.page.title }}
+        <span>
+          <!-- Bookmark -->
+          {% if current_user.is_authenticated %}
+            <i class="material-icons" id="bookmark">star_rate</i>
+          {% endif %}
+          </span>
+      </h3>
+      <div class="card-body">
+        <!-- Description -->
+        <p class="card-text">{{ option.page.description }}</p>
+        <!-- Chart -->
+        <div id="charts"></div>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script>
+      $(document).ready(function () {
+          //
+          // TODO
+          //  initialize in different place / factory
+          //
+          Common.prototype.init();
+
+          let _option = {{ option | safe }};
+          console.log('template-overview.html: #data to bind = ', _option.bind.length);
+          console.log('template-overview.html: _option = ', _option);
+
+          let layout = $('#charts');
+
+          //
+          // Type - Details chart
+          //
+          if (_option.bind.length === 1 && _option.page.type === 'details') {
+              let d = _option.bind[0];
+              console.log('template-overview.html: type = ', _option.page.type, 'bind = ', d);
+
+              // only one row and chart in it
+              let row = document.createElement('div');
+              row.setAttribute('class', 'row svg-container details');
+              let chart = document.createElement('div');
+              chart.setAttribute('id', 'chart-0');
+              row.append(chart);
+              layout.append(row);
+
+              let dataUrl = d['endpoint'];
+              fetch(dataUrl)
+                  .then((resp) => resp.json())
+                  .then(data => {
+                      let args = {
+                          chartElement: `chart-0`,
+                          bookmarkElement: 'bookmark',
+                          data: data,
+                          token: '{{ session.token }}',
+                          username: '{{ current_user.username }}'
+                      };
+                      new VisFunctionFactory(d['function'], args);
+                      console.log('template-overview.html:', d['function'], `chart-0`, data);
+                  });
+
+              return;
+          }
+
+          //
+          // Type - Overview and only
+          //
+          if (_option.bind.length === 1 && _option.page.type === 'overview') {
+              let d = _option.bind[0];
+              console.log('template-overview.html: type = ', _option.page.type, 'bind = ', d);
+
+              // only one row and chart in it
+              let row = document.createElement('div');
+              row.setAttribute('class', 'row');
+              let chart = document.createElement('div');
+              row.setAttribute('id', 'chart-0');
+              row.append(chart);
+              layout.append(row);
+
+              let dataUrl = d['endpoint'];
+              fetch(dataUrl)
+                  .then((resp) => resp.json())
+                  .then(data => {
+                      let args = {
+                          chartElement: `chart-0`,
+                          bookmarkElement: 'bookmark',
+                          data: data,
+                          token: '{{ session.token }}',
+                          username: '{{ current_user.username }}'
+                      };
+                      new VisFunctionFactory(d['function'], args);
+                      console.log('template-overview.html:', d['function'], `chart-0`, data);
+                  });
+
+              return;
+          }
+
+
+          //
+          // Multiple chart element to be created as row and col
+          //
+
+          // add row and col divs
+          let nrows = _option.page.nrows;
+          let ncols = Math.ceil(_option.bind.length / nrows);
+          console.log('template-overview-b.html: nrows = ', nrows, ', ncols = ', ncols);
+          let idx = 0;
+          for (let i = 0; i < nrows; i++) {
+              // title
+              let row1 = document.createElement('div');
+              row1.setAttribute('class', 'row');
+
+              // chart
+              let row2 = document.createElement('div');
+              row2.setAttribute('class', 'row');
+
+                  for (let j = 0; j < ncols; j++) {
+                      // title
+                      let col1 = document.createElement('div');
+                      col1.setAttribute('class', 'col-md-' + Math.round(12 / ncols));
+                      let title = document.createTextNode(_option.bind[idx].title);
+                      col1.append(title);
+                      row1.append(col1);
+
+                      // chart
+                      let col2 = document.createElement('div');
+                      col2.setAttribute('class', 'col-md-' + Math.round(12 / ncols));
+                      let chart = document.createElement('div');
+                      chart.setAttribute('id', 'chart-' + idx);
+                      col2.append(chart);
+                      row2.append(col2);
+
+                      idx++;
+                  }
+
+                  layout.append(row1);
+                  layout.append(row2);
+          }
+
+          // draw charts
+          idx = 0;
+          _option.bind.forEach((d) => {
+              let dataUrl = d['endpoint'];
+
+              fetch(dataUrl)
+                  .then((resp) => resp.json())
+                  .then(data => {
+                      let args = {
+                          chartElement: `chart-${idx}`,
+                          bookmarkElement: 'bookmark',
+                          data: data,
+                          token: '{{ session.token }}',
+                          username: '{{ current_user.username }}'
+                      };
+                      new VisFunctionFactory(d['function'], args);
+                      console.log('template-overview.html:', d['function'], `chart-${idx}`, data);
+
+                      idx++;
+                  });
+          });
+
+      });
+
+
+      // debug logs
+      console.log('option = ', '{{ option }}');
+      $('#bookmark').on('click', () => {
+          console.log('onClickBookmark: ', "{{ session.token }} {{ current_user.username }}")
+      });
+
+  </script>
+
+{% endblock javascripts %}

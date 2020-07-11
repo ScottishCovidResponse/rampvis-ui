@@ -6,7 +6,7 @@ import urllib.parse
 # Arg: page_name
 # Returns:
 # {
-#   page: { id: , type: , title: , description: }
+#   page: { id: , type: , nrows: , title: , description: , }
 #   bind: [{ endpoint:  , function:,  description: },
 #          { endpoint:  , function:,  description: },
 #          ... ]
@@ -37,6 +37,7 @@ def get_page_data(page_name):
         'page': {
             'id': page_obj.get('id'),
             'type': page_obj.get('type'),
+            'nrows': page_obj.get('nrows', 1),
             'title': page_obj.get('title'),
             'description': page_obj.get('description')
         },
@@ -65,7 +66,7 @@ def get_page_data(page_name):
         response.setdefault('bind', []).append({
             'endpoint': endpoint,
             'function': vis_obj.get('function'),
-            'description': bind_obj.get('description')
+            'title': bind_obj.get('title')
         })
 
     return response
