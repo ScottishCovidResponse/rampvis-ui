@@ -44,54 +44,27 @@
           Common.prototype.init();
 
           let _option = {{ option | safe }};
-          console.log('template-overview.html: #data to bind = ', _option.bind.length);
-          console.log('template-overview.html: _option = ', _option);
+          console.log('template.html: #data to bind = ', _option.bind.length);
+          console.log('template.html: _option = ', _option);
 
           let layout = $('#charts');
 
           //
-          // Type - Details chart
+          // Single css selector for (a) details and (b) overview of multiple charts
           //
-          if (_option.bind.length === 1 && _option.page.type === 'details') {
+          if (_option.bind.length === 1) {
               let d = _option.bind[0];
-              console.log('template-overview.html: type = ', _option.page.type, 'bind = ', d);
+              console.log('template.html: type = ', _option.page.type, 'bind = ', d);
 
               // only one row and chart in it
               let row = document.createElement('div');
-              row.setAttribute('class', 'row svg-container details');
-              let chart = document.createElement('div');
-              chart.setAttribute('id', 'chart-0');
-              row.append(chart);
-              layout.append(row);
 
-              let dataUrl = d['endpoint'];
-              fetch(dataUrl)
-                  .then((resp) => resp.json())
-                  .then(data => {
-                      let args = {
-                          chartElement: `chart-0`,
-                          bookmarkElement: 'bookmark',
-                          data: data,
-                          token: '{{ session.token }}',
-                          username: '{{ current_user.username }}'
-                      };
-                      new VisFunctionFactory(d['function'], args);
-                      console.log('template-overview.html:', d['function'], `chart-0`, data);
-                  });
+              if (_option.page.type === 'details') {
+                row.setAttribute('class', 'row svg-container details');
+              } else if (_option.page.type === 'overview') {
+                  row.setAttribute('class', 'row');
+              }
 
-              return;
-          }
-
-          //
-          // Type - Overview and only
-          //
-          if (_option.bind.length === 1 && _option.page.type === 'overview') {
-              let d = _option.bind[0];
-              console.log('template-overview.html: type = ', _option.page.type, 'bind = ', d);
-
-              // only one row and chart in it
-              let row = document.createElement('div');
-              row.setAttribute('class', 'row');
               let chart = document.createElement('div');
               row.setAttribute('id', 'chart-0');
               row.append(chart);
@@ -109,7 +82,7 @@
                           username: '{{ current_user.username }}'
                       };
                       new VisFunctionFactory(d['function'], args);
-                      console.log('template-overview.html:', d['function'], `chart-0`, data);
+                      console.log('template.html:', d['function'], `chart-0`, data);
                   });
 
               return;
@@ -173,7 +146,7 @@
                           username: '{{ current_user.username }}'
                       };
                       new VisFunctionFactory(d['function'], args);
-                      console.log('template-overview.html:', d['function'], `chart-${idx}`, data);
+                      console.log('template.html:', d['function'], `chart-${idx}`, data);
 
                       idx++;
                   });
