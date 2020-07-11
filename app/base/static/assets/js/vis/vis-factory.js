@@ -4,6 +4,8 @@ class VisFunctionFactory {
 
         if (type === "TopLevelOverviewScreenA")
             return TopLevelOverviewScreenA.prototype.init(args);
+        if (type === "TopLevelOverviewScreenC")
+            return TopLevelOverviewScreenC.prototype.init(args);
         if (type === "BarChartA")
             return new BarChartA(args);
         if (type === "LineChartA")

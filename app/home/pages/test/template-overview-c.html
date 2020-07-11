@@ -1,0 +1,104 @@
+{% extends "base-site.html" %}
+
+{% block title %} Overview {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+  <div class="dashboard-container">
+    <div class="card card-nav-tabs text-center">
+
+      <!-- Card title -->
+      <h3 class="card-header card-header-primary">
+        {{ option.page.title }}
+        <span>
+          <!-- Bookmark -->
+          {% if current_user.is_authenticated %}
+            <i class="material-icons" id="bookmark">star_rate</i>
+          {% endif %}
+          </span>
+      </h3>
+      <div class="card-body">
+        <!-- Description -->
+        <p class="card-text">{{ option.page.description }}</p>
+        <!-- Chart -->
+        <!--<div id="chart"></div>-->
+        <div class="row" style="min-width: 1350px; max-width: 1350px;">
+            <div class="col col-xs-4 grid-container" style="margin: 10px;">
+                <div class="row">
+                    <div class="col col-xs-12">
+                        <h3 class="sub-title">ICU Patients</h3>
+                    </div>
+                </div>
+                <div class="row" id="main-grid-icu-patients">
+                </div>
+            </div>
+            <div class="col col-xs-4 grid-container" style="margin: 10px;">
+                <div class="row">
+                    <div class="col col-xs-12">
+                        <h3 class="sub-title">Hospital Confirmed</h3>
+                    </div>
+                </div>
+                <div class="row" id="main-grid-hospital-confirmed">
+                </div>
+            </div>
+            <div class="col col-xs-4 grid-container" style="margin: 10px;">
+                <div class="row">
+                    <div class="col col-xs-12">
+                        <h3 class="sub-title">Hospital Suspected</h3>
+                    </div>
+                </div>
+                <div class="row" id="main-grid-hospital-suspected">
+                </div>
+            </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+  <script>
+      $(document).ready(function () {
+          // initialize in different place / factory
+          Common.prototype.init();
+
+          let varOption = {{ option | safe }};
+          console.log(varOption);
+
+          varOption.bind.forEach((d) => {
+              let dataUrl = d['endpoint'];
+
+              fetch(dataUrl)
+                  .then((resp) => resp.json())
+                  .then(data => {
+                      let args = {
+                          chartElement: `chart`,
+                          bookmarkElement: 'bookmark',
+                          data: data,
+                          token: '{{ session.token }}',
+                          username: '{{ current_user.username }}'
+                      };
+                      new VisFunctionFactory(d['function'], args);
+                      console.log('template-overview.html:', d['function'], data);
+
+                  });
+          });
+
+      });
+
+
+      // debug logs
+      console.log('option = ', '{{ option }}');
+      $('#bookmark').on('click', () => {
+          console.log('onClickBookmark: ', "{{ session.token }} {{ current_user.username }}")
+      });
+
+  </script>
+
+{% endblock javascripts %}
