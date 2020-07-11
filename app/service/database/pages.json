@@ -68,5 +68,49 @@
     "title": "Scotland - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
     "description": "",
     "links": []
+  },
+  {
+    "id": 7,
+    "name": "aa-cumulative",
+    "type": "details",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_ayrshire_arran" }, "description": "" }
+    ],
+    "title": "NHS Ayrshire & Arran  - Cumulative Number of Cases Tested Positive for COVID-19",
+    "description": "",
+    "links": []
+  },
+  {
+    "id": 8,
+    "name": "aa-icu_patients",
+    "type": "details",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_ayrshire_arran" }, "description": "" }
+    ],
+    "title": "NHS Ayrshire & Arran  - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
+    "description": "",
+    "links": []
+  },
+  {
+    "id": 9,
+    "name": "aa-hospconfirmed",
+    "type": "details",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_ayrshire_arran" }, "description": "" }
+    ],
+    "title": "NHS Ayrshire & Arran  - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
+    "description": "",
+    "links": []
+  },
+  {
+    "id": 10,
+    "name": "aa-hospsuspected",
+    "type": "details",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_ayrshire_arran" }, "description": "" }
+    ],
+    "title": "NHS Ayrshire & Arran  - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
+    "description": "",
+    "links": []
   }
 ]
