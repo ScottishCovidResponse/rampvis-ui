@@ -12,3 +12,4 @@ jinja2~=2.11.2
 requests~=2.24.0
 Flask-JWT-Extended
 py2neo
+flask_table

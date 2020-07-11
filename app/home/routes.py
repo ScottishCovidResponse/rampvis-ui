@@ -2,8 +2,7 @@ from app.home import blueprint
 from flask import render_template, redirect, url_for
 from flask_login import login_required, current_user
 from jinja2 import TemplateNotFound
-import json
-import os
+
 import app.service.ontology as ontology
 
 
@@ -86,6 +85,24 @@ def route_template_test(page_name):
 
         else:
             return render_template('page-404.html'), 404
+
+    except TemplateNotFound:
+        return render_template('page-404.html'), 404
+
+    except:
+        return render_template('page-500.html'), 500
+
+
+@blueprint.route('/test/table/<table_name>')
+def route_template_test_table(table_name):
+    print('route_template_test_table: table_name = ', table_name)
+
+    try:
+        # page_data = ontology.get_page_data(table_name)
+        # page_type = page_data.get('page', {}).get('type')
+        table = ontology.get_pages_table(table_name)
+        print('route_template_test: page_data = ', table)
+        return render_template('test/' + 'template-table.html', table=table)
 
     except TemplateNotFound:
         return render_template('page-404.html'), 404

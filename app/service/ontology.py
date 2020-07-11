@@ -71,6 +71,19 @@ def get_page_data(page_name):
     return response
 
 
+def get_pages_table(table_name):
+    res = list()
+    for p in pages:
+        res.append(dict({
+            'id': p.get('id'),
+            'name': p.get('name'),
+            'type': p.get('type'),
+            'title': p.get('title'),
+            'description': p.get('description')
+        }))
+    return res
+
+
 #
 # TODO: use proper database
 #
