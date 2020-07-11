@@ -16,5 +16,11 @@
     "function": "LineChartA",
     "type": "line_chart",
     "description": ""
+  },
+  {
+    "id": 4,
+    "function": "TopLevelOverviewScreenC",
+    "type": "box_plot",
+    "description": "this chart is ..."
   }
 ]

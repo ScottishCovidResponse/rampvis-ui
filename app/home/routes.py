@@ -80,6 +80,8 @@ def route_template_test(page_name):
             return render_template('test/' + 'template-overview-a.html', option=page_data)
         elif page_type == 'overview-b':
             return render_template('test/' + 'template-overview-b.html', option=page_data)
+        elif page_type == 'overview-c':
+            return render_template('test/' + 'template-overview-c.html', option=page_data)
         elif page_type == 'details':
             return render_template('test/' + 'template-details.html', option=page_data)
 

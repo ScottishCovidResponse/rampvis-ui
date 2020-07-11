@@ -941,5 +941,18 @@
     "title": "NHS Western Isles - Overview",
     "description": "(Click on the chart to go to a detailed view)",
     "links": []
+  },
+  {
+    "id": 81,
+    "name": "top-level-overview-screen-c",
+    "type": "overview-c",
+    "bind": [
+      { "vis_id": 4, "data_id": 1, "query_params": { "table": "icu_patients" }, "description": "ICU Patients" },
+      { "vis_id": 4, "data_id": 1, "query_params": { "table": "hospital_confirmed" }, "description": "Hospital Confirmed" },
+      { "vis_id": 4, "data_id": 1, "query_params": { "table": "hospital_suspected" }, "description": "Hospital Suspected" }
+    ],
+    "title": "Coronavirus (COVID-19): Scotland Board-level Daily Data",
+    "description": "(Click on location label to go to regional overview and on the chart to a detailed view)",
+    "links": []
   }
 ]
