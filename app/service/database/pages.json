@@ -717,5 +717,229 @@
     "title": "NHS Western Isles - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
     "description": "",
     "links": []
+  },
+  {
+    "id": 66,
+    "name": "aa-regional",
+    "type": "overview-b",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_ayrshire_arran" }, "description": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_ayrshire_arran" }, "description": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_ayrshire_arran" }, "description": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_ayrshire_arran" }, "description": "Hospital Suspected" }
+
+    ],
+    "title": "NHS Ayrshire & Arran - Overview",
+    "description": "(Click on the chart to go to a detailed view)",
+    "links": []
+  },
+  {
+    "id": 67,
+    "name": "bpr-regional",
+    "type": "overview-b",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_borders" }, "description": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_borders" }, "description": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_borders" }, "description": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_borders" }, "description": "Hospital Suspected" }
+
+    ],
+    "title": "NHS Borders - Overview",
+    "description": "(Click on the chart to go to a detailed view)",
+    "links": []
+  },
+  {
+    "id": 68,
+    "name": "dg-regional",
+    "type": "overview-b",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_dumfries_galloway" }, "description": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_dumfries_galloway" }, "description": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_dumfries_galloway" }, "description": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_dumfries_galloway" }, "description": "Hospital Suspected" }
+
+    ],
+    "title": "NHS Dumfries & Galloway - Overview",
+    "description": "(Click on the chart to go to a detailed view)",
+    "links": []
+  },
+  {
+    "id": 69,
+    "name": "fif-regional",
+    "type": "overview-b",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_fife" }, "description": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_fife" }, "description": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_fife" }, "description": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_fife" }, "description": "Hospital Suspected" }
+
+    ],
+    "title": "NHS Fife - Overview",
+    "description": "(Click on the chart to go to a detailed view)",
+    "links": []
+  },
+  {
+    "id": 70,
+    "name": "fov-regional",
+    "type": "overview-b",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_forth_valley" }, "description": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_forth_valley" }, "description": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_forth_valley" }, "description": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_forth_valley" }, "description": "Hospital Suspected" }
+
+    ],
+    "title": "NHS Forth Valley - Overview",
+    "description": "(Click on the chart to go to a detailed view)",
+    "links": []
+  },
+  {
+    "id": 71,
+    "name": "gc-regional",
+    "type": "overview-b",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_greater_glasgow_clyde" }, "description": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_greater_glasgow_clyde" }, "description": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_greater_glasgow_clyde" }, "description": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_greater_glasgow_clyde" }, "description": "Hospital Suspected" }
+
+    ],
+    "title": "NHS Greater Glasgow & Clyde - Overview",
+    "description": "(Click on the chart to go to a detailed view)",
+    "links": []
+  },
+  {
+    "id": 72,
+    "name": "golden-regional",
+    "type": "overview-b",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "golden_jubilee_nationalhospital" }, "description": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "golden_jubilee_nationalhospital" }, "description": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "golden_jubilee_nationalhospital" }, "description": "Hospital Suspected" }
+
+    ],
+    "title": "Golden Jubilee National Hospital - Overview",
+    "description": "(Click on the chart to go to a detailed view)",
+    "links": []
+  },
+  {
+    "id": 73,
+    "name": "gra-regional",
+    "type": "overview-b",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_grampian" }, "description": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_grampian" }, "description": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_grampian" }, "description": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_grampian" }, "description": "Hospital Suspected" }
+
+    ],
+    "title": "NHS Grampian - Overview",
+    "description": "(Click on the chart to go to a detailed view)",
+    "links": []
+  },
+  {
+    "id": 74,
+    "name": "hig-regional",
+    "type": "overview-b",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_highland" }, "description": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_highland" }, "description": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_highland" }, "description": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_highland" }, "description": "Hospital Suspected" }
+
+    ],
+    "title": "NHS Highland - Overview",
+    "description": "(Click on the chart to go to a detailed view)",
+    "links": []
+  },
+  {
+    "id": 75,
+    "name": "lan-regional",
+    "type": "overview-b",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_lanarkshire" }, "description": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_lanarkshire" }, "description": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_lanarkshire" }, "description": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_lanarkshire" }, "description": "Hospital Suspected" }
+
+    ],
+    "title": "NHS Lanarkshire - Overview",
+    "description": "(Click on the chart to go to a detailed view)",
+    "links": []
+  },
+  {
+    "id": 76,
+    "name": "lot-regional",
+    "type": "overview-b",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_lothian" }, "description": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_lothian" }, "description": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_lothian" }, "description": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_lothian" }, "description": "Hospital Suspected" }
+
+    ],
+    "title": "NHS Lothian - Overview",
+    "description": "(Click on the chart to go to a detailed view)",
+    "links": []
+  },
+  {
+    "id": 77,
+    "name": "ork-regional",
+    "type": "overview-b",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_orkney" }, "description": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_orkney" }, "description": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_orkney" }, "description": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_orkney" }, "description": "Hospital Suspected" }
+
+    ],
+    "title": "NHS Orkney - Overview",
+    "description": "(Click on the chart to go to a detailed view)",
+    "links": []
+  },
+  {
+    "id": 78,
+    "name": "she-regional",
+    "type": "overview-b",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_shetland" }, "description": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_shetland" }, "description": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_shetland" }, "description": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_shetland" }, "description": "Hospital Suspected" }
+
+    ],
+    "title": "NHS Shetland - Overview",
+    "description": "(Click on the chart to go to a detailed view)",
+    "links": []
+  },
+  {
+    "id": 79,
+    "name": "tay-regional",
+    "type": "overview-b",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_tayside" }, "description": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_tayside" }, "description": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_tayside" }, "description": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_tayside" }, "description": "Hospital Suspected" }
+
+    ],
+    "title": "NHS Tayside - Overview",
+    "description": "(Click on the chart to go to a detailed view)",
+    "links": []
+  },
+  {
+    "id": 80,
+    "name": "wei-regional",
+    "type": "overview-b",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_western_isles_scotland" }, "description": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_western_isles_scotland" }, "description": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_western_isles_scotland" }, "description": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_western_isles_scotland" }, "description": "Hospital Suspected" }
+
+    ],
+    "title": "NHS Western Isles - Overview",
+    "description": "(Click on the chart to go to a detailed view)",
+    "links": []
   }
 ]
