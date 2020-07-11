@@ -30,66 +30,27 @@ TopLevelOverviewScreenC.prototype = {
     init: function(options) {
         console.log(options);
 
-        // ICU patients
-        TopLevelOverviewScreenC.prototype.dataICUPatients().then(data => {
-            TopLevelOverviewScreenC.prototype.createGridLayout('main-grid-icu-patients', 'icu-patients');
-            TopLevelOverviewScreenC.prototype.createBoxPlot(data, 'icu-patients');
-        });
+        TopLevelOverviewScreenC.prototype.createGridLayout(options.chartElement);
+        TopLevelOverviewScreenC.prototype.createBoxPlot(options.data);
 
-        TopLevelOverviewScreenC.prototype.dataHospitalConfirmed().then(data => {
-            TopLevelOverviewScreenC.prototype.createGridLayout('main-grid-hospital-confirmed', 'hospital-confirmed');
-            TopLevelOverviewScreenC.prototype.createBoxPlot(data, 'hospital-confirmed');
-        });
-
-        TopLevelOverviewScreenC.prototype.dataHospitalSuspected().then(data => {
-            TopLevelOverviewScreenC.prototype.createGridLayout('main-grid-hospital-suspected', 'hospital-suspected');
-            TopLevelOverviewScreenC.prototype.createBoxPlot(data, 'hospital-suspected');
-        });
     },
 
-    // Getting the data
-    dataICUPatients: async () => {
-        var response =  await fetch('http://vis.scrc.uk/api/v1/scotland/icupatients');
-        return response.json();
-    },
-
-    dataHospitalConfirmed: async () => {
-        var response =  await fetch('http://vis.scrc.uk/api/v1/scotland/hospconfirmed');
-        return response.json();
-    },
-
-    dataHospitalSuspected: async () => {
-        var response =  await fetch('http://vis.scrc.uk/api/v1/scotland/hospsuspected');
-        return response.json();
-    },
-
-    createGridLayout: function(grid, chart_type) {
+    createGridLayout: function(grid) {
         var main_grid = document.getElementById(grid);
 
         $.each(TopLevelOverviewScreenC.variables.boards, function(index, item) {
-            var chart_url = '';
-            switch (chart_type) {
-                case 'icu-patients':
-                    chart_url = item.icupatients;
-                    break;
-                case 'hospital-confirmed':
-                    chart_url = item.hospconfirmed;
-                    break;
-                case 'hospital-suspected':
-                    chart_url = item.hospsuspected;
-                    break;
-                default:
-                    chart_url = '';
-            }
-            var div = '<div class="col item" id="grid-' + chart_type + '-' + index + '">' +
+            var div = '<div class="col item" id="grid-' + index + '">' +
                 '<p class="title-text"><a href="' + item.regional_overview + '">' + item.abbr + '</a></p>' +
-                '<div class="div-svg" id="boxplot-' + chart_type + '-' +  index + '" onclick="window.location=\'' + chart_url + '\';"></div>'
+                '<div class="div-svg" id="boxplot-' +  index + '" onclick="window.location=\'' + '\';"></div>'
             '</div>';
             main_grid.innerHTML += div;
         });
     },
 
     createBoxPlot: function(data, chart_type) {
+
+        console.log('createBoxPlot: ', data, chart_type);
+
         var max_value = 0;
         var min_value = 0;
         var row;
@@ -132,7 +93,7 @@ TopLevelOverviewScreenC.prototype = {
         });
 
         $.each(TopLevelOverviewScreenC.variables.boards, function(index, item) {
-            var svg = d3.select('#boxplot-' + chart_type + '-' +  index).append("svg")
+            var svg = d3.select('#boxplot-' +  index).append("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")

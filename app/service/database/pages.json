@@ -978,7 +978,7 @@
       { "vis_id": 4, "data_id": 1, "query_params": { "table": "hospital_confirmed" }, "title": "Hospital Confirmed" },
       { "vis_id": 4, "data_id": 1, "query_params": { "table": "hospital_suspected" }, "title": "Hospital Suspected" }
     ],
-    "nrows": 3,
+    "nrows": 1,
     "title": "Coronavirus (COVID-19): Scotland Board-level Daily Data",
     "description": "(Click on location label to go to regional overview and on the chart to a detailed view)",
     "links": []

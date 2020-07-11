@@ -93,11 +93,12 @@
           // Multiple chart element to be created as row and col
           //
 
-          // add row and col divs
           let nrows = _option.page.nrows;
           let ncols = Math.ceil(_option.bind.length / nrows);
           console.log('template-overview-b.html: nrows = ', nrows, ', ncols = ', ncols);
           let idx = 0;
+
+          // add row and col divs
           for (let i = 0; i < nrows; i++) {
               // title
               let row1 = document.createElement('div');
