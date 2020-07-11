@@ -52,9 +52,21 @@
                   my_row = document.createElement('div');
                   my_row.setAttribute('class', 'row');
               }
+              let my_div = document.createElement('div');
+              my_div.setAttribute('class', 'col');
+
+              let my_desc = document.createElement('p');
+              my_desc.setAttribute('class', 'title-text');
+              let node = document.createTextNode(d.description);
+              my_desc.appendChild(node);
+              my_div.append(my_desc);
+
               let my_item = document.createElement('div');
               my_item.setAttribute('id', 'chart-' + idx);
-              my_row.append(my_item);
+              my_div.append(my_item);
+
+              my_row.append(my_div);
+
               $('#charts').append(my_row);
               idx++;
             });
