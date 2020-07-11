@@ -14,10 +14,10 @@ export FLASK_APP=run.py
 # Set up the DEBUG environment
 export FLASK_ENV=development
 # Start the application (development mode)
-flask run --host=0.0.0.0 --port=5001
+flask run --host=0.0.0.0 --port=5000
 ```
 
-Access the dashboard in browser: http://127.0.0.1:5001/
+Access the dashboard in browser: http://127.0.0.1:5000/
 
 
 ## Structure

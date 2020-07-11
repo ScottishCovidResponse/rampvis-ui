@@ -1,11 +1,11 @@
 /*!
 
  =========================================================
- * Material Dashboard - v2.1.1
+ * Material Dashboard PRO - v2.1.2
  =========================================================
 
- * Product Page: https://www.creative-tim.com/product/material-dashboard
- * Copyright 2018 Creative Tim (http://www.creative-tim.com)
+ * Product Page: https://www.creative-tim.com/product/material-dashboard-pro
+ * Copyright 2020 Creative Tim (http://www.creative-tim.com)
 
  * Designed by www.invisionapp.com Coded by www.creative-tim.com
 
@@ -20,8 +20,18 @@
 
   if (isWindows) {
     // if we are on windows OS we activate the perfectScrollbar function
-    $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
-
+    if ($(".sidebar").length != 0) {
+      var ps = new PerfectScrollbar('.sidebar');
+    }
+    if ($(".sidebar-wrapper").length != 0) {
+      var ps1 = new PerfectScrollbar('.sidebar-wrapper');
+    }
+    if ($(".main-panel").length != 0) {
+      var ps2 = new PerfectScrollbar('.main-panel');
+    }
+    if ($(".main").length != 0) {
+      var ps3 = new PerfectScrollbar('main');
+    }
     $('html').addClass('perfect-scrollbar-on');
   } else {
     $('html').addClass('perfect-scrollbar-off');
@@ -50,10 +60,12 @@ var seq2 = 0,
   durations2 = 500;
 
 $(document).ready(function() {
-
-  $('body').bootstrapMaterialDesign();
-
   $sidebar = $('.sidebar');
+  window_width = $(window).width();
+
+  $('body').bootstrapMaterialDesign({
+    autofill: false
+  });
 
   md.initSidebarsCheck();
 
@@ -62,7 +74,37 @@ $(document).ready(function() {
   // check if there is an image set for the sidebar's background
   md.checkSidebarImage();
 
-  //    Activate bootstrap-select
+  md.initMinimizeSidebar();
+
+  // Multilevel Dropdown menu
+
+  $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
+    var $el = $(this);
+    var $parent = $(this).offsetParent(".dropdown-menu");
+    if (!$(this).next().hasClass('show')) {
+      $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+    }
+    var $subMenu = $(this).next(".dropdown-menu");
+    $subMenu.toggleClass('show');
+
+    $(this).closest("a").toggleClass('open');
+
+    $(this).parents('a.dropdown-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
+      $('.dropdown-menu .show').removeClass("show");
+    });
+
+    if (!$parent.parent().hasClass('navbar-nav')) {
+      $el.next().css({
+        "top": $el[0].offsetTop,
+        "left": $parent.outerWidth() - 4
+      });
+    }
+
+    return false;
+  });
+
+
+  //   Activate bootstrap-select
   if ($(".selectpicker").length != 0) {
     $(".selectpicker").selectpicker();
   }
@@ -70,11 +112,62 @@ $(document).ready(function() {
   //  Activate the tooltips
   $('[rel="tooltip"]').tooltip();
 
+  // Activate Popovers
+  $('[data-toggle="popover"]').popover();
+
+  //Activate tags
+  // we style the badges with our colors
+  var tagClass = $('.tagsinput').data('color');
+
+  if ($(".tagsinput").length != 0) {
+    $('.tagsinput').tagsinput();
+  }
+
+  $('.bootstrap-tagsinput').addClass('' + tagClass + '-badge');
+
+  //    Activate bootstrap-select
+  $(".select").dropdown({
+    "dropdownClass": "dropdown-menu",
+    "optionClass": ""
+  });
+
   $('.form-control').on("focus", function() {
     $(this).parent('.input-group').addClass("input-group-focus");
   }).on("blur", function() {
     $(this).parent(".input-group").removeClass("input-group-focus");
   });
+
+
+  if (breakCards == true) {
+    // We break the cards headers if there is too much stress on them :-)
+    $('[data-header-animation="true"]').each(function() {
+      var $fix_button = $(this)
+      var $card = $(this).parent('.card');
+
+      $card.find('.fix-broken-card').click(function() {
+        console.log(this);
+        var $header = $(this).parent().parent().siblings('.card-header, .card-header-image');
+
+        $header.removeClass('hinge').addClass('fadeInDown');
+
+        $card.attr('data-count', 0);
+
+        setTimeout(function() {
+          $header.removeClass('fadeInDown animate');
+        }, 480);
+      });
+
+      $card.mouseenter(function() {
+        var $this = $(this);
+        hover_count = parseInt($this.attr('data-count'), 10) + 1 || 0;
+        $this.attr("data-count", hover_count);
+
+        if (hover_count >= 20) {
+          $(this).children('.card-header, .card-header-image').addClass('hinge animated');
+        }
+      });
+    });
+  }
 
   // remove class has-error for checkbox validation
   $('input[type="checkbox"][required="true"], input[type="radio"][required="true"]').on('click', function() {
