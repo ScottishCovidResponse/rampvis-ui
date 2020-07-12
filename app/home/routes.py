@@ -3,10 +3,8 @@ from flask_login import login_required, current_user
 from jinja2 import TemplateNotFound
 
 from app.home import blueprint
-from app.base.forms import SearchForm
 import app.service.service as service
 import app.service.ontology as ontology
-
 
 
 @blueprint.route('/')
@@ -18,9 +16,12 @@ def route_default():
 @blueprint.route('/portal')
 @login_required
 def portal():
-    # if not current_user.is_authenticated:
-    #     return redirect(url_for('base_blueprint.login'))
-    return render_template('portal.html')
+    if not current_user.is_authenticated:
+         return redirect(url_for('base_blueprint.login'))
+
+    result = service.get_bookmarks()
+
+    return render_template('portal.html', option=result)
 
 
 @blueprint.route('/<page>')
@@ -72,7 +73,7 @@ def route_template_ben(page):
 def route_template_test(page_name):
     print('page_name = ', page_name)
 
-    page_data = ontology.get_page_data(page_name)
+    page_data = ontology.get_page_by_name(page_name)
     page_type = page_data.get('page', {}).get('type')
 
     print('route_template_test: page_data = ', page_data)
@@ -95,7 +96,7 @@ def route_template_test_table(table_name):
     try:
         # page_data = ontology.get_page_data(table_name)
         # page_type = page_data.get('page', {}).get('type')
-        table = ontology.get_pages_table(table_name)
+        table = ontology.get_all_pages()
         print('route_template_test: page_data = ', table)
         return render_template('test/' + 'template-table.html', table=table)
 

@@ -25,17 +25,28 @@ with open(VIS) as json_file:
     vis = json.load(json_file)
 
 
-def get_page_data(page_name):
+def get_page_by_name(page_name):
     # print('get_ontology_data: page_name = ', page_name)
-
     found_page = [x for x in pages if x.get('name') == page_name]
     if len(found_page) == 0:
         return None
     page_obj = found_page[0]
+    return get_page(page_obj)
 
-    response = dict({
+
+def get_page_by_id(page_id):
+    found_page = [x for x in pages if x.get('id') == page_id]
+    if len(found_page) == 0:
+        return None
+    page_obj = found_page[0]
+    return get_page(page_obj)
+
+
+def get_page(page_obj):
+    result = dict({
         'page': {
             'id': page_obj.get('id'),
+            'name': page_obj.get('name'),
             'type': page_obj.get('type'),
             'nrows': page_obj.get('nrows', 1),
             'title': page_obj.get('title'),
@@ -63,16 +74,16 @@ def get_page_data(page_name):
             url_parts[4] = urllib.parse.urlencode(query)
             endpoint = urllib.parse.urlunparse(url_parts)
 
-        response.setdefault('bind', []).append({
+        result.setdefault('bind', []).append({
             'endpoint': endpoint,
             'function': vis_obj.get('function'),
             'title': bind_obj.get('title')
         })
 
-    return response
+    return result
 
 
-def get_pages_table(table_name):
+def get_all_pages():
     res = list()
     for p in pages:
         res.append(dict({
