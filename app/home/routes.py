@@ -24,53 +24,8 @@ def portal():
     return render_template('portal.html', option=result)
 
 
-@blueprint.route('/<page>')
-def route_template(page):
-    try:
-        return render_template(page + '.html')
-
-    except TemplateNotFound:
-        return render_template('page-404.html'), 404
-
-    except:
-        return render_template('page-500.html'), 500
-
-
-#
-# Alfie's
-#
-@blueprint.route('/overviews/<page>')
-def route_template_overviews(page):
-    try:
-        return render_template('overviews/' + page + '.html')
-
-    except TemplateNotFound:
-        return render_template('page-404.html'), 404
-
-    except:
-        return render_template('page-500.html'), 500
-
-
-#
-# Ben's
-#
-@blueprint.route('/ben/<page>')
-def route_template_ben(page):
-    try:
-        return render_template('ben/' + page + '.html')
-
-    except TemplateNotFound:
-        return render_template('page-404.html'), 404
-
-    except:
-        return render_template('page-500.html'), 500
-
-
-#
-# Saiful's
-#
-@blueprint.route('/test/<page_name>')
-def route_template_test(page_name):
+@blueprint.route('/<page_name>')
+def route_template_page(page_name):
     print('page_name = ', page_name)
 
     page_data = ontology.get_page_by_name(page_name)
@@ -80,7 +35,7 @@ def route_template_test(page_name):
     print('route_template_test: page.type = ', page_data.get('page', {}).get('type'))
 
     try:
-        return render_template('test/' + 'template.html', option=page_data)
+        return render_template('template.html', option=page_data)
 
     except TemplateNotFound:
         return render_template('page-404.html'), 404
@@ -89,16 +44,16 @@ def route_template_test(page_name):
         return render_template('page-500.html'), 500
 
 
-@blueprint.route('/test/table/<table_name>')
-def route_template_test_table(table_name):
-    print('route_template_test_table: table_name = ', table_name)
+@blueprint.route('/table')
+def route_template_table():
+    print('route_template_test_table:')
 
     try:
         # page_data = ontology.get_page_data(table_name)
         # page_type = page_data.get('page', {}).get('type')
         table = ontology.get_all_pages()
         print('route_template_test: page_data = ', table)
-        return render_template('test/' + 'template-table.html', table=table)
+        return render_template('template-table.html', table=table)
 
     except TemplateNotFound:
         return render_template('page-404.html'), 404
@@ -107,7 +62,7 @@ def route_template_test_table(table_name):
         return render_template('page-500.html'), 500
 
 
-@blueprint.route('/test/search', methods=['GET'])
+@blueprint.route('/search', methods=['GET'])
 def route_template_search():
     query = request.args.get('query')
     print('route_template_search: search: query = ', query)
@@ -120,7 +75,7 @@ def route_template_search():
 
     if query:
         result = service.search(query)
-        return render_template('test/' + 'template-search.html', data={ 'query': query, 'result': result})
+        return render_template('template-search.html', data={ 'query': query, 'result': result})
 
-    return render_template('test/' + 'template-search.html', table={})
+    return render_template('template-search.html', table={})
 
