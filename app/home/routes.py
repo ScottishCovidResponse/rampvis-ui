@@ -1,9 +1,12 @@
-from app.home import blueprint
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, request
 from flask_login import login_required, current_user
 from jinja2 import TemplateNotFound
 
+from app.home import blueprint
+from app.base.forms import SearchForm
+import app.service.service as service
 import app.service.ontology as ontology
+
 
 
 @blueprint.route('/')
@@ -76,7 +79,7 @@ def route_template_test(page_name):
     print('route_template_test: page.type = ', page_data.get('page', {}).get('type'))
 
     try:
-       return render_template('test/' + 'template.html', option=page_data)
+        return render_template('test/' + 'template.html', option=page_data)
 
     except TemplateNotFound:
         return render_template('page-404.html'), 404
@@ -101,3 +104,22 @@ def route_template_test_table(table_name):
 
     except:
         return render_template('page-500.html'), 500
+
+
+@blueprint.route('/test/search', methods=['GET'])
+def route_template_search():
+    query = request.args.get('query')
+    print('route_template_search: search: query = ', query)
+
+    # TODO use search form?
+    # form = SearchForm(request.form)
+    # if form.validate_on_submit():
+    #     query = form.search.data
+    #     # search
+
+    if query:
+        result = service.search(query)
+        return render_template('test/' + 'template-search.html', table=result)
+
+    return render_template('test/' + 'template-search.html', table=[])
+

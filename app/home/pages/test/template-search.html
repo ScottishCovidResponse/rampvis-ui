@@ -1,0 +1,59 @@
+{% extends "base-site.html" %}
+
+{% block title %} Search {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+  <div class="dashboard-container">
+
+    <div class="card">
+      <div class="card-header card-header-icon card-header-primary">
+        <div class="card-icon"><i class="material-icons">table_view</i></div>
+        <h4 class="card-title ">Search results</h4>
+      </div>
+
+      <div class="card-body">
+
+        <div class="table-responsive">
+          <table class="table">
+            <thead class=" text-primary">
+            <th> Name (Link) </th>
+            <th> Type</th>
+            <th> Title</th>
+            <th> Description</th>
+            </thead>
+
+            {% for d in table %}
+              <tr>
+                <td><a href="/test/{{ d.name }}">{{ d.name }}</a></td>
+                <td>{{ d.type  }}</td>
+                <td>{{ d.title  }}</td>
+                <td>{{ d.description  }}</td>
+              </tr>
+            {% endfor %}
+
+          </table>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script>
+      $(document).ready(function () {
+          let table = {{ table  | safe }};
+          console.log('template_table.html: table = ', table);
+      });
+
+  </script>
+
+{% endblock javascripts %}

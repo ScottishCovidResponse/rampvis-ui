@@ -25,6 +25,13 @@ def get_user(token):
     return user
 
 
+def search(query):
+    response = requests.get(BASE_URL + '/scotland/search/?query=' + query)
+    result = json.loads(response.content)
+    print('service: search: query = ', query, '\nresult = ', result)
+    return result
+
+
 def get_bookmarks(token):
     print('get_bookmarks: session[token] = ', token['token'])
     # if token:
@@ -39,5 +46,3 @@ def get_bookmarks(token):
     # user = json.loads(response.content)
     # print('service: get_user: user = ', user)
     # return user
-
-
