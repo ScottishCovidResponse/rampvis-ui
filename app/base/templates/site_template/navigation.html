@@ -16,16 +16,22 @@
       <span class="navbar-toggler-icon icon-bar"></span>
     </button>
 
-    <div class="collapse navbar-collapse justify-content-end">
 
-      <form class="navbar-form" action="/test/search" method="GET" name="search">
-        <div class="input-group no-border">
-          <input type="text" name="query" class="form-control" placeholder="Search...">
+    <div class="collapse navbar-collapse justify-content-center">
+      <form action="/test/search" method="GET" name="search">
+        <div class="input-group">
+          <span class="input-group-text"> <i class="material-icons">coronavirus</i> </span>
+          <input type="text" name="query" class="form-control" placeholder="Search..." size="100">
           <button type="submit" class="btn btn-white btn-round btn-just-icon">
-            <i class="material-icons">search</i> <div class="ripple-container"></div>
+            <i class="material-icons">search</i>
+            <div class="ripple-container"></div>
           </button>
         </div>
       </form>
+    </div>
+
+
+    <div class="collapse navbar-collapse justify-content-end">
 
       {% if current_user.is_authenticated %}
 

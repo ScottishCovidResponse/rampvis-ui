@@ -119,7 +119,7 @@ def route_template_search():
 
     if query:
         result = service.search(query)
-        return render_template('test/' + 'template-search.html', table=result)
+        return render_template('test/' + 'template-search.html', data={ 'query': query, 'result': result})
 
-    return render_template('test/' + 'template-search.html', table=[])
+    return render_template('test/' + 'template-search.html', table={})
 
