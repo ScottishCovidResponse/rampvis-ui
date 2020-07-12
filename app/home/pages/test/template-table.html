@@ -21,19 +21,19 @@
           <table class="table">
             <thead class=" text-primary">
             <th> ID</th>
-            <th> Name (Link) </th>
-            <th> Type</th>
             <th> Title</th>
             <th> Description</th>
+            <th> Type</th>
+            <th> Link </th>
             </thead>
 
             {% for d in table %}
               <tr>
                 <td>{{ d.id  }}</td>
-                <td><a href="/test/{{ d.name }}">{{ d.name }}</a></td>
-                <td>{{ d.type  }}</td>
                 <td>{{ d.title  }}</td>
                 <td>{{ d.description  }}</td>
+                <td>{{ d.type  }}</td>
+                <td><a href="/test/{{ d.name }}"> <i class="material-icons">link</i>  </a></td>
               </tr>
             {% endfor %}
 
