@@ -69,8 +69,8 @@
           //
           Common.prototype.init();
 
-          console.log('template.html: #data to bind = ', _option.bind.length);
-          console.log('template.html: _option = ', _option);
+          console.log('template-vis.html: #data to bind = ', _option.bind.length);
+          console.log('template-vis.html: _option = ', _option);
 
           let layout = $('#charts');
 
@@ -79,7 +79,7 @@
           //
           if (_option.bind.length === 1) {
               let d = _option.bind[0];
-              console.log('template.html: type = ', _option.page.type, 'bind = ', d);
+              console.log('template-vis.html: type = ', _option.page.type, 'bind = ', d);
 
               // only one row and chart in it
               let row = document.createElement('div');
@@ -107,7 +107,7 @@
                           username: userName
                       };
                       new VisFunctionFactory(d['function'], args);
-                      console.log('template.html:', d['function'], `chart-0`, data);
+                      console.log('template-vis.html:', d['function'], `chart-0`, data);
                   });
 
               return;
@@ -172,7 +172,7 @@
                           username: userName
                       };
                       new VisFunctionFactory(d['function'], args);
-                      console.log('template.html:', d['function'], `chart-${idx}`, data);
+                      console.log('template-vis.html:', d['function'], `chart-${idx}`, data);
 
                       idx++;
                   });

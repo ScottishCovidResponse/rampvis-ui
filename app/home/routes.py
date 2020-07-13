@@ -44,7 +44,7 @@ def route_template_page(page_name):
     print('route_template_test: page.type = ', page_data.get('page', {}).get('type'))
 
     try:
-        return render_template('template.html', option=page_data)
+        return render_template('template-vis.html', option=page_data)
 
     except TemplateNotFound:
         return render_template('page-404.html'), 404
