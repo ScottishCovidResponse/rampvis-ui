@@ -38,10 +38,9 @@ def route_template_page(page_name):
     print('page_name = ', page_name)
 
     page_data = ontology.get_page_by_name(page_name)
-    page_type = page_data.get('page', {}).get('type')
 
-    print('route_template_test: page_data = ', page_data)
-    print('route_template_test: page.type = ', page_data.get('page', {}).get('type'))
+    print('route_template_page: page_data = ', page_data)
+    print('route_template_page: page.type = ', page_data.get('page', {}).get('type'))
 
     try:
         return render_template('template-vis.html', option=page_data)
@@ -55,13 +54,11 @@ def route_template_page(page_name):
 
 @blueprint.route('/table')
 def route_template_table():
-    print('route_template_test_table:')
+    print('route_template_table:')
 
     try:
-        # page_data = ontology.get_page_data(table_name)
-        # page_type = page_data.get('page', {}).get('type')
         table = ontology.get_all_pages()
-        print('route_template_test: page_data = ', table)
+        print('route_template_table: page_data = ', table)
         return render_template('template-table.html', table=table)
 
     except TemplateNotFound:

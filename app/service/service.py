@@ -56,3 +56,13 @@ def get_bookmarks():
 
     # print('service: get_bookmarks: bookmarks = ', result)
     return result
+
+
+def is_bookmarked(page_id):
+    print('service: is_bookmarked: page_id = ', page_id)
+    return True
+
+
+def update_bookmark(page_id):
+    print('service: update_bookmark: page_id = ', page_id)
+    return True

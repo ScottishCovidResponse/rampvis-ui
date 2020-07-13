@@ -16,7 +16,7 @@
         <span>
           <!-- Bookmark -->
           {% if current_user.is_authenticated %}
-            <i class="material-icons" id="bookmark" >star_rate</i>
+            <i class="material-icons" id="bookmark">bookmark</i>
           {% endif %}
           </span>
       </h3>
@@ -38,38 +38,12 @@
   <script>
 
       let _option = {{ option | safe }};
-      let token =  '{{ session.token | safe }}';
+      let token = '{{ session.token | safe }}';
       let userName = '{{ current_user.username | safe }}';
-      let isBookmarked = true;
-
+      let isBookmarked = false;
 
       $(document).ready(function () {
 
-          //
-          // TODO - separate
-          //
-          $.ajax( {
-            url: 'http://localhost:2000/api/v1/bookmark/' + _option.page.id,
-            type: 'GET',
-            beforeSend : function( xhr ) {
-              xhr.setRequestHeader( "Authorization", "Bearer " + token );
-            },
-            success: function( response ) {
-              console.log('bookmark info: response = ',  response)
-                if (response._id || response.pageId) {
-                    isBookmarked = true;
-                }
-            }
-        });
-
-
-          //
-          // TODO
-          //  initialize in different place / factory
-          //
-          Common.prototype.init();
-
-          console.log('template-vis.html: #data to bind = ', _option.bind.length);
           console.log('template-vis.html: _option = ', _option);
 
           let layout = $('#charts');
@@ -85,7 +59,7 @@
               let row = document.createElement('div');
 
               if (_option.page.type === 'details') {
-                row.setAttribute('class', 'row svg-container details');
+                  row.setAttribute('class', 'row svg-container details');
               } else if (_option.page.type === 'overview') {
                   row.setAttribute('class', 'row');
               }
@@ -133,27 +107,27 @@
               let row2 = document.createElement('div');
               row2.setAttribute('class', 'row');
 
-                  for (let j = 0; j < ncols; j++) {
-                      // title
-                      let col1 = document.createElement('div');
-                      col1.setAttribute('class', 'col-md-' + Math.round(12 / ncols));
-                      let title = document.createTextNode(_option.bind[idx].title);
-                      col1.append(title);
-                      row1.append(col1);
+              for (let j = 0; j < ncols; j++) {
+                  // title
+                  let col1 = document.createElement('div');
+                  col1.setAttribute('class', 'col-md-' + Math.round(12 / ncols));
+                  let title = document.createTextNode(_option.bind[idx].title);
+                  col1.append(title);
+                  row1.append(col1);
 
-                      // chart
-                      let col2 = document.createElement('div');
-                      col2.setAttribute('class', 'col-md-' + Math.round(12 / ncols));
-                      let chart = document.createElement('div');
-                      chart.setAttribute('id', 'chart-' + idx);
-                      col2.append(chart);
-                      row2.append(col2);
+                  // chart
+                  let col2 = document.createElement('div');
+                  col2.setAttribute('class', 'col-md-' + Math.round(12 / ncols));
+                  let chart = document.createElement('div');
+                  chart.setAttribute('id', 'chart-' + idx);
+                  col2.append(chart);
+                  row2.append(col2);
 
-                      idx++;
-                  }
+                  idx++;
+              }
 
-                  layout.append(row1);
-                  layout.append(row2);
+              layout.append(row1);
+              layout.append(row2);
           }
 
           // draw charts
@@ -181,29 +155,44 @@
       });
 
 
-      $('#bookmark').on('click', () => {
-          console.log('onClickBookmark: option = ', _option);
-          console.log('onClickBookmark: ',  _option.page.id,  token, userName)
 
-          //
-          // TODO - separate
-          //
-          $.ajax( {
-            url: 'http://localhost:2000/api/v1/bookmark',
-            type: 'POST',
-            data: {
-                pageId: _option.page.id,
-                url: 'some url',
-            },
-            beforeSend : function( xhr ) {
-              xhr.setRequestHeader( "Authorization", "Bearer " + token );
-            },
-            success: function( response ) {
-              console.log('onClickBookmark: response = ',  response)
-            }
-        });
+      //
+      // Bookmark or remove bookmark
+      //
+      $(document).ready(function () {
+          Service.getBookmarkInfo(_option.page.id, token)
+              .then(data => {
+                  // console.log('bookmark style ', data);
+                  if (data) {
+                      isBookmarked = true;
+                      data && $('#bookmark').css('color', 'orange');
+                  }
+              });
+
+          $('#bookmark').on('click', () => {
+              if (!isBookmarked) {
+                   Service.createBookmark(_option.page.id, token)
+                  .then(data => {
+                      if (data) {
+                          isBookmarked = !isBookmarked;
+                          $('#bookmark').css('color', 'orange');
+                          console.log('onClickBookmark: ', _option.page.id, token);
+                      }
+                  });
+              } else {
+                Service.removeBookmark(_option.page.id, token)
+                  .then(data => {
+                      if (data) {
+                          isBookmarked = !isBookmarked;
+                          $('#bookmark').css('color', 'white');
+                      }
+                  });
+              }
+
+          });
 
       });
+
 
   </script>
 
