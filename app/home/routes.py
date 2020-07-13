@@ -17,11 +17,20 @@ def route_default():
 @login_required
 def portal():
     if not current_user.is_authenticated:
-         return redirect(url_for('base_blueprint.login'))
+        return redirect(url_for('base_blueprint.login'))
 
     result = service.get_bookmarks()
 
     return render_template('portal.html', option=result)
+
+
+@blueprint.route('/profile')
+@login_required
+def profile():
+    if not current_user.is_authenticated:
+        return redirect(url_for('base_blueprint.login'))
+
+    return render_template('profile.html')
 
 
 @blueprint.route('/<page_name>')
@@ -75,7 +84,6 @@ def route_template_search():
 
     if query:
         result = service.search(query)
-        return render_template('template-search.html', data={ 'query': query, 'result': result})
+        return render_template('template-search.html', data={'query': query, 'result': result})
 
     return render_template('template-search.html', table={})
-
