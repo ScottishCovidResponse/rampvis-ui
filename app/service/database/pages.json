@@ -30,7 +30,7 @@
   {
     "id": 3,
     "name": "sco-cumulative",
-    "type": "overview",
+    "type": "details",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "scotland" }, "title": "" }
     ],

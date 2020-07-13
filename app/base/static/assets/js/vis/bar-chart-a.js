@@ -10,9 +10,7 @@ class BarChartA {
         if (canvas.clientWidth > 0) CHART_WIDTH = canvas.clientWidth ;
         if (canvas.clientHeight > 0) CHART_HEIGHT = canvas.clientHeight;
 
-
         var max_value = data.reduce((max, p) => p.value > max ? p.value : max, data[0].value);
-
 
         // set the dimensions and margins of the graph
         var margin = {top: 20, right: 45, bottom: 65, left: 60},

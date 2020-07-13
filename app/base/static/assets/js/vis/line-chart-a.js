@@ -7,9 +7,8 @@ class LineChartA {
 
         let CHART_WIDTH = 500;
         let CHART_HEIGHT = 250;
-        if(canvas.clientWidth > 0) CHART_WIDTH = canvas.clientWidth ;
+        if (canvas.clientWidth > 0) CHART_WIDTH = canvas.clientWidth ;
         if (canvas.clientHeight > 0) CHART_HEIGHT = canvas.clientHeight;
-        console.log(canvas.clientWidth, canvas.clientHeight)
 
         var min_value = data.reduce((min, p) => p.value < min ? p.value : min, data[0].value);
         var max_value = data.reduce((max, p) => p.value > max ? p.value : max, data[0].value);
