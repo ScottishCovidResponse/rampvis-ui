@@ -86,4 +86,4 @@ def route_template_search():
         result = service.search(query)
         return render_template('template-search.html', data={'query': query, 'result': result})
 
-    return render_template('template-search.html', table={})
+    return render_template('template-search.html', data={})
