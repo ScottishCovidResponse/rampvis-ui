@@ -20,7 +20,7 @@ class BarChartA {
         //
         // TODO - should not use a global selector/variable
         //
-        var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+        var tooltip_barchart = d3.select("body").append("div").attr("class", "tool-tip-bar-chart");
 
         var x = d3.scaleBand().rangeRound([0, width]).padding(0.2),
             y = d3.scaleLinear().rangeRound([height, 0]);
@@ -78,7 +78,15 @@ class BarChartA {
             .attr("height", function (d) {
                 return height - y(d.value);
             })
-            .attr("fill", '#4682B4');
+            .attr("fill", '#4682B4')
+            .on("mousemove", function(d){
+                tooltip_barchart
+                    .style("left", d3.event.pageX - 50 + "px")
+                    .style("top", d3.event.pageY - 70 + "px")
+                    .style("display", "inline-block")
+                    .html(d.date + '-> ' + d['value']);
+            })
+            .on("mouseout", function(d){ tooltip_barchart.style("display", "none");});
     }
 
 

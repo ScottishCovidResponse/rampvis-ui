@@ -42,7 +42,7 @@ TopLevelOverviewScreenA.prototype = {
         var main_grid = document.getElementById(element);
 
         $.each(TopLevelOverviewScreenA.variables.boards, function(index, item) {
-            var div = '<div class="col item" id="grid-' + index + '">' +
+            var div = '<div class="col item text-center" id="grid-' + index + '">' +
                 '<p class="title-text"><a href="' + item.regional_overview + '">' + item.board + '</a></p>' +
                 '<div class="div-svg" id="timeseries-' + index + '" onclick="window.location=\'' + item.detailed_cumulative + '\';"></div>'
             '</div>';
