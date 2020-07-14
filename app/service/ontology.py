@@ -2,13 +2,23 @@ import os
 import json
 import urllib.parse
 
+from app import app
+
+
+#
+# DATA_API = app.config.get('DATA_API')
+# STAT_API = app.config.get('STAT_API')
+#
+def get_api_url(key):
+    return app.config.get(key)
+
+
 #
 # Arg: page_name
 # Returns:
 # {
-#   page: { id: , type: , nrows: , title: , description: , }
-#   bind: [{ endpoint:  , function:,  description: },
-#          { endpoint:  , function:,  description: },
+#   page: { id: int, type: string, nrows: int, title: string, description: string, }
+#   bind: [{ endpoint: string, function: string, description: string },
 #          ... ]
 # }
 #
@@ -67,7 +77,7 @@ def get_page(page_obj):
         #
         endpoint = data_obj.get('endpoint')
         if data_obj.get('query_string'):
-            url = (data_obj.get('endpoint') + data_obj.get('query_string'))
+            url = get_api_url(data_obj.get('url')) + data_obj.get('endpoint') + data_obj.get('query_string')
             url_parts = list(urllib.parse.urlparse(url))
             query = dict(urllib.parse.parse_qsl(url_parts[4]))
             query.update(bind_obj.get('query_params'))

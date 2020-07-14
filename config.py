@@ -22,6 +22,7 @@ class Config(object):
 
     ONTOLOGY_JSON_DB = os.path.join(basedir, 'TODO/ontology.json')
 
+
 class ProductionConfig(Config):
     DEBUG = False
 
@@ -30,9 +31,15 @@ class ProductionConfig(Config):
     REMEMBER_COOKIE_HTTPONLY = True
     REMEMBER_COOKIE_DURATION = 3600
 
+    DATA_API = 'http://vis.scrc.uk/api/v1'
+    STAT_API = 'http://vis.scrc.uk/stat/v1'
+
 
 class DebugConfig(Config):
     DEBUG = True
+
+    DATA_API = 'http://localhost:2000/api/v1'
+    STAT_API = 'http://localhost:3000/stat/v1'
 
 
 config_dict = {

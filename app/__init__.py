@@ -6,9 +6,9 @@ from flask import Flask, url_for
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
-
 db = SQLAlchemy()
 login_manager = LoginManager()
+global app
 
 
 def init_extensions(app):
@@ -78,6 +78,7 @@ def init_themes(app):
 
 
 def create_app(config, selenium=False):
+    global app
     app = Flask(__name__, static_folder='base/static')
     app.config.from_object(config)
 

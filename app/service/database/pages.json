@@ -1038,14 +1038,30 @@
   },
   {
     "id": 82,
-    "name": "top-level-overview-screen-a-dynamic",
+    "name": "dynamic-top-level-overview-screen-a",
     "type": "overview",
     "bind": [
       { "vis_id": 1, "data_id": 5, "query_params": { "table": "cumulative_cases" }, "title": "" }
     ],
     "nrows": 1,
-    "title": "Cumulative Number of Cases Tested Positive for COVID-19",
+    "title": "Dynamic - Cumulative Number of Cases Tested Positive for COVID-19",
     "description": "The cumulative number of cases with positive tests for COVID-19, by board in Scotland",
     "links": [3]
+  },
+  {
+    "id": 83,
+    "name": "dynamic-sco-regional",
+    "type": "overview",
+    "bind": [
+      { "vis_id": 3, "data_id": 6, "query_params": { "table": "cumulative_cases", "region": "scotland" }, "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 6, "query_params": { "table": "icu_patients", "region": "scotland" }, "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 6, "query_params": { "table": "hospital_confirmed", "region": "scotland" }, "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 6, "query_params": { "table": "hospital_suspected", "region": "scotland" }, "title": "Hospital Suspected" }
+
+    ],
+    "nrows": 2,
+    "title": "Dynamic - Scotland - Overview",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in Scotland. The number of people in ICU with confirmed or suspected COVID-19 in Scotland. The number of people in the hospital with confirmed COVID-19 in Scotland. The number of people in hospital with suspected COVID-19 in Scotland.",
+    "links": []
   }
 ]

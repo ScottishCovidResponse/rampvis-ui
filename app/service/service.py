@@ -1,15 +1,17 @@
 import requests
 import json
 import jwt
-from flask import redirect, request, json, session
+from flask import redirect, json, session
 
 import app.service.ontology as ontology
+from app import app
 
-BASE_URL = 'http://localhost:2000/api/v1'
+DATA_API = app.config.get('DATA_API')
+STAT_API = app.config.get('STAT_API')
 
 
 def github_login():
-    return redirect(BASE_URL + '/auth/github-login')
+    return redirect(DATA_API + '/auth/github-login')
 
 
 def get_user(token):
@@ -20,7 +22,7 @@ def get_user(token):
 
     user_id = decoded_token.get('id')
     headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + token}
-    response = requests.get(BASE_URL + '/user/' + user_id, headers=headers)
+    response = requests.get(DATA_API + '/user/' + user_id, headers=headers)
 
     user = json.loads(response.content)
     print('service: get_user: user = ', user)
@@ -28,7 +30,7 @@ def get_user(token):
 
 
 def search(query):
-    response = requests.get(BASE_URL + '/scotland/search/?query=' + query)
+    response = requests.get(DATA_API + '/scotland/search/?query=' + query)
     result = json.loads(response.content)
     print('service: search: query = ', query, '\nresult = ', result)
     return result
@@ -41,7 +43,7 @@ def get_bookmarks():
         return None
 
     headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + token}
-    response = requests.get(BASE_URL + '/bookmark/', headers=headers)
+    response = requests.get(DATA_API + '/bookmark/', headers=headers)
     bookmarks = json.loads(response.content)
 
     result = []
