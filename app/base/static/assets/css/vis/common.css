@@ -52,4 +52,34 @@
 #bookmark {
     cursor: pointer;
 }
+.overlay {
+    fill: none;
+    pointer-events: all;
+}
+.focus text {
+    font-weight: bold;
+    font-size: 12px;
+}
+.focus circle {
+    fill: #F1F3F3;
+    stroke: #4682B4;
+    stroke-width: 3px;
+}
+.hover-line {
+    stroke: #4682B4;
+    stroke-width: 1px;
+    stroke-dasharray: 2,4;
+}
+.tool-tip-bar-chart, .tool-tip-line-chart {
+    position: absolute;
+    display: none;
+    min-width: 40px;
+    height: auto;
+    background: none repeat scroll 0 0 #ffffff;
+    border: 1px solid #4682B4;
+    padding: 2px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+}
 
