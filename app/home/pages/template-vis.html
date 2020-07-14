@@ -8,18 +8,24 @@
 {% block content %}
 
   <div class="dashboard-container">
-    <div class="card card-nav-tabs text-center">
+    <div class="card">
 
-      <!-- Card title -->
-      <h3 class="card-header card-header-primary">
-        {{ option.page.title }}
-        <span>
-          <!-- Bookmark -->
-          {% if current_user.is_authenticated %}
-            <i class="material-icons" id="bookmark">bookmark</i>
-          {% endif %}
-          </span>
-      </h3>
+    <div class="card-header card-header-icon card-header-primary">
+        <div class="card-icon"><i class="material-icons">collections</i></div>
+        <!-- Card title -->
+        <h3 class="card-title">
+          {{ option.page.title }}
+          <span>
+            <!-- Bookmark -->
+            {% if current_user.is_authenticated %}
+              <i class="material-icons" id="bookmark">bookmark</i>
+            {% endif %}
+            </span>
+        </h3>
+      </div>
+
+
+
       <div class="card-body">
         <!-- Description -->
         <p class="card-text">{{ option.page.description }}</p>
@@ -184,7 +190,7 @@
                   .then(data => {
                       if (data) {
                           isBookmarked = !isBookmarked;
-                          $('#bookmark').css('color', 'white');
+                          $('#bookmark').css('color', 'darkgrey');
                       }
                   });
               }
