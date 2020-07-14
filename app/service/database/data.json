@@ -45,11 +45,20 @@
   },
   {
     "id": 4,
-    "endpoint": "http://localhost:5000/stat/v1/scotland/nhs-board/?",
+    "endpoint": "http://localhost:3000/stat/v1/scotland/nhs-board/?",
     "query_string": "table=&metrics=",
     "table": [ "cumulative_cases" ],
     "metrics": [ "mse", "f_test", "pearson_correlation" ],
     "source": "housekeeping",
     "type": "matrix"
+  },
+  {
+    "id": 5,
+    "endpoint": "http://localhost:2000/api/v1/scotland_dynamic/nhs-board/?",
+    "query_string": "table=",
+      "table": [ "cumulative_cases", "hospital_confirmed", "hospital_suspected", "icu_patients" ],
+    "source": "stream",
+    "type": "table",
+    "description": "this data is about..."
   }
 ]
