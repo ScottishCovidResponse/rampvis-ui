@@ -40,7 +40,7 @@ class LineChartA {
             .attr("preserveAspectRatio", "xMinYMid meet")
             .append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-        
+
         svg.append("rect")
             .attr("fill", "#ffffff")
             .attr("width", CHART_WIDTH)

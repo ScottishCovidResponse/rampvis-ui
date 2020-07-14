@@ -7,7 +7,6 @@
     vertical-align: top;
     overflow: hidden;
 }
-
 .svg-container.details {
     display: inline-block;
     position: relative;
@@ -17,7 +16,6 @@
     vertical-align: top;
     overflow: hidden;
 }
-
 .dashboard-container {
     padding: 25px;
 }
@@ -51,6 +49,9 @@
 }
 #bookmark {
     cursor: pointer;
+}
+text {
+    font-size: 10px;
 }
 .overlay {
     fill: none;

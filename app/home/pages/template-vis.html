@@ -116,9 +116,12 @@
               for (let j = 0; j < ncols; j++) {
                   // title
                   let col1 = document.createElement('div');
-                  col1.setAttribute('class', 'col-md-' + Math.round(12 / ncols));
+                  col1.setAttribute('class', 'col-md-' + Math.round(12 / ncols) + ' text-center');
+                  let p1 = document.createElement('p');
+                  p1.setAttribute('class', 'title-text');
                   let title = document.createTextNode(_option.bind[idx].title);
-                  col1.append(title);
+                  p1.append(title);
+                  col1.append(p1);
                   row1.append(col1);
 
                   // chart
