@@ -10,6 +10,8 @@ class VisFunctionFactory {
             return new BarChartA(args);
         if (type === "LineChartA")
             return new LineChartA(args);
+         if (type === "ChordDiagramA")
+            return new ChordDiagramA().init(args);
     }
 }
 

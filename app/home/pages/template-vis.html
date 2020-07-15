@@ -10,7 +10,7 @@
   <div class="dashboard-container">
     <div class="card">
 
-    <div class="card-header card-header-icon card-header-primary">
+      <div class="card-header card-header-icon card-header-primary">
         <div class="card-icon"><i class="material-icons">collections</i></div>
         <!-- Card title -->
         <h3 class="card-title">
@@ -23,7 +23,6 @@
             </span>
         </h3>
       </div>
-
 
 
       <div class="card-body">
@@ -43,9 +42,10 @@
 
   <script>
 
-      let _option = {{ option | safe }};
+      let _option = {{ option | tojson }};
       let token = '{{ session.token | safe }}';
       let userName = '{{ current_user.username | safe }}';
+      let isAuthorised = {{ current_user.is_authenticated | tojson }};
       let isBookmarked = false;
       let DATA_API = {{ config['DATA_API'] | tojson }};
 
@@ -82,7 +82,6 @@
                   .then(data => {
                       let args = {
                           chartElement: `chart-0`,
-                          bookmarkElement: 'bookmark',
                           data: data,
                           token: token,
                           username: userName
@@ -151,9 +150,7 @@
                       let args = {
                           chartElement: `chart-${idx}`,
                           bookmarkElement: 'bookmark',
-                          data: data,
-                          token: token,
-                          username: userName
+                          data: data
                       };
                       new VisFunctionFactory(d['function'], args);
                       console.log('template-vis.html:', d['function'], `chart-${idx}`, data);
@@ -165,11 +162,14 @@
       });
 
 
-
       //
       // Bookmark or remove bookmark
       //
       $(document).ready(function () {
+          if (!isAuthorised) {
+              return;
+          }
+
           Service.getBookmarkInfo(DATA_API, _option.page.id, token)
               .then(data => {
                   // console.log('bookmark style ', data);
@@ -181,22 +181,22 @@
 
           $('#bookmark').on('click', () => {
               if (!isBookmarked) {
-                   Service.createBookmark(DATA_API, _option.page.id, token)
-                  .then(data => {
-                      if (data) {
-                          isBookmarked = !isBookmarked;
-                          $('#bookmark').css('color', 'orange');
-                          console.log('onClickBookmark: ', _option.page.id, token);
-                      }
-                  });
+                  Service.createBookmark(DATA_API, _option.page.id, token)
+                      .then(data => {
+                          if (data) {
+                              isBookmarked = !isBookmarked;
+                              $('#bookmark').css('color', 'orange');
+                              console.log('onClickBookmark: ', _option.page.id, token);
+                          }
+                      });
               } else {
-                Service.removeBookmark(DATA_API, _option.page.id, token)
-                  .then(data => {
-                      if (data) {
-                          isBookmarked = !isBookmarked;
-                          $('#bookmark').css('color', 'darkgrey');
-                      }
-                  });
+                  Service.removeBookmark(DATA_API, _option.page.id, token)
+                      .then(data => {
+                          if (data) {
+                              isBookmarked = !isBookmarked;
+                              $('#bookmark').css('color', 'darkgrey');
+                          }
+                      });
               }
 
           });

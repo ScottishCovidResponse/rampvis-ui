@@ -1038,6 +1038,42 @@
   },
   {
     "id": 82,
+    "name": "pearson-correlation",
+    "type": "overview",
+    "bind": [
+      { "vis_id": 5, "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "pearson_correlation" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "Cumulative Cases - Pearson Correlation",
+    "description": "",
+    "links": []
+  },
+    {
+    "id": 83,
+    "name": "mse",
+    "type": "overview",
+    "bind": [
+      { "vis_id": 5, "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "mse" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "Cumulative Cases - MSE",
+    "description": "",
+    "links": []
+  },
+    {
+    "id": 84,
+    "name": "f-test",
+    "type": "overview",
+    "bind": [
+      { "vis_id": 5, "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "f_test" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "Cumulative Cases - F-Test",
+    "description": "",
+    "links": []
+  },
+  {
+    "id": 85,
     "name": "dynamic-top-level-overview-screen-a",
     "type": "overview",
     "bind": [
@@ -1049,7 +1085,7 @@
     "links": [3]
   },
   {
-    "id": 83,
+    "id": 86,
     "name": "dynamic-sco-regional",
     "type": "overview",
     "bind": [
