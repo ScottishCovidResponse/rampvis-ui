@@ -46,6 +46,8 @@ def get_bookmarks():
     response = requests.get(DATA_API + '/bookmark/', headers=headers)
     bookmarks = json.loads(response.content)
 
+    print('get_bookmarks: bookmarks = ', bookmarks)
+
     result = []
     for d in bookmarks:
         page_id = d.get('pageId')

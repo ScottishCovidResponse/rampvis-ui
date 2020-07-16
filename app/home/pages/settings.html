@@ -1,0 +1,47 @@
+{% extends "base-site.html" %}
+
+{% block title %} Settings {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="dashboard-container">
+
+        <div class="card">
+            <div class="card-header card-header-icon card-header-primary">
+                <div class="card-icon"><i class="material-icons">schedule</i></div>
+                <h4 class="card-title ">Schedulers</h4>
+            </div>
+
+            <div class="card-body">
+
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+    <script>
+        $(document).ready(function () {
+            let isAuthorised = {{ current_user.is_authenticated | tojson }};
+            let token = '{{ session.token | safe }}';
+            let STAT_API = {{ config['STAT_API'] | tojson }};
+
+            console.log(isAuthorised, token, STAT_API);
+
+            if (isAuthorised) {
+                console.log(isAuthorised);
+            }
+        });
+
+
+    </script>
+
+{% endblock javascripts %}
