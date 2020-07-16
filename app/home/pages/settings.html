@@ -14,12 +14,25 @@
                 <div class="card-icon"><i class="material-icons">schedule</i></div>
                 <h4 class="card-title ">Schedulers</h4>
             </div>
-
             <div class="card-body">
 
-
+                <div class="row">
+                    <div class="col-sm-2">
+                        <button type="button" class="btn btn-light btn-fab btn-fab-mini btn-round" id="status">
+                            <i class="material-icons">visibility</i>
+                        </button>
+                        <button type="button" class="btn btn-success btn-fab btn-fab-mini btn-round" id="start">
+                            <i class="material-icons">play_arrow</i>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-fab btn-fab-mini btn-round" id="stop">
+                            <i class="material-icons">stop</i>
+                        </button>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="text-left text-dark" id="scheduler-status">text</p>
+                    </div>
+                </div>
             </div>
-
         </div>
     </div>
 
@@ -29,15 +42,41 @@
 {% block javascripts %}
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(() => {
             let isAuthorised = {{ current_user.is_authenticated | tojson }};
             let token = '{{ session.token | safe }}';
             let STAT_API = {{ config['STAT_API'] | tojson }};
 
             console.log(isAuthorised, token, STAT_API);
 
+            function streamData(action) {
+                Service.streamData(STAT_API, token, action)
+                    .then(data => {
+                        console.log('onClick: status: data = ', data);
+                        $("#scheduler-status").text(() => {
+                            return data.message;
+                        });
+                    });
+            }
+
+            // check status when page is loaded
+            streamData('status');
+
+            $("#status").on('click', () => {
+                streamData('status');
+            });
+
+            $("#start").on('click', () => {
+                streamData('start')
+            });
+            $("#stop").on('click', () => {
+                streamData('stop')
+            });
+
             if (isAuthorised) {
                 console.log(isAuthorised);
+
+                // Service.streamData(STAT_API, token, 'start')
             }
         });
 

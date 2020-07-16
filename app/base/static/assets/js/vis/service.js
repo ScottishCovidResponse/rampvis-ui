@@ -49,8 +49,23 @@ class Service {
         });
     }
 
+    // implemented at python side
     static getAllBookmarks() {
-        // python side
+        return null;
     }
 
+    static streamData(API, token, action) {
+        console.log('Service: streamData: action = ', action);
+
+        return $.ajax({
+            url: API + '/stream_data/' + action,
+            type: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + token);
+            },
+            success: function (response) {
+                return true;
+            }
+        });
+    }
 }
