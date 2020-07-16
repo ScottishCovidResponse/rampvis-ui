@@ -28,5 +28,11 @@
     "function": "ChordDiagramA",
     "type": "chord_diagram",
     "description": ""
+  },
+  {
+    "id": 6,
+    "function": "StackedBarChart",
+    "type": "stacked_bar_chart",
+    "description": ""
   }
 ]
