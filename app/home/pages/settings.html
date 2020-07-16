@@ -16,22 +16,51 @@
             </div>
             <div class="card-body">
 
-                <div class="row">
-                    <div class="col-sm-2">
-                        <button type="button" class="btn btn-light btn-fab btn-fab-mini btn-round" id="status">
-                            <i class="material-icons">visibility</i>
-                        </button>
-                        <button type="button" class="btn btn-success btn-fab btn-fab-mini btn-round" id="start">
-                            <i class="material-icons">play_arrow</i>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-fab btn-fab-mini btn-round" id="stop">
-                            <i class="material-icons">stop</i>
-                        </button>
-                    </div>
-                    <div class="col-sm-6">
-                        <p class="text-left text-dark" id="scheduler-status">text</p>
-                    </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class=" text-primary">
+                        <th> Type</th>
+                        <th> Status</th>
+                        <th> Action</th>
+                        </thead>
+                        <tr>
+                            <td> <p> Data Stream </p> </td>
+                            <td>
+                                <p class="text-left text-dark" id="scheduler-status"></p>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-light btn-fab btn-fab-mini btn-round" id="status">
+                                    <i class="material-icons">visibility</i>
+                                </button>
+                                <button type="button" class="btn btn-success btn-fab btn-fab-mini btn-round" id="start">
+                                    <i class="material-icons">play_arrow</i>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-fab btn-fab-mini btn-round" id="stop">
+                                    <i class="material-icons">stop</i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td> <p> Process Data </p> </td>
+                            <td>
+                                <p class="text-left text-dark" id="pd-scheduler-status"></p>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-light btn-fab btn-fab-mini btn-round" id="pd-status">
+                                    <i class="material-icons">visibility</i>
+                                </button>
+                                <button type="button" class="btn btn-success btn-fab btn-fab-mini btn-round" id="pd-start">
+                                    <i class="material-icons">play_arrow</i>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-fab btn-fab-mini btn-round" id="pd-stop">
+                                    <i class="material-icons">stop</i>
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
+
             </div>
         </div>
     </div>
