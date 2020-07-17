@@ -13,7 +13,9 @@ class VisFunctionFactory {
         if (type === "ChordDiagramA")
             return new ChordDiagramA().init(args);
         if (type === "StackedBarChart") 
-            return new StackedBarChart().init(args);
+            return new StackedBarChart(args);
+        if (type === "StackedAreaChart") 
+            return new StackedAreaChart(args);
     }
 }
 

@@ -1,4 +1,4 @@
-class StackedBarChart {
+class StackedAreaChart {
     CHART_WIDTH = 800
     CHART_HEIGHT = 400
 
@@ -7,7 +7,7 @@ class StackedBarChart {
         const container = d3.select('#' + options.chartElement);
         container.innerHTML = '';
 
-        const vis = pv.stackedBarChart()
+        const vis = pv.stackedAreaChart()
             .margin({ top: 10, right: 10, bottom: 30, left: 50 })
             .colorScale(Common.Colors.SITUATION_SCALE)
             .width(this.CHART_WIDTH)

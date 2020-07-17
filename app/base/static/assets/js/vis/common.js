@@ -1,5 +1,4 @@
 class Common {
-
     static get scotlandBoards() {
         return [
             {"board": "NHS Ayrshire & Arran", "abbr": "A&A", "key": "nhs_ayrshire_arran"},
@@ -19,4 +18,17 @@ class Common {
             {"board": "Scotland", "abbr": "SCO", "key": "scotland"}
         ];
     }
+
+    static Colors = {
+        SITUATION_SCALE: d3.scaleOrdinal()
+                            .domain(['Care Home', 'Home / Non-institution', 'Hospital', 'Other institution'])
+                            .range(d3.schemeSet2),
+        AGE_GROUP_SCALE: d3.scaleOrdinal()
+                            .domain(['Under 1 year', '01-14', '15-44', '45-64', '65-74', '75-84', '85+'])
+                            .range(['gray', 'gray', 'gray'].concat(d3.schemeBlues[5].slice(0, 4))),
+        DEATH_CAUSE_SCALE: d3.scaleOrdinal()
+                            .domain(['others', 'covid', 'average'])
+                            .range(d3.schemeSet2),
+        CORRELATION_SCALE: d3.scaleSequential(d3.interpolatePiYG).domain([-1, 1])
+    };
 }

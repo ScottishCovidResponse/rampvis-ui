@@ -34,5 +34,11 @@
     "function": "StackedBarChart",
     "type": "stacked_bar_chart",
     "description": ""
+  },
+  {
+    "id": 7,
+    "function": "StackedAreaChart",
+    "type": "stacked_area_chart",
+    "description": ""
   }
 ]

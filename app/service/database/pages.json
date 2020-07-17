@@ -1102,14 +1102,26 @@
   },
   {
     "id": 87,
-    "name": "weekly-death-gender-age-stacked-bar-chart",
-    "type": "overview",
+    "name": "weekly-death-situation-stacked-bar-chart",
+    "type": "details",
     "bind": [
-      { "vis_id": 6, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "gender_age" }, "title": "Phong title" }
+      { "vis_id": 6, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Weekly deaths by COVID-19 in each situation setting" }
     ],
     "nrows": 1,
-    "title": "Phong title todo",
-    "description": "Phong description todo",
+    "title": "Weekly deaths by COVID-19 in each situation setting (bar chart)",
+    "description": "Stacked bar chart with bar height corresponding to the number of deaths and coloured by situation.",
+    "links": []
+  },
+  {
+    "id": 88,
+    "name": "weekly-death-situation-stacked-area-chart",
+    "type": "details",
+    "bind": [
+      { "vis_id": 7, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Weekly deaths by COVID-19 in each situation setting" }
+    ],
+    "nrows": 1,
+    "title": "Weekly deaths by COVID-19 in each situation setting (area chart)",
+    "description": "Stacked area chart with area corresponding to the number of deaths and coloured by situation.",
     "links": []
   }
 ]
