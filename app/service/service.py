@@ -52,7 +52,7 @@ def get_bookmarks():
     for d in bookmarks:
         page_id = d.get('pageId')
         thumbnail = d.setdefault('thumbnail', "abc")
-        # print('service: get_bookmarks: thumbnail = ', thumbnail)
+        #print('service: get_bookmarks: d =', d, 'page_id = ', page_id)
         page_data_from_ontology = ontology.get_page_by_id(int(page_id))
         page_data_from_ontology.get('page')['thumbnail'] = thumbnail
 
