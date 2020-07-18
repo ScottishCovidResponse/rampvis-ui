@@ -1105,7 +1105,7 @@
     "name": "weekly-death-situation-stacked-bar-chart",
     "type": "details",
     "bind": [
-      { "vis_id": 6, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Weekly deaths by COVID-19 in each situation setting" }
+      { "vis_id": 6, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Weekly deaths by COVID-19 in each situation setting (bar chart)" }
     ],
     "nrows": 1,
     "title": "Weekly deaths by COVID-19 in each situation setting (bar chart)",
@@ -1117,11 +1117,71 @@
     "name": "weekly-death-situation-stacked-area-chart",
     "type": "details",
     "bind": [
-      { "vis_id": 7, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Weekly deaths by COVID-19 in each situation setting" }
+      { "vis_id": 7, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Weekly deaths by COVID-19 in each situation setting (area chart)" }
     ],
     "nrows": 1,
     "title": "Weekly deaths by COVID-19 in each situation setting (area chart)",
     "description": "Stacked area chart with area corresponding to the number of deaths and coloured by situation.",
+    "links": []
+  },
+  {
+    "id": 89,
+    "name": "weekly-death-agegroup-gender-stacked-bar-chart",
+    "type": "details",
+    "bind": [
+      { "vis_id": 7, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Weekly deaths by COVID-19 in each age group and gender (bar chart)" }
+    ],
+    "nrows": 1,
+    "title": "TODO Phong - Weekly deaths by COVID-19 in each age group and gender (bar chart)",
+    "description": "Stacked bar chart with bar height corresponding to the number of deaths, separated by gender and coloured by age group.",
+    "links": []
+  },
+  {
+    "id": 90,
+    "name": "weekly-death-agegroup-gender-stacked-area-chart",
+    "type": "details",
+    "bind": [
+      { "vis_id": 7, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Weekly deaths by COVID-19 in each age group and gender (area chart)" }
+    ],
+    "nrows": 1,
+    "title": "TODO Phong - Weekly deaths by COVID-19 in each age group and gender (area chart)",
+    "description": "Stacked area chart with area corresponding to the number of deaths, separated by gender and coloured by age group.",
+    "links": []
+  },
+  {
+    "id": 91,
+    "name": "weekly-death-cause-comparison",
+    "type": "details",
+    "bind": [
+      { "vis_id": 7, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Weekly comparison of causes of deaths." }
+    ],
+    "nrows": 1,
+    "title": "TODO Phong - Weekly comparison of causes of deaths.",
+    "description": "Comparing deaths caused by COVID-19 and other causes together with average deaths in the past 5 years in a weekly basis.",
+    "links": []
+  },
+  {
+    "id": 92,
+    "name": "weekly-death-situation-correlation-simple-matrix",
+    "type": "details",
+    "bind": [
+      { "vis_id": 7, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Correlation of weekly deaths between situations (simple matrix)." }
+    ],
+    "nrows": 1,
+    "title": "TODO Phong - Correlation of weekly deaths between situations (simple matrix)",
+    "description": "Using a matrix to show correlation of deaths between different situations.",
+    "links": []
+  },
+  {
+    "id": 92,
+    "name": "weekly-death-situation-correlation-complex-matrix",
+    "type": "details",
+    "bind": [
+      { "vis_id": 7, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Correlation of weekly deaths between situations (complex matrix)" }
+    ],
+    "nrows": 1,
+    "title": "TODO Phong - Correlation of weekly deaths between situations (complex matrix)",
+    "description": "Using a matrix to show correlation of deaths between different situations together with additional information.",
     "links": []
   }
 ]
