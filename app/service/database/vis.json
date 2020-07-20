@@ -40,5 +40,17 @@
     "function": "StackedAreaChart",
     "type": "stacked_area_chart",
     "description": ""
+  },
+  {
+    "id": 8,
+    "function": "MirroredStackedBarChart",
+    "type": "mirrored_stacked_bar_chart",
+    "description": ""
+  },
+  {
+    "id": 9,
+    "function": "MirroredStackedAreaChart",
+    "type": "mirrored_stacked_area_chart",
+    "description": ""
   }
 ]

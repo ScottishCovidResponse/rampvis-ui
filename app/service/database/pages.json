@@ -1129,10 +1129,10 @@
     "name": "weekly-death-agegroup-gender-stacked-bar-chart",
     "type": "details",
     "bind": [
-      { "vis_id": 7, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Weekly deaths by COVID-19 in each age group and gender (bar chart)" }
+      { "vis_id": 8, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "gender_age" }, "title": "Weekly deaths by COVID-19 in each age group and gender (bar chart)" }
     ],
     "nrows": 1,
-    "title": "TODO Phong - Weekly deaths by COVID-19 in each age group and gender (bar chart)",
+    "title": "Weekly deaths by COVID-19 in each age group and gender (bar chart)",
     "description": "Stacked bar chart with bar height corresponding to the number of deaths, separated by gender and coloured by age group.",
     "links": []
   },
@@ -1141,10 +1141,10 @@
     "name": "weekly-death-agegroup-gender-stacked-area-chart",
     "type": "details",
     "bind": [
-      { "vis_id": 7, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Weekly deaths by COVID-19 in each age group and gender (area chart)" }
+      { "vis_id": 9, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "gender_age" }, "title": "Weekly deaths by COVID-19 in each age group and gender (area chart)" }
     ],
     "nrows": 1,
-    "title": "TODO Phong - Weekly deaths by COVID-19 in each age group and gender (area chart)",
+    "title": "Weekly deaths by COVID-19 in each age group and gender (area chart)",
     "description": "Stacked area chart with area corresponding to the number of deaths, separated by gender and coloured by age group.",
     "links": []
   },
@@ -1153,7 +1153,7 @@
     "name": "weekly-death-cause-comparison",
     "type": "details",
     "bind": [
-      { "vis_id": 7, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Weekly comparison of causes of deaths." }
+      { "vis_id": 10, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Weekly comparison of causes of deaths." }
     ],
     "nrows": 1,
     "title": "TODO Phong - Weekly comparison of causes of deaths.",
