@@ -2,35 +2,34 @@
 const BOX_CHART_WIDTH = 90;
 const BOX_CHART_HEIGHT = 200;
 
-let TopLevelOverviewScreenC = {};
+class TopLevelOverviewScreenC {
 
-TopLevelOverviewScreenC.variables = {
-        boards: Common.scotlandBoards
-};
+    boards = Common.scotlandBoards
 
+    constructor(options) {
+        console.log('TopLevelOverviewScreenC: options = ', options);
 
-TopLevelOverviewScreenC.prototype = {
-    init: function(options) {
-        console.log(options);
+        this.createGridLayout(options.chartElement, options.chartElement);
+        this.createBoxPlot(options.data, options.chartElement);
+    }
 
-        TopLevelOverviewScreenC.prototype.createGridLayout(options.chartElement);
-        TopLevelOverviewScreenC.prototype.createBoxPlot(options.data);
-
-    },
-
-    createGridLayout: function(grid) {
+    createGridLayout(grid, chart_type) {
         var main_grid = document.getElementById(grid);
+        $(main_grid).css( {"max-width": "390px", "display": "grid", "grid-template-columns": "auto auto auto auto", "padding": "10px"})
 
-        $.each(TopLevelOverviewScreenC.variables.boards, function(index, item) {
-            var div = '<div class="col item" id="grid-' + index + '">' +
+        $.each(this.boards, (index, item) => {
+
+            console.log('index = ', index, 'item = ', item);
+
+            var div = '<div class="col item" id="grid-' + chart_type + '-' + index + '">' +
                 '<p class="title-text"><a href="' + item.regional_overview + '">' + item.abbr + '</a></p>' +
-                '<div class="div-svg" id="boxplot-' +  index + '" onclick="window.location=\'' + '\';"></div>'
+                '<div class="div-svg" id="boxplot-' + chart_type + '-' +  index + '" onclick="window.location=\'' + '\';"></div>'
             '</div>';
             main_grid.innerHTML += div;
         });
-    },
+    }
 
-    createBoxPlot: function(data, chart_type) {
+    createBoxPlot(data, chart_type) {
 
         console.log('createBoxPlot: ', data, chart_type);
 
@@ -41,7 +40,7 @@ TopLevelOverviewScreenC.prototype = {
             row = data[i];
             for (var key in row) {
                 if (key !== 'date') {
-                    var vals = TopLevelOverviewScreenC.prototype.cleanValue(row[key]);
+                    var vals = this.cleanValue(row[key]);
                     if (vals < min_value) {
                         min_value = vals;
                     }
@@ -75,8 +74,8 @@ TopLevelOverviewScreenC.prototype = {
             }
         });
 
-        $.each(TopLevelOverviewScreenC.variables.boards, function(index, item) {
-            var svg = d3.select('#boxplot-' +  index).append("svg")
+        $.each(this.boards, function(index, item) {
+            var svg = d3.select('#boxplot-' + chart_type + '-' +  index).append("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
@@ -191,9 +190,9 @@ TopLevelOverviewScreenC.prototype = {
                 .attr("marker-end", "url(#triangle-right)")
                 .attr("marker-start", "url(#triangle-left)");
         });
-    },
+    }
 
-    cleanValue: function(string) {
+    cleanValue(string) {
         if(string === '*' || string === 'N/A') {
             return 0;
         } else {
