@@ -24,30 +24,30 @@ class StackedBarChart {
         svg.datum(data).call(vis);
         legendContainer.datum(data.columns).call(legend);
     }
-}
 
-function processData(data) {
-    // The first column is for time
-    const columns = data.columns = Object.keys(data[0]).slice(1);
-    data.forEach(d => {
-        columns.forEach(c => {
-            d[c] = preprocessValue(d[c])
+    processData(data) {
+        // The first column is for time
+        const columns = data.columns = Object.keys(data[0]).slice(1);
+        data.forEach(d => {
+            columns.forEach(c => {
+                d[c] = preprocessValue(d[c])
+            });
         });
-    });
 
-    // Exclude weeks with all 0
-    data = data.filter(d => data.columns.some(att => d[att]));
+        // Exclude weeks with all 0
+        data = data.filter(d => data.columns.some(att => d[att]));
 
-    const parseWeek = d3.timeParse('%d-%b-%y');
-    data.forEach(d => {
-        d.time = parseWeek(d.Week);
-        d.label = d3.timeFormat('%b %d')(d.time);
-    });
+        const parseWeek = d3.timeParse('%d-%b-%y');
+        data.forEach(d => {
+            d.time = parseWeek(d.Week);
+            d.label = d3.timeFormat('%b %d')(d.time);
+        });
 
-    data.columns = columns;
-    return data;
-}
+        data.columns = columns;
+        return data;
+    }
 
-function preprocessValue(s) {
-    return typeof(s) === 'number' ? s : parseInt(s.replace(',', '').trim());
+    preprocessValue(s) {
+        return typeof(s) === 'number' ? s : parseInt(s.replace(',', '').trim());
+    }
 }

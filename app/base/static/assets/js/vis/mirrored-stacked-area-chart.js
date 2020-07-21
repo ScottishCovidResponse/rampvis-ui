@@ -24,35 +24,35 @@ class MirroredStackedAreaChart {
         svg.datum(data).call(vis);
         legendContainer.datum(data.columns).call(legend);
     }
-}
 
-function processData(data) {
-    // The first two columns are for time and gender
-    const columns = data.columns = Object.keys(data[0]).slice(2);
-    
-    data.forEach(d => {
-        columns.forEach(c => {
-            d[c] = preprocessValue(d[c])
+    processData(data) {
+        // The first two columns are for time and gender
+        const columns = data.columns = Object.keys(data[0]).slice(2);
+        
+        data.forEach(d => {
+            columns.forEach(c => {
+                d[c] = preprocessValue(d[c])
+            });
         });
-    });
-
-    // Exclude weeks with all 0
-    data = data.filter(d => data.columns.some(att => d[att]));
-
-    data.forEach(d => {
-        d.time = moment(d.Week).toDate();
-        d.label = d3.timeFormat('%b %d')(d.time);
-    });
-
-    const newData = { 
-        columns: columns, 
-        top: data.filter(d => d.Gender.includes('Female')),
-        bottom: data.filter(d => d.Gender.includes('Male')) 
-    };
     
-    return newData;
-}
-
-function preprocessValue(s) {
-    return typeof(s) === 'number' ? s : parseInt(s.replace(',', '').trim());
+        // Exclude weeks with all 0
+        data = data.filter(d => data.columns.some(att => d[att]));
+    
+        data.forEach(d => {
+            d.time = moment(d.Week).toDate();
+            d.label = d3.timeFormat('%b %d')(d.time);
+        });
+    
+        const newData = { 
+            columns: columns, 
+            top: data.filter(d => d.Gender.includes('Female')),
+            bottom: data.filter(d => d.Gender.includes('Male')) 
+        };
+        
+        return newData;
+    }
+    
+    preprocessValue(s) {
+        return typeof(s) === 'number' ? s : parseInt(s.replace(',', '').trim());
+    }
 }
