@@ -31,7 +31,7 @@ def route_template_vis(page_name):
     page_data = ontology.get_page_by_name(page_name)
 
     print('route_template_vis: page_data = ', page_data)
-    print('route_template_vis: page.type = ', page_data.get('page', {}).get('type'))
+    #print('route_template_vis: page.type = ', page_data.get('page', {}).get('type'))
 
     try:
         return render_template('template-vis.html', option=page_data)

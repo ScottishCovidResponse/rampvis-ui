@@ -52,57 +52,58 @@
       $(document).ready(function () {
 
           console.log('template-vis.html: _option = ', _option);
+          let placeholder = $('#charts');
 
-          let layout = $('#charts');
-
-          //
-          // Single css selector for (a) details and (b) overview of multiple charts
-          //
           if (_option.bind.length === 1) {
-              let d = _option.bind[0];
-              console.log('template-vis.html: type = ', _option.page.type, 'bind = ', d);
-
-              // only one row and chart in it
-              let row = document.createElement('div');
-
-              if (_option.page.type === 'details') {
-                  row.setAttribute('class', 'row svg-container details');
-              } else if (_option.page.type === 'overview') {
-                  row.setAttribute('class', 'row');
-              }
-
-              let chart = document.createElement('div');
-              row.setAttribute('id', 'chart-0');
-              row.append(chart);
-              layout.append(row);
-
-              let dataUrl = d['endpoint'];
-              fetch(dataUrl)
-                  .then((resp) => resp.json())
-                  .then(data => {
-                      let args = {
-                          chartElement: `chart-0`,
-                          data: data,
-                          token: token,
-                          username: userName
-                      };
-                      new VisFunctionFactory(d['function'], args);
-                      console.log('template-vis.html:', d['function'], `chart-0`, data);
-                  });
-
-              return;
+              layoutOptionA(_option.bind[0], _option.page.type, placeholder)
+          } else {
+              layoutOptionB(_option.bind, _option.page.nrows, placeholder)
           }
 
+      });
 
-          //
-          // Multiple chart element to be created as row and col
-          //
+      //
+      // Layout option A
+      //
+      async function layoutOptionA(bind, type, placeholder) {
+          console.log('template-vis.html: layoutOptionA: bind = ', bind);
 
-          let nrows = _option.page.nrows;
-          let ncols = Math.ceil(_option.bind.length / nrows);
-          console.log('template-overview-b.html: nrows = ', nrows, ', ncols = ', ncols);
+          // only one row and chart in it
+          let row = document.createElement('div');
+
+          if (type === 'details') {
+              row.setAttribute('class', 'row svg-container details');
+          } else if (type === 'overview') {
+              row.setAttribute('class', 'row');
+          }
+
+          let chart = document.createElement('div');
+          row.setAttribute('id', 'chart-0');
+          row.append(chart);
+          placeholder.append(row);
+
+
+          let data = await fetchData(bind['endpoint']);
+          console.log('fetchedData = ', data);
+
+          let args = {
+              chartElement: `chart-0`,
+              data: data,
+          };
+          new VisFunctionFactory(bind['function'], args);
+          console.log('template-vis.html:', bind['function'], `chart-0`, data);
+
+      }
+
+      //
+      // layout option B
+      //
+      function layoutOptionB(bind, nrows, placeholder) {
+          let ncols = Math.ceil(bind.length / nrows);
+          console.log('template-overview-b.html: layoutOptionB: bind = ', bind);
+          console.log('template-overview-b.html: layoutOptionB: nrows = ', nrows, ', ncols = ', ncols);
+
           let idx = 0;
-
           // add row and col divs
           for (let i = 0; i < nrows; i++) {
               // title
@@ -135,32 +136,49 @@
                   idx++;
               }
 
-              layout.append(row1);
-              layout.append(row2);
+              placeholder.append(row1);
+              placeholder.append(row2);
           }
 
           // draw charts
           idx = 0;
-          _option.bind.forEach((d) => {
-              let dataUrl = d['endpoint'];
+          bind.forEach(async (d) => {
+              let data = await fetchData(d['endpoint'])
+              console.log('fetchedData = ', data);
 
-              fetch(dataUrl)
-                  .then((resp) => resp.json())
-                  .then(data => {
-                      let args = {
-                          chartElement: `chart-${idx}`,
-                          bookmarkElement: 'bookmark',
-                          data: data
-                      };
-                      new VisFunctionFactory(d['function'], args);
-                      console.log('template-vis.html:', d['function'], `chart-${idx}`, data);
-
-                      idx++;
-                  });
+              let args = {
+                  chartElement: `chart-${idx}`,
+                  data: data
+              };
+              new VisFunctionFactory(d['function'], args);
+              console.log('template-vis.html:', d['function'], `chart-${idx}`, data);
+              idx++;
           });
+      }
 
-      });
 
+      async function fetchData(endpoint) {
+          console.log('template-overview-b.html: fetchData: endpoint = ', endpoint);
+
+          if (typeof endpoint === 'string') {
+              try {
+                  return await fetch(endpoint)
+                      .then(res => res.json());
+              } catch (error) {
+                  console.log(error)
+                  throw (error)
+              }
+          } else if (Array.isArray(endpoint)) {
+              try {
+                  return await Promise.all(
+                      endpoint.map(url => fetch(url).then((response) => response.json())));
+              } catch (error) {
+                  console.log(error)
+                  throw (error)
+              }
+          }
+
+      }
 
       //
       // Bookmark or remove bookmark
