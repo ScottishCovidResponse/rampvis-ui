@@ -1183,5 +1183,21 @@
     "title": "TODO Phong - Correlation of weekly deaths between situations (complex matrix)",
     "description": "Using a matrix to show correlation of deaths between different situations together with additional information.",
     "links": []
+  },
+  {
+    "id": 100,
+    "name": "test-1-vis-n-data",
+    "type": "details",
+    "bind": [
+      { "vis_id": 7, "data": [ { "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" } },
+                               { "data_id": 3, "query_params": { "table": "covid_deaths", "group": "gender_age" } }
+                      ],
+        "title": "" }
+    ],
+    "nrows": 1,
+    "title": " TODO: n-data mapped to 1-vis this is just an example to demonstrate",
+    "description": "",
+    "links": []
   }
+
 ]
