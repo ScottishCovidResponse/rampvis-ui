@@ -1153,10 +1153,10 @@
     "name": "weekly-death-cause-comparison",
     "type": "details",
     "bind": [
-      { "vis_id": 10, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Weekly comparison of causes of deaths." }
+      { "vis_id": 10, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "type" }, "title": "Weekly comparison of causes of deaths." }
     ],
     "nrows": 1,
-    "title": "TODO Phong - Weekly comparison of causes of deaths.",
+    "title": "Weekly comparison of causes of deaths.",
     "description": "Comparing deaths caused by COVID-19 and other causes together with average deaths in the past 5 years in a weekly basis.",
     "links": []
   },
@@ -1173,7 +1173,7 @@
     "links": []
   },
   {
-    "id": 92,
+    "id": 93,
     "name": "weekly-death-situation-correlation-complex-matrix",
     "type": "details",
     "bind": [

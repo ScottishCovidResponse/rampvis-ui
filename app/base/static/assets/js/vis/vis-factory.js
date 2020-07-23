@@ -20,6 +20,7 @@ class VisFunctionFactory {
             return new MirroredStackedBarChart(args);
         if (type === "MirroredStackedAreaChart") 
             return new MirroredStackedAreaChart(args);
+        if (type === "StackedBarLineChart") 
+            return new StackedBarLineChart(args);
     }
 }
-

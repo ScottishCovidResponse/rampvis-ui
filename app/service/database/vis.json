@@ -52,5 +52,11 @@
     "function": "MirroredStackedAreaChart",
     "type": "mirrored_stacked_area_chart",
     "description": ""
+  },
+  {
+    "id": 10,
+    "function": "StackedBarLineChart",
+    "type": "stacked_bar_line_chart",
+    "description": ""
   }
 ]
