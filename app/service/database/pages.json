@@ -1153,7 +1153,7 @@
     "name": "weekly-death-cause-comparison",
     "type": "details",
     "bind": [
-      { "vis_id": 10, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "type" }, "title": "Weekly comparison of causes of deaths." }
+      { "vis_id": 10, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "type" }, "title": "Weekly comparison of causes of deaths" }
     ],
     "nrows": 1,
     "title": "Weekly comparison of causes of deaths.",
@@ -1162,26 +1162,29 @@
   },
   {
     "id": 92,
-    "name": "weekly-death-situation-correlation-simple-matrix",
+    "name": "cumulative-cases-correlation-simple-matrix",
     "type": "details",
     "bind": [
-      { "vis_id": 7, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Correlation of weekly deaths between situations (simple matrix)." }
+      { "vis_id": 11, "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "pearson_correlation" }, "title": "Correlation of cumulative cases between health boards (simple matrix)" }
     ],
     "nrows": 1,
-    "title": "TODO Phong - Correlation of weekly deaths between situations (simple matrix)",
-    "description": "Using a matrix to show correlation of deaths between different situations.",
+    "title": "Correlation of cumulative cases between health boards (simple matrix)",
+    "description": "Using a matrix to show correlation of cumulative cases between different health boards.",
     "links": []
   },
   {
     "id": 93,
-    "name": "weekly-death-situation-correlation-complex-matrix",
+    "name": "cumulative-cases-correlation-complex-matrix",
     "type": "details",
     "bind": [
-      { "vis_id": 7, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Correlation of weekly deaths between situations (complex matrix)" }
+      { "vis_id": 12, 
+        "data": [ { "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "pearson_correlation" } },
+                  { "data_id": 1, "query_params": { "table": "cumulative_cases" } }], 
+        "title": "TODO - Correlation of cumulative cases between health boards (complex matrix)" }
     ],
     "nrows": 1,
-    "title": "TODO Phong - Correlation of weekly deaths between situations (complex matrix)",
-    "description": "Using a matrix to show correlation of deaths between different situations together with additional information.",
+    "title": "TODO - Correlation of cumulative cases between health boards (complex matrix)",
+    "description": "Using a matrix to show correlation of cumulative cases between different health boards together with additional information.",
     "links": []
   },
   {

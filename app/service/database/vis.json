@@ -58,5 +58,17 @@
     "function": "StackedBarLineChart",
     "type": "stacked_bar_line_chart",
     "description": ""
+  },
+  {
+    "id": 11,
+    "function": "Matrix",
+    "type": "matrix",
+    "description": ""
+  },
+  {
+    "id": 12,
+    "function": "EnhancedMatrix",
+    "type": "enhanced_matrix",
+    "description": ""
   }
 ]

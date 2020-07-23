@@ -1,7 +1,7 @@
 /**
  * An enhanced matrix visualisation.
  */
-pv.vis.enhancedMatrix = function() {
+pv.enhancedMatrix = function() {
     /**
      * Visual configs.
      */
