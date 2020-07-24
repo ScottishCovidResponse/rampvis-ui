@@ -16,7 +16,6 @@
     vertical-align: top;
     overflow: hidden;
 }
-
 .overlay {
     fill: none;
     pointer-events: all;
@@ -46,5 +45,8 @@
     text-align: center;
     font-size: 12px;
     font-weight: bold;
+}
+#bookmark {
+    cursor: pointer;
 }
 
