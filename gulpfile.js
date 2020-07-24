@@ -25,10 +25,3 @@ gulp.task('compile-scss', function() {
 gulp.task('watch', function() {
   gulp.watch(Paths.SCSS, gulp.series('compile-scss'));
 });
-
-gulp.task('open', function() {
-  gulp.src('examples/dashboard.html')
-    .pipe(open());
-});
-
-gulp.task('open-app', gulp.parallel('open', 'watch'));

@@ -2,26 +2,8 @@ import os
 import json
 import urllib.parse
 
-from app import app
+# from app import app
 
-
-#
-# DATA_API = app.config.get('DATA_API')
-# STAT_API = app.config.get('STAT_API')
-#
-def get_api_url(key):
-    return app.config.get(key)
-
-
-#
-# Arg: page_name
-# Returns:
-# {
-#   page: { id: int, type: string, nrows: int, title: string, description: string, }
-#   bind: [{ function: string, endpoint: string | string[],  description: string },
-#          ... ]
-# }
-#
 SRC_DIR = os.path.dirname(os.path.abspath(__file__))
 PAGES = os.path.join(SRC_DIR, 'database/pages.json')
 DATA = os.path.join(SRC_DIR, 'database/data.json')
@@ -34,6 +16,13 @@ with open(DATA) as json_file:
 with open(VIS) as json_file:
     vis_onto = json.load(json_file)
 
+
+def get_api_url(key):
+    """
+    Returns DATA_API and STAT_API from config
+    """
+    # return app.config.get(key)
+    return os.environ.get(key)
 
 def get_all_pages():
     res = list()
@@ -49,6 +38,14 @@ def get_all_pages():
 
 
 def get_page_by_name(page_name):
+    """
+    Returns:
+    {
+        page: { id: int, type: string, nrows: int, title: string, description: string, }
+        bind: [{ function: string, endpoint: string | string[],  description: string },
+                 ... ]
+    }
+    """
     # print('get_ontology_data: page_name = ', page_name)
     found_page = [x for x in pages_onto if x.get('name') == page_name]
     if len(found_page) == 0:
@@ -58,6 +55,14 @@ def get_page_by_name(page_name):
 
 
 def get_page_by_id(page_id):
+    """
+    Returns:
+    {
+        page: { id: int, type: string, nrows: int, title: string, description: string, }
+        bind: [{ function: string, endpoint: string | string[],  description: string },
+                 ... ]
+    }
+    """
     found_page = [x for x in pages_onto if x.get('id') == page_id]
     if len(found_page) == 0:
         return None
@@ -127,8 +132,6 @@ def resolve_endpoint(data_id, query_params):
         endpoint = urllib.parse.urlunparse(url_parts)
 
     return endpoint
-
-
 
 
 #

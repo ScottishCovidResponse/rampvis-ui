@@ -1,19 +1,26 @@
 # RAMP VIS Flask Dashboard
 
+## API 
+
+The API code can be found in [ScottishCovidResponse/rampvis-api](https://github.com/ScottishCovidResponse/rampvis-api)
+
 ## Getting Started
 
 ```bash
-
-# Install modules
-pip3 install -r requirements.txt
+# Tested the conda env 
+conda activate rampvis-ui
 
 # Using conda insteadof conda 
 conda activate ramp-vis-flask-dashboard
 
+# Run the app
+export DATA_API='http://localhost:2000/api/v1'
+export STAT_API='http://localhost:3000/stat/v1'
+# MongoDB link is deleted for security reason, you can use your local database
+export MONGODB_URL=<set_the_database_url>
+
 export FLASK_APP=run.py
-# Set up the DEBUG environment
 export FLASK_ENV=development
-# Start the application (development mode)
 flask run --host=0.0.0.0 --port=5000
 ```
 
@@ -54,4 +61,9 @@ Access the dashboard in browser: http://127.0.0.1:5000/
 ```
 
 
-# Acknowledgement
+# Notes
+
+```
+sudo apt-get install chromium-chromedriver
+
+```

@@ -190,7 +190,7 @@
 
           Service.getBookmarkInfo(DATA_API, _option.page.id, token)
               .then(data => {
-                  // console.log('bookmark style ', data);
+                  console.log('bookmark style ', data);
                   if (data) {
                       isBookmarked = true;
                       data && $('#bookmark').css('color', 'orange');

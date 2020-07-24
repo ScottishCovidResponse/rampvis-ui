@@ -7,7 +7,7 @@
 
 {% block content %}
 
-    <div class="dashboard-container">
+  <div class="dashboard-container">
 
     <div class="card">
       <div class="card-header card-header-icon card-header-primary">
@@ -21,8 +21,13 @@
           <table class="table">
             {% for d in option %}
               <tr>
+                <td>
+{#                  {% if current_user.is_authenticated %}#}
+{#                    <i class="material-icons" id="bookmark">bookmark</i>#}
+{#                  {% endif %}#}
+                </td>
                 <td>{{ d.page.title }}</td>
-                <td> <a href="/{{ d.page.name }}"> <i class="material-icons">link</i>  </a></td>
+                <td><a href="/{{ d.page.name }}"> <i class="material-icons">link</i> </a></td>
               </tr>
             {% endfor %}
 
@@ -42,14 +47,56 @@
 
   <script>
 
-    let _option = {{ option | safe }};
-    let numBookmarks = _option.length;
+      let _option = {{ option | tojson }};
+      let token = '{{ session.token | safe }}';
+      let userName = '{{ current_user.username | safe }}';
+      let isAuthorised = {{ current_user.is_authenticated | tojson }};
+      let isBookmarked = false;
+      let DATA_API = {{ config['DATA_API'] | tojson }};
 
-    $(document).ready(function() {
+      //
+      // Bookmark or remove bookmark
+      //
+      $(document).ready(function () {
+          if (!isAuthorised) {
+              return;
+          }
 
-      console.log('portal: _option: ', _option);
+          console.log('bookmark style ', data);
+          // return;
 
-    });
+          Service.getBookmarkInfo(DATA_API, _option.page.id, token)
+              .then(data => {
+                  // console.log('bookmark style ', data);
+                  if (data) {
+                      isBookmarked = true;
+                      data && $('#bookmark').css('color', 'orange');
+                  }
+              });
+
+          $('#bookmark').on('click', () => {
+              if (!isBookmarked) {
+                  Service.createBookmark(DATA_API, _option.page.id, token)
+                      .then(data => {
+                          if (data) {
+                              isBookmarked = !isBookmarked;
+                              $('#bookmark').css('color', 'orange');
+                              console.log('onClickBookmark: ', _option.page.id, token);
+                          }
+                      });
+              } else {
+                  Service.removeBookmark(DATA_API, _option.page.id, token)
+                      .then(data => {
+                          if (data) {
+                              isBookmarked = !isBookmarked;
+                              $('#bookmark').css('color', 'darkgrey');
+                          }
+                      });
+              }
+
+          });
+
+      });
 
   </script>
 

@@ -2,12 +2,15 @@ import requests
 import json
 import jwt
 from flask import redirect, json, session
+import os
 
 import app.service.ontology as ontology
 from app import app
 
-DATA_API = app.config.get('DATA_API')
-STAT_API = app.config.get('STAT_API')
+# DATA_API = app.config.get('DATA_API')
+# STAT_API = app.config.get('STAT_API')
+DATA_API = os.environ.get('DATA_API')
+STAT_API = os.environ.get('STAT_API')
 
 
 def github_login():
