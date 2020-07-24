@@ -64,8 +64,8 @@ pv.legend = function() {
         selection.style('display', 'inline-block');
         selection.append('div')
             .attr('class', 'box')
-            .style('width', '12px')
-            .style('height', '12px')
+            .style('width', '15px')
+            .style('height', '15px')
             .style('display', 'inline-block')
             .style('position', 'relative')
             .style('top', '2px');
