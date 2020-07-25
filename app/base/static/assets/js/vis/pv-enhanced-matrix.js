@@ -5,7 +5,7 @@ pv.enhancedMatrix = function() {
     /**
      * Visual configs.
      */
-    let margin = { top: 0, right: 0, bottom: 0, left: 0 };
+    let margin = { top: 10, right: 10, bottom: 10, left: 10 };
 
     let visWidth = 960, visHeight = 600, // Size of the visualization, including margins
         width, height; // Size of the main content, excluding margins
@@ -74,14 +74,14 @@ pv.enhancedMatrix = function() {
          * Computation.
          */
         xScale.domain(data.columns.map(d => d.name))
-            .rangeRound([0, width]);
+            .range([0, width]);
         yScale.domain(data.rows.map(d => d.name))
-            .rangeRound([0, height]);
-        // xSummaryScale.domain(data.rows[0].values.map((d, i) => i))
-        //     .range([0, summaryWidth]);
-        // ySummaryScale.domain([0, d3.max(data.rows, d => d3.max(d.values))])
-        //     .range([yScale.bandwidth(), 0])
-        //     .nice();
+            .range([0, height]);
+        xSummaryScale.domain(data.rows[0].values.map((d, i) => i))
+            .range([0, summaryWidth]);
+        ySummaryScale.domain([0, d3.max(data.rows, d => d3.max(d.values))])
+            .range([yScale.bandwidth(), 0])
+            .nice();
         
         /**
          * Draw.
@@ -98,28 +98,28 @@ pv.enhancedMatrix = function() {
         rects.append('title')
             .text(({ value }) => value);
 
-        // // Small barcharts
-        // const rows = rowSummaryContainer.selectAll('g')
-        //     .data(data.rows, d => d.name)
-        //     .join('g')
-        //     .attr('class', 'summary');
-        // rows.transition()
-        //     .attr('transform', ({ name }) => `translate(0, ${yScale(name)})`);
-        // rows.selectAll('rect')
-        //     .data(d => d.values)
-        //     .join('rect')
-        //         .style('fill', 'grey')
-        //         .attr('x', (d, i) => xSummaryScale(i))
-        //         .attr('y', ySummaryScale)
-        //         .attr('height', d => yScale.bandwidth() - ySummaryScale(d))
-        //         .attr('width', xSummaryScale.bandwidth());
+        // Small barcharts
+        const rows = rowSummaryContainer.selectAll('g')
+            .data(data.rows, d => d.name)
+            .join('g')
+            .attr('class', 'summary');
+        rows.transition()
+            .attr('transform', ({ name }) => `translate(0, ${yScale(name)})`);
+        rows.selectAll('rect')
+            .data(d => d.values)
+            .join('rect')
+                .style('fill', 'grey')
+                .attr('x', (d, i) => xSummaryScale(i))
+                .attr('y', ySummaryScale)
+                .attr('height', d => yScale.bandwidth() - ySummaryScale(d))
+                .attr('width', xSummaryScale.bandwidth());
 
         xAxisContainer.transition().call(xAxis)
             .selectAll('text')
                 .style('text-anchor', 'start')
                 .style('dominant-baseline', 'text-before-edge')
-                .attr('transform', 'rotate(-90)')
-                .attr('dx', '0.75em');
+                .attr('transform', 'rotate(-45)')
+                .attr('dy', '-0.75em');
         yAxisContainer.transition().call(yAxis);
     }
 

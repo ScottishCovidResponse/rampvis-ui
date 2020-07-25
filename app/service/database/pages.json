@@ -1180,10 +1180,10 @@
       { "vis_id": 12, 
         "data": [ { "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "pearson_correlation" } },
                   { "data_id": 1, "query_params": { "table": "cumulative_cases" } }], 
-        "title": "TODO - Correlation of cumulative cases between health boards (complex matrix)" }
+        "title": "Correlation of cumulative cases between health boards (complex matrix)" }
     ],
     "nrows": 1,
-    "title": "TODO - Correlation of cumulative cases between health boards (complex matrix)",
+    "title": "Correlation of cumulative cases between health boards (complex matrix)",
     "description": "Using a matrix to show correlation of cumulative cases between different health boards together with additional information.",
     "links": []
   },

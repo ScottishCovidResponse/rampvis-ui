@@ -8,7 +8,7 @@ class Matrix {
         container.innerHTML = '';
 
         const vis = pv.matrix()
-            .margin({ top: 10, right: 10, bottom: 150, left: 150 })
+            .margin({ top: 10, right: 10, bottom: 100, left: 100 })
             .colorScale(Common.Colors.CORRELATION_SCALE)
             .width(this.CHART_WIDTH)
             .height(this.CHART_HEIGHT);
@@ -20,7 +20,6 @@ class Matrix {
         const legendContainer = container.append('svg')
             .attr('width', this.CHART_WIDTH)
             .attr('height', 40)
-            .style('margin-bottom', '25px')
             .style('display', 'block');
         const svg = container.append('svg')
             .attr('width', this.CHART_WIDTH)
