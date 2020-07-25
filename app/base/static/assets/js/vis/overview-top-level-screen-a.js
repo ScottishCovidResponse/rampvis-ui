@@ -13,22 +13,27 @@ TopLevelOverviewScreenA.prototype = {
 
         console.log('TopLevelOverviewScreenA: init: options = ');
 
-        TopLevelOverviewScreenA.prototype.createGridLayout(options.chartElement);
+        TopLevelOverviewScreenA.prototype.createGridLayout(options.chartElement, options.links);
         TopLevelOverviewScreenA.prototype.createTimeSeries(options.data);
 
          $(document.getElementById(options.bookmarkElement)).on('click', ()=> {
-            console.log('onClickBookmark: ');
+            console.log('TopLevelOverviewScreenA: onClickBookmark: ');
         });
     },
 
 
-    createGridLayout: function(element) {
+    createGridLayout: function(element, links) {
         var main_grid = document.getElementById(element);
 
+        let regionalLinks = links['regional']
+        console.log('overviewLinks = ', regionalLinks)
+
         $.each(TopLevelOverviewScreenA.variables.boards, function(index, item) {
+            // console.log(index, item);
+
             var div = '<div class="col item text-center" id="grid-' + index + '">' +
                 '<p class="title-text"><a href="' + item.regional_overview + '">' + item.board + '</a></p>' +
-                '<div class="div-svg" id="timeseries-' + index + '" onclick="window.location=\'' + item.detailed_cumulative + '\';"></div>'
+                '<div class="div-svg" id="timeseries-' + index + '" onclick="window.location=\'' + regionalLinks[index] + '\';"></div>'
             '</div>';
             main_grid.innerHTML += div;
         });

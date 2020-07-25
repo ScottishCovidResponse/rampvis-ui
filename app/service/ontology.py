@@ -53,7 +53,8 @@ def get_page_by_name(page_name):
     {
         page: { id: int, type: string, nrows: int, title: string, description: string, }
         bind: [{ function: string, endpoint: string | string[],  description: string },
-                 ... ]
+                 ... ],
+        links: { 'key': [ list of page ids], .. }
     }
     """
     # print('get_ontology_data: page_name = ', page_name)
@@ -70,7 +71,8 @@ def get_page_by_id(page_id):
     {
         page: { id: int, type: string, nrows: int, title: string, description: string, }
         bind: [{ function: string, endpoint: string | string[],  description: string },
-                 ... ]
+                 ... ],
+        links: { 'key': [ list of page ids], .. }
     }
     """
     found_page = [x for x in pages_onto if x.get('id') == page_id]
@@ -88,9 +90,10 @@ def get_page(page_obj):
             'type': page_obj.get('type'),
             'nrows': page_obj.get('nrows', 1),
             'title': page_obj.get('title'),
-            'description': page_obj.get('description')
+            'description': page_obj.get('description'),
         },
-        'bind': []
+        'bind': [],
+        'links': resolve_links(page_obj.get('links'))
     })
 
     for bind_obj in page_obj.get('bind'):
@@ -142,6 +145,23 @@ def resolve_endpoint(data_id, query_params):
         endpoint = urllib.parse.urlunparse(url_parts)
 
     return endpoint
+
+
+def resolve_links(links):
+    new_links = dict()
+    for key, value in links.items():
+        new_links[key] = [page_id_to_name(x) for x in value]
+    return new_links
+
+
+def page_id_to_name(page_id):
+    found_page = [x for x in pages_onto if x.get('id') == page_id]
+
+    if len(found_page) > 0:
+        name = found_page[0].get('name')
+        # print('ontology: page_id_to_name: page_id = ', page_id, ', name = ', name)
+        return name
+
 
 
 #

@@ -9,7 +9,10 @@
     "nrows": 1,
     "title": "Cumulative Number of Cases Tested Positive for COVID-19",
     "description": "The cumulative number of cases with positive tests for COVID-19, by board in Scotland",
-    "links": [3]
+    "links": {
+                "regional": [7, 11, 15, 19, 23, 34, 27, 38, 42, 46, 50, 54, 58, 62, 3],
+                "board": [66, 67, 68, 69, 70, 73, 71, 74, 75, 76, 77, 78, 79, 80, 2]
+    }
   },
   {
     "id": 2,
@@ -25,7 +28,7 @@
     "nrows": 2,
     "title": "Scotland",
     "description": "The cumulative number of cases with positive tests for COVID-19 in Scotland. The number of people in ICU with confirmed or suspected COVID-19 in Scotland. The number of people in the hospital with confirmed COVID-19 in Scotland. The number of people in hospital with suspected COVID-19 in Scotland.",
-    "links": []
+    "links": {}
   },
   {
     "id": 3,
@@ -37,7 +40,7 @@
     "nrows": 1,
     "title": "Scotland - Cumulative Number of Cases Tested Positive for COVID-19",
     "description": "The cumulative number of cases with positive tests for COVID-19 in Scotland.",
-    "links": []
+    "links": {}
   },
   {
     "id": 4,
@@ -49,7 +52,7 @@
     "nrows": 1,
     "title": "Scotland - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
     "description": "The number of people in ICU with confirmed or suspected COVID-19 in Scotland.",
-    "links": []
+    "links": {}
   },
   {
     "id": 5,
@@ -61,7 +64,7 @@
     "nrows": 1,
     "title": "Scotland - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in the hospital with confirmed COVID-19 in Scotland.",
-    "links": []
+    "links": {}
   },
   {
     "id": 6,
@@ -73,7 +76,7 @@
     "nrows": 1,
     "title": "Scotland - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in hospital with suspected COVID-19 in Scotland.",
-    "links": []
+    "links": {}
   },
   {
     "id": 7,
@@ -85,7 +88,7 @@
     "nrows": 1,
     "title": "NHS Ayrshire & Arran - Cumulative Number of Cases Tested Positive for COVID-19",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Ayrshire & Arran.",
-    "links": []
+    "links": {}
   },
   {
     "id": 8,
@@ -97,7 +100,7 @@
     "nrows": 1,
     "title": "NHS Ayrshire & Arran - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
     "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Ayrshire & Arran.",
-    "links": []
+    "links": {}
   },
   {
     "id": 9,
@@ -109,7 +112,7 @@
     "nrows": 1,
     "title": "NHS Ayrshire & Arran - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in the hospital with confirmed COVID-19 in NHS Ayrshire & Arran.",
-    "links": []
+    "links": {}
   },
   {
     "id": 10,
@@ -121,7 +124,7 @@
     "nrows": 1,
     "title": "NHS Ayrshire & Arran - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight.",
     "description": "The number of people in hospital with suspected COVID-19 in NHS Ayrshire & Arran.",
-    "links": []
+    "links": {}
   },
   {
     "id": 11,
@@ -133,7 +136,7 @@
     "nrows": 1,
     "title": "NHS Borders - Cumulative Number of Cases Tested Positive for COVID-19",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Borders.",
-    "links": []
+    "links": {}
   },
   {
     "id": 12,
@@ -145,7 +148,7 @@
     "nrows": 1,
     "title": "NHS Borders - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
     "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Borders.",
-    "links": []
+    "links": {}
   },
   {
     "id": 13,
@@ -157,7 +160,7 @@
     "nrows": 1,
     "title": "NHS Borders - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in the hospital with confirmed COVID-19 in NHS Borders.",
-    "links": []
+    "links": {}
   },
   {
     "id": 14,
@@ -169,7 +172,7 @@
     "nrows": 1,
     "title": "NHS Borders - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in hospital with suspected COVID-19 in NHS Borders.",
-    "links": []
+    "links": {}
   },
   {
     "id": 15,
@@ -181,7 +184,7 @@
     "nrows": 1,
     "title": "NHS Dumfries & Galloway - Cumulative Number of Cases Tested Positive for COVID-19",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Dunfries & Galloway.",
-    "links": []
+    "links": {}
   },
   {
     "id": 16,
@@ -193,7 +196,7 @@
     "nrows": 1,
     "title": "NHS Dumfries & Galloway - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
     "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Dumfries & Galloway.",
-    "links": []
+    "links": {}
   },
   {
     "id": 17,
@@ -205,7 +208,7 @@
     "nrows": 1,
     "title": "NHS Dumfries & Galloway - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in the hospital with confirmed COVID-19 in NHS Dumfries & Galloway.",
-    "links": []
+    "links": {}
   },
   {
     "id": 18,
@@ -217,7 +220,7 @@
     "nrows": 1,
     "title": "NHS Dumfries & Galloway - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in hospital with suspected COVID-19 in NHS Dumfries & Galloway.",
-    "links": []
+    "links": {}
   },
   {
     "id": 19,
@@ -229,7 +232,7 @@
     "nrows": 1,
     "title": "NHS Fife - Cumulative Number of Cases Tested Positive for COVID-19",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Fife.",
-    "links": []
+    "links": {}
   },
   {
     "id": 20,
@@ -241,7 +244,7 @@
     "nrows": 1,
     "title": "NHS Fife - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
     "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Fife.",
-    "links": []
+    "links": {}
   },
   {
     "id": 21,
@@ -253,7 +256,7 @@
     "nrows": 1,
     "title": "NHS Fife - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in the hospital with confirmed COVID-19 in NHS Fife.",
-    "links": []
+    "links": {}
   },
   {
     "id": 22,
@@ -265,7 +268,7 @@
     "nrows": 1,
     "title": "NHS Fife - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in hospital with suspected COVID-19 in NHS Fife.",
-    "links": []
+    "links": {}
   },
   {
     "id": 23,
@@ -277,7 +280,7 @@
     "nrows": 1,
     "title": "NHS Forth Valley - Cumulative Number of Cases Tested Positive for COVID-19",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Forth Valley.",
-    "links": []
+    "links": {}
   },
   {
     "id": 24,
@@ -289,7 +292,7 @@
     "nrows": 1,
     "title": "NHS Forth Valley - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
     "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Forth Valley.",
-    "links": []
+    "links": {}
   },
   {
     "id": 25,
@@ -301,7 +304,7 @@
     "nrows": 1,
     "title": "NHS Forth Valley - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in the hospital with confirmed COVID-19 in NHS Forth Valley.",
-    "links": []
+    "links": {}
   },
   {
     "id": 26,
@@ -313,7 +316,7 @@
     "nrows": 1,
     "title": "NHS Forth Valley - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in hospital with suspected COVID-19 in NHS Forth Valley.",
-    "links": []
+    "links": {}
   },
   {
     "id": 27,
@@ -325,7 +328,7 @@
     "nrows": 1,
     "title": "NHS Greater Glasgow & Clyde - Cumulative Number of Cases Tested Positive for COVID-19",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Greater Glasgow & Clyde.",
-    "links": []
+    "links": {}
   },
   {
     "id": 28,
@@ -337,7 +340,7 @@
     "nrows": 1,
     "title": "NHS Greater Glasgow & Clyde - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
     "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Greater Glasgow & Clyde.",
-    "links": []
+    "links": {}
   },
   {
     "id": 29,
@@ -349,7 +352,7 @@
     "nrows": 1,
     "title": "NHS Greater Glasgow & Clyde - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in the hospital with confirmed COVID-19 in NHS Greater Glasgow & Clyde.",
-    "links": []
+    "links": {}
   },
   {
     "id": 30,
@@ -361,7 +364,7 @@
     "nrows": 1,
     "title": "NHS Greater Glasgow & Clyde - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in hospital with suspected COVID-19 in NHS Greater Glasgow & Clyde.",
-    "links": []
+    "links": {}
   },
   {
     "id": 31,
@@ -373,7 +376,7 @@
     "nrows": 1,
     "title": "Golden Jubilee National Hospital - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
     "description": "The number of people in ICU with confirmed or suspected COVID-19 in Golden Jubilee National Hospital.",
-    "links": []
+    "links": {}
   },
   {
     "id": 32,
@@ -385,7 +388,7 @@
     "nrows": 1,
     "title": "Golden Jubilee National Hospital - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in the hospital with confirmed COVID-19 in Golden Jubilee National Hospital.",
-    "links": []
+    "links": {}
   },
   {
     "id": 33,
@@ -397,7 +400,7 @@
     "nrows": 1,
     "title": "Golden Jubilee National Hospital - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in hospital with suspected COVID-19 in Golden Jubilee National Hospital.",
-    "links": []
+    "links": {}
   },
   {
     "id": 34,
@@ -409,7 +412,7 @@
     "nrows": 1,
     "title": "NHS Grampian - Cumulative Number of Cases Tested Positive for COVID-19",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Grampian.",
-    "links": []
+    "links": {}
   },
   {
     "id": 35,
@@ -421,7 +424,7 @@
     "nrows": 1,
     "title": "NHS Grampian - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
     "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Grampian.",
-    "links": []
+    "links": {}
   },
   {
     "id": 36,
@@ -433,7 +436,7 @@
     "nrows": 1,
     "title": "NHS Grampian - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in the hospital with confirmed COVID-19 in NHS Grampian.",
-    "links": []
+    "links": {}
   },
   {
     "id": 37,
@@ -445,7 +448,7 @@
     "nrows": 1,
     "title": "NHS Grampian - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in hospital with suspected COVID-19 in NHS Grampian.",
-    "links": []
+    "links": {}
   },
   {
     "id": 38,
@@ -457,7 +460,7 @@
     "nrows": 1,
     "title": "NHS Highland - Cumulative Number of Cases Tested Positive for COVID-19",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Highland.",
-    "links": []
+    "links": {}
   },
   {
     "id": 39,
@@ -469,7 +472,7 @@
     "nrows": 1,
     "title": "NHS Highland - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
     "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Highland.",
-    "links": []
+    "links": {}
   },
   {
     "id": 40,
@@ -481,7 +484,7 @@
     "nrows": 1,
     "title": "NHS Highland - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in the hospital with confirmed COVID-19 in NHS Highland.",
-    "links": []
+    "links": {}
   },
   {
     "id": 41,
@@ -493,7 +496,7 @@
     "nrows": 1,
     "title": "NHS Highland - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in hospital with suspected COVID-19 in NHS Highland.",
-    "links": []
+    "links": {}
   },
   {
     "id": 42,
@@ -505,7 +508,7 @@
     "nrows": 1,
     "title": "NHS Lanarkshire - Cumulative Number of Cases Tested Positive for COVID-19",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Lanarkshire.",
-    "links": []
+    "links": {}
   },
   {
     "id": 43,
@@ -517,7 +520,7 @@
     "nrows": 1,
     "title": "NHS Lanarkshire - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
     "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Lanarkshire.",
-    "links": []
+    "links": {}
   },
   {
     "id": 44,
@@ -529,7 +532,7 @@
     "nrows": 1,
     "title": "NHS Lanarkshire - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in the hospital with confirmed COVID-19 in NHS Lanarkshire.",
-    "links": []
+    "links": {}
   },
   {
     "id": 45,
@@ -541,7 +544,7 @@
     "nrows": 1,
     "title": "NHS Lanarkshire - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in hospital with suspected COVID-19 in NHS Lanarkshire.",
-    "links": []
+    "links": {}
   },
   {
     "id": 46,
@@ -553,7 +556,7 @@
     "nrows": 1,
     "title": "NHS Lothian - Cumulative Number of Cases Tested Positive for COVID-19",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Lothian.",
-    "links": []
+    "links": {}
   },
   {
     "id": 47,
@@ -565,7 +568,7 @@
     "nrows": 1,
     "title": "NHS Lothian - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
     "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Lothian.",
-    "links": []
+    "links": {}
   },
   {
     "id": 48,
@@ -577,7 +580,7 @@
     "nrows": 1,
     "title": "NHS Lothian - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in the hospital with confirmed COVID-19 in NHS Lothian.",
-    "links": []
+    "links": {}
   },
   {
     "id": 49,
@@ -589,7 +592,7 @@
     "nrows": 1,
     "title": "NHS Lothian - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in hospital with suspected COVID-19 in NHS Lothian.",
-    "links": []
+    "links": {}
   },
   {
     "id": 50,
@@ -601,7 +604,7 @@
     "nrows": 1,
     "title": "NHS Orkney - Cumulative Number of Cases Tested Positive for COVID-19",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Orkney.",
-    "links": []
+    "links": {}
   },
   {
     "id": 51,
@@ -613,7 +616,7 @@
     "nrows": 1,
     "title": "NHS Orkney - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
     "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Orkney.",
-    "links": []
+    "links": {}
   },
   {
     "id": 52,
@@ -625,7 +628,7 @@
     "nrows": 1,
     "title": "NHS Orkney - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in the hospital with confirmed COVID-19 in NHS Orkney.",
-    "links": []
+    "links": {}
   },
   {
     "id": 53,
@@ -637,7 +640,7 @@
     "nrows": 1,
     "title": "NHS Orkney - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in hospital with suspected COVID-19 in NHS Orkney.",
-    "links": []
+    "links": {}
   },
   {
     "id": 54,
@@ -649,7 +652,7 @@
     "nrows": 1,
     "title": "NHS Shetland - Cumulative Number of Cases Tested Positive for COVID-19",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Shetland.",
-    "links": []
+    "links": {}
   },
   {
     "id": 55,
@@ -661,7 +664,7 @@
     "nrows": 1,
     "title": "NHS Shetland - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
     "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Shetland.",
-    "links": []
+    "links": {}
   },
   {
     "id": 56,
@@ -673,7 +676,7 @@
     "nrows": 1,
     "title": "NHS Shetland - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in the hospital with confirmed COVID-19 in NHS Shetland.",
-    "links": []
+    "links": {}
   },
   {
     "id": 57,
@@ -685,7 +688,7 @@
     "nrows": 1,
     "title": "NHS Shetland - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in hospital with suspected COVID-19 in NHS Shetland.",
-    "links": []
+    "links": {}
   },
   {
     "id": 58,
@@ -697,7 +700,7 @@
     "nrows": 1,
     "title": "NHS Tayside - Cumulative Number of Cases Tested Positive for COVID-19",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Tayside.",
-    "links": []
+    "links": {}
   },
   {
     "id": 59,
@@ -709,7 +712,7 @@
     "nrows": 1,
     "title": "NHS Tayside - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
     "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Tayside.",
-    "links": []
+    "links": {}
   },
   {
     "id": 60,
@@ -721,7 +724,7 @@
     "nrows": 1,
     "title": "NHS Tayside - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in the hospital with confirmed COVID-19 in NHS Tayside.",
-    "links": []
+    "links": {}
   },
   {
     "id": 61,
@@ -733,7 +736,7 @@
     "nrows": 1,
     "title": "NHS Tayside - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in hospital with suspected COVID-19 in NHS Tayside.",
-    "links": []
+    "links": {}
   },
   {
     "id": 62,
@@ -745,7 +748,7 @@
     "nrows": 1,
     "title": "NHS Western Isles - Cumulative Number of Cases Tested Positive for COVID-19",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Western Isles.",
-    "links": []
+    "links": {}
   },
   {
     "id": 63,
@@ -757,7 +760,7 @@
     "nrows": 1,
     "title": "NHS Western Isles - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
     "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Western Isles.",
-    "links": []
+    "links": {}
   },
   {
     "id": 64,
@@ -769,7 +772,7 @@
     "nrows": 1,
     "title": "NHS Western Isles - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in the hospital with confirmed COVID-19 in NHS Western Isles.",
-    "links": []
+    "links": {}
   },
   {
     "id": 65,
@@ -781,7 +784,7 @@
     "nrows": 1,
     "title": "NHS Western Isles - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
     "description": "The number of people in hospital with suspected COVID-19 in NHS Western Isles.",
-    "links": []
+    "links": {}
   },
   {
     "id": 66,
@@ -797,7 +800,7 @@
     "nrows": 2,
     "title": "NHS Ayrshire & Arran",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Ayrshire & Arran. The number of people in ICU with confirmed or suspected COVID-19 in NHS Ayrshire & Arran. The number of people in the hospital with confirmed COVID-19 in NHS Ayrshire & Arran. The number of people in hospital with suspected COVID-19 in NHS Ayrshire & Arran.",
-    "links": []
+    "links": {}
   },
   {
     "id": 67,
@@ -813,7 +816,7 @@
     "nrows": 2,
     "title": "NHS Borders",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Borders. The number of people in ICU with confirmed or suspected COVID-19 in NHS Borders. The number of people in the hospital with confirmed COVID-19 in NHS Borders. The number of people in hospital with suspected COVID-19 in NHS Borders.",
-    "links": []
+    "links": {}
   },
   {
     "id": 68,
@@ -829,7 +832,7 @@
     "nrows": 2,
     "title": "NHS Dumfries & Galloway",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Dumfries & Galloway. The number of people in ICU with confirmed or suspected COVID-19 in NHS Dumfries & Galloway. The number of people in the hospital with confirmed COVID-19 in NHS Dumfries & Galloway. The number of people in hospital with suspected COVID-19 in NHS Dumfries & Galloway.",
-    "links": []
+    "links": {}
   },
   {
     "id": 69,
@@ -845,7 +848,7 @@
     "nrows": 2,
     "title": "NHS Fife",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Fife. The number of people in ICU with confirmed or suspected COVID-19 in NHS Fife. The number of people in the hospital with confirmed COVID-19 in NHS Fife. The number of people in hospital with suspected COVID-19 in NHS Fife.",
-    "links": []
+    "links": {}
   },
   {
     "id": 70,
@@ -861,7 +864,7 @@
     "nrows": 2,
     "title": "NHS Forth Valley",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Forth Valley. The number of people in ICU with confirmed or suspected COVID-19 in NHS Forth Valley. The number of people in the hospital with confirmed COVID-19 in NHS Forth Valley. The number of people in hospital with suspected COVID-19 in NHS Forth Valley.",
-    "links": []
+    "links": {}
   },
   {
     "id": 71,
@@ -877,7 +880,7 @@
     "nrows": 2,
     "title": "NHS Greater Glasgow & Clyde",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Greater Glasgow & Clyde. The number of people in ICU with confirmed or suspected COVID-19 in NHS Greater Glasgow & Clyde. The number of people in the hospital with confirmed COVID-19 in NHS Greater Glasgow & Clyde. The number of people in hospital with suspected COVID-19 in NHS Greater Glasgow & Clyde.",
-    "links": []
+    "links": {}
   },
   {
     "id": 72,
@@ -892,7 +895,7 @@
     "nrows": 1,
     "title": "Golden Jubilee National Hospital",
     "description": "The cumulative number of cases with positive tests for COVID-19 in Golden Jubilee National Hospital. The number of people in ICU with confirmed or suspected COVID-19 in Golden Jubilee National Hospital. The number of people in the hospital with confirmed COVID-19 in Golden Jubilee National Hospital. The number of people in hospital with suspected COVID-19 in Golden Jubilee National Hospital.",
-    "links": []
+    "links": {}
   },
   {
     "id": 73,
@@ -908,7 +911,7 @@
     "nrows": 2,
     "title": "NHS Grampian",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Grampian. The number of people in ICU with confirmed or suspected COVID-19 in NHS Grampian. The number of people in the hospital with confirmed COVID-19 in NHS Grampian. The number of people in hospital with suspected COVID-19 in NHS Grampian.",
-    "links": []
+    "links": {}
   },
   {
     "id": 74,
@@ -924,7 +927,7 @@
     "nrows": 2,
     "title": "NHS Highland",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Highland. The number of people in ICU with confirmed or suspected COVID-19 in NHS Highland. The number of people in the hospital with confirmed COVID-19 in NHS Highland. The number of people in hospital with suspected COVID-19 in NHS Highland.",
-    "links": []
+    "links": {}
   },
   {
     "id": 75,
@@ -940,7 +943,7 @@
     "nrows": 2,
     "title": "NHS Lanarkshire",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Lanarkshire. The number of people in ICU with confirmed or suspected COVID-19 in NHS Lanarkshire. The number of people in the hospital with confirmed COVID-19 in NHS Lanarkshire. The number of people in hospital with suspected COVID-19 in NHS Lanarkshire.",
-    "links": []
+    "links": {}
   },
   {
     "id": 76,
@@ -956,7 +959,7 @@
     "nrows": 2,
     "title": "NHS Lothian",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Lothian. The number of people in ICU with confirmed or suspected COVID-19 in NHS Lothian. The number of people in the hospital with confirmed COVID-19 in NHS Lothian. The number of people in hospital with suspected COVID-19 in NHS Lothian.",
-    "links": []
+    "links": {}
   },
   {
     "id": 77,
@@ -972,7 +975,7 @@
     "nrows": 2,
     "title": "NHS Orkney",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Orkney. The number of people in ICU with confirmed or suspected COVID-19 in NHS Orkney. The number of people in the hospital with confirmed COVID-19 in NHS Orkney. The number of people in hospital with suspected COVID-19 in NHS Orkney.",
-    "links": []
+    "links": {}
   },
   {
     "id": 78,
@@ -988,7 +991,7 @@
     "nrows": 2,
     "title": "NHS Shetland",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Shetland. The number of people in ICU with confirmed or suspected COVID-19 in NHS Shetland. The number of people in the hospital with confirmed COVID-19 in NHS Shetland. The number of people in hospital with suspected COVID-19 in NHS Shetland.",
-    "links": []
+    "links": {}
   },
   {
     "id": 79,
@@ -1004,7 +1007,7 @@
     "nrows": 2,
     "title": "NHS Tayside",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Tayside. The number of people in ICU with confirmed or suspected COVID-19 in NHS Tayside. The number of people in the hospital with confirmed COVID-19 in NHS Tayside. The number of people in hospital with suspected COVID-19 in NHS Tayside.",
-    "links": []
+    "links": {}
   },
   {
     "id": 80,
@@ -1020,7 +1023,7 @@
     "nrows": 2,
     "title": "NHS Western Isles",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Western Isles. The number of people in ICU with confirmed or suspected COVID-19 in NHS Western Isles. The number of people in the hospital with confirmed COVID-19 in NHS Western Isles. The number of people in hospital with suspected COVID-19 in NHS Western Isles.",
-    "links": []
+    "links": {}
   },
   {
     "id": 81,
@@ -1034,7 +1037,7 @@
     "nrows": 1,
     "title": "Coronavirus (COVID-19): Scotland Board-level Daily Data",
     "description": "The number of people in ICU with confirmed or suspected COVID-19 in Scotland. The number of people in the hospital with confirmed COVID-19 in Scotland. The number of people in hospital with suspected COVID-19 in Scotland.",
-    "links": []
+    "links": {}
   },
   {
     "id": 82,
@@ -1046,7 +1049,7 @@
     "nrows": 1,
     "title": "Cumulative Cases - Pearson Correlation",
     "description": "The cumulative cases using Pearson Correlation",
-    "links": []
+    "links": {}
   },
     {
     "id": 83,
@@ -1058,7 +1061,7 @@
     "nrows": 1,
     "title": "Cumulative Cases - MSE",
     "description": "The cumulative cases using MSE",
-    "links": []
+    "links": {}
   },
     {
     "id": 84,
@@ -1070,7 +1073,7 @@
     "nrows": 1,
     "title": "Cumulative Cases - F-Test",
     "description": "The cumulative cases using F-test",
-    "links": []
+    "links": {}
   },
   {
     "id": 85,
@@ -1098,7 +1101,7 @@
     "nrows": 2,
     "title": "Test - Scotland - Overview",
     "description": "The cumulative number of cases with positive tests for COVID-19 in Scotland. The number of people in ICU with confirmed or suspected COVID-19 in Scotland. The number of people in the hospital with confirmed COVID-19 in Scotland. The number of people in hospital with suspected COVID-19 in Scotland.",
-    "links": []
+    "links": {}
   },
   {
     "id": 87,
@@ -1110,7 +1113,7 @@
     "nrows": 1,
     "title": "Weekly deaths by COVID-19 in each situation setting (bar chart)",
     "description": "Stacked bar chart with bar height corresponding to the number of deaths and coloured by situation.",
-    "links": []
+    "links": {}
   },
   {
     "id": 88,
@@ -1122,7 +1125,7 @@
     "nrows": 1,
     "title": "Weekly deaths by COVID-19 in each situation setting (area chart)",
     "description": "Stacked area chart with area corresponding to the number of deaths and coloured by situation.",
-    "links": []
+    "links": {}
   },
   {
     "id": 89,
@@ -1134,7 +1137,7 @@
     "nrows": 1,
     "title": "Weekly deaths by COVID-19 in each age group and gender (bar chart)",
     "description": "Stacked bar chart with bar height corresponding to the number of deaths, separated by gender and coloured by age group.",
-    "links": []
+    "links": {}
   },
   {
     "id": 90,
@@ -1146,7 +1149,7 @@
     "nrows": 1,
     "title": "Weekly deaths by COVID-19 in each age group and gender (area chart)",
     "description": "Stacked area chart with area corresponding to the number of deaths, separated by gender and coloured by age group.",
-    "links": []
+    "links": {}
   },
   {
     "id": 91,
@@ -1158,7 +1161,7 @@
     "nrows": 1,
     "title": "Weekly comparison of causes of deaths.",
     "description": "Comparing deaths caused by COVID-19 and other causes together with average deaths in the past 5 years in a weekly basis.",
-    "links": []
+    "links": {}
   },
   {
     "id": 92,
@@ -1170,7 +1173,7 @@
     "nrows": 1,
     "title": "Correlation of cumulative cases between health boards (simple matrix)",
     "description": "Using a matrix to show correlation of cumulative cases between different health boards.",
-    "links": []
+    "links": {}
   },
   {
     "id": 93,
@@ -1185,7 +1188,7 @@
     "nrows": 1,
     "title": "Correlation of cumulative cases between health boards (complex matrix)",
     "description": "Using a matrix to show correlation of cumulative cases between different health boards together with additional information.",
-    "links": []
+    "links": {}
   },
   {
     "id": 100,
@@ -1200,7 +1203,7 @@
     "nrows": 1,
     "title": " TODO: n-data mapped to 1-vis this is just an example to demonstrate",
     "description": "",
-    "links": []
+    "links": {}
   }
 
 ]

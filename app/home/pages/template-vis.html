@@ -89,6 +89,7 @@
           let args = {
               chartElement: `chart-0`,
               data: data,
+              links: _option.links
           };
           new VisFunctionFactory(bind['function'], args);
           console.log('template-vis.html:', bind['function'], `chart-0`, data);
@@ -148,7 +149,7 @@
 
               let args = {
                   chartElement: `chart-${idx}`,
-                  data: data
+                  data: data,
               };
               new VisFunctionFactory(d['function'], args);
               console.log('template-vis.html:', d['function'], `chart-${idx}`, data);
