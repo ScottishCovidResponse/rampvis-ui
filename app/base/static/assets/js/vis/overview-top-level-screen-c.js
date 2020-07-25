@@ -15,7 +15,7 @@ class TopLevelOverviewScreenC {
 
     createGridLayout(grid, chart_type) {
         var main_grid = document.getElementById(grid);
-        $(main_grid).css( {"max-width": "390px", "display": "grid", "grid-template-columns": "auto auto auto auto", "padding": "10px"})
+        $(main_grid).css( {"max-width": "390px", "display": "grid", "grid-template-columns": "auto auto auto auto", "padding": "10px", "margin-left": "auto", "margin-right": "auto"})
 
         $.each(this.boards, (index, item) => {
 
