@@ -9,9 +9,8 @@ import app.service.ontology as ontology
 
 @blueprint.route('/')
 def route_default():
-    print('route_default: ', url_for('home_blueprint.portal'))
-    return redirect(url_for('home_blueprint.portal'))
-
+    print('route_default: ', url_for('home_blueprint.route_all_pages'))
+    return redirect(url_for('home_blueprint.route_all_pages'))
 
 @blueprint.route('/portal')
 def portal():
