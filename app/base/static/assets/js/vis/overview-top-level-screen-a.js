@@ -28,11 +28,13 @@ TopLevelOverviewScreenA.prototype = {
         let regionalLinks = links['regional']
         console.log('overviewLinks = ', regionalLinks)
 
+        let boardLinks = links['board']
+
         $.each(TopLevelOverviewScreenA.variables.boards, function(index, item) {
             // console.log(index, item);
 
             var div = '<div class="col item text-center" id="grid-' + index + '">' +
-                '<p class="title-text"><a href="' + item.regional_overview + '">' + item.board + '</a></p>' +
+                '<p class="title-text"><a href="' + boardLinks[index] + '">' + item.board + '</a></p>' +
                 '<div class="div-svg" id="timeseries-' + index + '" onclick="window.location=\'' + regionalLinks[index] + '\';"></div>'
             '</div>';
             main_grid.innerHTML += div;
