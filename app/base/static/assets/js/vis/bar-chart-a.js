@@ -5,8 +5,8 @@ class BarChartA {
         let data = options.data;
         let canvas = document.getElementById(options.chartElement);
 
-        let CHART_WIDTH = 500;
-        let CHART_HEIGHT = 250;
+        let CHART_WIDTH = 800;
+        let CHART_HEIGHT = 500;
         if (canvas.clientWidth > 0) CHART_WIDTH = canvas.clientWidth ;
         if (canvas.clientHeight > 0) CHART_HEIGHT = canvas.clientHeight;
 
