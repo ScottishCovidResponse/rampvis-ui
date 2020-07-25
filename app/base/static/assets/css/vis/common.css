@@ -1,3 +1,6 @@
+.title-text {
+    font-weight: bold;
+}
 .svg-container.overview-a {
     display: inline-block;
     position: relative;
