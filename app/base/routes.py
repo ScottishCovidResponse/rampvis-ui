@@ -9,10 +9,10 @@ from app import db, login_manager
 import app.service.service as service
 
 
-@blueprint.route('/')
-def route_default():
-    return redirect(url_for('base_blueprint.login'))
-
+# @blueprint.route('/')
+# def route_default():
+#     return redirect(url_for('base_blueprint.login'))
+#
 
 @blueprint.route('/error-<error>')
 def route_errors(error):
@@ -72,6 +72,8 @@ def github_callback():
 
     print('github_callback: _user = ', _user)
     session['token'] = token
+    session['user'] = user['githubUsername']
+
     login_user(_user)
 
     return redirect(url_for('home_blueprint.portal'))
@@ -84,87 +86,10 @@ def logout():
     return redirect(url_for('base_blueprint.login'))
 
 
-#
-# Login with email password
-# TODO refactor
-#
 @blueprint.route('/login', methods=['GET', 'POST'])
 def login():
     login_form = LoginForm(request.form)
     return render_template('login/login.html', form=login_form)
-
-    if 'login' in request.form:
-
-        # read form data
-        username = request.form['username']
-        password = request.form['password']
-
-        login_form = LoginForm(request.form)
-
-        if 'login' in request.form:
-            pass
-            # read form data
-            username = request.form['username']
-            password = request.form['password']
-
-            #     token = service.login(username, password)
-            #     user = service.user_info(token)
-            #     if user:
-            #         login_user(User(**user))
-            #         return redirect(url_for('base_blueprint.route_default'))
-            #
-            #     # Something (user or pass) is not ok
-            # return render_template('login/login.html', msg='Wrong user or password', form=login_form)
-
-        # # Locate user
-        # user = User.query.filter_by(username=username).first()
-        #
-        # # Check the password
-        # if user and verify_pass(password, user.password):
-        #     print('base/routes.py: login:', user, verify_pass(password, user.password))
-        #     # admin, True
-        #
-        #     login_user(user)
-        #     return redirect(url_for('base_blueprint.route_default'))
-        #
-        # # Something (user or pass) is not ok
-        # return render_template('login/login.html', msg='Wrong user or password', form=login_form)
-
-        if not current_user.is_authenticated:
-            return render_template('login/login.html', form=login_form)
-
-        #    return redirect(url_for('home_blueprint.index'))
-
-
-#
-# Register user with user and password
-# TODO
-#
-@blueprint.route('/register', methods=['GET', 'POST'])
-def create_user():
-    create_account_form = CreateAccountForm(request.form)
-    if 'register' in request.form:
-        username = request.form['username']
-        email = request.form['email']
-
-    #     user = User.query.filter_by(username=username).first()
-    #     if user:
-    #         return render_template('login/register.html', msg='Username already registered', form=create_account_form)
-    #
-    #     user = User.query.filter_by(email=email).first()
-    #     if user:
-    #         return render_template('login/register.html', msg='Email already registered', form=create_account_form)
-    #
-    #     # else we can create the user
-    #     user = User(**request.form)
-    #     db.session.add(user)
-    #     db.session.commit()
-    #
-    #     return render_template('login/register.html', msg='User created please <a href="/login">login</a>',
-    #                            form=create_account_form)
-    #
-    # else:
-    #     return render_template('login/register.html', form=create_account_form)
 
 
 @blueprint.route('/shutdown')

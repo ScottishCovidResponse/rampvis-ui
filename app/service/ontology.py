@@ -24,17 +24,27 @@ def get_api_url(key):
     # return app.config.get(key)
     return os.environ.get(key)
 
+
 def get_all_pages():
-    res = list()
-    for p in pages_onto:
-        res.append(dict({
-            'id': p.get('id'),
-            'name': p.get('name'),
-            'type': p.get('type'),
-            'title': p.get('title'),
-            'description': p.get('description')
-        }))
-    return res
+    return [dict({
+        'id': x.get('id'),
+        'name': x.get('name'),
+        'type': x.get('type'),
+        'title': x.get('title'),
+        'description': x.get('description')
+    })
+        for x in pages_onto]
+
+
+def get_pages_by_type(page_type):
+    return [dict({
+        'id': x.get('id'),
+        'name': x.get('name'),
+        'type': x.get('type'),
+        'title': x.get('title'),
+        'description': x.get('description')
+    })
+        for x in pages_onto if x.get('type') == page_type]
 
 
 def get_page_by_name(page_name):
