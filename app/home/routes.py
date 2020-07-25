@@ -8,15 +8,15 @@ import app.service.ontology as ontology
 
 
 @blueprint.route('/')
-@login_required
 def route_default():
+    print('route_default: ', url_for('home_blueprint.portal'))
     return redirect(url_for('home_blueprint.portal'))
 
 
 @blueprint.route('/portal')
-@login_required
 def portal():
     if not current_user.is_authenticated:
+        print('portal: ', url_for('base_blueprint.login'))
         return redirect(url_for('base_blueprint.login'))
 
     result = service.get_bookmarks()
@@ -28,10 +28,13 @@ def portal():
 def route_template_vis(page_name):
     print('route_template_vis: page_name = ', page_name)
 
+    if page_name == 'page-blank':
+        return render_template('page-blank.html')
+
     page_data = ontology.get_page_by_name(page_name)
 
     print('route_template_vis: page_data = ', page_data)
-    #print('route_template_vis: page.type = ', page_data.get('page', {}).get('type'))
+    # print('route_template_vis: page.type = ', page_data.get('page', {}).get('type'))
 
     try:
         return render_template('template-vis.html', option=page_data)
@@ -43,14 +46,61 @@ def route_template_vis(page_name):
         return render_template('page-500.html'), 500
 
 
-@blueprint.route('/all-pages')
-def route_all_pages():
-    print('route_all_pages:')
+@blueprint.route('/dashboards')
+def dashboards():
+    print('dashboards:')
+    try:
+        table = ontology.get_pages_by_type('dashboard')
+        print('dashboards: data = ', table)
+        return render_template('dashboards.html', table=table)
+
+    except TemplateNotFound:
+        return render_template('page-404.html'), 404
+
+    except:
+        return render_template('page-500.html'), 500
+
+
+@blueprint.route('/plots')
+def plots():
+    print('plots:')
 
     try:
-        table = ontology.get_all_pages()
-        print('route_all_pages: page_data = ', table)
-        return render_template('all-pages.html', table=table)
+        table = ontology.get_pages_by_type('plot')
+        print('plots: data = ', table)
+        return render_template('plots.html', table=table)
+
+    except TemplateNotFound:
+        return render_template('page-404.html'), 404
+
+    except:
+        return render_template('page-500.html'), 500
+
+
+@blueprint.route('/analytics')
+def analytics():
+    print('analytics:')
+
+    try:
+        table = ontology.get_pages_by_type('analytics')
+        print('plots: data = ', table)
+        return render_template('analytics.html', table=table)
+
+    except TemplateNotFound:
+        return render_template('page-404.html'), 404
+
+    except:
+        return render_template('page-500.html'), 500
+
+
+@blueprint.route('/dynamic')
+def dynamic():
+    print('dynamic:')
+
+    try:
+        table = ontology.get_pages_by_type('dynamic')
+        print('plots: data = ', table)
+        return render_template('dynamic.html', table=table)
 
     except TemplateNotFound:
         return render_template('page-404.html'), 404
@@ -94,6 +144,22 @@ def route_settings():
 
     try:
         return render_template('settings.html')
+
+    except TemplateNotFound:
+        return render_template('page-404.html'), 404
+
+    except:
+        return render_template('page-500.html'), 500
+
+
+@blueprint.route('/all-pages')
+def route_all_pages():
+    print('route_all_pages:')
+
+    try:
+        table = ontology.get_all_pages()
+        print('route_all_pages: page_data = ', table)
+        return render_template('all-pages.html', table=table)
 
     except TemplateNotFound:
         return render_template('page-404.html'), 404

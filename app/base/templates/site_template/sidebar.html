@@ -1,631 +1,139 @@
 <div class="sidebar" data-color="purple" data-background-color="DarkGray">
-    <div class="logo">
-        <a href="" class="simple-text logo-mini">
-          <img src="/static/assets/img/Favicon64x64.png">
-        <a href="" class="simple-text logo-normal"> RAMP VIS 0.4</a>
-    </div>
+  <div class="logo">
+    <a href="" class="simple-text logo-mini">
+      <img src="/static/assets/img/Favicon64x64.png" alt=""/>
+      <br/>
+      RAMP VIS 0.4
+    </a>
+  </div>
 
 
-    <div class="sidebar-wrapper">
-        <ul class="nav">
+  <div class="sidebar-wrapper">
 
+    <ul class="nav">
+
+     <li class="nav-item">
             {% if current_user.is_authenticated %}
-                <li class="nav-item active  ">
-                    <a class="nav-link" href="/portal">
-                        <i class="material-icons">dashboard</i>
-                        <p><b>Portal</b></p>
-                    </a>
-                </li>
-            {% endif %}
-
-            <!-- Side bar items -->
-
-
-            <li class="nav-item ">
-                <a class="nav-link" href="/all-pages">
-                    <i class="material-icons">table_view</i>
-                    <p>All Visualizations</p>
-                </a>
-            </li>
-
-            {% if current_user.is_authenticated %}
-                <li class="nav-item ">
-                    <a class="nav-link" href="/settings">
-                        <i class="material-icons">settings</i>
-                        <p>Settings</p>
-                    </a>
-                </li>
-            {% endif %}
-
-            <!--
-            <li class="nav-item ">
-              <a class="nav-link" href="/page-blank">
-                <i class="material-icons">code</i>
-                <p>Blank Page</p>
+              <a class="nav-link" href={{ url_for('base_blueprint.logout') }}>
+                <span class="sidebar-mini"> <i class="material-icons">logout</i> </span>
+                <span class="sidebar-normal">Logout</span>
               </a>
-            </li>
-            -->
-
-            <!--
-              <li class="nav-item ">
-                <a class="nav-link" href="/overviews/overview-top-level-screen-a">
-                    <i class="material-icons">code</i>
-                    <p>Overview Top Level Screen A</p>
-                </a>
-              </li>
-
-
-              <li class="nav-item ">
-                <a class="nav-link" href="/test/top-level-overview-screen-a">
-                  <i class="material-icons">code</i>
-                  <p>Example 1. Overview</p>
-                </a>
-              </li>
-
-              <li class="nav-item ">
-                <a class="nav-link" href="/test/top-level-overview-screen-c">
-                  <i class="material-icons">code</i>
-                  <p>Overview C</p>
-                </a>
-              </li>
-
-              <li class="nav-item ">
-                <a class="nav-link" href="/test/sco-regional">
-                  <i class="material-icons">code</i>
-                  <p>Scotland - Overview</p>
-                </a>
-              </li>
-
-              <li class="nav-item ">
-                <a class="nav-link" href="/test/aa-regional">
-                  <i class="material-icons">code</i>
-                  <p>NHS Ayrshire & Arran - Overview</p>
-                </a>
-              </li>
-
-              <li class="nav-item ">
-                <a class="nav-link" href="/test/bpr-regional">
-                  <i class="material-icons">code</i>
-                  <p>NHS Borders - Overview</p>
-                </a>
-              </li>
-
-              <li class="nav-item ">
-                <a class="nav-link" href="/test/dg-regional">
-                  <i class="material-icons">code</i>
-                  <p>NHS Dumfries & Galloway - Overview</p>
-                </a>
-              </li>
-
-              <li class="nav-item ">
-                <a class="nav-link" href="/test/fif-regional">
-                  <i class="material-icons">code</i>
-                  <p>NHS Fife - Overview</p>
-                </a>
-              </li>
-
-              <li class="nav-item ">
-                <a class="nav-link" href="/test/fov-regional">
-                  <i class="material-icons">code</i>
-                  <p>NHS Forth Valley - Overview</p>
-                </a>
-              </li>
-
-              <li class="nav-item ">
-                <a class="nav-link" href="/test/gc-regional">
-                  <i class="material-icons">code</i>
-                  <p>NHS Greater Glasgow & Clyde - Overview</p>
-                </a>
-              </li>
-
-              <li class="nav-item ">
-                <a class="nav-link" href="/test/golden-regional">
-                  <i class="material-icons">code</i>
-                  <p>Golden Jubilee National Hospital - Overview</p>
-                </a>
-              </li>
-
-              <li class="nav-item ">
-                <a class="nav-link" href="/test/gra-regional">
-                  <i class="material-icons">code</i>
-                  <p>NHS Grampian - Overview</p>
-                </a>
-              </li>
-
-              <li class="nav-item ">
-                <a class="nav-link" href="/test/hig-regional">
-                  <i class="material-icons">code</i>
-                  <p>NHS Highland - Overview</p>
-                </a>
-              </li>
-
-              <li class="nav-item ">
-                <a class="nav-link" href="/test/lan-regional">
-                  <i class="material-icons">code</i>
-                  <p>NHS Lanarkshire - Overview</p>
-                </a>
-              </li>
-
-              <li class="nav-item ">
-                <a class="nav-link" href="/test/lot-regional">
-                  <i class="material-icons">code</i>
-                  <p>NHS Lothian - Overview</p>
-                </a>
-              </li>
-
-              <li class="nav-item ">
-                <a class="nav-link" href="/test/ork-regional">
-                  <i class="material-icons">code</i>
-                  <p>NHS Orkney - Overview</p>
-                </a>
-              </li>
-
-              <li class="nav-item ">
-                <a class="nav-link" href="/test/she-regional">
-                  <i class="material-icons">code</i>
-                  <p>NHS Shetland - Overview</p>
-                </a>
-              </li>
-
-              <li class="nav-item ">
-                <a class="nav-link" href="/test/tay-regional">
-                  <i class="material-icons">code</i>
-                  <p>NHS Tayside - Overview</p>
-                </a>
-              </li>
-
-              <li class="nav-item ">
-                <a class="nav-link" href="/test/wei-regional">
-                  <i class="material-icons">code</i>
-                  <p>NHS Western Isles - Overview</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/sco-cumulative">
-                  <i class="material-icons">code</i>
-                  <p>Scotland - Cumulative</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/sco-icu_patients">
-                  <i class="material-icons">code</i>
-                  <p>Scotland - ICU Patients</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/sco-hospconfirmed">
-                  <i class="material-icons">code</i>
-                  <p>Scotland - Confirmed Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/sco-hospsuspected">
-                  <i class="material-icons">code</i>
-                  <p>Scotland - Suspected Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/aa-cumulative">
-                  <i class="material-icons">code</i>
-                  <p>NHS Ayrshire & Arran - Cumulative</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/aa-icu_patients">
-                  <i class="material-icons">code</i>
-                  <p>NHS Ayrshire & Arran - ICU Patients</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/aa-hospconfirmed">
-                  <i class="material-icons">code</i>
-                  <p>NHS Ayrshire & Arran - Confirmed Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/aa-hospsuspected">
-                  <i class="material-icons">code</i>
-                  <p>NHS Ayrshire & Arran - Suspected Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/bpr-cumulative">
-                  <i class="material-icons">code</i>
-                  <p>NHS Borders - Cumulative</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/bpr-icu_patients">
-                  <i class="material-icons">code</i>
-                  <p>NHS Borders - ICU Patients</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/bpr-hospconfirmed">
-                  <i class="material-icons">code</i>
-                  <p>NHS Borders - Confirmed Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/bpr-hospsuspected">
-                  <i class="material-icons">code</i>
-                  <p>NHS Borders - Suspected Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/dg-cumulative">
-                  <i class="material-icons">code</i>
-                  <p>NHS Dumfries & Galloway - Cumulative</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/dg-icu_patients">
-                  <i class="material-icons">code</i>
-                  <p>NHS Dumfries & Galloway - ICU Patients</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/dg-hospconfirmed">
-                  <i class="material-icons">code</i>
-                  <p>NHS Dumfries & Galloway - Confirmed Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/dg-hospsuspected">
-                  <i class="material-icons">code</i>
-                  <p>NHS Dumfries & Galloway - Suspected Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/fif-cumulative">
-                  <i class="material-icons">code</i>
-                  <p>NHS Fife - Cumulative</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/fif-icu_patients">
-                  <i class="material-icons">code</i>
-                  <p>NHS Fife - ICU Patients</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/fif-hospconfirmed">
-                  <i class="material-icons">code</i>
-                  <p>NHS Fife - Confirmed Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/fif-hospsuspected">
-                  <i class="material-icons">code</i>
-                  <p>NHS Fife - Suspected Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/fov-cumulative">
-                  <i class="material-icons">code</i>
-                  <p>NHS Forth Valley - Cumulative</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/fov-icu_patients">
-                  <i class="material-icons">code</i>
-                  <p>NHS Forth Valley - ICU Patients</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/fov-hospconfirmed">
-                  <i class="material-icons">code</i>
-                  <p>NHS Forth Valley - Confirmed Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/fov-hospsuspected">
-                  <i class="material-icons">code</i>
-                  <p>NHS Forth Valley - Suspected Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/gc-cumulative">
-                  <i class="material-icons">code</i>
-                  <p>NHS Greater Glasgow & Clyde - Cumulative</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/gc-icu_patients">
-                  <i class="material-icons">code</i>
-                  <p>NHS Greater Glasgow & Clyde - ICU Patients</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/gc-hospconfirmed">
-                  <i class="material-icons">code</i>
-                  <p>NHS Greater Glasgow & Clyde - Confirmed Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/gc-hospsuspected">
-                  <i class="material-icons">code</i>
-                  <p>NHS Greater Glasgow & Clyde - Suspected Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/golden-icu_patients">
-                  <i class="material-icons">code</i>
-                  <p>Golden Jubilee National Hospital - ICU Patients</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/golden-hospconfirmed">
-                  <i class="material-icons">code</i>
-                  <p>Golden Jubilee National Hospital - Confirmed Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/golden-hospsuspected">
-                  <i class="material-icons">code</i>
-                  <p>Golden Jubilee National Hospital - Suspected Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/gra-cumulative">
-                  <i class="material-icons">code</i>
-                  <p>NHS Grampian - Cumulative</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/gra-icu_patients">
-                  <i class="material-icons">code</i>
-                  <p>NHS Grampian - ICU Patients</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/gra-hospconfirmed">
-                  <i class="material-icons">code</i>
-                  <p>NHS Grampian - Confirmed Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/gra-hospsuspected">
-                  <i class="material-icons">code</i>
-                  <p>NHS Grampian - Suspected Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/hig-cumulative">
-                  <i class="material-icons">code</i>
-                  <p>NHS Highland - Cumulative</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/hig-icu_patients">
-                  <i class="material-icons">code</i>
-                  <p>NHS Highland - ICU Patients</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/hig-hospconfirmed">
-                  <i class="material-icons">code</i>
-                  <p>NHS Highland - Confirmed Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/hig-hospsuspected">
-                  <i class="material-icons">code</i>
-                  <p>NHS Highland - Suspected Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/lan-cumulative">
-                  <i class="material-icons">code</i>
-                  <p>NHS Lanarkshire - Cumulative</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/lan-icu_patients">
-                  <i class="material-icons">code</i>
-                  <p>NHS Lanarkshire - ICU Patients</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/lan-hospconfirmed">
-                  <i class="material-icons">code</i>
-                  <p>NHS Lanarkshire - Confirmed Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/lan-hospsuspected">
-                  <i class="material-icons">code</i>
-                  <p>NHS Lanarkshire - Suspected Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/lot-cumulative">
-                  <i class="material-icons">code</i>
-                  <p>NHS Lothian - Cumulative</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/lot-icu_patients">
-                  <i class="material-icons">code</i>
-                  <p>NHS Lothian - ICU Patients</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/lot-hospconfirmed">
-                  <i class="material-icons">code</i>
-                  <p>NHS Lothian - Confirmed Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/lot-hospsuspected">
-                  <i class="material-icons">code</i>
-                  <p>NHS Lothian - Suspected Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/ork-cumulative">
-                  <i class="material-icons">code</i>
-                  <p>NHS Orkney - Cumulative</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/ork-icu_patients">
-                  <i class="material-icons">code</i>
-                  <p>NHS Orkney - ICU Patients</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/ork-hospconfirmed">
-                  <i class="material-icons">code</i>
-                  <p>NHS Orkney - Confirmed Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/ork-hospsuspected">
-                  <i class="material-icons">code</i>
-                  <p>NHS Orkney - Suspected Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/she-cumulative">
-                  <i class="material-icons">code</i>
-                  <p>NHS Shetland - Cumulative</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/she-icu_patients">
-                  <i class="material-icons">code</i>
-                  <p>NHS Shetland - ICU Patients</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/she-hospconfirmed">
-                  <i class="material-icons">code</i>
-                  <p>NHS Shetland - Confirmed Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/she-hospsuspected">
-                  <i class="material-icons">code</i>
-                  <p>NHS Shetland - Suspected Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/tay-cumulative">
-                  <i class="material-icons">code</i>
-                  <p>NHS Tayside - Cumulative</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/tay-icu_patients">
-                  <i class="material-icons">code</i>
-                  <p>NHS Tayside - ICU Patients</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/tay-hospconfirmed">
-                  <i class="material-icons">code</i>
-                  <p>NHS Tayside - Confirmed Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/tay-hospsuspected">
-                  <i class="material-icons">code</i>
-                  <p>NHS Tayside - Suspected Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/wei-cumulative">
-                  <i class="material-icons">code</i>
-                  <p>NHS Western Isles - Cumulative</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/wei-icu_patients">
-                  <i class="material-icons">code</i>
-                  <p>NHS Western Isles - ICU Patients</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/wei-hospconfirmed">
-                  <i class="material-icons">code</i>
-                  <p>NHS Western Isles - Confirmed Cases</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/test/wei-hospsuspected">
-                  <i class="material-icons">code</i>
-                  <p>NHS Western Isles - Suspected Cases</p>
-                </a>
-              </li>
-
-            -->
-
-        </ul>
-
-    </div>
+            {% else %}
+              <a class="nav-link" href={{ url_for('base_blueprint.login') }}>
+                <span class="sidebar-mini"> <i class="material-icons">login</i></span>
+                <span class="sidebar-normal">Login</span>
+              </a>
+            {% endif %}
+
+          </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/portal">
+          <i class="material-icons">view_comfy</i>
+          <p><b>My Portal</b></p>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/search">
+          <i class="material-icons">search</i>
+          <p><b>Search</b></p>
+        </a>
+      </li>
+
+      <!-- Side bar items -->
+
+      <li class="nav-item " style="margin-top: 50px">
+        <a class="nav-link" href="/dashboards">
+          <i class="material-icons">dashboard</i>
+          <p><b>Dashboards</b></p>
+        </a>
+      </li>
+
+      <li class="nav-item ">
+        <a class="nav-link" href="/plots">
+          <i class="material-icons">insert_chart</i>
+          <p><b>Plots</b></p>
+        </a>
+      </li>
+
+      <li class="nav-item ">
+        <a class="nav-link" href="/analytics">
+          <i class="material-icons">blur_on</i>
+          <p><b>Analytics</b></p>
+        </a>
+      </li>
+
+      <li class="nav-item ">
+        <a class="nav-link" href="/dynamic">
+          <i class="material-icons">dynamic_feed</i>
+          <p><b>Dynamic</b></p>
+        </a>
+      </li>
+
+      <li class="nav-item " style="margin-top: 50px">
+        <a class="nav-link" href="/page-blank">
+          <i class="material-icons">navigate_next</i>
+          <p>England</p>
+        </a>
+      </li>
+
+      <li class="nav-item ">
+        <a class="nav-link" href="/page-blank">
+          <i class="material-icons">navigate_next</i>
+          <p>N. Ireland</p>
+        </a>
+      </li>
+
+      <li class="nav-item ">
+        <a class="nav-link" href="/page-blank">
+          <i class="material-icons">navigate_next</i>
+          <p><b>Scotland</b></p>
+        </a>
+      </li>
+
+      <li class="nav-item ">
+        <a class="nav-link" href="/page-blank">
+          <i class="material-icons">navigate_next</i>
+          <p>Wales</p>
+        </a>
+      </li>
+
+      <li class="nav-item" style="margin-top: 50px">
+        <a class="nav-link" href="/all-pages">
+          <i class="material-icons">table_view</i>
+          <p>All Pages </p>
+        </a>
+      </li>
+
+      {% if current_user.is_authenticated %}
+        <li class="nav-item ">
+          <a class="nav-link" href="/settings">
+            <i class="material-icons">settings</i>
+            <p>Settings</p>
+          </a>
+        </li>
+      {% endif %}
+
+      <!--
+      <li class="nav-item ">
+        <a class="nav-link" href="/page-blank">
+          <i class="material-icons">code</i>
+          <p>Blank Page</p>
+        </a>
+      </li>
+      -->
+
+    </ul>
+
+  </div>
 
 </div>
+
+
+<script>
+    $(document).ready(function () {
+
+        $("#{{request.endpoint}}").addClass("active");
+    })
+</script>

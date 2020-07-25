@@ -10,8 +10,6 @@ The API code can be found in [ScottishCovidResponse/rampvis-api](https://github.
 # Tested the conda env 
 conda activate rampvis-ui
 
-# Using conda insteadof conda 
-conda activate ramp-vis-flask-dashboard
 
 # Run the app
 export DATA_API='http://localhost:2000/api/v1'

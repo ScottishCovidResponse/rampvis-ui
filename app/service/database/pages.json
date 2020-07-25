@@ -2,7 +2,7 @@
   {
     "id": 1,
     "name": "top-level-overview-screen-a",
-    "type": "overview",
+    "type": "dashboard",
     "bind": [
       { "vis_id": 1, "data_id": 1, "query_params": { "table": "cumulative_cases" }, "title": "" }
     ],
@@ -14,7 +14,7 @@
   {
     "id": 2,
     "name": "sco-regional",
-    "type": "overview",
+    "type": "dashboard",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "scotland" }, "title": "Cumulative Number of Cases"},
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "scotland" }, "title": "ICU Patients" },
@@ -30,7 +30,7 @@
   {
     "id": 3,
     "name": "sco-cumulative",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "scotland" }, "title": "" }
     ],
@@ -42,7 +42,7 @@
   {
     "id": 4,
     "name": "sco-icu_patients",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "scotland" }, "title": "" }
     ],
@@ -54,7 +54,7 @@
   {
     "id": 5,
     "name": "sco-hospconfirmed",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "scotland" }, "title": "" }
     ],
@@ -66,7 +66,7 @@
   {
     "id": 6,
     "name": "sco-hospsuspected",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "scotland" }, "title": "" }
     ],
@@ -78,7 +78,7 @@
   {
     "id": 7,
     "name": "aa-cumulative",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_ayrshire_arran" }, "title": "" }
     ],
@@ -90,7 +90,7 @@
   {
     "id": 8,
     "name": "aa-icu_patients",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_ayrshire_arran" }, "title": "" }
     ],
@@ -102,7 +102,7 @@
   {
     "id": 9,
     "name": "aa-hospconfirmed",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_ayrshire_arran" }, "title": "" }
     ],
@@ -114,7 +114,7 @@
   {
     "id": 10,
     "name": "aa-hospsuspected",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_ayrshire_arran" }, "title": "" }
     ],
@@ -126,7 +126,7 @@
   {
     "id": 11,
     "name": "bpr-cumulative",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_borders" }, "title": "" }
     ],
@@ -138,7 +138,7 @@
   {
     "id": 12,
     "name": "bpr-icu_patients",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_borders" }, "title": "" }
     ],
@@ -150,7 +150,7 @@
   {
     "id": 13,
     "name": "bpr-hospconfirmed",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_borders" }, "title": "" }
     ],
@@ -162,7 +162,7 @@
   {
     "id": 14,
     "name": "bpr-hospsuspected",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_borders" }, "title": "" }
     ],
@@ -174,7 +174,7 @@
   {
     "id": 15,
     "name": "dg-cumulative",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_dumfries_galloway" }, "title": "" }
     ],
@@ -186,7 +186,7 @@
   {
     "id": 16,
     "name": "dg-icu_patients",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_dumfries_galloway" }, "title": "" }
     ],
@@ -198,7 +198,7 @@
   {
     "id": 17,
     "name": "dg-hospconfirmed",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_dumfries_galloway" }, "title": "" }
     ],
@@ -210,7 +210,7 @@
   {
     "id": 18,
     "name": "dg-hospsuspected",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_dumfries_galloway" }, "title": "" }
     ],
@@ -222,7 +222,7 @@
   {
     "id": 19,
     "name": "fif-cumulative",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_fife" }, "title": "" }
     ],
@@ -234,7 +234,7 @@
   {
     "id": 20,
     "name": "fif-icu_patients",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_fife" }, "title": "" }
     ],
@@ -246,7 +246,7 @@
   {
     "id": 21,
     "name": "fif-hospconfirmed",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_fife" }, "title": "" }
     ],
@@ -258,7 +258,7 @@
   {
     "id": 22,
     "name": "fif-hospsuspected",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_fife" }, "title": "" }
     ],
@@ -270,7 +270,7 @@
   {
     "id": 23,
     "name": "fov-cumulative",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_forth_valley" }, "title": "" }
     ],
@@ -282,7 +282,7 @@
   {
     "id": 24,
     "name": "fov-icu_patients",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_forth_valley" }, "title": "" }
     ],
@@ -294,7 +294,7 @@
   {
     "id": 25,
     "name": "fov-hospconfirmed",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_forth_valley" }, "title": "" }
     ],
@@ -306,7 +306,7 @@
   {
     "id": 26,
     "name": "fov-hospsuspected",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_forth_valley" }, "title": "" }
     ],
@@ -318,7 +318,7 @@
   {
     "id": 27,
     "name": "gc-cumulative",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_greater_glasgow_clyde" }, "title": "" }
     ],
@@ -330,7 +330,7 @@
   {
     "id": 28,
     "name": "gc-icu_patients",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_greater_glasgow_clyde" }, "title": "" }
     ],
@@ -342,7 +342,7 @@
   {
     "id": 29,
     "name": "gc-hospconfirmed",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_greater_glasgow_clyde" }, "title": "" }
     ],
@@ -354,7 +354,7 @@
   {
     "id": 30,
     "name": "gc-hospsuspected",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_greater_glasgow_clyde" }, "title": "" }
     ],
@@ -366,7 +366,7 @@
   {
     "id": 31,
     "name": "golden-icu_patients",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "golden_jubilee_nationalhospital" }, "title": "" }
     ],
@@ -378,7 +378,7 @@
   {
     "id": 32,
     "name": "golden-hospconfirmed",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "golden_jubilee_nationalhospital" }, "title": "" }
     ],
@@ -390,7 +390,7 @@
   {
     "id": 33,
     "name": "golden-hospsuspected",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "golden_jubilee_nationalhospital" }, "title": "" }
     ],
@@ -402,7 +402,7 @@
   {
     "id": 34,
     "name": "gra-cumulative",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_grampian" }, "title": "" }
     ],
@@ -414,7 +414,7 @@
   {
     "id": 35,
     "name": "gra-icu_patients",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_grampian" }, "title": "" }
     ],
@@ -426,7 +426,7 @@
   {
     "id": 36,
     "name": "gra-hospconfirmed",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_grampian" }, "title": "" }
     ],
@@ -438,7 +438,7 @@
   {
     "id": 37,
     "name": "gra-hospsuspected",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_grampian" }, "title": "" }
     ],
@@ -450,7 +450,7 @@
   {
     "id": 38,
     "name": "hig-cumulative",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_highland" }, "title": "" }
     ],
@@ -462,7 +462,7 @@
   {
     "id": 39,
     "name": "hig-icu_patients",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_highland" }, "title": "" }
     ],
@@ -474,7 +474,7 @@
   {
     "id": 40,
     "name": "hig-hospconfirmed",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_highland" }, "title": "" }
     ],
@@ -486,7 +486,7 @@
   {
     "id": 41,
     "name": "hig-hospsuspected",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_highland" }, "title": "" }
     ],
@@ -498,7 +498,7 @@
   {
     "id": 42,
     "name": "lan-cumulative",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_lanarkshire" }, "title": "" }
     ],
@@ -510,7 +510,7 @@
   {
     "id": 43,
     "name": "lan-icu_patients",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_lanarkshire" }, "title": "" }
     ],
@@ -522,7 +522,7 @@
   {
     "id": 44,
     "name": "lan-hospconfirmed",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_lanarkshire" }, "title": "" }
     ],
@@ -534,7 +534,7 @@
   {
     "id": 45,
     "name": "lan-hospsuspected",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_lanarkshire" }, "title": "" }
     ],
@@ -546,7 +546,7 @@
   {
     "id": 46,
     "name": "lot-cumulative",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_lothian" }, "title": "" }
     ],
@@ -558,7 +558,7 @@
   {
     "id": 47,
     "name": "lot-icu_patients",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_lothian" }, "title": "" }
     ],
@@ -570,7 +570,7 @@
   {
     "id": 48,
     "name": "lot-hospconfirmed",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_lothian" }, "title": "" }
     ],
@@ -582,7 +582,7 @@
   {
     "id": 49,
     "name": "lot-hospsuspected",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_lothian" }, "title": "" }
     ],
@@ -594,7 +594,7 @@
   {
     "id": 50,
     "name": "ork-cumulative",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_orkney" }, "title": "" }
     ],
@@ -606,7 +606,7 @@
   {
     "id": 51,
     "name": "ork-icu_patients",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_orkney" }, "title": "" }
     ],
@@ -618,7 +618,7 @@
   {
     "id": 52,
     "name": "ork-hospconfirmed",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_orkney" }, "title": "" }
     ],
@@ -630,7 +630,7 @@
   {
     "id": 53,
     "name": "ork-hospsuspected",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_orkney" }, "title": "" }
     ],
@@ -642,7 +642,7 @@
   {
     "id": 54,
     "name": "she-cumulative",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_shetland" }, "title": "" }
     ],
@@ -654,7 +654,7 @@
   {
     "id": 55,
     "name": "she-icu_patients",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_shetland" }, "title": "" }
     ],
@@ -666,7 +666,7 @@
   {
     "id": 56,
     "name": "she-hospconfirmed",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_shetland" }, "title": "" }
     ],
@@ -678,7 +678,7 @@
   {
     "id": 57,
     "name": "she-hospsuspected",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_shetland" }, "title": "" }
     ],
@@ -690,7 +690,7 @@
   {
     "id": 58,
     "name": "tay-cumulative",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_tayside" }, "title": "" }
     ],
@@ -702,7 +702,7 @@
   {
     "id": 59,
     "name": "tay-icu_patients",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_tayside" }, "title": "" }
     ],
@@ -714,7 +714,7 @@
   {
     "id": 60,
     "name": "tay-hospconfirmed",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_tayside" }, "title": "" }
     ],
@@ -726,7 +726,7 @@
   {
     "id": 61,
     "name": "tay-hospsuspected",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_tayside" }, "title": "" }
     ],
@@ -738,7 +738,7 @@
   {
     "id": 62,
     "name": "wei-cumulative",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_western_isles_scotland" }, "title": "" }
     ],
@@ -750,7 +750,7 @@
   {
     "id": 63,
     "name": "wei-icu_patients",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_western_isles_scotland" }, "title": "" }
     ],
@@ -762,7 +762,7 @@
   {
     "id": 64,
     "name": "wei-hospconfirmed",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_western_isles_scotland" }, "title": "" }
     ],
@@ -774,7 +774,7 @@
   {
     "id": 65,
     "name": "wei-hospsuspected",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_western_isles_scotland" }, "title": "" }
     ],
@@ -786,7 +786,7 @@
   {
     "id": 66,
     "name": "aa-regional",
-    "type": "overview",
+    "type": "dashboard",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_ayrshire_arran" }, "title": "Cumulative Number of Cases"},
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_ayrshire_arran" }, "title": "ICU Patients" },
@@ -802,7 +802,7 @@
   {
     "id": 67,
     "name": "bpr-regional",
-    "type": "overview",
+    "type": "dashboard",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_borders" }, "title": "Cumulative Number of Cases"},
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_borders" }, "title": "ICU Patients" },
@@ -818,7 +818,7 @@
   {
     "id": 68,
     "name": "dg-regional",
-    "type": "overview",
+    "type": "dashboard",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_dumfries_galloway" }, "title": "Cumulative Number of Cases"},
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_dumfries_galloway" }, "title": "ICU Patients" },
@@ -834,7 +834,7 @@
   {
     "id": 69,
     "name": "fif-regional",
-    "type": "overview",
+    "type": "dashboard",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_fife" }, "title": "Cumulative Number of Cases"},
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_fife" }, "title": "ICU Patients" },
@@ -850,7 +850,7 @@
   {
     "id": 70,
     "name": "fov-regional",
-    "type": "overview",
+    "type": "dashboard",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_forth_valley" }, "title": "Cumulative Number of Cases"},
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_forth_valley" }, "title": "ICU Patients" },
@@ -866,7 +866,7 @@
   {
     "id": 71,
     "name": "gc-regional",
-    "type": "overview",
+    "type": "dashboard",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_greater_glasgow_clyde" }, "title": "Cumulative Number of Cases"},
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_greater_glasgow_clyde" }, "title": "ICU Patients" },
@@ -882,7 +882,7 @@
   {
     "id": 72,
     "name": "golden-regional",
-    "type": "overview",
+    "type": "dashboard",
     "bind": [
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "golden_jubilee_nationalhospital" }, "title": "ICU Patients" },
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "golden_jubilee_nationalhospital" }, "title": "Hospital Confirmed" },
@@ -897,7 +897,7 @@
   {
     "id": 73,
     "name": "gra-regional",
-    "type": "overview",
+    "type": "dashboard",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_grampian" }, "title": "Cumulative Number of Cases"},
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_grampian" }, "title": "ICU Patients" },
@@ -913,7 +913,7 @@
   {
     "id": 74,
     "name": "hig-regional",
-    "type": "overview",
+    "type": "dashboard",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_highland" }, "title": "Cumulative Number of Cases"},
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_highland" }, "title": "ICU Patients" },
@@ -929,7 +929,7 @@
   {
     "id": 75,
     "name": "lan-regional",
-    "type": "overview",
+    "type": "dashboard",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_lanarkshire" }, "title": "Cumulative Number of Cases"},
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_lanarkshire" }, "title": "ICU Patients" },
@@ -945,7 +945,7 @@
   {
     "id": 76,
     "name": "lot-regional",
-    "type": "overview",
+    "type": "dashboard",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_lothian" }, "title": "Cumulative Number of Cases"},
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_lothian" }, "title": "ICU Patients" },
@@ -961,7 +961,7 @@
   {
     "id": 77,
     "name": "ork-regional",
-    "type": "overview",
+    "type": "dashboard",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_orkney" }, "title": "Cumulative Number of Cases"},
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_orkney" }, "title": "ICU Patients" },
@@ -977,7 +977,7 @@
   {
     "id": 78,
     "name": "she-regional",
-    "type": "overview",
+    "type": "dashboard",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_shetland" }, "title": "Cumulative Number of Cases"},
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_shetland" }, "title": "ICU Patients" },
@@ -993,7 +993,7 @@
   {
     "id": 79,
     "name": "tay-regional",
-    "type": "overview",
+    "type": "dashboard",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_tayside" }, "title": "Cumulative Number of Cases"},
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_tayside" }, "title": "ICU Patients" },
@@ -1009,7 +1009,7 @@
   {
     "id": 80,
     "name": "wei-regional",
-    "type": "overview",
+    "type": "dashboard",
     "bind": [
       { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_western_isles_scotland" }, "title": "Cumulative Number of Cases"},
       { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_western_isles_scotland" }, "title": "ICU Patients" },
@@ -1025,7 +1025,7 @@
   {
     "id": 81,
     "name": "top-level-overview-screen-c",
-    "type": "overview",
+    "type": "dashboard",
     "bind": [
       { "vis_id": 4, "data_id": 1, "query_params": { "table": "icu_patients" }, "title": "ICU Patients" },
       { "vis_id": 4, "data_id": 1, "query_params": { "table": "hospital_confirmed" }, "title": "Hospital Confirmed" },
@@ -1039,7 +1039,7 @@
   {
     "id": 82,
     "name": "pearson-correlation",
-    "type": "overview",
+    "type": "analytics",
     "bind": [
       { "vis_id": 5, "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "pearson_correlation" }, "title": "" }
     ],
@@ -1051,7 +1051,7 @@
     {
     "id": 83,
     "name": "mse",
-    "type": "overview",
+    "type": "analytics",
     "bind": [
       { "vis_id": 5, "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "mse" }, "title": "" }
     ],
@@ -1063,7 +1063,7 @@
     {
     "id": 84,
     "name": "f-test",
-    "type": "overview",
+    "type": "analytics",
     "bind": [
       { "vis_id": 5, "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "f_test" }, "title": "" }
     ],
@@ -1075,19 +1075,19 @@
   {
     "id": 85,
     "name": "dynamic-top-level-overview-screen-a",
-    "type": "overview",
+    "type": "dynamic",
     "bind": [
       { "vis_id": 1, "data_id": 5, "query_params": { "table": "cumulative_cases" }, "title": "" }
     ],
     "nrows": 1,
-    "title": "Dynamic - Cumulative Number of Cases Tested Positive for COVID-19",
+    "title": "Test - Cumulative Number of Cases Tested Positive for COVID-19",
     "description": "The cumulative number of cases with positive tests for COVID-19, by board in Scotland",
     "links": [3]
   },
   {
     "id": 86,
     "name": "dynamic-sco-regional",
-    "type": "overview",
+    "type": "dynamic",
     "bind": [
       { "vis_id": 3, "data_id": 6, "query_params": { "table": "cumulative_cases", "region": "scotland" }, "title": "Cumulative Number of Cases"},
       { "vis_id": 2, "data_id": 6, "query_params": { "table": "icu_patients", "region": "scotland" }, "title": "ICU Patients" },
@@ -1096,14 +1096,14 @@
 
     ],
     "nrows": 2,
-    "title": "Dynamic - Scotland - Overview",
+    "title": "Test - Scotland - Overview",
     "description": "The cumulative number of cases with positive tests for COVID-19 in Scotland. The number of people in ICU with confirmed or suspected COVID-19 in Scotland. The number of people in the hospital with confirmed COVID-19 in Scotland. The number of people in hospital with suspected COVID-19 in Scotland.",
     "links": []
   },
   {
     "id": 87,
     "name": "weekly-death-situation-stacked-bar-chart",
-    "type": "details",
+    "type": "analytics",
     "bind": [
       { "vis_id": 6, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Weekly deaths by COVID-19 in each situation setting (bar chart)" }
     ],
@@ -1115,7 +1115,7 @@
   {
     "id": 88,
     "name": "weekly-death-situation-stacked-area-chart",
-    "type": "details",
+    "type": "analytics",
     "bind": [
       { "vis_id": 7, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Weekly deaths by COVID-19 in each situation setting (area chart)" }
     ],
@@ -1127,7 +1127,7 @@
   {
     "id": 89,
     "name": "weekly-death-agegroup-gender-stacked-bar-chart",
-    "type": "details",
+    "type": "analytics",
     "bind": [
       { "vis_id": 8, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "gender_age" }, "title": "Weekly deaths by COVID-19 in each age group and gender (bar chart)" }
     ],
@@ -1139,7 +1139,7 @@
   {
     "id": 90,
     "name": "weekly-death-agegroup-gender-stacked-area-chart",
-    "type": "details",
+    "type": "analytics",
     "bind": [
       { "vis_id": 9, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "gender_age" }, "title": "Weekly deaths by COVID-19 in each age group and gender (area chart)" }
     ],
@@ -1151,7 +1151,7 @@
   {
     "id": 91,
     "name": "weekly-death-cause-comparison",
-    "type": "details",
+    "type": "analytics",
     "bind": [
       { "vis_id": 10, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "type" }, "title": "Weekly comparison of causes of deaths" }
     ],
@@ -1163,7 +1163,7 @@
   {
     "id": 92,
     "name": "cumulative-cases-correlation-simple-matrix",
-    "type": "details",
+    "type": "analytics",
     "bind": [
       { "vis_id": 11, "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "pearson_correlation" }, "title": "Correlation of cumulative cases between health boards (simple matrix)" }
     ],
@@ -1175,7 +1175,7 @@
   {
     "id": 93,
     "name": "cumulative-cases-correlation-complex-matrix",
-    "type": "details",
+    "type": "analytics",
     "bind": [
       { "vis_id": 12, 
         "data": [ { "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "pearson_correlation" } },
@@ -1190,7 +1190,7 @@
   {
     "id": 100,
     "name": "test-1-vis-n-data",
-    "type": "details",
+    "type": "plot",
     "bind": [
       { "vis_id": 7, "data": [ { "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" } },
                                { "data_id": 3, "query_params": { "table": "covid_deaths", "group": "gender_age" } }
