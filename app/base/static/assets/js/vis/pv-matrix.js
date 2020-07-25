@@ -70,7 +70,7 @@ pv.matrix = function() {
             .range([0, width]);
         yScale.domain(data.rows)
             .range([height, 0]);
-        
+
         /**
          * Draw.
          */

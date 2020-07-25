@@ -23,7 +23,7 @@
 
     ],
     "nrows": 2,
-    "title": "Scotland - Overview",
+    "title": "Scotland",
     "description": "The cumulative number of cases with positive tests for COVID-19 in Scotland. The number of people in ICU with confirmed or suspected COVID-19 in Scotland. The number of people in the hospital with confirmed COVID-19 in Scotland. The number of people in hospital with suspected COVID-19 in Scotland.",
     "links": []
   },
@@ -795,7 +795,7 @@
 
     ],
     "nrows": 2,
-    "title": "NHS Ayrshire & Arran - Board Overview",
+    "title": "NHS Ayrshire & Arran",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Ayrshire & Arran. The number of people in ICU with confirmed or suspected COVID-19 in NHS Ayrshire & Arran. The number of people in the hospital with confirmed COVID-19 in NHS Ayrshire & Arran. The number of people in hospital with suspected COVID-19 in NHS Ayrshire & Arran.",
     "links": []
   },
@@ -811,7 +811,7 @@
 
     ],
     "nrows": 2,
-    "title": "NHS Borders - Board Overview",
+    "title": "NHS Borders",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Borders. The number of people in ICU with confirmed or suspected COVID-19 in NHS Borders. The number of people in the hospital with confirmed COVID-19 in NHS Borders. The number of people in hospital with suspected COVID-19 in NHS Borders.",
     "links": []
   },
@@ -827,7 +827,7 @@
 
     ],
     "nrows": 2,
-    "title": "NHS Dumfries & Galloway - Board Overview",
+    "title": "NHS Dumfries & Galloway",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Dumfries & Galloway. The number of people in ICU with confirmed or suspected COVID-19 in NHS Dumfries & Galloway. The number of people in the hospital with confirmed COVID-19 in NHS Dumfries & Galloway. The number of people in hospital with suspected COVID-19 in NHS Dumfries & Galloway.",
     "links": []
   },
@@ -843,7 +843,7 @@
 
     ],
     "nrows": 2,
-    "title": "NHS Fife - Board Overview",
+    "title": "NHS Fife",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Fife. The number of people in ICU with confirmed or suspected COVID-19 in NHS Fife. The number of people in the hospital with confirmed COVID-19 in NHS Fife. The number of people in hospital with suspected COVID-19 in NHS Fife.",
     "links": []
   },
@@ -859,7 +859,7 @@
 
     ],
     "nrows": 2,
-    "title": "NHS Forth Valley - Board Overview",
+    "title": "NHS Forth Valley",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Forth Valley. The number of people in ICU with confirmed or suspected COVID-19 in NHS Forth Valley. The number of people in the hospital with confirmed COVID-19 in NHS Forth Valley. The number of people in hospital with suspected COVID-19 in NHS Forth Valley.",
     "links": []
   },
@@ -875,7 +875,7 @@
 
     ],
     "nrows": 2,
-    "title": "NHS Greater Glasgow & Clyde - Board Overview",
+    "title": "NHS Greater Glasgow & Clyde",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Greater Glasgow & Clyde. The number of people in ICU with confirmed or suspected COVID-19 in NHS Greater Glasgow & Clyde. The number of people in the hospital with confirmed COVID-19 in NHS Greater Glasgow & Clyde. The number of people in hospital with suspected COVID-19 in NHS Greater Glasgow & Clyde.",
     "links": []
   },
@@ -890,7 +890,7 @@
 
     ],
     "nrows": 1,
-    "title": "Golden Jubilee National Hospital - Overview",
+    "title": "Golden Jubilee National Hospital",
     "description": "The cumulative number of cases with positive tests for COVID-19 in Golden Jubilee National Hospital. The number of people in ICU with confirmed or suspected COVID-19 in Golden Jubilee National Hospital. The number of people in the hospital with confirmed COVID-19 in Golden Jubilee National Hospital. The number of people in hospital with suspected COVID-19 in Golden Jubilee National Hospital.",
     "links": []
   },
@@ -906,7 +906,7 @@
 
     ],
     "nrows": 2,
-    "title": "NHS Grampian - Board Overview",
+    "title": "NHS Grampian",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Grampian. The number of people in ICU with confirmed or suspected COVID-19 in NHS Grampian. The number of people in the hospital with confirmed COVID-19 in NHS Grampian. The number of people in hospital with suspected COVID-19 in NHS Grampian.",
     "links": []
   },
@@ -922,7 +922,7 @@
 
     ],
     "nrows": 2,
-    "title": "NHS Highland - Board Overview",
+    "title": "NHS Highland",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Highland. The number of people in ICU with confirmed or suspected COVID-19 in NHS Highland. The number of people in the hospital with confirmed COVID-19 in NHS Highland. The number of people in hospital with suspected COVID-19 in NHS Highland.",
     "links": []
   },
@@ -938,7 +938,7 @@
 
     ],
     "nrows": 2,
-    "title": "NHS Lanarkshire - Board Overview",
+    "title": "NHS Lanarkshire",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Lanarkshire. The number of people in ICU with confirmed or suspected COVID-19 in NHS Lanarkshire. The number of people in the hospital with confirmed COVID-19 in NHS Lanarkshire. The number of people in hospital with suspected COVID-19 in NHS Lanarkshire.",
     "links": []
   },
@@ -954,7 +954,7 @@
 
     ],
     "nrows": 2,
-    "title": "NHS Lothian - Board Overview",
+    "title": "NHS Lothian",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Lothian. The number of people in ICU with confirmed or suspected COVID-19 in NHS Lothian. The number of people in the hospital with confirmed COVID-19 in NHS Lothian. The number of people in hospital with suspected COVID-19 in NHS Lothian.",
     "links": []
   },
@@ -970,7 +970,7 @@
 
     ],
     "nrows": 2,
-    "title": "NHS Orkney - Board Overview",
+    "title": "NHS Orkney",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Orkney. The number of people in ICU with confirmed or suspected COVID-19 in NHS Orkney. The number of people in the hospital with confirmed COVID-19 in NHS Orkney. The number of people in hospital with suspected COVID-19 in NHS Orkney.",
     "links": []
   },
@@ -986,7 +986,7 @@
 
     ],
     "nrows": 2,
-    "title": "NHS Shetland - Board Overview",
+    "title": "NHS Shetland",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Shetland. The number of people in ICU with confirmed or suspected COVID-19 in NHS Shetland. The number of people in the hospital with confirmed COVID-19 in NHS Shetland. The number of people in hospital with suspected COVID-19 in NHS Shetland.",
     "links": []
   },
@@ -1002,7 +1002,7 @@
 
     ],
     "nrows": 2,
-    "title": "NHS Tayside - Board Overview",
+    "title": "NHS Tayside",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Tayside. The number of people in ICU with confirmed or suspected COVID-19 in NHS Tayside. The number of people in the hospital with confirmed COVID-19 in NHS Tayside. The number of people in hospital with suspected COVID-19 in NHS Tayside.",
     "links": []
   },
@@ -1018,7 +1018,7 @@
 
     ],
     "nrows": 2,
-    "title": "NHS Western Isles - Board Overview",
+    "title": "NHS Western Isles",
     "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Western Isles. The number of people in ICU with confirmed or suspected COVID-19 in NHS Western Isles. The number of people in the hospital with confirmed COVID-19 in NHS Western Isles. The number of people in hospital with suspected COVID-19 in NHS Western Isles.",
     "links": []
   },
@@ -1045,7 +1045,7 @@
     ],
     "nrows": 1,
     "title": "Cumulative Cases - Pearson Correlation",
-    "description": "",
+    "description": "The cumulative cases using Pearson Correlation",
     "links": []
   },
     {
@@ -1057,7 +1057,7 @@
     ],
     "nrows": 1,
     "title": "Cumulative Cases - MSE",
-    "description": "",
+    "description": "The cumulative cases using MSE",
     "links": []
   },
     {
@@ -1069,7 +1069,7 @@
     ],
     "nrows": 1,
     "title": "Cumulative Cases - F-Test",
-    "description": "",
+    "description": "The cumulative cases using F-test",
     "links": []
   },
   {
@@ -1180,10 +1180,10 @@
       { "vis_id": 12, 
         "data": [ { "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "pearson_correlation" } },
                   { "data_id": 1, "query_params": { "table": "cumulative_cases" } }], 
-        "title": "TODO - Correlation of cumulative cases between health boards (complex matrix)" }
+        "title": "Correlation of cumulative cases between health boards (complex matrix)" }
     ],
     "nrows": 1,
-    "title": "TODO - Correlation of cumulative cases between health boards (complex matrix)",
+    "title": "Correlation of cumulative cases between health boards (complex matrix)",
     "description": "Using a matrix to show correlation of cumulative cases between different health boards together with additional information.",
     "links": []
   },

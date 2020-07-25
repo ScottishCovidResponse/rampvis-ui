@@ -49,13 +49,10 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
-
-  <script>
+  <script language="JavaScript" type="text/javascript">
       $(document).ready(function () {
           let table = {{ table  | safe }};
           console.log('template_table.html: table = ', table);
       });
-
   </script>
-
 {% endblock javascripts %}
