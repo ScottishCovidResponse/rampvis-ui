@@ -9,22 +9,20 @@ import app.service.ontology as ontology
 
 @blueprint.route('/')
 def route_default():
-    print('route_default: ', url_for('home_blueprint.route_all_pages'))
     return redirect(url_for('home_blueprint.route_all_pages'))
 
+
 @blueprint.route('/portal')
-def portal():
+def route_portal():
     if not current_user.is_authenticated:
-        print('portal: ', url_for('base_blueprint.login'))
-        return redirect(url_for('base_blueprint.login'))
+        return redirect(url_for('base_blueprint.route_login'))
 
     result = service.get_bookmarks()
-
     return render_template('portal.html', option=result)
 
 
 @blueprint.route('/<page_name>')
-def route_template_vis(page_name):
+def route_vis(page_name):
     print('route_template_vis: page_name = ', page_name)
 
     if page_name == 'page-blank':
@@ -45,7 +43,7 @@ def route_template_vis(page_name):
 
 
 @blueprint.route('/dashboards')
-def dashboards():
+def route_dashboards():
     print('dashboards:')
     try:
         table = ontology.get_pages_by_type('dashboard')
@@ -60,7 +58,7 @@ def dashboards():
 
 
 @blueprint.route('/plots')
-def plots():
+def route_plots():
     print('plots:')
 
     try:
@@ -76,7 +74,7 @@ def plots():
 
 
 @blueprint.route('/analytics')
-def analytics():
+def route_analytics():
     print('analytics:')
 
     try:
@@ -92,7 +90,7 @@ def analytics():
 
 
 @blueprint.route('/dynamic')
-def dynamic():
+def route_dynamic():
     print('dynamic:')
 
     try:
@@ -125,15 +123,6 @@ def route_search():
     return render_template('search.html', data={})
 
 
-@blueprint.route('/profile')
-@login_required
-def profile():
-    if not current_user.is_authenticated:
-        return redirect(url_for('base_blueprint.login'))
-
-    return render_template('profile.html')
-
-
 @blueprint.route('/settings', methods=['GET'])
 @login_required
 def route_settings():
@@ -164,3 +153,12 @@ def route_all_pages():
 
     except:
         return render_template('page-500.html'), 500
+
+
+@blueprint.route('/profile')
+@login_required
+def profile():
+    if not current_user.is_authenticated:
+        return redirect(url_for('base_blueprint.route_login'))
+
+    return render_template('profile.html')
