@@ -1,4 +1,4 @@
-[
+  [
   {
     "id": 1,
     "name": "top-level-overview-screen-a",
@@ -1191,6 +1191,23 @@
     "links": {}
   },
   {
+    "id": 99,
+    "name": "default",
+    "type": "dashboard",
+    "bind": [
+      { "vis_id": 13, 
+        "data": [ { "data_id": 1, "query_params": { "table": "cumulative_cases" } },
+                  { "data_id": 1, "query_params": { "table": "hospital_suspected" } },
+                  { "data_id": 1, "query_params": { "table": "hospital_confirmed" } },
+                  { "data_id": 1, "query_params": { "table": "icu_patients" } }], 
+        "title": "Scotland" }
+    ],
+    "nrows": 1,
+    "title": "Scotland",
+    "description": "",
+    "links": {}
+  },
+  {
     "id": 100,
     "name": "test-1-vis-n-data",
     "type": "plot",
@@ -1205,5 +1222,4 @@
     "description": "",
     "links": {}
   }
-
 ]

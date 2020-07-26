@@ -26,5 +26,7 @@ class VisFunctionFactory {
             return new Matrix(args);
         if (type === "EnhancedMatrix") 
             return new EnhancedMatrix(args);
+        if (type === "DefaultDashboard") 
+            return new DefaultDashboard(args);
     }
 }

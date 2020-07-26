@@ -70,5 +70,11 @@
     "function": "EnhancedMatrix",
     "type": "enhanced_matrix",
     "description": ""
+  },
+  {
+    "id": 13,
+    "function": "DefaultDashboard",
+    "type": "default_dashboard",
+    "description": ""
   }
 ]
