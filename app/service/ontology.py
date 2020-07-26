@@ -149,6 +149,7 @@ def resolve_endpoint(data_id, query_params):
 
 def resolve_links(links):
     new_links = dict()
+    # TODO validate links should be dict
     for key, value in links.items():
         new_links[key] = [page_id_to_name(x) for x in value]
     return new_links

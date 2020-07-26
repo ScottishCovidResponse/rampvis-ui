@@ -61,39 +61,6 @@
               return;
           }
 
-          console.log('bookmark style ', data);
-          // return;
-
-          Service.getBookmarkInfo(DATA_API, _option.page.id, token)
-              .then(data => {
-                  // console.log('bookmark style ', data);
-                  if (data) {
-                      isBookmarked = true;
-                      data && $('#bookmark').css('color', 'orange');
-                  }
-              });
-
-          $('#bookmark').on('click', () => {
-              if (!isBookmarked) {
-                  Service.createBookmark(DATA_API, _option.page.id, token)
-                      .then(data => {
-                          if (data) {
-                              isBookmarked = !isBookmarked;
-                              $('#bookmark').css('color', 'orange');
-                              console.log('onClickBookmark: ', _option.page.id, token);
-                          }
-                      });
-              } else {
-                  Service.removeBookmark(DATA_API, _option.page.id, token)
-                      .then(data => {
-                          if (data) {
-                              isBookmarked = !isBookmarked;
-                              $('#bookmark').css('color', 'darkgrey');
-                          }
-                      });
-              }
-
-          });
 
       });
 

@@ -11,7 +11,7 @@ import app.service.service as service
 
 # @blueprint.route('/')
 # def route_default():
-#     return redirect(url_for('base_blueprint.login'))
+#     return redirect(url_for('base_blueprint.route_login'))
 #
 
 @blueprint.route('/error-<error>')
@@ -76,22 +76,22 @@ def github_callback():
 
     login_user(_user)
 
-    return redirect(url_for('home_blueprint.portal'))
+    return redirect(url_for('home_blueprint.route_portal'))
 
 
 @blueprint.route('/logout')
-def logout():
+def route_logout():
     session.pop('token', None)
     logout_user()
-    return redirect(url_for('base_blueprint.login'))
+    return redirect(url_for('base_blueprint.route_login'))
 
 
 @blueprint.route('/login', methods=['GET', 'POST'])
-def login():
+def route_login():
     login_form = LoginForm(request.form)
     return render_template('login/login.html', form=login_form)
 
-
+# TODO delete
 @blueprint.route('/shutdown')
 def shutdown():
     func = request.environ.get('werkzeug.server.shutdown')
