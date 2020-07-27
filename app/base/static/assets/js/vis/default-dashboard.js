@@ -52,7 +52,8 @@ class DefaultDashboard {
         const boardNames = this.getBoardNames(data);
         boardNames.forEach(name => {
             const row = table.append('tr');
-            row.append('td').text(this.DISPLAY_NAMES[name]);
+
+            row.append('td').append('a').attr('href', '').text(this.DISPLAY_NAMES[name]);
             data.forEach(d => {
                 row.append('td').attr('class', 'number').text(d[name]);
             });
