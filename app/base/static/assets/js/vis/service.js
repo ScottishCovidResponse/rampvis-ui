@@ -68,4 +68,22 @@ class Service {
             }
         });
     }
+
+     static uploadThumbnail(API, token, formData) {
+        console.log('Service: uploadThumbnail: , token = ', token);
+
+        return $.ajax({
+            url: API + '/thumbnail',
+            type: 'POST',
+            data: {
+                formData
+            },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + token);
+            },
+            success: function (response) {
+                return true;
+            }
+        });
+    }
 }

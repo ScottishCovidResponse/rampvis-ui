@@ -7,109 +7,184 @@
 
 {% block content %}
 
-    <div class="dashboard-container">
+  <div class="dashboard-container">
 
-        <div class="card">
-            <div class="card-header card-header-icon card-header-primary">
-                <div class="card-icon"><i class="material-icons">schedule</i></div>
-                <h4 class="card-title ">Schedulers</h4>
-            </div>
-            <div class="card-body">
+    <div class="card">
+      <div class="card-header card-header-icon card-header-primary">
+        <div class="card-icon"><i class="material-icons">schedule</i></div>
+        <h4 class="card-title ">Schedulers</h4>
+      </div>
+      <div class="card-body">
 
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead class=" text-primary">
-                        <th> Type</th>
-                        <th> Status</th>
-                        <th> Action</th>
-                        </thead>
-                        <tr>
-                            <td> <p> Data Stream </p> </td>
-                            <td>
-                                <p class="text-left text-dark" id="scheduler-status"></p>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-light btn-fab btn-fab-mini btn-round" id="status">
-                                    <i class="material-icons">visibility</i>
-                                </button>
-                                <button type="button" class="btn btn-success btn-fab btn-fab-mini btn-round" id="start">
-                                    <i class="material-icons">play_arrow</i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-fab btn-fab-mini btn-round" id="stop">
-                                    <i class="material-icons">stop</i>
-                                </button>
-                            </td>
-                        </tr>
+        <div class="table-responsive">
+          <table class="table">
+            <thead class=" text-primary">
+            <th> Type</th>
+            <th> Status</th>
+            <th> Action</th>
+            </thead>
+            <tr>
+              <td><p> Data stream </p></td>
+              <td>
+                <p class="text-left text-dark" id="scheduler-status"></p>
+              </td>
+              <td>
+                <button type="button" class="btn btn-light btn-fab btn-fab-mini btn-round" id="status">
+                  <i class="material-icons">visibility</i>
+                </button>
+                <button type="button" class="btn btn-success btn-fab btn-fab-mini btn-round" id="start">
+                  <i class="material-icons">play_arrow</i>
+                </button>
+                <button type="button" class="btn btn-danger btn-fab btn-fab-mini btn-round" id="stop">
+                  <i class="material-icons">stop</i>
+                </button>
+              </td>
+            </tr>
 
-                        <tr>
-                            <td> <p> Process Data </p> </td>
-                            <td>
-                                <p class="text-left text-dark" id="pd-scheduler-status"></p>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-light btn-fab btn-fab-mini btn-round" id="pd-status">
-                                    <i class="material-icons">visibility</i>
-                                </button>
-                                <button type="button" class="btn btn-success btn-fab btn-fab-mini btn-round" id="pd-start">
-                                    <i class="material-icons">play_arrow</i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-fab btn-fab-mini btn-round" id="pd-stop">
-                                    <i class="material-icons">stop</i>
-                                </button>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
+            <tr>
+              <td><p> Process data </p></td>
+              <td>
+                <p class="text-left text-dark" id="pd-scheduler-status"></p>
+              </td>
+              <td>
+                <button type="button" class="btn btn-light btn-fab btn-fab-mini btn-round" id="pd-status">
+                  <i class="material-icons">visibility</i>
+                </button>
+                <button type="button" class="btn btn-success btn-fab btn-fab-mini btn-round" id="pd-start">
+                  <i class="material-icons">play_arrow</i>
+                </button>
+                <button type="button" class="btn btn-danger btn-fab btn-fab-mini btn-round" id="pd-stop">
+                  <i class="material-icons">stop</i>
+                </button>
+              </td>
+            </tr>
 
-            </div>
+          </table>
+
         </div>
+
+
+      </div>
     </div>
+
+    <div class="card">
+      <div class="card-header card-header-icon card-header-primary">
+        <div class="card-icon"><i class="material-icons">add_photo_alternate</i></div>
+        <h4 class="card-title ">Upload Thumbnails</h4>
+      </div>
+      <div class="card-body">
+          <form id='file-catcher'>
+            <input id='file-input' type='file' multiple/>
+            <button type='submit'>
+              Submit
+            </button>
+          </form>
+          <div id='file-list-display'></div>
+      </div>
+    </div>
+
+  </div>
 
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 
-    <script>
-        $(document).ready(() => {
-            let isAuthorised = {{ current_user.is_authenticated | tojson }};
-            let token = '{{ session.token | safe }}';
-            let STAT_API = {{ config['STAT_API'] | tojson }};
+  <script>
 
-            console.log(isAuthorised, token, STAT_API);
+      $(document).ready(() => {
+          let isAuthorised = {{ current_user.is_authenticated | tojson }};
+          let token = '{{ session.token | safe }}';
+          let STAT_API = {{ config['STAT_API'] | tojson }};
+          let DATA_API = {{ config['DATA_API'] | tojson }};
 
-            function streamData(action) {
-                Service.streamData(STAT_API, token, action)
-                    .then(data => {
-                        console.log('onClick: status: data = ', data);
-                        $("#scheduler-status").text(() => {
-                            return data.message;
-                        });
-                    });
-            }
+          console.log(isAuthorised, token, STAT_API, DATA_API);
 
-            // check status when page is loaded
-            streamData('status');
+          function streamData(action) {
+              Service.streamData(STAT_API, token, action)
+                  .then(data => {
+                      console.log('onClick: status: data = ', data);
+                      $("#scheduler-status").text(() => {
+                          return data.message;
+                      });
+                  });
+          }
 
-            $("#status").on('click', () => {
-                streamData('status');
-            });
+          // check status when page is loaded
+          streamData('status');
 
-            $("#start").on('click', () => {
-                streamData('start')
-            });
-            $("#stop").on('click', () => {
-                streamData('stop')
-            });
+          $("#status").on('click', () => {
+              streamData('status');
+          });
 
-            if (isAuthorised) {
-                console.log(isAuthorised);
+          $("#start").on('click', () => {
+              streamData('start')
+          });
+          $("#stop").on('click', () => {
+              streamData('stop')
+          });
 
-                // Service.streamData(STAT_API, token, 'start')
-            }
-        });
+          if (isAuthorised) {
+              console.log(isAuthorised);
+              // Service.streamData(STAT_API, token, 'start')
+          }
 
 
-    </script>
+          //
+          // thumbnail upload
+          //
+          (() => {
+              var fileCatcher = document.getElementById('file-catcher');
+              var fileInput = document.getElementById('file-input');
+              var fileListDisplay = document.getElementById('file-list-display');
+
+              var fileList = [];
+              var renderFileList, sendFile;
+
+              fileCatcher.addEventListener('submit', function (evnt) {
+                  evnt.preventDefault();
+                  fileList.forEach(function (file) {
+                      sendFile(file);
+                  });
+              });
+
+              fileInput.addEventListener('change', function (evnt) {
+                  fileList = [];
+                  for (var i = 0; i < fileInput.files.length; i++) {
+                      fileList.push(fileInput.files[i]);
+                  }
+                  renderFileList();
+              });
+
+              renderFileList = function () {
+                  fileListDisplay.innerHTML = '';
+                  fileList.forEach(function (file, index) {
+                      var fileDisplayEl = document.createElement('p');
+                      fileDisplayEl.innerHTML = (index + 1) + ': ' + file.name;
+                      fileListDisplay.appendChild(fileDisplayEl);
+                  });
+              };
+
+              sendFile = function (file) {
+                  console.log(file);
+
+                  var formData = new FormData();
+
+                  var request = new XMLHttpRequest();
+                  request.open("POST", DATA_API + '/thumbnail');
+                  formData.append('file', file);
+                  {#request.setRequestHeader('Content-Type', 'application/json');#}
+                  request.setRequestHeader('Authorization', 'Bearer ' + token);
+                  request.send(formData);
+                  // Service.uploadThumbnail(DATA_API, token, formData)
+                  console.log(formData);
+              };
+          })();
+
+
+      });
+
+
+  </script>
 
 {% endblock javascripts %}
