@@ -10,6 +10,12 @@
     padding-right: 3px;
 }
 
+#chart-0 .latest-numbers td:hover, 
+#chart-0 .latest-numbers th:hover {
+    cursor: pointer;
+    color: black;
+}
+
 #chart-0 .latest-numbers td:nth-child(1),
 #chart-0 .latest-numbers th:not(:first-child) {
     background-color: #dae5f1;

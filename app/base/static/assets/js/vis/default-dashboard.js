@@ -53,8 +53,12 @@ class DefaultDashboard {
         boardNames.forEach(name => {
             const row = table.append('tr');
             row.append('td').text(this.DISPLAY_NAMES[name]);
-            data.forEach(d => {
-                row.append('td').attr('class', 'number').text(d[name]);
+            data.forEach((d, i) => {
+                row.append('td').attr('class', 'number')
+                    .text(d[name])
+                    .on('click', function() {
+                        console.log(name, ['+Test', 'H-sspt', 'H-cnfm', 'ICUs'][i]);
+                    });
             });
         });
 
