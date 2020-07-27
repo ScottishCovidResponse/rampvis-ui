@@ -28,7 +28,7 @@ class DefaultDashboard {
 
         const leftPanel = container.append('div')
         this.drawDate(container, latestData);
-        this.drawTable(leftPanel, latestData);
+        this.drawTable(leftPanel, latestData, options.links);
     }
 
     drawDate(container, data) {
@@ -37,7 +37,7 @@ class DefaultDashboard {
             .text('Yesterday ' + data[0].date);
     }
 
-    drawTable(container, data) {
+    drawTable(container, data, links) {
         const table = container.append('table').attr('class', 'latest-numbers');
 
         // Header
@@ -49,25 +49,31 @@ class DefaultDashboard {
         header.append('th').text('ICUs');
 
         // Body
+        const arrayLinks = [
+            links['cumulative_cases'], 
+            links['hospital_suspected'],
+            links['hospital_confirmed'],
+            links['icu_patients']
+        ];
+        
         const boardNames = this.getBoardNames(data);
-        boardNames.forEach(name => {
+        boardNames.forEach((name, boardIdx) => {
             const row = table.append('tr');
-            row.append('td').text(this.DISPLAY_NAMES[name]);
-            data.forEach((d, i) => {
+            row.append('td').text(this.DISPLAY_NAMES[name])
+                .on('click', function() {
+                    window.open('/' + links['dashboard'][boardIdx]);
+                });
+
+            data.forEach((d, colIdx) => {
                 row.append('td').attr('class', 'number')
                     .text(d[name])
                     .on('click', function() {
-                        console.log(name, ['+Test', 'H-sspt', 'H-cnfm', 'ICUs'][i]);
+                        if (arrayLinks[colIdx][boardIdx]) {
+                            window.open('/' + arrayLinks[colIdx][boardIdx]);
+                        }
                     });
             });
         });
-
-        // container.append('div').text('1a');
-        // container.append('div').text('1b');
-        // container.append('div').text('1c');
-        // container.append('div').text('1d');
-        // container.append('div').text('1e');
-        // container.append('div').text('1f');
     }
 
     getBoardNames(data) {
@@ -88,45 +94,5 @@ class DefaultDashboard {
         }
 
         return names;
-    }
-
-    processData(data) {
-        const [positives, suspects, confirms, patients] = data;
-        // for 
-
-        console.log(positives);
-        console.log(suspects);
-        console.log(confirms);
-        console.log(patients);
-
-        
-        // The first column is for time
-        const columns = data.columns = Object.keys(data[0]).slice(1);
-        data.forEach(d => {
-            columns.forEach(c => {
-                d[c] = this.preprocessValue(d[c])
-            });
-        });
-
-        // Exclude weeks with all 0
-        data = data.filter(d => data.columns.some(att => d[att]));
-
-        // Update matrix data with this data
-        for (let i = 0; i < matrixData.rows.length; i++) {
-            matrixData.rows[i] = {
-                name: matrixData.rows[i],
-                values: data.map(d => d[matrixData.rows[i]])
-            }
-        }
-        for (let i = 0; i < matrixData.columns.length; i++) {
-            matrixData.columns[i] = {
-                name: matrixData.columns[i],
-                values: data.map(d => d[matrixData.columns[i]])
-            }
-        }
-    }
-    
-    preprocessValue(s) {
-        return typeof(s) === 'number' ? s : parseInt(s.replace(',', '').trim());
     }
 }
