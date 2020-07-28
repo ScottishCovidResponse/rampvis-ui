@@ -1,6 +1,7 @@
 class Common {
     static get scotlandBoards() {
         return [
+            {"board": "Scotland", "abbr": "SCO", "key": "scotland"},
             {"board": "NHS Ayrshire & Arran", "abbr": "A&A", "key": "nhs_ayrshire_arran"},
             {"board": "NHS Borders", "abbr": "Bpr", "key": "nhs_borders"},
             {"board": "NHS Dumfries & Galloway", "abbr": "D&G", "key": "nhs_dumfries_galloway"},
@@ -15,7 +16,6 @@ class Common {
             {"board": "NHS Shetland", "abbr": "She", "key": "nhs_shetland"},
             {"board": "NHS Tayside", "abbr": "Tay", "key": "nhs_tayside"},
             {"board": "NHS Western Isles", "abbr": "WeI", "key": "nhs_western_isles_scotland"},
-            {"board": "Scotland", "abbr": "SCO", "key": "scotland"}
         ];
     }
 
