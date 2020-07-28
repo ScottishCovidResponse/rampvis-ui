@@ -14,7 +14,7 @@
         <div class="card-icon"><i class="material-icons">collections</i></div>
         <!-- Card title -->
         <h3 class="card-title">
-          {{ option.page.title }}
+          {{ option.page.title }}: <span id="data-date"></span>
           <span>
             <!-- Bookmark -->
             {% if current_user.is_authenticated %}
@@ -32,20 +32,23 @@
         <div class="row">
             {% for row in option.bind %}
                 {% if loop.index == 1 %}
-                    <div class="col-md-3"><p class="title-text">Date: <span id="data-date"></span></p></div>
+                    <div class="col-md-3"><div id="chart-0"></div></div>
                 {% endif %}
                 {% if loop.index == 2 %}
-                    <div class="col-md-9"><p class="title-text">{{ row.title }}</p></div>
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="title-text">{{ row.title }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12"><div id="chart-1"></div></div>
+                        </div>
+                    </div>
                 {% endif %}
             {% endfor %}
         </div>
-        <div class="row">
-              <div class="col-md-3"><div id="chart-0"></div></div>
-              <div class="col-md-9"><p></p><div id="chart-1"></div></div>
-        </div>
-
       </div>
-
     </div>
   </div>
 
