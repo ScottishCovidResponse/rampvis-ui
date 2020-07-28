@@ -10,16 +10,13 @@ The API code can be found in [ScottishCovidResponse/rampvis-api](https://github.
 # Tested the conda env 
 conda activate rampvis-ui
 
-
 # Run the app
-export MONGODB_URL=<set_the_database_url>
 export DATA_API='http://localhost:2000/api/v1'
 export STAT_API='http://localhost:3000/stat/v1'
 
 export FLASK_APP=run.py
 export FLASK_ENV=development
 flask run --host=0.0.0.0 --port=5000
-
 ```
 
 Access the dashboard in browser: http://127.0.0.1:5000/
