@@ -8,7 +8,7 @@
 {% block content %}
 
   <div class="dashboard-container">
-    <div class="card">
+    <div class="card a-dashboard">
 
       <div class="card-header card-header-icon card-header-primary">
         <div class="card-icon"><i class="material-icons">collections</i></div>
@@ -28,13 +28,13 @@
         <!-- Description -->
         <p class="card-text">{{ option.page.description }}</p>
         <!-- Chart -->
-        <div class="row">
+        <div class="row" id="main-dashboard">
             {% for row in option.bind %}
                 {% if loop.index == 1 %}
-                    <div class="col-md-3"><div id="chart-0"></div></div>
+                    <div class="col-md-3" id="left-hand-side"><div id="chart-0"></div></div>
                 {% endif %}
                 {% if loop.index == 2 %}
-                    <div class="col-md-9">
+                    <div class="col-md-9" id="right-hand-side">
                         <div class="row">
                             <div class="col-md-12">
                                 <p class="title-text">{{ row.title }}</p>

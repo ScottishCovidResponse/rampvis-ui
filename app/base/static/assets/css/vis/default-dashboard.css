@@ -39,3 +39,13 @@
 .clickable {
     cursor: pointer;
 }
+
+#main-dashboard {
+    max-width: 1500px;
+    min-width: 1500px;
+}
+
+#left-hand-side {
+    max-width: 370px;
+    min-width: 370px;
+}

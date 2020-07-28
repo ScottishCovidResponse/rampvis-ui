@@ -53,3 +53,8 @@
     cursor: pointer;
 }
 
+.card.a-dashboard {
+    max-width: 1500px;
+    min-width: 1500px;
+}
+
