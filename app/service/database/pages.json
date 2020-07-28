@@ -1200,8 +1200,8 @@
                   { "data_id": 1, "query_params": { "table": "hospital_suspected" } },
                   { "data_id": 1, "query_params": { "table": "hospital_confirmed" } },
                   { "data_id": 1, "query_params": { "table": "icu_patients" } }], 
-        "title": "Scotland" },
-      { "vis_id": 1, "data_id": 1, "query_params": { "table": "cumulative_cases" }, "title": "" }
+        "title": "" },
+      { "vis_id": 1, "data_id": 1, "query_params": { "table": "cumulative_cases" }, "title": "The cumulative number of cases with positive tests for COVID-19, by board in Scotland" }
     ],
     "nrows": 1,
     "title": "Scotland",

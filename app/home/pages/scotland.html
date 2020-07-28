@@ -30,8 +30,18 @@
         <p class="card-text">{{ option.page.description }}</p>
         <!-- Chart -->
         <div class="row">
+            {% for row in option.bind %}
+                {% if loop.index == 1 %}
+                    <div class="col-md-3"><p class="title-text">Date: <span id="data-date"></span></p></div>
+                {% endif %}
+                {% if loop.index == 2 %}
+                    <div class="col-md-9"><p class="title-text">{{ row.title }}</p></div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="row">
               <div class="col-md-3"><div id="chart-0"></div></div>
-              <div class="col-md-9"><div id="chart-1"></div> </div>
+              <div class="col-md-9"><p></p><div id="chart-1"></div></div>
         </div>
 
       </div>
