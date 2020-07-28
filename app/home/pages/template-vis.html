@@ -77,11 +77,8 @@
               row.setAttribute('class', 'row');
           }
 
-          let chart = document.createElement('div');
           row.setAttribute('id', 'chart-0');
-          row.append(chart);
           placeholder.append(row);
-
 
           let data = await fetchData(bind['endpoint']);
           console.log('fetchedData = ', data);
