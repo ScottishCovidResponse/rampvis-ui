@@ -15,26 +15,31 @@
         <h4 class="card-title "> Bookmarks </h4>
       </div>
 
-      <div class="card-body">
+{#      <div class="card-body">#}
+{##}
+{#        <div class="table-responsive">#}
+{#          <table class="table">#}
+{#            {% for d in option %}#}
+{#              <tr>#}
+{#                <td>#}
+                  {#                  {% if current_user.is_authenticated %}#}
+                  {#                    <i class="material-icons" id="bookmark">bookmark</i>#}
+                  {#                  {% endif %}#}
+{#                  {{ d.page.id }}#}
+{#                </td>#}
+{#                <td>{{ d.page.title }}</td>#}
+{#                <td><a href="/{{ d.page.name }}"> <i class="material-icons">link</i> </a></td>#}
+{#              </tr>#}
+{#            {% endfor %}#}
+{##}
+{#          </table>#}
+{#        </div>#}
+{##}
+{#      </div>#}
 
-        <div class="table-responsive">
-          <table class="table">
-            {% for d in option %}
-              <tr>
-                <td>
-{#                  {% if current_user.is_authenticated %}#}
-{#                    <i class="material-icons" id="bookmark">bookmark</i>#}
-{#                  {% endif %}#}
-                </td>
-                <td>{{ d.page.title }}</td>
-                <td><a href="/{{ d.page.name }}"> <i class="material-icons">link</i> </a></td>
-              </tr>
-            {% endfor %}
-
-          </table>
-        </div>
-
+      <div id="charts">
       </div>
+
 
     </div>
   </div>
@@ -52,6 +57,8 @@
       let isAuthorised = {{ current_user.is_authenticated | tojson }};
       let isBookmarked = false;
       let DATA_API = {{ config['DATA_API'] | tojson }};
+      let ncols = 4;
+      let nrows = 0;
 
       //
       // Bookmark or remove bookmark
@@ -59,6 +66,74 @@
       $(document).ready(function () {
           if (!isAuthorised) {
               return;
+          }
+          console.log(_option)
+          let items = _option.length;
+          console.log(items)
+
+          let placeholder = $('#charts');
+          let idx = 0;
+          let nrows = Math.ceil(items / ncols);
+          console.log(nrows, ncols)
+
+          // add row and col divs
+          for (let i = 0; i < nrows; i++) {
+              let row = document.createElement('div');
+              row.setAttribute('class', 'row');
+
+              for (let j = 0; j < ncols; j++) {
+                  let col = document.createElement('div');
+                  col.setAttribute('class', 'col-md-' + Math.round(12 / ncols) + ' text-center');
+
+                  let card = document.createElement('div');
+                  card.setAttribute('class', 'card');
+
+                  let cardBody = document.createElement('div');
+                  cardBody.setAttribute('class', 'card-body');
+                  card.appendChild(cardBody);
+
+
+                  let img = document.createElement('img');
+                  img.setAttribute('id', _option[idx].page.id);
+
+
+                  cardBody.appendChild(img);
+
+
+                  let cardFooter = document.createElement('div');
+                  cardFooter.setAttribute('class', 'card-footer bold');
+                  cardFooter.textContent = _option[idx].page.title;
+
+                  let a = document.createElement('a');
+                  a.href = "http://example.com";
+                  cardFooter.appendChild(a);
+
+                  card.appendChild(cardFooter);
+
+                  col.appendChild(card);
+                  row.appendChild(col);
+
+                  if (++idx >= items)
+                      break
+              }
+
+              placeholder.append(row);
+          }
+
+          for (let i = 0; i < items; i++) {
+              let pageId = _option[i].page.id;
+              let image = document.getElementById(pageId);
+              $(image).attr('src', '/static/assets/img/no_thumbnail.png')
+
+              Service.getThumbnail(DATA_API, token, pageId)
+                  .then(data => {
+                      console.log('thumbnail data = ', data);
+                      if (data && data.buffer) {
+                          $(image).attr('src', 'data:image/png;base64,' + data.buffer)
+                      } else {
+                          $(image).attr('src', '/static/assets/img/no_thumbnail.png')
+                      }
+                  });
           }
 
 

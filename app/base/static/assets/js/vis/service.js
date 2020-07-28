@@ -69,7 +69,26 @@ class Service {
         });
     }
 
-     static uploadThumbnail(API, token, formData) {
+    //
+    // Thumbnail
+    //
+    static getThumbnail(API, token, pageId) {
+        console.log('Service: getThumbnail: , token = ', token);
+
+        return $.ajax({
+            url: API + '/thumbnail/' + pageId,
+            type: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + token);
+            },
+            success: function (response) {
+                return true;
+            }
+        });
+    }
+
+
+    static uploadThumbnail(API, token, formData) {
         console.log('Service: uploadThumbnail: , token = ', token);
 
         return $.ajax({
