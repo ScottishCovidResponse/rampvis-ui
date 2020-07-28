@@ -26,7 +26,8 @@ class DefaultDashboard {
         const container = d3.select('#' + options.chartElement);
         container.node().innerHTML = '';
 
-        $('#data-date').text(latestData[0]['date']);
+        let date_string = moment(latestData[0]['date'], 'DD/MM/YYYY').format('ll');
+        $('#data-date').text(date_string);
 
         const leftPanel = container.append('div')
         this.drawDate(container, latestData);
@@ -61,7 +62,7 @@ class DefaultDashboard {
         const boardNames = this.getBoardNames(data);
         boardNames.forEach((name, boardIdx) => {
             const row = table.append('tr');
-            row.append('td').attr('class', 'clickable').text(this.DISPLAY_NAMES[name])
+            row.append('td').attr('class', 'clickable title-text').text(this.DISPLAY_NAMES[name])
                 .on('click', function() {
                     window.open('/' + links['dashboard'][boardIdx]);
                 });
