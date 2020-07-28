@@ -35,3 +35,7 @@
 #chart-0 .latest-numbers td:nth-child(5) {
     background-color: #fabf8e;
 }
+
+.clickable {
+    cursor: pointer;
+}

@@ -94,7 +94,7 @@ class TopLevelOverviewScreenC {
                 .attr("orient", "180")
                 .append("path")
                 .attr("d", "M0,-5L10,0L0,5")
-                .style("fill", "#8B0000");
+                .style("fill", "#4682B4");
 
             svg.append("svg:defs").append("svg:marker")
                 .attr("id", "triangle-left")
@@ -107,7 +107,7 @@ class TopLevelOverviewScreenC {
                 .attr("orient", "0")
                 .append("path")
                 .attr("d", "M0,-5L10,0L0,5")
-                .style("fill", "#8B0000");
+                .style("fill", "#4682B4");
 
             var holder = [];
             var latest_number;
@@ -145,7 +145,7 @@ class TopLevelOverviewScreenC {
                 .attr("x2", center)
                 .attr("y1", y(min) )
                 .attr("y2", y(max) )
-                .attr("stroke-width", 2)
+                .attr("stroke-width", 1)
                 .attr("stroke", "black");
 
             svg.append("rect")
@@ -154,7 +154,7 @@ class TopLevelOverviewScreenC {
                 .attr("height", (y(q1)-y(q3)) )
                 .attr("width", box_width )
                 .attr("stroke", "black")
-                .attr("stroke-width", 2)
+                .attr("stroke-width", 1)
                 .style("fill", "#d3d3d3");
 
             svg.selectAll("toto")
@@ -169,7 +169,7 @@ class TopLevelOverviewScreenC {
                 .attr("y2", function(d){
                     return(y(d));
                 })
-                .attr("stroke-width", 2)
+                .attr("stroke-width", 1)
                 .attr("stroke", "black");
 
             // show the latest value
