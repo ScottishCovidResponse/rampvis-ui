@@ -1192,7 +1192,7 @@
   },
   {
     "id": 99,
-    "name": "default",
+    "name": "scotland",
     "type": "dashboard",
     "bind": [
       { "vis_id": 13, 
@@ -1212,20 +1212,5 @@
                 "hospital_confirmed": [5, 9, 13, 17, 21, 25, 36, 29, 40, 44, 48, 52, 56, 60, 64, 32],
                 "hospital_suspected": [6, 10, 14, 18, 22, 26, 37, 30, 41, 45, 49, 53, 57, 61, 65, 33]
     }
-  },
-  {
-    "id": 100,
-    "name": "test-1-vis-n-data",
-    "type": "plot",
-    "bind": [
-      { "vis_id": 7, "data": [ { "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" } },
-                               { "data_id": 3, "query_params": { "table": "covid_deaths", "group": "gender_age" } }
-                      ],
-        "title": "" }
-    ],
-    "nrows": 1,
-    "title": " TODO: n-data mapped to 1-vis this is just an example to demonstrate",
-    "description": "",
-    "links": {}
   }
 ]

@@ -42,7 +42,7 @@
 
             <!-- Side bar items -->
 
-            <li class="nav-item" id="dashboards" style="margin-top: 20px">
+            <li class="nav-item" id="dashboards" style="margin-top: 30px">
                 <a class="nav-link" href="/dashboards">
                     <i class="material-icons">dashboard</i>
                     <p><b>Dashboards</b></p>
@@ -70,28 +70,28 @@
                 </a>
             </li>
 
-            <li class="nav-item " style="margin-top: 20px">
+            <li class="nav-item" id="england" style="margin-top: 30px">
                 <a class="nav-link" href="/page-blank">
                     <i class="material-icons">navigate_next</i>
                     <p><b>England</b></p>
                 </a>
             </li>
 
-            <li class="nav-item ">
+            <li class="nav-item" id="nireland">
                 <a class="nav-link" href="/page-blank">
                     <i class="material-icons">navigate_next</i>
                     <p><b>N. Ireland</b></p>
                 </a>
             </li>
 
-            <li class="nav-item ">
-                <a class="nav-link" href="/page-blank">
+            <li class="nav-item" id="scotland">
+                <a class="nav-link" href="/scotland">
                     <i class="material-icons">navigate_next</i>
                     <p><b>Scotland</b></p>
                 </a>
             </li>
 
-            <li class="nav-item ">
+            <li class="nav-item" id="wales">
                 <a class="nav-link" href="/page-blank">
                     <i class="material-icons">navigate_next</i>
                     <p><b>Wales</b></p>
@@ -100,7 +100,7 @@
 
             {% if current_user.is_authenticated %}
 
-                <li class="nav-item ">
+                <li class="nav-item" style="margin-top: 30px">
                     <a class="nav-link" data-toggle="collapse" href="#tablesExamples">
                         <i class="material-icons">settings</i>
                         <p> Administration

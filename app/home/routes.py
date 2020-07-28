@@ -9,16 +9,25 @@ import app.service.ontology as ontology
 
 @blueprint.route('/')
 def route_default():
-    return redirect(url_for('home_blueprint.route_all_pages'))
+    return redirect(url_for('home_blueprint.route_scotland'))
 
 
-@blueprint.route('/portal')
-def route_portal():
-    if not current_user.is_authenticated:
-        return redirect(url_for('base_blueprint.route_login'))
+@blueprint.route('/scotland')
+def route_scotland():
+    print('route_scotland:')
 
-    result = service.get_bookmarks()
-    return render_template('portal.html', option=result)
+    page_data = ontology.get_page_by_name('scotland')
+
+    print('route_template_vis: page_data = ', page_data)
+
+    try:
+        return render_template('scotland.html', option=page_data)
+
+    except TemplateNotFound:
+        return render_template('page-404.html'), 404
+
+    except:
+        return render_template('page-500.html'), 500
 
 
 @blueprint.route('/<page_name>')
@@ -30,7 +39,7 @@ def route_vis(page_name):
 
     page_data = ontology.get_page_by_name(page_name)
 
-    print('route_template_vis: page_data = ', page_data)
+    # print('route_template_vis: page_data = ', page_data)
 
     try:
         return render_template('template-vis.html', option=page_data)
@@ -40,6 +49,15 @@ def route_vis(page_name):
 
     except:
         return render_template('page-500.html'), 500
+
+
+@blueprint.route('/portal')
+def route_portal():
+    if not current_user.is_authenticated:
+        return redirect(url_for('base_blueprint.route_login'))
+
+    result = service.get_bookmarks()
+    return render_template('portal.html', option=result)
 
 
 @blueprint.route('/dashboards')
