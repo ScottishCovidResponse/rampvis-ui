@@ -70,7 +70,7 @@ class DefaultDashboard {
 
             data.forEach((d, colIdx) => {
                 row.append('td').attr('class', 'number clickable')
-                    .text(parseInt(d[name]).toLocaleString())
+                    .text(d[name] !== undefined ? parseInt(d[name]).toLocaleString() : 'N/A')
                     .on('click', function() {
                         if (arrayLinks[colIdx][boardIdx]) {
                             window.open('/' + arrayLinks[colIdx][boardIdx]);
