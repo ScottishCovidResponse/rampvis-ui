@@ -33,9 +33,7 @@ class LineChartA {
 
         var svg = d3.select(canvas).append("svg")
             .attr("width", CHART_WIDTH)
-            .attr("height", CHART_HEIGHT)
-            .append('g')
-            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+            .attr("height", CHART_HEIGHT);
 
         svg.append("rect")
             .attr("fill", "#ffffff")
