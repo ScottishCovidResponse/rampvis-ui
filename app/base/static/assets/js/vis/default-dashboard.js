@@ -26,6 +26,8 @@ class DefaultDashboard {
         const container = d3.select('#' + options.chartElement);
         container.node().innerHTML = '';
 
+        $('#data-date').text(latestData[0]['date']);
+
         const leftPanel = container.append('div')
         this.drawDate(container, latestData);
         this.drawTable(leftPanel, latestData, options.links);
