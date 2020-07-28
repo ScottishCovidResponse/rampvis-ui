@@ -1,0 +1,69 @@
+{% extends "base-site.html" %}
+
+{% block title %} Search {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+  <div class="dashboard-container">
+
+    <form action="/search" method="GET" name="search">
+      <div class="input-group">
+        <input type="text" name="query" class="form-control" placeholder="Search..." size="100">
+        <button type="submit" class="btn btn-primary btn-round btn-just-icon">
+          <i class="material-icons">search</i>
+          <div class="ripple-container"></div>
+        </button>
+      </div>
+    </form>
+
+    <div class="card">
+      <div class="card-header card-header-icon card-header-primary">
+        {#
+        <div class="card-icon"><i class="material-icons">search</i></div>
+        #}
+        {% if data.result|length > 1 %}
+          <h4 class="card-title "> About {{ data.result|length }} results </h4>
+        {% endif %}
+      </div>
+
+      <div class="card-body">
+
+        <div class="table-responsive">
+          <table class="table">
+
+            {% for d in data.result %}
+              <tr>
+                <td>{{ d.title }}</td>
+                <td>{{ d.description }}</td>
+                <td>{{ d.type }}</td>
+                <td><a href="/{{ d.name }}"> <i class="material-icons">link</i> </a></td>
+              </tr>
+            {% endfor %}
+
+          </table>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script>
+      $(document).ready(function () {
+          let data = {{ data | safe }};
+          console.log('template_table.html: data = ', data);
+      });
+
+  </script>
+
+{% endblock javascripts %}

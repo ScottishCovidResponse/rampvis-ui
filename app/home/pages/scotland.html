@@ -1,0 +1,170 @@
+{% extends "base-site.html" %}
+
+{% block title %} Overview {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+  <div class="dashboard-container">
+    <div class="card a-dashboard">
+
+      <div class="card-header card-header-icon card-header-primary">
+        <div class="card-icon"><i class="material-icons">collections</i></div>
+        <!-- Card title -->
+        <h3 class="card-title">
+          {{ option.page.title }}: <span id="data-date"></span>
+          <span>
+            <!-- Bookmark -->
+            {% if current_user.is_authenticated %}
+              <i class="material-icons" id="bookmark">bookmark</i>
+            {% endif %}
+            </span>
+        </h3>
+      </div>
+
+      <div class="card-body">
+        <!-- Description -->
+        <p class="card-text">{{ option.page.description }}</p>
+        <!-- Chart -->
+        <div class="row" id="main-dashboard">
+            {% for row in option.bind %}
+                {% if loop.index == 1 %}
+                    <div class="col-md-3" id="left-hand-side"><div id="chart-0"></div></div>
+                {% endif %}
+                {% if loop.index == 2 %}
+                    <div class="col-md-9" id="right-hand-side">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="title-text">{{ row.title }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12"><div id="chart-1"></div></div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script>
+
+      let _option = {{ option | tojson }};
+      let token = '{{ session.token | safe }}';
+      let userName = '{{ current_user.username | safe }}';
+      let isAuthorised = {{ current_user.is_authenticated | tojson }};
+      let isBookmarked = false;
+      let DATA_API = {{ config['DATA_API'] | tojson }};
+
+      $(document).ready(function () {
+          console.log('scotland.html: _option = ', _option);
+          let placeholder = $('#charts');
+          layout(_option.bind, _option.page.nrows, placeholder)
+      });
+
+
+      //
+      // layout option B
+      //
+      function layout(bind, nrows, placeholder) {
+          let ncols = Math.ceil(bind.length / nrows);
+          console.log('scotland.html.html: layout: bind = ', bind);
+          console.log('scotland.html.html: layout: nrows = ', nrows, ', ncols = ', ncols);
+
+          let idx = 0;
+
+          // draw charts
+          idx = 0;
+          bind.forEach(async (d) => {
+              let data = await fetchData(d['endpoint'])
+              console.log('fetchedData = ', data);
+
+              let args = {
+                  chartElement: `chart-${idx}`,
+                  data: data,
+                  links: _option.links
+              };
+              new VisFunctionFactory(d['function'], args);
+              console.log('scotland.html:', d['function'], `chart-${idx}`, data);
+              idx++;
+          });
+      }
+
+
+      async function fetchData(endpoint) {
+          console.log('scotland.html.html: fetchData: endpoint = ', endpoint);
+
+          if (typeof endpoint === 'string') {
+              try {
+                  return await fetch(endpoint)
+                      .then(res => res.json());
+              } catch (error) {
+                  console.log(error)
+                  throw (error)
+              }
+          } else if (Array.isArray(endpoint)) {
+              try {
+                  return await Promise.all(
+                      endpoint.map(url => fetch(url).then((response) => response.json())));
+              } catch (error) {
+                  console.log(error)
+                  throw (error)
+              }
+          }
+
+      }
+
+      //
+      // Bookmark or remove bookmark
+      //
+      $(document).ready(function () {
+          if (!isAuthorised) {
+              return;
+          }
+
+          Service.getBookmarkInfo(DATA_API, _option.page.id, token)
+              .then(data => {
+                  console.log('bookmark style ', data);
+                  if (data) {
+                      isBookmarked = true;
+                      data && $('#bookmark').css('color', 'orange');
+                  }
+              });
+
+          $('#bookmark').on('click', () => {
+              if (!isBookmarked) {
+                  Service.createBookmark(DATA_API, _option.page.id, token)
+                      .then(data => {
+                          if (data) {
+                              isBookmarked = !isBookmarked;
+                              $('#bookmark').css('color', 'orange');
+                              console.log('onClickBookmark: ', _option.page.id, token);
+                          }
+                      });
+              } else {
+                  Service.removeBookmark(DATA_API, _option.page.id, token)
+                      .then(data => {
+                          if (data) {
+                              isBookmarked = !isBookmarked;
+                              $('#bookmark').css('color', 'darkgrey');
+                          }
+                      });
+              }
+
+          });
+
+      });
+
+
+  </script>
+
+{% endblock javascripts %}

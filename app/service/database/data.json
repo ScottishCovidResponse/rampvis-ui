@@ -1,0 +1,96 @@
+[
+  {
+    "id": 1,
+    "url": "DATA_API",
+    "endpoint": "/scotland/nhs-board/?",
+    "query_string": "table=",
+    "table": [ "cumulative_cases", "hospital_confirmed", "hospital_suspected", "icu_patients" ],
+    "source": "stream",
+    "type": "table",
+    "description": "this data is about..."
+  },
+  {
+    "id": 2,
+    "url": "DATA_API",
+    "endpoint": "/scotland/nhs-board/?",
+    "query_string": "table=&region=",
+    "table": [ "cumulative_cases", "hospital_confirmed", "hospital_suspected", "icu_patients"],
+    "region": [
+      "nhs_ayrshire_arran",
+      "nhs_borders",
+      "nhs_dumfries_galloway",
+      "nhs_fife",
+      "nhs_forth_valley",
+      "nhs_grampian",
+      "nhs_greater_glasgow_clyde",
+      "nhs_highland",
+      "nhs_lanarkshire",
+      "nhs_lothian",
+      "nhs_orkney",
+      "nhs_shetland",
+      "nhs_tayside",
+      "nhs_western_isles_scotland",
+      "golden_jubilee_nationalhospital",
+      "scotland"
+    ],
+    "source": "stream",
+    "type": "timeseries"
+  },
+  {
+    "id": 3,
+    "url": "DATA_API",
+    "endpoint": "/scotland/covid-deaths/?",
+    "query_string": "table=table&group=group",
+    "table": [ "covid_deaths" ],
+    "group": [ "gender_age", "location", "type" ],
+    "source": "stream",
+    "type": "table"
+  },
+  {
+    "id": 4,
+    "url": "STAT_API",
+    "endpoint": "/scotland/nhs-board/?",
+    "query_string": "table=&metrics=",
+    "table": [ "cumulative_cases" ],
+    "metrics": [ "mse", "f_test", "pearson_correlation" ],
+    "source": "housekeeping",
+    "type": "matrix"
+  },
+  {
+    "id": 5,
+    "url": "DATA_API",
+    "endpoint": "/scotland_dynamic/nhs-board/?",
+    "query_string": "table=",
+      "table": [ "cumulative_cases", "hospital_confirmed", "hospital_suspected", "icu_patients" ],
+    "source": "stream",
+    "type": "table",
+    "description": "this data is about..."
+  },
+  {
+    "id": 6,
+    "url": "DATA_API",
+    "endpoint": "/scotland_dynamic/nhs-board/?",
+    "query_string": "table=&region=",
+    "table": [ "cumulative_cases", "hospital_confirmed", "hospital_suspected", "icu_patients"],
+    "region": [
+      "nhs_ayrshire_arran",
+      "nhs_borders",
+      "nhs_dumfries_galloway",
+      "nhs_fife",
+      "nhs_forth_valley",
+      "nhs_grampian",
+      "nhs_greater_glasgow_clyde",
+      "nhs_highland",
+      "nhs_lanarkshire",
+      "nhs_lothian",
+      "nhs_orkney",
+      "nhs_shetland",
+      "nhs_tayside",
+      "nhs_western_isles_scotland",
+      "golden_jubilee_nationalhospital",
+      "scotland"
+    ],
+    "source": "stream",
+    "type": "timeseries"
+  }
+]

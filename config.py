@@ -20,6 +20,13 @@ class Config(object):
     # DEFAULT_THEME = "themes/dark"
     DEFAULT_THEME = None
 
+    ONTOLOGY_JSON_DB = os.path.join(basedir, 'TODO/ontology.json')
+
+    DATA_API = os.environ.get('DATA_API')
+    STAT_API = os.environ.get('STAT_API')
+    MONGODB_URL = os.environ.get('MONGODB_URL')
+
+
 class ProductionConfig(Config):
     DEBUG = False
 

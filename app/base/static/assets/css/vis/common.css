@@ -1,37 +1,76 @@
-.dashboard-container {
-    padding: 25px;
-}
-.dashboard-title {
-    font-size: 28px;
-    font-weight: bold;
-}
-.desc {
-    font-size: 16px;
-}
-.sub-title {
-    font-size: 20px;
-    font-weight: bold;
-}
 .title-text {
-    font-size: 18px;
     font-weight: bold;
-    margin-bottom: 0px;
-    margin-top: 0px;
 }
-.vis-title {
-    font-size: x-large;
-    font-weight: 500;
-    margin-top: 5px;
-    margin-bottom: 10px;
+.svg-container.overview-a {
+    display: inline-block;
+    position: relative;
+    width: 1000px;
+    height: 500px;
+    vertical-align: top;
+    overflow: hidden;
 }
-.vis-description {
-    font-size: medium;
-    font-style: italic;
-    margin-bottom: 10px;
+.svg-container.details {
+    display: inline-block;
+    position: relative;
+    width: 1000px;
+    height: 500px;
+    vertical-align: top;
+    overflow: hidden;
+}
+.overlay {
+    fill: none;
+    pointer-events: all;
+}
+.focus text {
+    font-weight: bold;
+    font-size: 12px;
+}
+.focus circle {
+    fill: #F1F3F3;
+    stroke: #4682B4;
+    stroke-width: 3px;
+}
+.hover-line {
+    stroke: #4682B4;
+    stroke-width: 1px;
+    stroke-dasharray: 2,4;
+}
+.tool-tip-bar-chart, .tool-tip-line-chart {
+    position: absolute;
+    display: none;
+    min-width: 40px;
+    height: auto;
+    background: none repeat scroll 0 0 #ffffff;
+    border: 1px solid #4682B4;
+    padding: 2px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
 }
 #bookmark {
     cursor: pointer;
 }
-.checked {
-    color: orange;
+
+.card.a-dashboard {
+    max-width: 1500px;
+    min-width: 1500px;
 }
+
+.item-boxplot {
+    border-radius: 3px;
+    background-color: #fff;
+    padding: 5px;
+    -webkit-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -o-transition: 0.2s;
+    border: 1px solid #ccc;
+    max-width: 100px;
+}
+
+.row-boxplot {
+    display: box;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+

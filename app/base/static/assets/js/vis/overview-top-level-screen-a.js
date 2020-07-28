@@ -5,45 +5,45 @@ const CHART_HEIGHT = 180;
 var TopLevelOverviewScreenA = {};
 
 TopLevelOverviewScreenA.variables = {
-    boards: [
-        {"board": "Scotland", "abbr": "SCO", "key": "scotland", "detailed_cumulative": "/scotland/detailed/sco-cumulative.html", "regional_overview": "/scotland/regional-overview/sco-regional.html"},
-        {"board": "NHS Western Isles", "abbr": "WeI", "key": "nhs_western_isles_scotland", "detailed_cumulative": "/scotland/detailed/wei-cumulative.html", "regional_overview": "/scotland/regional-overview/wei-regional.html"},
-        {"board": "NHS Highland", "abbr": "Hig", "key": "nhs_highland", "detailed_cumulative": "/scotland/detailed/hig-cumulative.html", "regional_overview": "/scotland/regional-overview/hig-regional.html"},
-        {"board": "NHS Tayside", "abbr": "Tay", "key": "nhs_tayside", "detailed_cumulative": "/scotland/detailed/tay-cumulative.html", "regional_overview": "/scotland/regional-overview/tay-regional.html"},
-        {"board": "NHS Grampian", "abbr": "Gra", "key": "nhs_grampian", "detailed_cumulative": "/scotland/detailed/gra-cumulative.html", "regional_overview": "/scotland/regional-overview/gra-regional.html"},
-        {"board": "NHS Shetland", "abbr": "She", "key": "nhs_shetland", "detailed_cumulative": "/scotland/detailed/she-cumulative.html", "regional_overview": "/scotland/regional-overview/she-regional.html"},
-        {"board": "NHS Forth Valley", "abbr": "Fov", "key": "nhs_forth_valley", "detailed_cumulative": "/scotland/detailed/fov-cumulative.html", "regional_overview": "/scotland/regional-overview/fov-regional.html"},
-        {"board": "NHS Fife", "abbr": "Fif", "key": "nhs_fife", "detailed_cumulative": "/scotland/detailed/fif-cumulative.html", "regional_overview": "/scotland/regional-overview/fif-regional.html"},
-        {"board": "NHS Orkney", "abbr": "Ork", "key": "nhs_orkney", "detailed_cumulative": "/scotland/detailed/ork-cumulative.html", "regional_overview": "/scotland/regional-overview/ork-regional.html"},
-        {"board": "NHS Ayrshire & Arran", "abbr": "A&A", "key": "nhs_ayrshire_arran", "detailed_cumulative": "/scotland/detailed/aa-cumulative.html", "regional_overview": "/scotland/regional-overview/aa-regional.html"},
-        {"board": "NHS Greater Glasgow & Clyde", "abbr": "G&C", "key": "nhs_greater_glasgow_clyde", "detailed_cumulative": "/scotland/detailed/gc-cumulative.html", "regional_overview": "/scotland/regional-overview/gc-regional.html"},
-        {"board": "NHS Lothian", "abbr": "Lot", "key": "nhs_lothian", "detailed_cumulative": "/scotland/detailed/lot-cumulative.html", "regional_overview": "/scotland/regional-overview/lot-regional.html"},
-        {"board": "NHS Dumfries & Galloway", "abbr": "D&G", "key": "nhs_dumfries_galloway", "detailed_cumulative": "/scotland/detailed/dg-cumulative.html", "regional_overview": "/scotland/regional-overview/dg-regional.html"},
-        {"board": "NHS Lanarkshire", "abbr": "Lan", "key": "nhs_lanarkshire", "detailed_cumulative": "/scotland/detailed/lan-cumulative.html", "regional_overview": "/scotland/regional-overview/lan-regional.html"},
-        {"board": "NHS Borders", "abbr": "Bpr", "key": "nhs_borders", "detailed_cumulative": "/scotland/detailed/bpr-cumulative.html", "regional_overview": "/scotland/regional-overview/bpr-regional.html"}
-    ]
+    boards: Common.scotlandBoards
 };
 
 TopLevelOverviewScreenA.prototype = {
     init: function(options) {
-        TopLevelOverviewScreenA.prototype.createGridLayout(options.chartElement);
+
+        console.log('TopLevelOverviewScreenA: init: options = ');
+
+        TopLevelOverviewScreenA.prototype.createGridLayout(options.chartElement, options.links);
         TopLevelOverviewScreenA.prototype.createTimeSeries(options.data);
 
          $(document.getElementById(options.bookmarkElement)).on('click', ()=> {
-            console.log('onClickBookmark: ');
+            console.log('TopLevelOverviewScreenA: onClickBookmark: ');
         });
     },
 
 
-    createGridLayout: function(element) {
+    createGridLayout: function(element, links) {
         var main_grid = document.getElementById(element);
 
+        let regionalLinks = links['regional']
+        console.log('overviewLinks = ', regionalLinks)
+
+        let boardLinks = links['board']
+
+        let row;
         $.each(TopLevelOverviewScreenA.variables.boards, function(index, item) {
-            var div = '<div class="col item" id="grid-' + index + '">' +
-                '<p class="title-text"><a href="' + item.regional_overview + '">' + item.board + '</a></p>' +
-                '<div class="div-svg" id="timeseries-' + index + '" onclick="window.location=\'' + item.detailed_cumulative + '\';"></div>'
-            '</div>';
-            main_grid.innerHTML += div;
+            if (index === 0 || index % 3 === 0) {
+                row = document.createElement('div');
+                $(row).addClass('row');
+                main_grid.append(row);
+            }
+
+            var div = '<div class="col item text-center" id="grid-' + index + '">' +
+                '<p class="title-text"><a href="' + boardLinks[index] + '">' + item.board + '</a></p>' +
+                '<div class="div-svg" id="timeseries-' + index + '" onclick="window.location=\'' + regionalLinks[index] + '\';"></div>'
+                '</div>';
+
+            row.innerHTML += div;
         });
     },
 

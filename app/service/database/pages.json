@@ -1,0 +1,1222 @@
+  [
+  {
+    "id": 1,
+    "name": "top-level-overview-screen-a",
+    "type": "dashboard",
+    "bind": [
+      { "vis_id": 1, "data_id": 1, "query_params": { "table": "cumulative_cases" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "Cumulative Number of Cases Tested Positive for COVID-19",
+    "description": "The cumulative number of cases with positive tests for COVID-19, by board in Scotland",
+    "links": {
+                "regional": [3, 7, 11, 15, 19, 23, 34, 27, 38, 42, 46, 50, 54, 58, 62],
+                "board": [2, 66, 67, 68, 69, 70, 73, 71, 74, 75, 76, 77, 78, 79, 80]
+    }
+  },
+  {
+    "id": 2,
+    "name": "sco-regional",
+    "type": "dashboard",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "scotland" }, "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "scotland" }, "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "scotland" }, "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "scotland" }, "title": "Hospital Suspected" }
+
+    ],
+    "nrows": 2,
+    "title": "Scotland",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in Scotland. The number of people in ICU with confirmed or suspected COVID-19 in Scotland. The number of people in the hospital with confirmed COVID-19 in Scotland. The number of people in hospital with suspected COVID-19 in Scotland.",
+    "links": {}
+  },
+  {
+    "id": 3,
+    "name": "sco-cumulative",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "scotland" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "Scotland - Cumulative Number of Cases Tested Positive for COVID-19",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in Scotland.",
+    "links": {}
+  },
+  {
+    "id": 4,
+    "name": "sco-icu_patients",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "scotland" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "Scotland - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
+    "description": "The number of people in ICU with confirmed or suspected COVID-19 in Scotland.",
+    "links": {}
+  },
+  {
+    "id": 5,
+    "name": "sco-hospconfirmed",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "scotland" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "Scotland - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in the hospital with confirmed COVID-19 in Scotland.",
+    "links": {}
+  },
+  {
+    "id": 6,
+    "name": "sco-hospsuspected",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "scotland" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "Scotland - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in hospital with suspected COVID-19 in Scotland.",
+    "links": {}
+  },
+  {
+    "id": 7,
+    "name": "aa-cumulative",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_ayrshire_arran" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Ayrshire & Arran - Cumulative Number of Cases Tested Positive for COVID-19",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Ayrshire & Arran.",
+    "links": {}
+  },
+  {
+    "id": 8,
+    "name": "aa-icu_patients",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_ayrshire_arran" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Ayrshire & Arran - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
+    "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Ayrshire & Arran.",
+    "links": {}
+  },
+  {
+    "id": 9,
+    "name": "aa-hospconfirmed",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_ayrshire_arran" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Ayrshire & Arran - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in the hospital with confirmed COVID-19 in NHS Ayrshire & Arran.",
+    "links": {}
+  },
+  {
+    "id": 10,
+    "name": "aa-hospsuspected",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_ayrshire_arran" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Ayrshire & Arran - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight.",
+    "description": "The number of people in hospital with suspected COVID-19 in NHS Ayrshire & Arran.",
+    "links": {}
+  },
+  {
+    "id": 11,
+    "name": "bpr-cumulative",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_borders" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Borders - Cumulative Number of Cases Tested Positive for COVID-19",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Borders.",
+    "links": {}
+  },
+  {
+    "id": 12,
+    "name": "bpr-icu_patients",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_borders" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Borders - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
+    "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Borders.",
+    "links": {}
+  },
+  {
+    "id": 13,
+    "name": "bpr-hospconfirmed",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_borders" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Borders - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in the hospital with confirmed COVID-19 in NHS Borders.",
+    "links": {}
+  },
+  {
+    "id": 14,
+    "name": "bpr-hospsuspected",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_borders" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Borders - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in hospital with suspected COVID-19 in NHS Borders.",
+    "links": {}
+  },
+  {
+    "id": 15,
+    "name": "dg-cumulative",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_dumfries_galloway" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Dumfries & Galloway - Cumulative Number of Cases Tested Positive for COVID-19",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Dunfries & Galloway.",
+    "links": {}
+  },
+  {
+    "id": 16,
+    "name": "dg-icu_patients",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_dumfries_galloway" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Dumfries & Galloway - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
+    "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Dumfries & Galloway.",
+    "links": {}
+  },
+  {
+    "id": 17,
+    "name": "dg-hospconfirmed",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_dumfries_galloway" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Dumfries & Galloway - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in the hospital with confirmed COVID-19 in NHS Dumfries & Galloway.",
+    "links": {}
+  },
+  {
+    "id": 18,
+    "name": "dg-hospsuspected",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_dumfries_galloway" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Dumfries & Galloway - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in hospital with suspected COVID-19 in NHS Dumfries & Galloway.",
+    "links": {}
+  },
+  {
+    "id": 19,
+    "name": "fif-cumulative",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_fife" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Fife - Cumulative Number of Cases Tested Positive for COVID-19",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Fife.",
+    "links": {}
+  },
+  {
+    "id": 20,
+    "name": "fif-icu_patients",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_fife" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Fife - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
+    "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Fife.",
+    "links": {}
+  },
+  {
+    "id": 21,
+    "name": "fif-hospconfirmed",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_fife" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Fife - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in the hospital with confirmed COVID-19 in NHS Fife.",
+    "links": {}
+  },
+  {
+    "id": 22,
+    "name": "fif-hospsuspected",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_fife" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Fife - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in hospital with suspected COVID-19 in NHS Fife.",
+    "links": {}
+  },
+  {
+    "id": 23,
+    "name": "fov-cumulative",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_forth_valley" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Forth Valley - Cumulative Number of Cases Tested Positive for COVID-19",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Forth Valley.",
+    "links": {}
+  },
+  {
+    "id": 24,
+    "name": "fov-icu_patients",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_forth_valley" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Forth Valley - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
+    "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Forth Valley.",
+    "links": {}
+  },
+  {
+    "id": 25,
+    "name": "fov-hospconfirmed",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_forth_valley" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Forth Valley - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in the hospital with confirmed COVID-19 in NHS Forth Valley.",
+    "links": {}
+  },
+  {
+    "id": 26,
+    "name": "fov-hospsuspected",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_forth_valley" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Forth Valley - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in hospital with suspected COVID-19 in NHS Forth Valley.",
+    "links": {}
+  },
+  {
+    "id": 27,
+    "name": "gc-cumulative",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_greater_glasgow_clyde" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Greater Glasgow & Clyde - Cumulative Number of Cases Tested Positive for COVID-19",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Greater Glasgow & Clyde.",
+    "links": {}
+  },
+  {
+    "id": 28,
+    "name": "gc-icu_patients",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_greater_glasgow_clyde" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Greater Glasgow & Clyde - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
+    "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Greater Glasgow & Clyde.",
+    "links": {}
+  },
+  {
+    "id": 29,
+    "name": "gc-hospconfirmed",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_greater_glasgow_clyde" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Greater Glasgow & Clyde - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in the hospital with confirmed COVID-19 in NHS Greater Glasgow & Clyde.",
+    "links": {}
+  },
+  {
+    "id": 30,
+    "name": "gc-hospsuspected",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_greater_glasgow_clyde" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Greater Glasgow & Clyde - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in hospital with suspected COVID-19 in NHS Greater Glasgow & Clyde.",
+    "links": {}
+  },
+  {
+    "id": 31,
+    "name": "golden-icu_patients",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "golden_jubilee_nationalhospital" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "Golden Jubilee National Hospital - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
+    "description": "The number of people in ICU with confirmed or suspected COVID-19 in Golden Jubilee National Hospital.",
+    "links": {}
+  },
+  {
+    "id": 32,
+    "name": "golden-hospconfirmed",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "golden_jubilee_nationalhospital" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "Golden Jubilee National Hospital - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in the hospital with confirmed COVID-19 in Golden Jubilee National Hospital.",
+    "links": {}
+  },
+  {
+    "id": 33,
+    "name": "golden-hospsuspected",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "golden_jubilee_nationalhospital" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "Golden Jubilee National Hospital - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in hospital with suspected COVID-19 in Golden Jubilee National Hospital.",
+    "links": {}
+  },
+  {
+    "id": 34,
+    "name": "gra-cumulative",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_grampian" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Grampian - Cumulative Number of Cases Tested Positive for COVID-19",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Grampian.",
+    "links": {}
+  },
+  {
+    "id": 35,
+    "name": "gra-icu_patients",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_grampian" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Grampian - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
+    "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Grampian.",
+    "links": {}
+  },
+  {
+    "id": 36,
+    "name": "gra-hospconfirmed",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_grampian" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Grampian - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in the hospital with confirmed COVID-19 in NHS Grampian.",
+    "links": {}
+  },
+  {
+    "id": 37,
+    "name": "gra-hospsuspected",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_grampian" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Grampian - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in hospital with suspected COVID-19 in NHS Grampian.",
+    "links": {}
+  },
+  {
+    "id": 38,
+    "name": "hig-cumulative",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_highland" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Highland - Cumulative Number of Cases Tested Positive for COVID-19",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Highland.",
+    "links": {}
+  },
+  {
+    "id": 39,
+    "name": "hig-icu_patients",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_highland" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Highland - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
+    "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Highland.",
+    "links": {}
+  },
+  {
+    "id": 40,
+    "name": "hig-hospconfirmed",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_highland" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Highland - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in the hospital with confirmed COVID-19 in NHS Highland.",
+    "links": {}
+  },
+  {
+    "id": 41,
+    "name": "hig-hospsuspected",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_highland" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Highland - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in hospital with suspected COVID-19 in NHS Highland.",
+    "links": {}
+  },
+  {
+    "id": 42,
+    "name": "lan-cumulative",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_lanarkshire" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Lanarkshire - Cumulative Number of Cases Tested Positive for COVID-19",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Lanarkshire.",
+    "links": {}
+  },
+  {
+    "id": 43,
+    "name": "lan-icu_patients",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_lanarkshire" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Lanarkshire - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
+    "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Lanarkshire.",
+    "links": {}
+  },
+  {
+    "id": 44,
+    "name": "lan-hospconfirmed",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_lanarkshire" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Lanarkshire - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in the hospital with confirmed COVID-19 in NHS Lanarkshire.",
+    "links": {}
+  },
+  {
+    "id": 45,
+    "name": "lan-hospsuspected",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_lanarkshire" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Lanarkshire - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in hospital with suspected COVID-19 in NHS Lanarkshire.",
+    "links": {}
+  },
+  {
+    "id": 46,
+    "name": "lot-cumulative",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_lothian" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Lothian - Cumulative Number of Cases Tested Positive for COVID-19",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Lothian.",
+    "links": {}
+  },
+  {
+    "id": 47,
+    "name": "lot-icu_patients",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_lothian" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Lothian - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
+    "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Lothian.",
+    "links": {}
+  },
+  {
+    "id": 48,
+    "name": "lot-hospconfirmed",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_lothian" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Lothian - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in the hospital with confirmed COVID-19 in NHS Lothian.",
+    "links": {}
+  },
+  {
+    "id": 49,
+    "name": "lot-hospsuspected",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_lothian" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Lothian - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in hospital with suspected COVID-19 in NHS Lothian.",
+    "links": {}
+  },
+  {
+    "id": 50,
+    "name": "ork-cumulative",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_orkney" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Orkney - Cumulative Number of Cases Tested Positive for COVID-19",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Orkney.",
+    "links": {}
+  },
+  {
+    "id": 51,
+    "name": "ork-icu_patients",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_orkney" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Orkney - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
+    "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Orkney.",
+    "links": {}
+  },
+  {
+    "id": 52,
+    "name": "ork-hospconfirmed",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_orkney" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Orkney - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in the hospital with confirmed COVID-19 in NHS Orkney.",
+    "links": {}
+  },
+  {
+    "id": 53,
+    "name": "ork-hospsuspected",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_orkney" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Orkney - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in hospital with suspected COVID-19 in NHS Orkney.",
+    "links": {}
+  },
+  {
+    "id": 54,
+    "name": "she-cumulative",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_shetland" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Shetland - Cumulative Number of Cases Tested Positive for COVID-19",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Shetland.",
+    "links": {}
+  },
+  {
+    "id": 55,
+    "name": "she-icu_patients",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_shetland" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Shetland - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
+    "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Shetland.",
+    "links": {}
+  },
+  {
+    "id": 56,
+    "name": "she-hospconfirmed",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_shetland" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Shetland - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in the hospital with confirmed COVID-19 in NHS Shetland.",
+    "links": {}
+  },
+  {
+    "id": 57,
+    "name": "she-hospsuspected",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_shetland" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Shetland - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in hospital with suspected COVID-19 in NHS Shetland.",
+    "links": {}
+  },
+  {
+    "id": 58,
+    "name": "tay-cumulative",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_tayside" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Tayside - Cumulative Number of Cases Tested Positive for COVID-19",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Tayside.",
+    "links": {}
+  },
+  {
+    "id": 59,
+    "name": "tay-icu_patients",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_tayside" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Tayside - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
+    "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Tayside.",
+    "links": {}
+  },
+  {
+    "id": 60,
+    "name": "tay-hospconfirmed",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_tayside" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Tayside - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in the hospital with confirmed COVID-19 in NHS Tayside.",
+    "links": {}
+  },
+  {
+    "id": 61,
+    "name": "tay-hospsuspected",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_tayside" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Tayside - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in hospital with suspected COVID-19 in NHS Tayside.",
+    "links": {}
+  },
+  {
+    "id": 62,
+    "name": "wei-cumulative",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_western_isles_scotland" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Western Isles - Cumulative Number of Cases Tested Positive for COVID-19",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Western Isles.",
+    "links": {}
+  },
+  {
+    "id": 63,
+    "name": "wei-icu_patients",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_western_isles_scotland" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Western Isles - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
+    "description": "The number of people in ICU with confirmed or suspected COVID-19 in NHS Western Isles.",
+    "links": {}
+  },
+  {
+    "id": 64,
+    "name": "wei-hospconfirmed",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_western_isles_scotland" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Western Isles - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in the hospital with confirmed COVID-19 in NHS Western Isles.",
+    "links": {}
+  },
+  {
+    "id": 65,
+    "name": "wei-hospsuspected",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_western_isles_scotland" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "NHS Western Isles - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
+    "description": "The number of people in hospital with suspected COVID-19 in NHS Western Isles.",
+    "links": {}
+  },
+  {
+    "id": 66,
+    "name": "aa-regional",
+    "type": "dashboard",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_ayrshire_arran" }, "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_ayrshire_arran" }, "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_ayrshire_arran" }, "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_ayrshire_arran" }, "title": "Hospital Suspected" }
+
+    ],
+    "nrows": 2,
+    "title": "NHS Ayrshire & Arran",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Ayrshire & Arran. The number of people in ICU with confirmed or suspected COVID-19 in NHS Ayrshire & Arran. The number of people in the hospital with confirmed COVID-19 in NHS Ayrshire & Arran. The number of people in hospital with suspected COVID-19 in NHS Ayrshire & Arran.",
+    "links": {}
+  },
+  {
+    "id": 67,
+    "name": "bpr-regional",
+    "type": "dashboard",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_borders" }, "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_borders" }, "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_borders" }, "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_borders" }, "title": "Hospital Suspected" }
+
+    ],
+    "nrows": 2,
+    "title": "NHS Borders",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Borders. The number of people in ICU with confirmed or suspected COVID-19 in NHS Borders. The number of people in the hospital with confirmed COVID-19 in NHS Borders. The number of people in hospital with suspected COVID-19 in NHS Borders.",
+    "links": {}
+  },
+  {
+    "id": 68,
+    "name": "dg-regional",
+    "type": "dashboard",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_dumfries_galloway" }, "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_dumfries_galloway" }, "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_dumfries_galloway" }, "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_dumfries_galloway" }, "title": "Hospital Suspected" }
+
+    ],
+    "nrows": 2,
+    "title": "NHS Dumfries & Galloway",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Dumfries & Galloway. The number of people in ICU with confirmed or suspected COVID-19 in NHS Dumfries & Galloway. The number of people in the hospital with confirmed COVID-19 in NHS Dumfries & Galloway. The number of people in hospital with suspected COVID-19 in NHS Dumfries & Galloway.",
+    "links": {}
+  },
+  {
+    "id": 69,
+    "name": "fif-regional",
+    "type": "dashboard",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_fife" }, "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_fife" }, "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_fife" }, "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_fife" }, "title": "Hospital Suspected" }
+
+    ],
+    "nrows": 2,
+    "title": "NHS Fife",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Fife. The number of people in ICU with confirmed or suspected COVID-19 in NHS Fife. The number of people in the hospital with confirmed COVID-19 in NHS Fife. The number of people in hospital with suspected COVID-19 in NHS Fife.",
+    "links": {}
+  },
+  {
+    "id": 70,
+    "name": "fov-regional",
+    "type": "dashboard",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_forth_valley" }, "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_forth_valley" }, "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_forth_valley" }, "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_forth_valley" }, "title": "Hospital Suspected" }
+
+    ],
+    "nrows": 2,
+    "title": "NHS Forth Valley",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Forth Valley. The number of people in ICU with confirmed or suspected COVID-19 in NHS Forth Valley. The number of people in the hospital with confirmed COVID-19 in NHS Forth Valley. The number of people in hospital with suspected COVID-19 in NHS Forth Valley.",
+    "links": {}
+  },
+  {
+    "id": 71,
+    "name": "gc-regional",
+    "type": "dashboard",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_greater_glasgow_clyde" }, "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_greater_glasgow_clyde" }, "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_greater_glasgow_clyde" }, "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_greater_glasgow_clyde" }, "title": "Hospital Suspected" }
+
+    ],
+    "nrows": 2,
+    "title": "NHS Greater Glasgow & Clyde",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Greater Glasgow & Clyde. The number of people in ICU with confirmed or suspected COVID-19 in NHS Greater Glasgow & Clyde. The number of people in the hospital with confirmed COVID-19 in NHS Greater Glasgow & Clyde. The number of people in hospital with suspected COVID-19 in NHS Greater Glasgow & Clyde.",
+    "links": {}
+  },
+  {
+    "id": 72,
+    "name": "golden-regional",
+    "type": "dashboard",
+    "bind": [
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "golden_jubilee_nationalhospital" }, "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "golden_jubilee_nationalhospital" }, "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "golden_jubilee_nationalhospital" }, "title": "Hospital Suspected" }
+
+    ],
+    "nrows": 1,
+    "title": "Golden Jubilee National Hospital",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in Golden Jubilee National Hospital. The number of people in ICU with confirmed or suspected COVID-19 in Golden Jubilee National Hospital. The number of people in the hospital with confirmed COVID-19 in Golden Jubilee National Hospital. The number of people in hospital with suspected COVID-19 in Golden Jubilee National Hospital.",
+    "links": {}
+  },
+  {
+    "id": 73,
+    "name": "gra-regional",
+    "type": "dashboard",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_grampian" }, "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_grampian" }, "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_grampian" }, "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_grampian" }, "title": "Hospital Suspected" }
+
+    ],
+    "nrows": 2,
+    "title": "NHS Grampian",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Grampian. The number of people in ICU with confirmed or suspected COVID-19 in NHS Grampian. The number of people in the hospital with confirmed COVID-19 in NHS Grampian. The number of people in hospital with suspected COVID-19 in NHS Grampian.",
+    "links": {}
+  },
+  {
+    "id": 74,
+    "name": "hig-regional",
+    "type": "dashboard",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_highland" }, "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_highland" }, "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_highland" }, "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_highland" }, "title": "Hospital Suspected" }
+
+    ],
+    "nrows": 2,
+    "title": "NHS Highland",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Highland. The number of people in ICU with confirmed or suspected COVID-19 in NHS Highland. The number of people in the hospital with confirmed COVID-19 in NHS Highland. The number of people in hospital with suspected COVID-19 in NHS Highland.",
+    "links": {}
+  },
+  {
+    "id": 75,
+    "name": "lan-regional",
+    "type": "dashboard",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_lanarkshire" }, "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_lanarkshire" }, "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_lanarkshire" }, "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_lanarkshire" }, "title": "Hospital Suspected" }
+
+    ],
+    "nrows": 2,
+    "title": "NHS Lanarkshire",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Lanarkshire. The number of people in ICU with confirmed or suspected COVID-19 in NHS Lanarkshire. The number of people in the hospital with confirmed COVID-19 in NHS Lanarkshire. The number of people in hospital with suspected COVID-19 in NHS Lanarkshire.",
+    "links": {}
+  },
+  {
+    "id": 76,
+    "name": "lot-regional",
+    "type": "dashboard",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_lothian" }, "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_lothian" }, "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_lothian" }, "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_lothian" }, "title": "Hospital Suspected" }
+
+    ],
+    "nrows": 2,
+    "title": "NHS Lothian",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Lothian. The number of people in ICU with confirmed or suspected COVID-19 in NHS Lothian. The number of people in the hospital with confirmed COVID-19 in NHS Lothian. The number of people in hospital with suspected COVID-19 in NHS Lothian.",
+    "links": {}
+  },
+  {
+    "id": 77,
+    "name": "ork-regional",
+    "type": "dashboard",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_orkney" }, "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_orkney" }, "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_orkney" }, "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_orkney" }, "title": "Hospital Suspected" }
+
+    ],
+    "nrows": 2,
+    "title": "NHS Orkney",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Orkney. The number of people in ICU with confirmed or suspected COVID-19 in NHS Orkney. The number of people in the hospital with confirmed COVID-19 in NHS Orkney. The number of people in hospital with suspected COVID-19 in NHS Orkney.",
+    "links": {}
+  },
+  {
+    "id": 78,
+    "name": "she-regional",
+    "type": "dashboard",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_shetland" }, "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_shetland" }, "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_shetland" }, "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_shetland" }, "title": "Hospital Suspected" }
+
+    ],
+    "nrows": 2,
+    "title": "NHS Shetland",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Shetland. The number of people in ICU with confirmed or suspected COVID-19 in NHS Shetland. The number of people in the hospital with confirmed COVID-19 in NHS Shetland. The number of people in hospital with suspected COVID-19 in NHS Shetland.",
+    "links": {}
+  },
+  {
+    "id": 79,
+    "name": "tay-regional",
+    "type": "dashboard",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_tayside" }, "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_tayside" }, "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_tayside" }, "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_tayside" }, "title": "Hospital Suspected" }
+
+    ],
+    "nrows": 2,
+    "title": "NHS Tayside",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Tayside. The number of people in ICU with confirmed or suspected COVID-19 in NHS Tayside. The number of people in the hospital with confirmed COVID-19 in NHS Tayside. The number of people in hospital with suspected COVID-19 in NHS Tayside.",
+    "links": {}
+  },
+  {
+    "id": 80,
+    "name": "wei-regional",
+    "type": "dashboard",
+    "bind": [
+      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_western_isles_scotland" }, "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_western_isles_scotland" }, "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_western_isles_scotland" }, "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_western_isles_scotland" }, "title": "Hospital Suspected" }
+
+    ],
+    "nrows": 2,
+    "title": "NHS Western Isles",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in NHS Western Isles. The number of people in ICU with confirmed or suspected COVID-19 in NHS Western Isles. The number of people in the hospital with confirmed COVID-19 in NHS Western Isles. The number of people in hospital with suspected COVID-19 in NHS Western Isles.",
+    "links": {}
+  },
+  {
+    "id": 81,
+    "name": "top-level-overview-screen-c",
+    "type": "dashboard",
+    "bind": [
+      { "vis_id": 4, "data_id": 1, "query_params": { "table": "icu_patients" }, "title": "ICU Patients" },
+      { "vis_id": 4, "data_id": 1, "query_params": { "table": "hospital_confirmed" }, "title": "Hospital Confirmed" },
+      { "vis_id": 4, "data_id": 1, "query_params": { "table": "hospital_suspected" }, "title": "Hospital Suspected" }
+    ],
+    "nrows": 1,
+    "title": "Coronavirus (COVID-19): Scotland Board-level Daily Data",
+    "description": "The number of people in ICU with confirmed or suspected COVID-19 in Scotland. The number of people in the hospital with confirmed COVID-19 in Scotland. The number of people in hospital with suspected COVID-19 in Scotland.",
+    "links": {}
+  },
+  {
+    "id": 82,
+    "name": "pearson-correlation",
+    "type": "analytics",
+    "bind": [
+      { "vis_id": 5, "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "pearson_correlation" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "Cumulative Cases - Pearson Correlation",
+    "description": "The cumulative cases using Pearson Correlation",
+    "links": {}
+  },
+    {
+    "id": 83,
+    "name": "mse",
+    "type": "analytics",
+    "bind": [
+      { "vis_id": 5, "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "mse" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "Cumulative Cases - MSE",
+    "description": "The cumulative cases using MSE",
+    "links": {}
+  },
+    {
+    "id": 84,
+    "name": "f-test",
+    "type": "analytics",
+    "bind": [
+      { "vis_id": 5, "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "f_test" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "Cumulative Cases - F-Test",
+    "description": "The cumulative cases using F-test",
+    "links": {}
+  },
+  {
+    "id": 85,
+    "name": "dynamic-top-level-overview-screen-a",
+    "type": "dynamic",
+    "bind": [
+      { "vis_id": 1, "data_id": 5, "query_params": { "table": "cumulative_cases" }, "title": "" }
+    ],
+    "nrows": 1,
+    "title": "Dynamic - Cumulative Number of Cases Tested Positive for COVID-19",
+    "description": "The cumulative number of cases with positive tests for COVID-19, by board in Scotland",
+    "links": {
+                "regional": [7, 11, 15, 19, 23, 34, 27, 38, 42, 46, 50, 54, 58, 62, 3],
+                "board": [66, 67, 68, 69, 70, 73, 71, 74, 75, 76, 77, 78, 79, 80, 2]
+    }
+  },
+  {
+    "id": 86,
+    "name": "dynamic-sco-regional",
+    "type": "dynamic",
+    "bind": [
+      { "vis_id": 3, "data_id": 6, "query_params": { "table": "cumulative_cases", "region": "scotland" }, "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 6, "query_params": { "table": "icu_patients", "region": "scotland" }, "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 6, "query_params": { "table": "hospital_confirmed", "region": "scotland" }, "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 6, "query_params": { "table": "hospital_suspected", "region": "scotland" }, "title": "Hospital Suspected" }
+
+    ],
+    "nrows": 2,
+    "title": "Dynamic - Scotland - Overview",
+    "description": "The cumulative number of cases with positive tests for COVID-19 in Scotland. The number of people in ICU with confirmed or suspected COVID-19 in Scotland. The number of people in the hospital with confirmed COVID-19 in Scotland. The number of people in hospital with suspected COVID-19 in Scotland.",
+    "links": {}
+  },
+  {
+    "id": 87,
+    "name": "weekly-death-situation-stacked-bar-chart",
+    "type": "analytics",
+    "bind": [
+      { "vis_id": 6, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Weekly deaths by COVID-19 in each situation setting (bar chart)" }
+    ],
+    "nrows": 1,
+    "title": "Weekly deaths by COVID-19 in each situation setting (bar chart)",
+    "description": "Stacked bar chart with bar height corresponding to the number of deaths and coloured by situation.",
+    "links": {}
+  },
+  {
+    "id": 88,
+    "name": "weekly-death-situation-stacked-area-chart",
+    "type": "analytics",
+    "bind": [
+      { "vis_id": 7, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Weekly deaths by COVID-19 in each situation setting (area chart)" }
+    ],
+    "nrows": 1,
+    "title": "Weekly deaths by COVID-19 in each situation setting (area chart)",
+    "description": "Stacked area chart with area corresponding to the number of deaths and coloured by situation.",
+    "links": {}
+  },
+  {
+    "id": 89,
+    "name": "weekly-death-agegroup-gender-stacked-bar-chart",
+    "type": "analytics",
+    "bind": [
+      { "vis_id": 8, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "gender_age" }, "title": "Weekly deaths by COVID-19 in each age group and gender (bar chart)" }
+    ],
+    "nrows": 1,
+    "title": "Weekly deaths by COVID-19 in each age group and gender (bar chart)",
+    "description": "Stacked bar chart with bar height corresponding to the number of deaths, separated by gender and coloured by age group.",
+    "links": {}
+  },
+  {
+    "id": 90,
+    "name": "weekly-death-agegroup-gender-stacked-area-chart",
+    "type": "analytics",
+    "bind": [
+      { "vis_id": 9, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "gender_age" }, "title": "Weekly deaths by COVID-19 in each age group and gender (area chart)" }
+    ],
+    "nrows": 1,
+    "title": "Weekly deaths by COVID-19 in each age group and gender (area chart)",
+    "description": "Stacked area chart with area corresponding to the number of deaths, separated by gender and coloured by age group.",
+    "links": {}
+  },
+  {
+    "id": 91,
+    "name": "weekly-death-cause-comparison",
+    "type": "analytics",
+    "bind": [
+      { "vis_id": 10, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "type" }, "title": "Weekly comparison of causes of deaths" }
+    ],
+    "nrows": 1,
+    "title": "Weekly comparison of causes of deaths.",
+    "description": "Comparing deaths caused by COVID-19 and other causes together with average deaths in the past 5 years in a weekly basis.",
+    "links": {}
+  },
+  {
+    "id": 92,
+    "name": "cumulative-cases-correlation-simple-matrix",
+    "type": "analytics",
+    "bind": [
+      { "vis_id": 11, "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "pearson_correlation" }, "title": "Correlation of cumulative cases between health boards (simple matrix)" }
+    ],
+    "nrows": 1,
+    "title": "Correlation of cumulative cases between health boards (simple matrix)",
+    "description": "Using a matrix to show correlation of cumulative cases between different health boards.",
+    "links": {}
+  },
+  {
+    "id": 93,
+    "name": "cumulative-cases-correlation-complex-matrix",
+    "type": "analytics",
+    "bind": [
+      { "vis_id": 12, 
+        "data": [ { "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "pearson_correlation" } },
+                  { "data_id": 1, "query_params": { "table": "cumulative_cases" } }], 
+        "title": "Correlation of cumulative cases between health boards (complex matrix)" }
+    ],
+    "nrows": 1,
+    "title": "Correlation of cumulative cases between health boards (complex matrix)",
+    "description": "Using a matrix to show correlation of cumulative cases between different health boards together with additional information.",
+    "links": {}
+  },
+  {
+    "id": 99,
+    "name": "scotland",
+    "type": "dashboard",
+    "bind": [
+      { "vis_id": 13, 
+        "data": [ { "data_id": 1, "query_params": { "table": "cumulative_cases" } },
+                  { "data_id": 1, "query_params": { "table": "hospital_suspected" } },
+                  { "data_id": 1, "query_params": { "table": "hospital_confirmed" } },
+                  { "data_id": 1, "query_params": { "table": "icu_patients" } }], 
+        "title": "" },
+      { "vis_id": 1, "data_id": 1, "query_params": { "table": "cumulative_cases" }, "title": "The cumulative number of cases with positive tests for COVID-19, by board in Scotland" }
+    ],
+    "nrows": 1,
+    "title": "Scotland",
+    "description": "",
+    "links": {
+                "dashboard": [2, 66, 67, 68, 69, 70, 73, 71, 74, 75, 76, 77, 78, 79, 80, 72],
+                "cumulative_cases": [3, 7, 11, 15, 19, 23, 34, 27, 38, 42, 46, 50, 54, 58, 62],
+                "icu_patients": [4, 8, 12, 16, 20, 24, 35, 28, 39, 43, 47, 51, 55, 59, 63, 31],
+                "hospital_confirmed": [5, 9, 13, 17, 21, 25, 36, 29, 40, 44, 48, 52, 56, 60, 64, 32],
+                "hospital_suspected": [6, 10, 14, 18, 22, 26, 37, 30, 41, 45, 49, 53, 57, 61, 65, 33],
+                "regional": [3, 7, 11, 15, 19, 23, 34, 27, 38, 42, 46, 50, 54, 58, 62],
+                "board": [2, 66, 67, 68, 69, 70, 73, 71, 74, 75, 76, 77, 78, 79, 80]
+    }
+  }
+]

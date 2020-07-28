@@ -1,38 +1,159 @@
-<div class="sidebar" data-color="purple" data-background-color="white" data-image="/static/assets/img/sidebar-2.jpg">
-  <div class="logo">
-    <a href="" class="simple-text text-lg-center logo-normal"> <i class="material-icons">coronavirus</i> RAMP VIS </a>
-  </div>
-
-
-  <div class="sidebar-wrapper">
-    <ul class="nav">
-
-      {% if current_user.is_authenticated %}
-        <li class="nav-item active  ">
-          <a class="nav-link" href="/portal">
-            <i class="material-icons">dashboard</i>
-            <p><b>Portal</b></p>
-          </a>
-        </li>
-      {% endif %}
-
-      <!-- Side bar items -->
-
-      <li class="nav-item ">
-        <a class="nav-link" href="/page-blank">
-          <i class="material-icons">code</i>
-          <p>Blank Page</p>
+<div class="sidebar" data-color="purple" data-background-color="DarkGray">
+    <div class="logo">
+        <a href="" class="simple-text logo-mini">
+            <img src="/static/assets/img/Favicon64x64.png" alt=""/>
+            <br/>
+            RAMP VIS 0.4
         </a>
-      </li>
+    </div>
 
-      <li class="nav-item ">
-        <a class="nav-link" href="/overviews/overview-top-level-screen-a">
-          <p>Overview Top Level Screen A</p>
-        </a>
-      </li>
+    <div class="sidebar-wrapper">
 
-    </ul>
+        <ul class="nav">
 
-  </div>
+            <li class="nav-item" id="login">
+                {% if current_user.is_authenticated %}
+                    <a class="nav-link" href={{ url_for('base_blueprint.route_logout')}}>
+                        <i class="material-icons">logout</i>
+                        <p><b>Logout</b></p>
+                    </a>
+                {% else %}
+                    <a class="nav-link" href={{ url_for('base_blueprint.route_login')}}>
+                        <i class="material-icons">login</i>
+                        <p><b>Login</b></p>
+                    </a>
+                {% endif %}
+
+            </li>
+
+            <li class="nav-item" id="portal" >
+                <a class="nav-link" href={{ url_for('home_blueprint.route_portal')}}>
+                    <i class="material-icons">view_comfy</i>
+                    <p><b>My Portal</b></p>
+                </a>
+            </li>
+
+            <li class="nav-item" id="search">
+                <a class="nav-link" href={{ url_for('home_blueprint.route_search')}}>
+                    <i class="material-icons">search</i>
+                    <p><b>Search</b></p>
+                </a>
+            </li>
+
+            <!-- Side bar items -->
+
+            <li class="nav-item" id="dashboards" style="margin-top: 30px">
+                <a class="nav-link" href="/dashboards">
+                    <i class="material-icons">dashboard</i>
+                    <p><b>Dashboards</b></p>
+                </a>
+            </li>
+
+            <li class="nav-item" id="plots">
+                <a class="nav-link" href="/plots">
+                    <i class="material-icons">insert_chart</i>
+                    <p><b>Plots</b></p>
+                </a>
+            </li>
+
+            <li class="nav-item" id="analytics">
+                <a class="nav-link" href="/analytics">
+                    <i class="material-icons">blur_on</i>
+                    <p><b>Analytics</b></p>
+                </a>
+            </li>
+
+            <li class="nav-item" id="dynamic">
+                <a class="nav-link" href="/dynamic">
+                    <i class="material-icons">dynamic_feed</i>
+                    <p><b>Dynamic</b></p>
+                </a>
+            </li>
+
+            <li class="nav-item" id="england" style="margin-top: 30px">
+                <a class="nav-link" href="/page-blank">
+                    <i class="material-icons">navigate_next</i>
+                    <p><b>England</b></p>
+                </a>
+            </li>
+
+            <li class="nav-item" id="nireland">
+                <a class="nav-link" href="/page-blank">
+                    <i class="material-icons">navigate_next</i>
+                    <p><b>N. Ireland</b></p>
+                </a>
+            </li>
+
+            <li class="nav-item" id="scotland">
+                <a class="nav-link" href="/scotland">
+                    <i class="material-icons">navigate_next</i>
+                    <p><b>Scotland</b></p>
+                </a>
+            </li>
+
+            <li class="nav-item" id="wales">
+                <a class="nav-link" href="/page-blank">
+                    <i class="material-icons">navigate_next</i>
+                    <p><b>Wales</b></p>
+                </a>
+            </li>
+
+            {% if current_user.is_authenticated %}
+
+                <li class="nav-item" style="margin-top: 30px">
+                    <a class="nav-link" data-toggle="collapse" href="#tablesExamples">
+                        <i class="material-icons">settings</i>
+                        <p> Administration
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse" id="tablesExamples">
+                        <ul class="nav">
+                            <li class="nav-item" id="pages">
+                                <a class="nav-link" href="/all-pages">
+                                    <span class="sidebar-mini"> OP </span>
+                                    <span class="sidebar-normal"> Ontology Generated Pages</span>
+                                </a>
+                            </li>
+                            <li class="nav-item " id="settings">
+                                <a class="nav-link" href="/settings">
+                                    <span class="sidebar-mini"> S </span>
+                                    <span class="sidebar-normal"> Settings </span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+            {% endif %}
+
+            <li class="nav-item ">
+                <a class="nav-link" href="/page-blank">
+                    <p></p>
+                </a>
+            </li>
+
+        </ul>
+
+    </div>
 
 </div>
+
+{% block javascripts %}
+      <script src="/static/assets/js/core/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        let selectedRoute = '{{ request.endpoint }}';
+        let selectedId = selectedRoute.split('_').pop();
+
+        console.log('sidebar.html: selectedId = ', "#"+selectedId);
+
+        $("#"+selectedId).addClass("active");
+
+    })
+
+
+
+</script>
+{% endblock javascripts %}
