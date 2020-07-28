@@ -70,6 +70,7 @@
 
           // only one row and chart in it
           let row = document.createElement('div');
+          let col = document.createElement('div');
 
           if (type === 'plot') {
               row.setAttribute('class', 'row svg-container details');
@@ -77,8 +78,10 @@
               row.setAttribute('class', 'row');
           }
 
-          row.setAttribute('id', 'chart-0');
-          placeholder.append(row);
+          col.setAttribute('id', 'chart-0');
+          col.setAttribute('class', 'col');
+          row.append(col);
+          placeholder.append(col);
 
           let data = await fetchData(bind['endpoint']);
           console.log('fetchedData = ', data);
