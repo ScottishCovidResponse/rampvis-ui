@@ -59,13 +59,13 @@ class DefaultDashboard {
         const boardNames = this.getBoardNames(data);
         boardNames.forEach((name, boardIdx) => {
             const row = table.append('tr');
-            row.append('td').text(this.DISPLAY_NAMES[name])
+            row.append('td').attr('class', 'clickable').text(this.DISPLAY_NAMES[name])
                 .on('click', function() {
                     window.open('/' + links['dashboard'][boardIdx]);
                 });
 
             data.forEach((d, colIdx) => {
-                row.append('td').attr('class', 'number')
+                row.append('td').attr('class', 'number clickable')
                     .text(d[name])
                     .on('click', function() {
                         if (arrayLinks[colIdx][boardIdx]) {
