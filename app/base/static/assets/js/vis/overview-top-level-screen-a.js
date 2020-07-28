@@ -30,14 +30,20 @@ TopLevelOverviewScreenA.prototype = {
 
         let boardLinks = links['board']
 
+        let row;
         $.each(TopLevelOverviewScreenA.variables.boards, function(index, item) {
-            // console.log(index, item);
+            if (index === 0 || index % 3 === 0) {
+                row = document.createElement('div');
+                $(row).addClass('row');
+                main_grid.append(row);
+            }
 
             var div = '<div class="col item text-center" id="grid-' + index + '">' +
                 '<p class="title-text"><a href="' + boardLinks[index] + '">' + item.board + '</a></p>' +
                 '<div class="div-svg" id="timeseries-' + index + '" onclick="window.location=\'' + regionalLinks[index] + '\';"></div>'
-            '</div>';
-            main_grid.innerHTML += div;
+                '</div>';
+
+            row.innerHTML += div;
         });
     },
 
