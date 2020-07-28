@@ -1200,7 +1200,8 @@
                   { "data_id": 1, "query_params": { "table": "hospital_suspected" } },
                   { "data_id": 1, "query_params": { "table": "hospital_confirmed" } },
                   { "data_id": 1, "query_params": { "table": "icu_patients" } }], 
-        "title": "Scotland" }
+        "title": "Scotland" },
+      { "vis_id": 1, "data_id": 1, "query_params": { "table": "cumulative_cases" }, "title": "" }
     ],
     "nrows": 1,
     "title": "Scotland",
