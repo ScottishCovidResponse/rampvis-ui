@@ -5,10 +5,8 @@ class LineChartA {
         let data = options.data;
         let canvas = document.getElementById(options.chartElement);
 
-        let CHART_WIDTH = 800;
-        let CHART_HEIGHT = 500;
-        if (canvas.clientWidth > CHART_WIDTH) CHART_WIDTH = canvas.clientWidth ;
-        if (canvas.clientHeight > CHART_HEIGHT) CHART_HEIGHT = canvas.clientHeight;
+        let CHART_WIDTH = 600;
+        let CHART_HEIGHT = 450;
 
         var min_value = data.reduce((min, p) => p.value < min ? p.value : min, data[0].value);
         var max_value = data.reduce((max, p) => p.value > max ? p.value : max, data[0].value);
@@ -36,8 +34,6 @@ class LineChartA {
         var svg = d3.select(canvas).append("svg")
             .attr("width", CHART_WIDTH)
             .attr("height", CHART_HEIGHT)
-            .attr("viewBox", '0 0 ' +(CHART_WIDTH + margin.left + margin.right) + ' ' + (CHART_HEIGHT))
-            .attr("preserveAspectRatio", "xMinYMid meet")
             .append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 

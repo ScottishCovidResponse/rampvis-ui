@@ -6,7 +6,6 @@
     position: relative;
     width: 1000px;
     height: 500px;
-    /*padding-bottom: 100%;*/
     vertical-align: top;
     overflow: hidden;
 }
@@ -15,7 +14,6 @@
     position: relative;
     width: 1000px;
     height: 500px;
-    /*padding-bottom: 100%;*/
     vertical-align: top;
     overflow: hidden;
 }
@@ -56,5 +54,23 @@
 .card.a-dashboard {
     max-width: 1500px;
     min-width: 1500px;
+}
+
+.item-boxplot {
+    border-radius: 3px;
+    background-color: #fff;
+    padding: 5px;
+    -webkit-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -o-transition: 0.2s;
+    border: 1px solid #ccc;
+    max-width: 100px;
+}
+
+.row-boxplot {
+    display: box;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
 }
 

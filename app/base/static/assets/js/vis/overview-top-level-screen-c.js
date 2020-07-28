@@ -15,17 +15,19 @@ class TopLevelOverviewScreenC {
 
     createGridLayout(grid, chart_type) {
         var main_grid = document.getElementById(grid);
-        $(main_grid).css( {"max-width": "390px", "display": "grid", "grid-template-columns": "auto auto auto auto", "padding": "10px", "margin-left": "auto", "margin-right": "auto"})
-
+        
+        let row;
         $.each(this.boards, (index, item) => {
-
-            console.log('index = ', index, 'item = ', item);
-
-            var div = '<div class="col item" id="grid-' + chart_type + '-' + index + '">' +
+            if (index === 0 || index % 3 === 0) {
+                row = document.createElement('div');
+                $(row).addClass('row row-boxplot');
+                main_grid.append(row);
+            }
+            var div = '<div class="col item-boxplot" id="grid-' + chart_type + '-' + index + '">' +
                 '<p class="title-text"><a href="' + item.regional_overview + '">' + item.abbr + '</a></p>' +
                 '<div class="div-svg" id="boxplot-' + chart_type + '-' +  index + '" onclick="window.location=\'' + '\';"></div>'
             '</div>';
-            main_grid.innerHTML += div;
+            row.innerHTML += div;
         });
     }
 
