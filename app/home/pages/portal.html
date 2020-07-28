@@ -72,52 +72,31 @@
           console.log(items)
 
           let placeholder = $('#charts');
+          placeholder.addClass('bookmarks');
           let idx = 0;
-          let nrows = Math.ceil(items / ncols);
-          console.log(nrows, ncols)
 
           // add row and col divs
-          for (let i = 0; i < nrows; i++) {
-              let row = document.createElement('div');
-              row.setAttribute('class', 'row');
+          for (let i = 0; i < items; i++) {
+            let card = document.createElement('div');
+            card.setAttribute('class', 'card bookmark');
+            placeholder.append(card);
 
-              for (let j = 0; j < ncols; j++) {
-                  let col = document.createElement('div');
-                  col.setAttribute('class', 'col-md-' + Math.round(12 / ncols) + ' text-center');
+            let cardBody = document.createElement('div');
+            cardBody.setAttribute('class', 'card-body');
+            card.appendChild(cardBody);
 
-                  let card = document.createElement('div');
-                  card.setAttribute('class', 'card');
+            let img = document.createElement('img');
+            img.setAttribute('id', _option[i].page.id);
+            cardBody.appendChild(img);
 
-                  let cardBody = document.createElement('div');
-                  cardBody.setAttribute('class', 'card-body');
-                  card.appendChild(cardBody);
+            let cardFooter = document.createElement('div');
+            cardFooter.setAttribute('class', 'card-footer');
+            cardFooter.textContent = _option[i].page.title;
+            card.appendChild(cardFooter);
 
-
-                  let img = document.createElement('img');
-                  img.setAttribute('id', _option[idx].page.id);
-
-
-                  cardBody.appendChild(img);
-
-
-                  let cardFooter = document.createElement('div');
-                  cardFooter.setAttribute('class', 'card-footer bold');
-                  cardFooter.textContent = _option[idx].page.title;
-
-                  let a = document.createElement('a');
-                  a.href = "http://example.com";
-                  cardFooter.appendChild(a);
-
-                  card.appendChild(cardFooter);
-
-                  col.appendChild(card);
-                  row.appendChild(col);
-
-                  if (++idx >= items)
-                      break
-              }
-
-              placeholder.append(row);
+            $(card).click(function() {
+              window.open('/' + _option[i].page.name);
+            });
           }
 
           for (let i = 0; i < items; i++) {
