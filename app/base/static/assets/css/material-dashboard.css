@@ -10442,7 +10442,7 @@ a[aria-expanded="true"] .caret,
   width: calc(100% - 260px);
   transition: 0.33s, cubic-bezier(0.685, 0.0473, 0.346, 1); }
   .main-panel > .content {
-    margin-top: 70px;
+    margin-top: 10px;
     padding: 30px 15px;
     min-height: calc(100vh - 123px); }
   .main-panel > .footer {
