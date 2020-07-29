@@ -24,6 +24,7 @@ class DefaultDashboard {
     constructor(options) {
         const latestData = options.data.map(columnData => columnData[columnData.length - 1]);
         const container = d3.select('#' + options.chartElement);
+        container.attr('class', 'dashboard-container')
         container.node().innerHTML = '';
 
         let date_string = moment(latestData[0]['date'], 'DD/MM/YYYY').format('ll');
@@ -46,10 +47,10 @@ class DefaultDashboard {
         // Header
         const header = table.append('tr');
         header.append('th').text('');
-        header.append('th').text('+Test');
-        header.append('th').text('H-sspt');
-        header.append('th').text('H-cnfm');
-        header.append('th').text('ICUs');
+        header.append('th').html('<div>cumul</div>+Test');
+        header.append('th').html('<div>daily</div>H-sspt');
+        header.append('th').html('<div>daily</div>H-cnfm');
+        header.append('th').html('<div>daily</div>ICUs');
 
         // Body
         const arrayLinks = [
@@ -69,7 +70,7 @@ class DefaultDashboard {
 
             data.forEach((d, colIdx) => {
                 row.append('td').attr('class', 'number clickable')
-                    .text(d[name])
+                    .text(d[name] !== undefined ? parseInt(d[name]).toLocaleString() : 'N/A')
                     .on('click', function() {
                         if (arrayLinks[colIdx][boardIdx]) {
                             window.open('/' + arrayLinks[colIdx][boardIdx]);

@@ -1,38 +1,38 @@
-#chart-0 .latest-numbers {
+.dashboard-container .latest-numbers {
     margin-left: 15px;
     width: 300px;
     border-collapse:separate; 
     border-spacing: 5px;
 }
 
-#chart-0 .latest-numbers .number {
+.dashboard-container .latest-numbers .number {
     text-align: right;
     padding-right: 3px;
 }
 
-#chart-0 .latest-numbers a {
-    color: #333;
+.dashboard-container .latest-numbers th div {
+    color: gray;
 }
 
-#chart-0 .latest-numbers td:nth-child(1),
-#chart-0 .latest-numbers th:not(:first-child) {
+.dashboard-container .latest-numbers td:nth-child(1),
+.dashboard-container .latest-numbers th:not(:first-child) {
     background-color: #dae5f1;
     text-align: center;
 }
 
-#chart-0 .latest-numbers td:nth-child(2) {
+.dashboard-container .latest-numbers td:nth-child(2) {
     background-color: #ffffcc;
 }
 
-#chart-0 .latest-numbers td:nth-child(3) {
+.dashboard-container .latest-numbers td:nth-child(3) {
     background-color: #fde9d8;
 }
 
-#chart-0 .latest-numbers td:nth-child(4) {
+.dashboard-container .latest-numbers td:nth-child(4) {
     background-color: #fbd4b4;
 }
 
-#chart-0 .latest-numbers td:nth-child(5) {
+.dashboard-container .latest-numbers td:nth-child(5) {
     background-color: #fabf8e;
 }
 
