@@ -552,21 +552,23 @@ md = {
 
       nav_content = '<ul class="nav navbar-nav nav-mobile-menu">' + nav_content + '</ul>';
 
-      navbar_form = $('nav').find('.navbar-form').get(0).outerHTML;
+      const jq_navbar_form = $('nav').find('.navbar-form').get(0);
+      if (jq_navbar_form) {
+        navbar_form = jq_navbar_form.outerHTML;
 
-      $sidebar_nav = $sidebar_wrapper.find(' > .nav');
-
-      // insert the navbar form before the sidebar list
-      $nav_content = $(nav_content);
-      $navbar_form = $(navbar_form);
-      $nav_content.insertBefore($sidebar_nav);
-      $navbar_form.insertBefore($nav_content);
-
-      $(".sidebar-wrapper .dropdown .dropdown-menu > li > a").click(function(event) {
-        event.stopPropagation();
-
-      });
-
+        $sidebar_nav = $sidebar_wrapper.find(' > .nav');
+  
+        // insert the navbar form before the sidebar list
+        $nav_content = $(nav_content);
+        $navbar_form = $(navbar_form);
+        $nav_content.insertBefore($sidebar_nav);
+        $navbar_form.insertBefore($nav_content);
+  
+        $(".sidebar-wrapper .dropdown .dropdown-menu > li > a").click(function(event) {
+          event.stopPropagation();
+        });
+      }
+      
       // simulate resize so all the charts/maps will be redrawn
       window.dispatchEvent(new Event('resize'));
 
