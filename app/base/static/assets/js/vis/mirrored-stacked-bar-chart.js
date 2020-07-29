@@ -40,8 +40,9 @@ class MirroredStackedBarChart {
         // Exclude weeks with all 0
         data = data.filter(d => data.columns.some(att => d[att]));
     
+        const parseWeek = d3.timeParse('%d-%b-%y');
         data.forEach(d => {
-            d.time = moment(d.Week).toDate();
+            d.time = parseWeek(d.Week);
             d.label = d3.timeFormat('%b %d')(d.time);
         });
     
