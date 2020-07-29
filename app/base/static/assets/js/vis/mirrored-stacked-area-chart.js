@@ -8,7 +8,7 @@ class MirroredStackedAreaChart {
         container.innerHTML = '';
 
         const vis = pv.mirroredStackedAreaChart()
-            .margin({ top: 10, right: 10, bottom: 30, left: 50 })
+            .margin({ top: 10, right: 20, bottom: 30, left: 40 })
             .colorScale(Common.Colors.AGE_GROUP_SCALE)
             .width(this.CHART_WIDTH)
             .height(this.CHART_HEIGHT);
