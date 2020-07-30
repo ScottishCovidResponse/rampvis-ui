@@ -35,7 +35,7 @@ class TopLevelOverviewScreenC {
             }
             let div = '<div class="col item-boxplot" id="grid-' + chart_type + '-' + index + '">' +
                 '<p class="title-text"><a href="' + links['dashboard'][index] + '">' + item.abbr + '</a></p>' +
-                '<div class="div-svg" id="boxplot-' + chart_type + '-' +  index + '" onclick="window.location=\'\\' + arrayLinks[main_index][index] + '\';"></div>' +
+                '<div class="div-svg" id="boxplot-' + chart_type + '-' +  index + '" onclick="window.location=\'/' + arrayLinks[main_index][index] + '\';"></div>' +
             '</div>';
             row.innerHTML += div;
         });
