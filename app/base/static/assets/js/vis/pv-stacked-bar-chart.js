@@ -33,7 +33,7 @@ pv.stackedBarChart = function() {
      */
     const xScale = d3.scaleBand().padding(0.1),
         yScale = d3.scaleLinear(),
-        xAxis = d3.axisBottom().scale(xScale).ticks(d3.timeWeek),
+        xAxis = d3.axisBottom().scale(xScale),
         yAxis = d3.axisLeft().scale(yScale).ticks(5);
     let colorScale;
 
@@ -98,7 +98,14 @@ pv.stackedBarChart = function() {
                         return `${label(d.data)}: ${key} (${(d.data[key])})`;
                     });
 
-        xAxisContainer.call(xAxis);
+        xAxisContainer.call(xAxis).selectAll('.tick').each(function() {
+            const trans = d3.select(this).attr('transform');
+            const coords = trans.substring(trans.indexOf('(') + 1, trans.indexOf(')'));
+            const [x, y] = coords.split(',');
+            // Move tick half a bandwidth back
+            d3.select(this).attr('transform', `translate(${x - xScale.bandwidth() * 0.55}, ${y})`);
+        });
+
         yAxisContainer.call(yAxis);
     }
 

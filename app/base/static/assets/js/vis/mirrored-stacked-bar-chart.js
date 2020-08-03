@@ -4,8 +4,6 @@ class MirroredStackedBarChart {
 
     constructor(options) {
         const data = this.processData(options.data);
-        console.log(data);
-
         const container = d3.select('#' + options.chartElement);
         container.innerHTML = '';
 
