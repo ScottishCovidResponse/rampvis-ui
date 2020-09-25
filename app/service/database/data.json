@@ -92,5 +92,77 @@
     ],
     "source": "stream",
     "type": "timeseries"
+  },
+  {
+    "id": 101,
+    "url": "DATA_API",
+    "endpoint": "/scotland/live/date_country_people_found_positive_daily",
+    "source": "stream",
+    "type": "",
+    "description":"Date country people found positive daily"
+  },
+  {
+    "id": 102,
+    "url": "DATA_API",
+    "endpoint": "/scotland/live/date_country_tests_daily",
+    "source": "stream",
+    "type": "",
+    "description":"Date country tests daily"
+  },
+  {
+    "id": 103,
+    "url": "DATA_API",
+    "endpoint": "/scotland/live/testing_location_date_covid19_tests_carried_out_cumulative",
+    "source": "stream",
+    "type": "",
+    "description": "Testing- location date covid19 tests carried out cumulative"
+  },
+  {
+    "id": 104,
+    "url": "DATA_API",
+    "endpoint": "/scotland/live/date_country_people_tested_last_7_days",
+    "source": "stream",
+    "type": "",
+    "description": "Date country people tested last 7 days"
+  },
+  {
+    "id": 105,
+    "url": "DATA_API",
+    "endpoint": "/scotland/live/date_country_tests_last_7_days",
+    "source": "stream",
+    "type": "",
+    "description": "Date country tests last 7 days"
+  },
+  {
+    "id": 106,
+    "url": "DATA_API",
+    "endpoint": "/scotland/live/testing_location_date_covid19_tests_carried_out_daily",
+    "source": "stream",
+    "type": "timeseries",
+    "description": "Testing- location date covid19 tests carried out daily"
+  },
+  {
+    "id": 107,
+    "url": "DATA_API",
+    "endpoint": "/scotland/live/date_country_positive_cases_last_7_days",
+    "source": "stream",
+    "type": "",
+    "description": "Date country positive cases last 7 days"
+  },
+  {
+    "id": 108,
+    "url": "DATA_API",
+    "endpoint": "/scotland/live/nhs_health_board_date_people_tested_positive_for_covid19_cumulative",
+    "source": "stream",
+    "type": "",
+    "description": "NHS health board date people tested positive for covid19 cumulative"
+  },
+  {
+    "id": 109,
+    "url": "DATA_API",
+    "endpoint": "/scotland/live/test_result_date_people_tested_for_covid19_cumulative",
+    "source": "stream",
+    "type": "",
+    "description": "Test result date people tested for covid19 cumulative"
   }
 ]

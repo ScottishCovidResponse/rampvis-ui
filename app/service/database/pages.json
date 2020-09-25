@@ -1218,5 +1218,19 @@
                 "regional": [3, 7, 11, 15, 19, 23, 34, 27, 38, 42, 46, 50, 54, 58, 62],
                 "board": [2, 66, 67, 68, 69, 70, 73, 71, 74, 75, 76, 77, 78, 79, 80]
     }
+  },
+  {
+    "id": 110,
+    "name": "live-stream-test",
+    "type": "dashboard",
+    "bind": [
+      { "vis_id": 12, 
+        "data": [ { "data_id": 101 } ], 
+        "title": "" }
+    ],
+    "nrows": 1,
+    "title": "",
+    "description": "This is not working example",
+    "links": {}
   }
 ]

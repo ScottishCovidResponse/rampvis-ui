@@ -143,6 +143,11 @@ def resolve_endpoint(data_id, query_params):
         query.update(query_params)
         url_parts[4] = urllib.parse.urlencode(query)
         endpoint = urllib.parse.urlunparse(url_parts)
+    else:
+        # no query paramaters
+        endpoint = get_api_url(data_obj.get('url')) + data_obj.get('endpoint')
+
+    print('ontology.py: resolve_endpoint: endpoint = ', endpoint)
 
     return endpoint
 
