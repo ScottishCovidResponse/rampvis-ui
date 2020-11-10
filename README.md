@@ -6,8 +6,15 @@ The API code can be found in [ScottishCovidResponse/rampvis-api](https://github.
 
 ## Getting Started
 
+Requirements
+- Python 3.8.3
+- conda 
+
+Start development instance
+
 ```bash
-# Tested the conda env 
+conda remove --name rampvis-ui --all
+conda env create -f environment.yml
 conda activate rampvis-ui
 
 ./run.sh

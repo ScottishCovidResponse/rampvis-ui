@@ -14,3 +14,5 @@ dependencies:
     - gunicorn==20.0.4
     - selenium==3.141.0
     - pillow==7.2.0
+    - requests==2.24.0
+    - jwt==1.1.0
