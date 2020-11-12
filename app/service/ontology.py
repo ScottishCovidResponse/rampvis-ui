@@ -131,21 +131,18 @@ def get_page(page_obj):
 def resolve_endpoint(data_id, query_params):
     data_obj = [x for x in data_onto if x.get('id') == data_id][0]
 
-    endpoint = data_obj.get('endpoint')
+    endpoint = get_api_url(data_obj.get('url')) + data_obj.get('endpoint')
 
-    # create endpoint
-    # TODO validation required
-    #
-    if data_obj.get('query_string'):
-        url = get_api_url(data_obj.get('url')) + data_obj.get('endpoint') + data_obj.get('query_string')
-        url_parts = list(urllib.parse.urlparse(url))
-        query = dict(urllib.parse.parse_qsl(url_parts[4]))
-        query.update(query_params)
-        url_parts[4] = urllib.parse.urlencode(query)
-        endpoint = urllib.parse.urlunparse(url_parts)
-    else:
-        # no query paramaters
-        endpoint = get_api_url(data_obj.get('url')) + data_obj.get('endpoint')
+    print('endpoint = ', endpoint)
+    print ('dat_id = ', data_id, 'query_params = ', query_params)
+
+    # if query_params [{k: v}, {k: v}] are provided
+    if query_params:
+        endpoint = endpoint + '?'
+    for query_param in query_params:
+        for key, value in query_param.items():
+            endpoint = endpoint + key + '=' + value + '&'
+
 
     print('ontology.py: resolve_endpoint: endpoint = ', endpoint)
 

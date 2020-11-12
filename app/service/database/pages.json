@@ -4,7 +4,7 @@
     "name": "top-level-overview-screen-a",
     "type": "dashboard",
     "bind": [
-      { "vis_id": 1, "data_id": 1, "query_params": { "table": "cumulative_cases" }, "title": "" }
+      { "vis_id": 1, "data_id": 1, "query_params": [{ "table": "cumulative_cases" }], "title": "" }
     ],
     "nrows": 1,
     "title": "Cumulative Number of Cases Tested Positive for COVID-19",
@@ -19,10 +19,10 @@
     "name": "sco-regional",
     "type": "dashboard",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "scotland" }, "title": "Cumulative Number of Cases"},
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "scotland" }, "title": "ICU Patients" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "scotland" }, "title": "Hospital Confirmed" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "scotland" }, "title": "Hospital Suspected" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "scotland" }], "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "scotland" }], "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "scotland" }], "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "scotland" }], "title": "Hospital Suspected" }
 
     ],
     "nrows": 2,
@@ -35,7 +35,7 @@
     "name": "sco-cumulative",
     "type": "plot",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "scotland" }, "title": "" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "scotland" }], "title": "" }
     ],
     "nrows": 1,
     "title": "Scotland - Cumulative Number of Cases Tested Positive for COVID-19",
@@ -47,7 +47,7 @@
     "name": "sco-icu_patients",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "scotland" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "scotland" }], "title": "" }
     ],
     "nrows": 1,
     "title": "Scotland - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
@@ -59,7 +59,7 @@
     "name": "sco-hospconfirmed",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "scotland" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "scotland" }], "title": "" }
     ],
     "nrows": 1,
     "title": "Scotland - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
@@ -71,7 +71,7 @@
     "name": "sco-hospsuspected",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "scotland" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "scotland" }], "title": "" }
     ],
     "nrows": 1,
     "title": "Scotland - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
@@ -83,7 +83,7 @@
     "name": "aa-cumulative",
     "type": "plot",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_ayrshire_arran" }, "title": "" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_ayrshire_arran" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Ayrshire & Arran - Cumulative Number of Cases Tested Positive for COVID-19",
@@ -95,7 +95,7 @@
     "name": "aa-icu_patients",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_ayrshire_arran" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_ayrshire_arran" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Ayrshire & Arran - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
@@ -107,7 +107,7 @@
     "name": "aa-hospconfirmed",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_ayrshire_arran" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_ayrshire_arran" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Ayrshire & Arran - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
@@ -119,7 +119,7 @@
     "name": "aa-hospsuspected",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_ayrshire_arran" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"},{ "region": "nhs_ayrshire_arran" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Ayrshire & Arran - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight.",
@@ -131,7 +131,7 @@
     "name": "bpr-cumulative",
     "type": "plot",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_borders" }, "title": "" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_borders" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Borders - Cumulative Number of Cases Tested Positive for COVID-19",
@@ -143,7 +143,7 @@
     "name": "bpr-icu_patients",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_borders" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_borders" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Borders - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
@@ -155,7 +155,7 @@
     "name": "bpr-hospconfirmed",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_borders" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_borders" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Borders - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
@@ -167,7 +167,7 @@
     "name": "bpr-hospsuspected",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_borders" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_borders" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Borders - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
@@ -179,7 +179,7 @@
     "name": "dg-cumulative",
     "type": "plot",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_dumfries_galloway" }, "title": "" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_dumfries_galloway" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Dumfries & Galloway - Cumulative Number of Cases Tested Positive for COVID-19",
@@ -191,7 +191,7 @@
     "name": "dg-icu_patients",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_dumfries_galloway" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_dumfries_galloway" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Dumfries & Galloway - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
@@ -203,7 +203,7 @@
     "name": "dg-hospconfirmed",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_dumfries_galloway" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_dumfries_galloway" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Dumfries & Galloway - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
@@ -215,7 +215,7 @@
     "name": "dg-hospsuspected",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_dumfries_galloway" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_dumfries_galloway" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Dumfries & Galloway - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
@@ -227,7 +227,7 @@
     "name": "fif-cumulative",
     "type": "plot",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_fife" }, "title": "" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_fife" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Fife - Cumulative Number of Cases Tested Positive for COVID-19",
@@ -239,7 +239,7 @@
     "name": "fif-icu_patients",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_fife" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_fife" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Fife - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
@@ -251,7 +251,7 @@
     "name": "fif-hospconfirmed",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_fife" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_fife" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Fife - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
@@ -263,7 +263,7 @@
     "name": "fif-hospsuspected",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_fife" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_fife" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Fife - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
@@ -275,7 +275,7 @@
     "name": "fov-cumulative",
     "type": "plot",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_forth_valley" }, "title": "" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_forth_valley" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Forth Valley - Cumulative Number of Cases Tested Positive for COVID-19",
@@ -287,7 +287,7 @@
     "name": "fov-icu_patients",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_forth_valley" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_forth_valley" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Forth Valley - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
@@ -299,7 +299,7 @@
     "name": "fov-hospconfirmed",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_forth_valley" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_forth_valley" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Forth Valley - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
@@ -311,7 +311,7 @@
     "name": "fov-hospsuspected",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_forth_valley" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_forth_valley" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Forth Valley - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
@@ -323,7 +323,7 @@
     "name": "gc-cumulative",
     "type": "plot",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_greater_glasgow_clyde" }, "title": "" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_greater_glasgow_clyde" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Greater Glasgow & Clyde - Cumulative Number of Cases Tested Positive for COVID-19",
@@ -335,7 +335,7 @@
     "name": "gc-icu_patients",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_greater_glasgow_clyde" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_greater_glasgow_clyde" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Greater Glasgow & Clyde - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
@@ -347,7 +347,7 @@
     "name": "gc-hospconfirmed",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_greater_glasgow_clyde" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_greater_glasgow_clyde" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Greater Glasgow & Clyde - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
@@ -359,7 +359,7 @@
     "name": "gc-hospsuspected",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_greater_glasgow_clyde" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_greater_glasgow_clyde" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Greater Glasgow & Clyde - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
@@ -371,7 +371,7 @@
     "name": "golden-icu_patients",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "golden_jubilee_nationalhospital" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "golden_jubilee_nationalhospital" }], "title": "" }
     ],
     "nrows": 1,
     "title": "Golden Jubilee National Hospital - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
@@ -383,7 +383,7 @@
     "name": "golden-hospconfirmed",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "golden_jubilee_nationalhospital" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "golden_jubilee_nationalhospital" }], "title": "" }
     ],
     "nrows": 1,
     "title": "Golden Jubilee National Hospital - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
@@ -395,7 +395,7 @@
     "name": "golden-hospsuspected",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "golden_jubilee_nationalhospital" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "golden_jubilee_nationalhospital" }], "title": "" }
     ],
     "nrows": 1,
     "title": "Golden Jubilee National Hospital - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
@@ -407,7 +407,7 @@
     "name": "gra-cumulative",
     "type": "plot",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_grampian" }, "title": "" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_grampian" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Grampian - Cumulative Number of Cases Tested Positive for COVID-19",
@@ -419,7 +419,7 @@
     "name": "gra-icu_patients",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_grampian" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_grampian" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Grampian - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
@@ -431,7 +431,7 @@
     "name": "gra-hospconfirmed",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_grampian" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_grampian" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Grampian - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
@@ -443,7 +443,7 @@
     "name": "gra-hospsuspected",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_grampian" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_grampian" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Grampian - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
@@ -455,7 +455,7 @@
     "name": "hig-cumulative",
     "type": "plot",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_highland" }, "title": "" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_highland" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Highland - Cumulative Number of Cases Tested Positive for COVID-19",
@@ -467,7 +467,7 @@
     "name": "hig-icu_patients",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_highland" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_highland" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Highland - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
@@ -479,7 +479,7 @@
     "name": "hig-hospconfirmed",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_highland" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_highland" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Highland - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
@@ -491,7 +491,7 @@
     "name": "hig-hospsuspected",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_highland" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_highland" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Highland - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
@@ -503,7 +503,7 @@
     "name": "lan-cumulative",
     "type": "plot",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_lanarkshire" }, "title": "" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_lanarkshire" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Lanarkshire - Cumulative Number of Cases Tested Positive for COVID-19",
@@ -515,7 +515,7 @@
     "name": "lan-icu_patients",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_lanarkshire" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_lanarkshire" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Lanarkshire - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
@@ -527,7 +527,7 @@
     "name": "lan-hospconfirmed",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_lanarkshire" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_lanarkshire" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Lanarkshire - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
@@ -539,7 +539,7 @@
     "name": "lan-hospsuspected",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_lanarkshire" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_lanarkshire" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Lanarkshire - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
@@ -551,7 +551,7 @@
     "name": "lot-cumulative",
     "type": "plot",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_lothian" }, "title": "" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_lothian" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Lothian - Cumulative Number of Cases Tested Positive for COVID-19",
@@ -563,7 +563,7 @@
     "name": "lot-icu_patients",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_lothian" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_lothian" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Lothian - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
@@ -575,7 +575,7 @@
     "name": "lot-hospconfirmed",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_lothian" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_lothian" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Lothian - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
@@ -587,7 +587,7 @@
     "name": "lot-hospsuspected",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_lothian" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_lothian" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Lothian - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
@@ -599,7 +599,7 @@
     "name": "ork-cumulative",
     "type": "plot",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_orkney" }, "title": "" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_orkney" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Orkney - Cumulative Number of Cases Tested Positive for COVID-19",
@@ -611,7 +611,7 @@
     "name": "ork-icu_patients",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_orkney" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_orkney" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Orkney - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
@@ -623,7 +623,7 @@
     "name": "ork-hospconfirmed",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_orkney" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_orkney" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Orkney - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
@@ -635,7 +635,7 @@
     "name": "ork-hospsuspected",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_orkney" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_orkney" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Orkney - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
@@ -647,7 +647,7 @@
     "name": "she-cumulative",
     "type": "plot",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_shetland" }, "title": "" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_shetland" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Shetland - Cumulative Number of Cases Tested Positive for COVID-19",
@@ -659,7 +659,7 @@
     "name": "she-icu_patients",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_shetland" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_shetland" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Shetland - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
@@ -671,7 +671,7 @@
     "name": "she-hospconfirmed",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_shetland" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_shetland" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Shetland - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
@@ -683,7 +683,7 @@
     "name": "she-hospsuspected",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_shetland" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_shetland" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Shetland - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
@@ -695,7 +695,7 @@
     "name": "tay-cumulative",
     "type": "plot",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_tayside" }, "title": "" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_tayside" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Tayside - Cumulative Number of Cases Tested Positive for COVID-19",
@@ -707,7 +707,7 @@
     "name": "tay-icu_patients",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_tayside" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_tayside" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Tayside - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
@@ -719,7 +719,7 @@
     "name": "tay-hospconfirmed",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_tayside" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_tayside" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Tayside - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
@@ -731,7 +731,7 @@
     "name": "tay-hospsuspected",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_tayside" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_tayside" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Tayside - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
@@ -743,7 +743,7 @@
     "name": "wei-cumulative",
     "type": "plot",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_western_isles_scotland" }, "title": "" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_western_isles_scotland" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Western Isles - Cumulative Number of Cases Tested Positive for COVID-19",
@@ -755,7 +755,7 @@
     "name": "wei-icu_patients",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_western_isles_scotland" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_western_isles_scotland" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Western Isles - Daily Number of COVID-9 Inpatients (Confirmed or Suspected) in ICU at Midnight",
@@ -767,7 +767,7 @@
     "name": "wei-hospconfirmed",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_western_isles_scotland" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params":[{ "table": "hospital_confirmed"}, {"region": "nhs_western_isles_scotland" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Western Isles - Daily Number of Confirmed COVID-9 Inpatients in Hospital at Midnight",
@@ -779,7 +779,7 @@
     "name": "wei-hospsuspected",
     "type": "plot",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_western_isles_scotland" }, "title": "" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_western_isles_scotland" }], "title": "" }
     ],
     "nrows": 1,
     "title": "NHS Western Isles - Daily Number of Suspected COVID-9 Inpatients in Hospital at Midnight",
@@ -791,10 +791,10 @@
     "name": "aa-regional",
     "type": "dashboard",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_ayrshire_arran" }, "title": "Cumulative Number of Cases"},
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_ayrshire_arran" }, "title": "ICU Patients" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_ayrshire_arran" }, "title": "Hospital Confirmed" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_ayrshire_arran" }, "title": "Hospital Suspected" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_ayrshire_arran" }], "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_ayrshire_arran" }], "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_ayrshire_arran" }], "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_ayrshire_arran" }], "title": "Hospital Suspected" }
 
     ],
     "nrows": 2,
@@ -807,10 +807,10 @@
     "name": "bpr-regional",
     "type": "dashboard",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_borders" }, "title": "Cumulative Number of Cases"},
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_borders" }, "title": "ICU Patients" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_borders" }, "title": "Hospital Confirmed" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_borders" }, "title": "Hospital Suspected" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_borders" }], "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_borders" }], "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_borders" }], "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_borders" }], "title": "Hospital Suspected" }
 
     ],
     "nrows": 2,
@@ -823,10 +823,10 @@
     "name": "dg-regional",
     "type": "dashboard",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_dumfries_galloway" }, "title": "Cumulative Number of Cases"},
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_dumfries_galloway" }, "title": "ICU Patients" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_dumfries_galloway" }, "title": "Hospital Confirmed" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_dumfries_galloway" }, "title": "Hospital Suspected" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_dumfries_galloway" }], "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_dumfries_galloway" }], "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_dumfries_galloway" }], "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_dumfries_galloway" }], "title": "Hospital Suspected" }
 
     ],
     "nrows": 2,
@@ -839,10 +839,10 @@
     "name": "fif-regional",
     "type": "dashboard",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_fife" }, "title": "Cumulative Number of Cases"},
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_fife" }, "title": "ICU Patients" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_fife" }, "title": "Hospital Confirmed" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_fife" }, "title": "Hospital Suspected" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_fife" }], "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_fife" }], "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_fife" }], "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_fife" }], "title": "Hospital Suspected" }
 
     ],
     "nrows": 2,
@@ -855,10 +855,10 @@
     "name": "fov-regional",
     "type": "dashboard",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_forth_valley" }, "title": "Cumulative Number of Cases"},
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_forth_valley" }, "title": "ICU Patients" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_forth_valley" }, "title": "Hospital Confirmed" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_forth_valley" }, "title": "Hospital Suspected" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_forth_valley" }], "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_forth_valley" }], "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_forth_valley" }], "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_forth_valley" }], "title": "Hospital Suspected" }
 
     ],
     "nrows": 2,
@@ -871,10 +871,10 @@
     "name": "gc-regional",
     "type": "dashboard",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_greater_glasgow_clyde" }, "title": "Cumulative Number of Cases"},
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_greater_glasgow_clyde" }, "title": "ICU Patients" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_greater_glasgow_clyde" }, "title": "Hospital Confirmed" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_greater_glasgow_clyde" }, "title": "Hospital Suspected" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_greater_glasgow_clyde" }], "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_greater_glasgow_clyde" }], "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_greater_glasgow_clyde" }], "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_greater_glasgow_clyde" }], "title": "Hospital Suspected" }
 
     ],
     "nrows": 2,
@@ -887,9 +887,9 @@
     "name": "golden-regional",
     "type": "dashboard",
     "bind": [
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "golden_jubilee_nationalhospital" }, "title": "ICU Patients" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "golden_jubilee_nationalhospital" }, "title": "Hospital Confirmed" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "golden_jubilee_nationalhospital" }, "title": "Hospital Suspected" }
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "golden_jubilee_nationalhospital" }], "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "golden_jubilee_nationalhospital" }], "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "golden_jubilee_nationalhospital" }], "title": "Hospital Suspected" }
 
     ],
     "nrows": 1,
@@ -902,10 +902,10 @@
     "name": "gra-regional",
     "type": "dashboard",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_grampian" }, "title": "Cumulative Number of Cases"},
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_grampian" }, "title": "ICU Patients" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_grampian" }, "title": "Hospital Confirmed" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_grampian" }, "title": "Hospital Suspected" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_grampian" }], "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_grampian" }], "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_grampian" }], "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_grampian" }], "title": "Hospital Suspected" }
 
     ],
     "nrows": 2,
@@ -918,10 +918,10 @@
     "name": "hig-regional",
     "type": "dashboard",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_highland" }, "title": "Cumulative Number of Cases"},
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_highland" }, "title": "ICU Patients" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_highland" }, "title": "Hospital Confirmed" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_highland" }, "title": "Hospital Suspected" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_highland" }], "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_highland" }], "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_highland" }], "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_highland" }], "title": "Hospital Suspected" }
 
     ],
     "nrows": 2,
@@ -934,10 +934,10 @@
     "name": "lan-regional",
     "type": "dashboard",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_lanarkshire" }, "title": "Cumulative Number of Cases"},
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_lanarkshire" }, "title": "ICU Patients" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_lanarkshire" }, "title": "Hospital Confirmed" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_lanarkshire" }, "title": "Hospital Suspected" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_lanarkshire" }], "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_lanarkshire" }], "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_lanarkshire" }], "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_lanarkshire" }], "title": "Hospital Suspected" }
 
     ],
     "nrows": 2,
@@ -950,10 +950,10 @@
     "name": "lot-regional",
     "type": "dashboard",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_lothian" }, "title": "Cumulative Number of Cases"},
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_lothian" }, "title": "ICU Patients" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_lothian" }, "title": "Hospital Confirmed" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_lothian" }, "title": "Hospital Suspected" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_lothian" }], "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_lothian" }], "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_lothian" }], "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_lothian" }], "title": "Hospital Suspected" }
 
     ],
     "nrows": 2,
@@ -966,10 +966,10 @@
     "name": "ork-regional",
     "type": "dashboard",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_orkney" }, "title": "Cumulative Number of Cases"},
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_orkney" }, "title": "ICU Patients" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_orkney" }, "title": "Hospital Confirmed" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_orkney" }, "title": "Hospital Suspected" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_orkney" }], "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_orkney" }], "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_orkney" }], "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_orkney" }], "title": "Hospital Suspected" }
 
     ],
     "nrows": 2,
@@ -982,10 +982,10 @@
     "name": "she-regional",
     "type": "dashboard",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_shetland" }, "title": "Cumulative Number of Cases"},
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_shetland" }, "title": "ICU Patients" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_shetland" }, "title": "Hospital Confirmed" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_shetland" }, "title": "Hospital Suspected" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_shetland" }], "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_shetland" }], "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_shetland" }], "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_shetland" }], "title": "Hospital Suspected" }
 
     ],
     "nrows": 2,
@@ -998,10 +998,10 @@
     "name": "tay-regional",
     "type": "dashboard",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_tayside" }, "title": "Cumulative Number of Cases"},
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_tayside" }, "title": "ICU Patients" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_tayside" }, "title": "Hospital Confirmed" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_tayside" }, "title": "Hospital Suspected" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_tayside" }], "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_tayside" }], "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_tayside" }], "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_tayside" }], "title": "Hospital Suspected" }
 
     ],
     "nrows": 2,
@@ -1014,10 +1014,10 @@
     "name": "wei-regional",
     "type": "dashboard",
     "bind": [
-      { "vis_id": 3, "data_id": 2, "query_params": { "table": "cumulative_cases", "region": "nhs_western_isles_scotland" }, "title": "Cumulative Number of Cases"},
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "icu_patients", "region": "nhs_western_isles_scotland" }, "title": "ICU Patients" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_confirmed", "region": "nhs_western_isles_scotland" }, "title": "Hospital Confirmed" },
-      { "vis_id": 2, "data_id": 2, "query_params": { "table": "hospital_suspected", "region": "nhs_western_isles_scotland" }, "title": "Hospital Suspected" }
+      { "vis_id": 3, "data_id": 2, "query_params": [{ "table": "cumulative_cases"}, {"region": "nhs_western_isles_scotland" }], "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "icu_patients"}, {"region": "nhs_western_isles_scotland" }], "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_confirmed"}, {"region": "nhs_western_isles_scotland" }], "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 2, "query_params": [{ "table": "hospital_suspected"}, {"region": "nhs_western_isles_scotland" }], "title": "Hospital Suspected" }
 
     ],
     "nrows": 2,
@@ -1030,9 +1030,9 @@
     "name": "top-level-overview-screen-c",
     "type": "dashboard",
     "bind": [
-      { "vis_id": 4, "data_id": 1, "query_params": { "table": "icu_patients" }, "title": "ICU Patients" },
-      { "vis_id": 4, "data_id": 1, "query_params": { "table": "hospital_confirmed" }, "title": "Hospital Confirmed" },
-      { "vis_id": 4, "data_id": 1, "query_params": { "table": "hospital_suspected" }, "title": "Hospital Suspected" }
+      { "vis_id": 4, "data_id": 1, "query_params": [{ "table": "icu_patients" }], "title": "ICU Patients" },
+      { "vis_id": 4, "data_id": 1, "query_params": [{ "table": "hospital_confirmed" }], "title": "Hospital Confirmed" },
+      { "vis_id": 4, "data_id": 1, "query_params": [{ "table": "hospital_suspected" }], "title": "Hospital Suspected" }
     ],
     "nrows": 1,
     "title": "Coronavirus (COVID-19): Scotland Board-level Daily Data",
@@ -1044,7 +1044,7 @@
     "name": "pearson-correlation",
     "type": "analytics",
     "bind": [
-      { "vis_id": 5, "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "pearson_correlation" }, "title": "" }
+      { "vis_id": 5, "data_id": 4, "query_params": [{ "table": "cumulative_cases"}, {"metrics": "pearson_correlation" }], "title": "" }
     ],
     "nrows": 1,
     "title": "Cumulative Cases - Pearson Correlation",
@@ -1056,7 +1056,7 @@
     "name": "mse",
     "type": "analytics",
     "bind": [
-      { "vis_id": 5, "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "mse" }, "title": "" }
+      { "vis_id": 5, "data_id": 4, "query_params": [{ "table": "cumulative_cases"}, {"metrics": "mse" }], "title": "" }
     ],
     "nrows": 1,
     "title": "Cumulative Cases - MSE",
@@ -1068,7 +1068,7 @@
     "name": "f-test",
     "type": "analytics",
     "bind": [
-      { "vis_id": 5, "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "f_test" }, "title": "" }
+      { "vis_id": 5, "data_id": 4, "query_params": [{ "table": "cumulative_cases"}, {"metrics": "f_test" }], "title": "" }
     ],
     "nrows": 1,
     "title": "Cumulative Cases - F-Test",
@@ -1080,7 +1080,7 @@
     "name": "dynamic-top-level-overview-screen-a",
     "type": "dynamic",
     "bind": [
-      { "vis_id": 1, "data_id": 5, "query_params": { "table": "cumulative_cases" }, "title": "" }
+      { "vis_id": 1, "data_id": 5, "query_params": [{ "table": "cumulative_cases" }], "title": "" }
     ],
     "nrows": 1,
     "title": "Dynamic - Cumulative Number of Cases Tested Positive for COVID-19",
@@ -1095,10 +1095,10 @@
     "name": "dynamic-sco-regional",
     "type": "dynamic",
     "bind": [
-      { "vis_id": 3, "data_id": 6, "query_params": { "table": "cumulative_cases", "region": "scotland" }, "title": "Cumulative Number of Cases"},
-      { "vis_id": 2, "data_id": 6, "query_params": { "table": "icu_patients", "region": "scotland" }, "title": "ICU Patients" },
-      { "vis_id": 2, "data_id": 6, "query_params": { "table": "hospital_confirmed", "region": "scotland" }, "title": "Hospital Confirmed" },
-      { "vis_id": 2, "data_id": 6, "query_params": { "table": "hospital_suspected", "region": "scotland" }, "title": "Hospital Suspected" }
+      { "vis_id": 3, "data_id": 6, "query_params": [{ "table": "cumulative_cases"}, {"region": "scotland" }], "title": "Cumulative Number of Cases"},
+      { "vis_id": 2, "data_id": 6, "query_params": [{ "table": "icu_patients"}, {"region": "scotland" }], "title": "ICU Patients" },
+      { "vis_id": 2, "data_id": 6, "query_params": [{ "table": "hospital_confirmed"}, {"region": "scotland" }], "title": "Hospital Confirmed" },
+      { "vis_id": 2, "data_id": 6, "query_params": [{ "table": "hospital_suspected"}, {"region": "scotland" }], "title": "Hospital Suspected" }
 
     ],
     "nrows": 2,
@@ -1111,7 +1111,7 @@
     "name": "weekly-death-situation-stacked-bar-chart",
     "type": "analytics",
     "bind": [
-      { "vis_id": 6, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Weekly deaths by COVID-19 in each situation setting (bar chart)" }
+      { "vis_id": 6, "data_id": 3, "query_params": [{ "table": "covid_deaths"}, {"group": "location" }], "title": "Weekly deaths by COVID-19 in each situation setting (bar chart)" }
     ],
     "nrows": 1,
     "title": "Weekly deaths by COVID-19 in each situation setting (bar chart)",
@@ -1123,7 +1123,7 @@
     "name": "weekly-death-situation-stacked-area-chart",
     "type": "analytics",
     "bind": [
-      { "vis_id": 7, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "location" }, "title": "Weekly deaths by COVID-19 in each situation setting (area chart)" }
+      { "vis_id": 7, "data_id": 3, "query_params": [{ "table": "covid_deaths"}, {"group": "location" }], "title": "Weekly deaths by COVID-19 in each situation setting (area chart)" }
     ],
     "nrows": 1,
     "title": "Weekly deaths by COVID-19 in each situation setting (area chart)",
@@ -1135,7 +1135,7 @@
     "name": "weekly-death-agegroup-gender-stacked-bar-chart",
     "type": "analytics",
     "bind": [
-      { "vis_id": 8, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "gender_age" }, "title": "Weekly deaths by COVID-19 in each age group and gender (bar chart)" }
+      { "vis_id": 8, "data_id": 3, "query_params": [{ "table": "covid_deaths"}, {"group": "gender_age" }], "title": "Weekly deaths by COVID-19 in each age group and gender (bar chart)" }
     ],
     "nrows": 1,
     "title": "Weekly deaths by COVID-19 in each age group and gender (bar chart)",
@@ -1147,7 +1147,7 @@
     "name": "weekly-death-agegroup-gender-stacked-area-chart",
     "type": "analytics",
     "bind": [
-      { "vis_id": 9, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "gender_age" }, "title": "Weekly deaths by COVID-19 in each age group and gender (area chart)" }
+      { "vis_id": 9, "data_id": 3, "query_params": [{ "table": "covid_deaths"}, {"group": "gender_age" }], "title": "Weekly deaths by COVID-19 in each age group and gender (area chart)" }
     ],
     "nrows": 1,
     "title": "Weekly deaths by COVID-19 in each age group and gender (area chart)",
@@ -1159,7 +1159,7 @@
     "name": "weekly-death-cause-comparison",
     "type": "analytics",
     "bind": [
-      { "vis_id": 10, "data_id": 3, "query_params": { "table": "covid_deaths", "group": "type" }, "title": "Weekly comparison of causes of deaths" }
+      { "vis_id": 10, "data_id": 3, "query_params": [{ "table": "covid_deaths"}, {"group": "type" }], "title": "Weekly comparison of causes of deaths" }
     ],
     "nrows": 1,
     "title": "Weekly comparison of causes of deaths.",
@@ -1171,7 +1171,7 @@
     "name": "cumulative-cases-correlation-simple-matrix",
     "type": "analytics",
     "bind": [
-      { "vis_id": 11, "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "pearson_correlation" }, "title": "Correlation of cumulative cases between health boards (simple matrix)" }
+      { "vis_id": 11, "data_id": 4, "query_params": [{ "table": "cumulative_cases"}, {"metrics": "pearson_correlation" }], "title": "Correlation of cumulative cases between health boards (simple matrix)" }
     ],
     "nrows": 1,
     "title": "Correlation of cumulative cases between health boards (simple matrix)",
@@ -1184,8 +1184,8 @@
     "type": "analytics",
     "bind": [
       { "vis_id": 12, 
-        "data": [ { "data_id": 4, "query_params": { "table": "cumulative_cases", "metrics": "pearson_correlation" } },
-                  { "data_id": 1, "query_params": { "table": "cumulative_cases" } }], 
+        "data": [ { "data_id": 4, "query_params": [{ "table": "cumulative_cases"}, {"metrics": "pearson_correlation" }] },
+                  { "data_id": 1, "query_params": [{ "table": "cumulative_cases" }] }], 
         "title": "Correlation of cumulative cases between health boards (complex matrix)" }
     ],
     "nrows": 1,
@@ -1199,12 +1199,12 @@
     "type": "dashboard",
     "bind": [
       { "vis_id": 13, 
-        "data": [ { "data_id": 1, "query_params": { "table": "cumulative_cases" } },
-                  { "data_id": 1, "query_params": { "table": "hospital_suspected" } },
-                  { "data_id": 1, "query_params": { "table": "hospital_confirmed" } },
-                  { "data_id": 1, "query_params": { "table": "icu_patients" } }], 
+        "data": [ { "data_id": 1, "query_params": [{ "table": "cumulative_cases" }] },
+                  { "data_id": 1, "query_params": [{ "table": "hospital_suspected" }] },
+                  { "data_id": 1, "query_params": [{ "table": "hospital_confirmed" }] },
+                  { "data_id": 1, "query_params": [{ "table": "icu_patients" }] }], 
         "title": "" },
-      { "vis_id": 1, "data_id": 1, "query_params": { "table": "cumulative_cases" }, "title": "The cumulative number of cases with positive tests for COVID-19, by board in Scotland" }
+      { "vis_id": 1, "data_id": 1, "query_params": [{ "table": "cumulative_cases" }], "title": "The cumulative number of cases with positive tests for COVID-19, by board in Scotland" }
     ],
     "nrows": 1,
     "title": "Scotland",
@@ -1220,17 +1220,31 @@
     }
   },
   {
-    "id": 110,
-    "name": "live-stream-test",
-    "type": "dashboard",
+    "id": 200,
+    "name": "page-eera-outcome-cases-hosp-death-aggregated",
+    "type": "plot",
     "bind": [
       { "vis_id": 12, 
-        "data": [ { "data_id": 101 } ], 
+        "data": [ { "data_id": 200, "query_params": [{ "col": "iter"}, { "col": "day"}, { "col":  "inc_case"}, { "col":  "inc_death_hospital"}, { "col":  "inc_death"}] } ], 
         "title": "" }
     ],
     "nrows": 1,
-    "title": "",
-    "description": "This is not working example",
+    "title": "page-eera-outcome-cases-hosp-death-aggregated",
+    "description": "This is just to show how to fetch model data and bind to a random vis (put your new vis function id)",
+    "links": {}
+  },
+  {
+    "id": 201,
+    "name": "page-eera-outcome-hosp-rec-death-age-groups",
+    "type": "plot",
+    "bind": [
+      { "vis_id": 12, 
+        "data": [ { "data_id": 201, "query_params": [{ "col": "iter"}, { "col": "day"}, { "col":  "H"}, { "col": "R"},  { "col": "D"}] } ], 
+        "title": "" }
+    ],
+    "nrows": 1,
+    "title": "page-eera-outcome-hosp-rec-death-age-groups",
+    "description": "This is just to show how to fetch model data and bind to a random vis (put your new vis function id)",
     "links": {}
   }
 ]

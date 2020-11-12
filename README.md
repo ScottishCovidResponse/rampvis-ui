@@ -17,7 +17,12 @@ conda remove --name rampvis-ui --all
 conda env create -f environment.yml
 conda activate rampvis-ui
 
-./run.sh
+# to use production API
+./run-use-prod-api.sh
+
+# to use development or local API instance
+./run-use-dev-api.sh
+
 ```
 
 Access the dashboard in browser: localhost:5000
