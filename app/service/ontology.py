@@ -51,9 +51,11 @@ def get_page_by_name(page_name):
     """
     Returns:
     {
-        page: { id: int, type: string, nrows: int, title: string, description: string, }
-        bind: [{ function: string, endpoint: string | string[],  description: string },
-                 ... ],
+        page: { id: int, type: string, nrows: int, title: string, description: string }
+        bind: [
+                { function: string, endpoint: string | string[],  description: string },
+                ...
+              ],
         links: { 'key': [ list of page ids], .. }
     }
     """

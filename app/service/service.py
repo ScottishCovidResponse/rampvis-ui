@@ -73,3 +73,32 @@ def is_bookmarked(page_id):
 def update_bookmark(page_id):
     print('service: update_bookmark: page_id = ', page_id)
     return True
+
+#
+# call backend ontology
+#
+def get_onto_pages():
+    token = session['token']
+    print('get_onto_pages: session[token] = ', token)
+    if not token:
+        return None
+
+    headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + token}
+    response = requests.get(DATA_API + '/ontology/page/', headers=headers)
+    onto_pages = json.loads(response.content)
+
+    print('get_onto_pages: onto_pages = ', onto_pages)
+    return onto_pages
+
+def get_onto_page_by_id(id):
+    token = session['token']
+    print('get_onto_page_by_id: id = ', id)
+    if not token:
+        return None
+
+    headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + token}
+    response = requests.get(DATA_API + '/ontology/page/' + id + '/template', headers=headers)
+    onto_page = json.loads(response.content)
+
+    print('get_onto_page_by_id: onto_page = ', onto_page)
+    return onto_page

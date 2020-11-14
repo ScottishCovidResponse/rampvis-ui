@@ -27,3 +27,5 @@ package-lock.json
 .idea
 node_modules
 error.log
+
+.vscode

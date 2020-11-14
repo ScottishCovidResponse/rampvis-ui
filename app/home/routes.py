@@ -38,7 +38,6 @@ def route_vis(page_name):
         return render_template('page-blank.html')
 
     page_data = ontology.get_page_by_name(page_name)
-
     print('route_template_vis: page_data = ', page_data)
 
     try:
@@ -128,12 +127,6 @@ def route_search():
     query = request.args.get('query')
     print('route_search: search: query = ', query)
 
-    # TODO use search form?
-    # form = SearchForm(request.form)
-    # if form.validate_on_submit():
-    #     query = form.search.data
-    #     # search
-
     if query:
         result = service.search(query)
         return render_template('search.html', data={'query': query, 'result': result})
@@ -169,6 +162,34 @@ def route_all_pages():
     except TemplateNotFound:
         return render_template('page-404.html'), 404
 
+    except:
+        return render_template('page-500.html'), 500
+
+
+@blueprint.route('/onto-pages')
+def route_onto_pages():
+    print('route_onto_pages:')
+    try:
+        onto_pages = service.get_onto_pages()
+        print('route_onto_pages: onto_pages = ', onto_pages)
+        return render_template('onto-pages.html', table=onto_pages)
+    except TemplateNotFound:
+        return render_template('page-404.html'), 404
+    except:
+        return render_template('page-500.html'), 500
+
+
+@blueprint.route('/onto-page/<id>')
+def route_onto_page(id):
+    print('route_onto_page: id = ', id)
+
+    page_data = service.get_onto_page_by_id(id)
+    print('route_onto_page: page_data = ', page_data)
+
+    try:
+        return render_template('template-vis.html', option=page_data)
+    except TemplateNotFound:
+        return render_template('page-404.html'), 404
     except:
         return render_template('page-500.html'), 500
 
