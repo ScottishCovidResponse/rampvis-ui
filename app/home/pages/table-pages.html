@@ -12,7 +12,7 @@
     <div class="card">
       <div class="card-header card-header-icon card-header-primary">
         <div class="card-icon"><i class="material-icons">table_view</i></div>
-        <h4 class="card-title ">Visualizations & Pages</h4>
+        <h4 class="card-title ">Pages - {{publishType}}</h4>
       </div>
 
       <div class="card-body">
@@ -22,8 +22,8 @@
             <thead class=" text-primary">
             <th> ID</th>
             <th> Title</th>
-            <th> Description</th>
-            <th> Type</th>
+            <!-- <th> Description</th>
+            <th> Type</th> -->
             <th> Link </th>
             </thead>
 
@@ -31,9 +31,9 @@
               <tr>
                 <td>{{ d.id  }}</td>
                 <td>{{ d.title  }}</td>
-                <td>{{ d.description  }}</td>
-                <td>{{ d.type  }}</td>
-                <td><a href="/{{ d.name }}"> <i class="material-icons">link</i>  </a></td>
+                <!-- <td>{{ d.description  }}</td>
+                <td>{{ d.type  }}</td> -->
+                <td><a href="/test-pages/{{ d.id }}"> <i class="material-icons">link</i>  </a></td>
               </tr>
             {% endfor %}
 

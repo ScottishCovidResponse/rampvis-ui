@@ -77,15 +77,15 @@ def update_bookmark(page_id):
 #
 # call backend ontology
 #
-def get_onto_pages():
+def get_onto_pages(publish_type):
     token = session['token']
     print('get_onto_pages: session[token] = ', token)
     
-    response = requests.get(DATA_API + '/template/pages/')
+    response = requests.get(DATA_API + '/template/pages/?publishType=' + publish_type)
     onto_pages = json.loads(response.content)
 
-    print('get_onto_pages: onto_pages = ', onto_pages)
-    return onto_pages
+    print('get_onto_pages: onto_pages = ', onto_pages.get('data', []))
+    return onto_pages.get('data', [])
 
 def get_onto_page_by_id(id):
     token = session['token']

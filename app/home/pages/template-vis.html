@@ -84,7 +84,7 @@
           placeholder.append(col);
 
           let data = await fetchData(bind['endpoint']);
-          console.log('fetchedData = ', data);
+          console.log('template-vis.html: DATA = ', data);
 
           let args = {
               chartElement: `chart-0`,
@@ -145,7 +145,8 @@
           idx = 0;
           bind.forEach(async (d) => {
               let data = await fetchData(d['endpoint'])
-              console.log('fetchedData = ', data);
+              console.log('template-vis.html: DATA = ', data);
+              console.log(data.length)
 
               let args = {
                   chartElement: `chart-${idx}`,
@@ -159,8 +160,7 @@
 
 
       async function fetchData(endpoint) {
-          console.log('template-overview-b.html: fetchData: endpoint = ', endpoint);
-
+          console.log('template-vis.html: endpoint = ', endpoint);
           if (typeof endpoint === 'string') {
               try {
                   return await fetch(endpoint)
@@ -191,7 +191,7 @@
 
           Service.getBookmarkInfo(DATA_API, _option.page.id, token)
               .then(data => {
-                  console.log('bookmark style ', data);
+                  // console.log('bookmark style ', data);
                   if (data) {
                       isBookmarked = true;
                       data && $('#bookmark').css('color', 'orange');

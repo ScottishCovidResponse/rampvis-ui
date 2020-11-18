@@ -1225,12 +1225,12 @@
     "type": "plot",
     "bind": [
       { "vis_id": 12, 
-        "data": [ { "data_id": 200, "query_params": [{ "col": "iter"}, { "col": "day"}, { "col":  "inc_case"}, { "col":  "inc_death_hospital"}, { "col":  "inc_death"}] } ], 
+        "data": [ { "data_id": 200, "query_params": [] } ], 
         "title": "" }
     ],
     "nrows": 1,
     "title": "page-eera-outcome-cases-hosp-death-aggregated",
-    "description": "This is just to show how to fetch model data and bind to a random vis (put your new vis function id)",
+    "description": "Template for-  eers hosp. death and bind (to get new vis function)",
     "links": {}
   },
   {
@@ -1239,12 +1239,13 @@
     "type": "plot",
     "bind": [
       { "vis_id": 12, 
-        "data": [ { "data_id": 201, "query_params": [{ "col": "iter"}, { "col": "day"}, { "col":  "H"}, { "col": "R"},  { "col": "D"}] } ], 
+        "data": [ { "data_id": 201, "query_params": [] } ], 
         "title": "" }
     ],
     "nrows": 1,
     "title": "page-eera-outcome-hosp-rec-death-age-groups",
-    "description": "This is just to show how to fetch model data and bind to a random vis (put your new vis function id)",
+    "description": "Template for-  eers hosp. conf. data and bind (to get new vis function)",
     "links": {}
   }
 ]
+
