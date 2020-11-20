@@ -38,9 +38,14 @@ TopLevelOverviewScreenA.prototype = {
                 main_grid.append(row);
             }
 
+            let boardLinksIndex = '';
+            if (boardLinks && boardLinks[index]) boardLinksIndex = boardLinks[index];
+            let regionalLinksIndex = '';
+            if (regionalLinks && regionalLinks[index]) regionalLinksIndex = regionalLinks[index]
+
             var div = '<div class="col item text-center" id="grid-' + index + '">' +
-                '<p class="title-text"><a href="' + boardLinks[index] + '">' + item.board + '</a></p>' +
-                '<div class="div-svg" id="timeseries-' + index + '" onclick="window.location=\'' + regionalLinks[index] + '\';"></div>'
+                '<p class="title-text"><a href="' + boardLinksIndex + '">' + item.board + '</a></p>' +
+                '<div class="div-svg" id="timeseries-' + index + '" onclick="window.location=\'' + regionalLinksIndex + '\';"></div>'
                 '</div>';
 
             row.innerHTML += div;
