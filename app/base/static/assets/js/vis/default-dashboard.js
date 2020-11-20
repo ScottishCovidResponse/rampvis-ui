@@ -53,12 +53,12 @@ class DefaultDashboard {
         header.append('th').html('<div>daily</div>ICUs');
 
         // Body
-        const arrayLinks = [
-            links['cumulative_cases'], 
-            links['hospital_suspected'],
-            links['hospital_confirmed'],
-            links['icu_patients']
-        ];
+        // Check, in case links are not defined in ontology the code should execute
+        const arrayLinks = [[]];
+        if (links && links['cumulative_cases']) arrayLinks.push(links['cumulative_cases'])
+        if (links && links['hospital_suspected']) arrayLinks.push(links['hospital_suspected'])
+        if (links && links['hospital_confirmed']) arrayLinks.push(links['hospital_confirmed'])
+        if (links && links['icu_patients']) arrayLinks.push(links['icu_patients'])
         
         const boardNames = this.getBoardNames(data);
         boardNames.forEach((name, boardIdx) => {

@@ -25,10 +25,14 @@ TopLevelOverviewScreenA.prototype = {
     createGridLayout: function(element, links) {
         var main_grid = document.getElementById(element);
 
-        let regionalLinks = links['regional']
+        // Check, in case links are not defined in ontology the code should execute
+        let regionalLinks = [];
+        if (links && links['regional']) regionalLinks = links['regional'];
+        let boardLinks = [];
+        if (links && links['board']) boardLinks = links['board'] || [];
+
         console.log('overviewLinks = ', regionalLinks)
 
-        let boardLinks = links['board']
 
         let row;
         $.each(TopLevelOverviewScreenA.variables.boards, function(index, item) {
