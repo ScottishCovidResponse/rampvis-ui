@@ -1222,7 +1222,7 @@
   {
     "id": 201,
     "name": "eera-hospital-age-groups",
-    "type": "plot",
+    "type": "model",
     "bind": [
       { "vis_id": 14, "data_id": 301, "query_params": [ { "col": "H" } ], "title": "" }
     ],
@@ -1234,7 +1234,7 @@
   {
     "id": 202,
     "name": "eera-death-age-groups",
-    "type": "plot",
+    "type": "model",
     "bind": [
       { "vis_id": 14, "data_id": 301, "query_params": [ { "col": "D" } ], "title": "" }
     ],
