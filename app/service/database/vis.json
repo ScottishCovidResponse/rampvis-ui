@@ -76,5 +76,11 @@
     "function": "DefaultDashboard",
     "type": "default_dashboard",
     "description": ""
+  },
+  {
+    "id": 14,
+    "function": "SuperimposedPercentiles",
+    "type": "superimposed_percentiles",
+    "description": ""
   }
 ]

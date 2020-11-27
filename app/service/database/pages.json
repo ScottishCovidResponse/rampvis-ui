@@ -1220,32 +1220,27 @@
     }
   },
   {
-    "id": 200,
-    "name": "page-eera-outcome-cases-hosp-death-aggregated",
+    "id": 201,
+    "name": "eera-hospital-age-groups",
     "type": "plot",
     "bind": [
-      { "vis_id": 12, 
-        "data": [ { "data_id": 200, "query_params": [] } ], 
-        "title": "" }
+      { "vis_id": 14, "data_id": 301, "query_params": [ { "col": "H" } ], "title": "" }
     ],
     "nrows": 1,
-    "title": "page-eera-outcome-cases-hosp-death-aggregated",
-    "description": "Template for-  eers hosp. death and bind (to get new vis function)",
+    "title": "EERA predictions of hospital admission by age group",
+    "description": "Displaying raw data and uncertainty in the outcome of EERA model: hospital admission by age group.",
     "links": {}
   },
   {
-    "id": 201,
-    "name": "page-eera-outcome-hosp-rec-death-age-groups",
+    "id": 202,
+    "name": "eera-death-age-groups",
     "type": "plot",
     "bind": [
-      { "vis_id": 12, 
-        "data": [ { "data_id": 201, "query_params": [] } ], 
-        "title": "" }
+      { "vis_id": 14, "data_id": 301, "query_params": [ { "col": "D" } ], "title": "" }
     ],
     "nrows": 1,
-    "title": "page-eera-outcome-hosp-rec-death-age-groups",
-    "description": "Template for-  eers hosp. conf. data and bind (to get new vis function)",
+    "title": "EERA predictions of deaths by age group",
+    "description": "Displaying raw data and uncertainty in the outcome of EERA model: death by age group.",
     "links": {}
   }
 ]
-

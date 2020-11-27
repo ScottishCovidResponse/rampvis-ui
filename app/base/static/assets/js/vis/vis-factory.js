@@ -28,5 +28,7 @@ class VisFunctionFactory {
             return new EnhancedMatrix(args);
         if (type === "DefaultDashboard") 
             return new DefaultDashboard(args);
+        if (type === "SuperimposedPercentiles") 
+            return new SuperimposedPercentiles(args);
     }
 }

@@ -112,5 +112,15 @@
     "source": "",
     "type": "",
     "description": ""
+  },
+  {
+    "id": 301,
+    "url": "STAT_API",
+    "endpoint": "/percentiles/model/eera/age-groups/",
+    "query_string": "col=",
+    "col": ["H","R","D"],
+    "source": "housekeeping",
+    "type": "",
+    "description": "Percentiles at 5%, 25%, 50%, 75%, 95% of EERA predictions."
   }
 ]
