@@ -2,7 +2,7 @@
 
 ## API 
 
-The API code can be found in [ScottishCovidResponse/rampvis-api](https://github.com/ScottishCovidResponse/rampvis-api)
+The API code can be found in [ScottishCovidResponse/rampvis-api](https://github.com/ScottishCovidResponse/rampvis-api).
 
 ## Getting Started
 
