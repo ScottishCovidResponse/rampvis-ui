@@ -8,7 +8,7 @@ class MirroredStackedAreaChart {
         container.innerHTML = '';
 
         const vis = pv.mirroredStackedAreaChart()
-            .margin({ top: 10, right: 10, bottom: 30, left: 50 })
+            .margin({ top: 10, right: 20, bottom: 30, left: 40 })
             .colorScale(Common.Colors.AGE_GROUP_SCALE)
             .width(this.CHART_WIDTH)
             .height(this.CHART_HEIGHT);
@@ -38,8 +38,9 @@ class MirroredStackedAreaChart {
         // Exclude weeks with all 0
         data = data.filter(d => data.columns.some(att => d[att]));
     
+        const parseWeek = d3.timeParse('%d-%b-%y');
         data.forEach(d => {
-            d.time = moment(d.Week).toDate();
+            d.time = parseWeek(d.Week);
             d.label = d3.timeFormat('%b %d')(d.time);
         });
     

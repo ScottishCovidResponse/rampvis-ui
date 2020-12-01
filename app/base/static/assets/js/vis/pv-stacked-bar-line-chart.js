@@ -131,7 +131,15 @@ pv.stackedBarLineChart = function() {
             .selectAll('text')
                 .attr('transform', 'rotate(-30)')
                 .attr('dx', '-.5em')
-                .attr('dy', '1em');
+                .attr('dy', '1em')
+        xAxisContainer.selectAll('.tick').each(function() {
+            const trans = d3.select(this).attr('transform');
+            const coords = trans.substring(trans.indexOf('(') + 1, trans.indexOf(')'));
+            const [x, y] = coords.split(',');
+            // Move tick half a bandwidth back
+            d3.select(this).attr('transform', `translate(${x - xScale.bandwidth() * 0.55}, ${y})`);
+        });
+            
         yAxisContainer.call(yAxis);
     }
 

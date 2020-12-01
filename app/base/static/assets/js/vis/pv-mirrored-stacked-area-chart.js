@@ -138,7 +138,11 @@ pv.mirroredStackedAreaChart = function() {
                 .attr('y2', height)
                 .style('stroke', 'black');
 
-        xAxisContainer.call(xAxis);
+        xAxisContainer.call(xAxis)
+            .selectAll('text')
+            .attr('transform', 'rotate(-30)')
+            .attr('dx', '-.5em')
+            .attr('dy', '1em');
         yAxisContainerTop.call(yAxisTop);
         yAxisContainerBottom.call(yAxisBottom);
     }

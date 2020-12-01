@@ -9,23 +9,33 @@ class TopLevelOverviewScreenC {
     constructor(options) {
         console.log('TopLevelOverviewScreenC: options = ', options);
 
-        this.createGridLayout(options.chartElement, options.chartElement);
+        this.createGridLayout(options.chartElement, options.chartElement, options.links);
         this.createBoxPlot(options.data, options.chartElement);
     }
 
-    createGridLayout(grid, chart_type) {
+    createGridLayout(grid, chart_type, links) {
         var main_grid = document.getElementById(grid);
-        
+
+        const arrayLinks = [
+            links['icu_patients'],
+            links['hospital_confirmed'],
+            links['hospital_suspected']
+        ];
+
+        console.log(arrayLinks);
+
         let row;
+        let main_index = chart_type.split('-');
+        main_index = main_index[main_index.length - 1];
         $.each(this.boards, (index, item) => {
             if (index === 0 || index % 3 === 0) {
                 row = document.createElement('div');
                 $(row).addClass('row row-boxplot');
                 main_grid.append(row);
             }
-            var div = '<div class="col item-boxplot" id="grid-' + chart_type + '-' + index + '">' +
-                '<p class="title-text"><a href="' + item.regional_overview + '">' + item.abbr + '</a></p>' +
-                '<div class="div-svg" id="boxplot-' + chart_type + '-' +  index + '" onclick="window.location=\'' + '\';"></div>'
+            let div = '<div class="col item-boxplot" id="grid-' + chart_type + '-' + index + '">' +
+                '<p class="title-text"><a href="' + links['dashboard'][index] + '">' + item.abbr + '</a></p>' +
+                '<div class="div-svg" id="boxplot-' + chart_type + '-' +  index + '" onclick="window.location=\'/' + arrayLinks[main_index][index] + '\';"></div>' +
             '</div>';
             row.innerHTML += div;
         });

@@ -1,6 +1,6 @@
 {% extends "base-site.html" %}
 
-{% block title %} Overview {% endblock %}
+{% block title %} Visualization {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -57,7 +57,7 @@
           if (_option.bind.length === 1) {
               layoutOptionA(_option.bind[0], _option.page.type, placeholder)
           } else {
-              layoutOptionB(_option.bind, _option.page.nrows, placeholder)
+              layoutOptionB(_option.bind, _option.page.nrows, placeholder, _option.links)
           }
 
       });
@@ -151,6 +151,7 @@
               let args = {
                   chartElement: `chart-${idx}`,
                   data: data,
+                  links: _option.links
               };
               new VisFunctionFactory(d['function'], args);
               console.log('template-vis.html:', d['function'], `chart-${idx}`, data);
