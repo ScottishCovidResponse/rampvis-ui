@@ -1,3 +1,6 @@
+<!--
+This template used upto v0.5
+-->
 {% extends "base-site.html" %}
 
 {% block title %} Overview {% endblock %}
@@ -51,7 +54,7 @@
 
       $(document).ready(function () {
 
-          console.log('template-vis.html: option = ', _option);
+          console.log('template-1.html: option = ', _option);
           let placeholder = $('#charts');
           
           if (_option.bind.length === 1) {
@@ -66,7 +69,7 @@
       // Layout option A
       //
       async function layoutOptionA(bind, type, placeholder) {
-          console.log('template-vis.html: layoutOptionA: bind = ', bind);
+          console.log('template-1.html: layoutOptionA: bind = ', bind);
 
           // only one row and chart in it
           let row = document.createElement('div');
@@ -84,7 +87,7 @@
           placeholder.append(col);
 
           let data = await fetchData(bind['endpoint']);
-          console.log('template-vis.html: DATA = ', data);
+          console.log('template-1.html: DATA = ', data);
 
           let args = {
               chartElement: `chart-0`,
@@ -92,7 +95,7 @@
               links: _option.links
           };
           new VisFunctionFactory(bind['function'], args);
-          console.log('template-vis.html:', bind['function'], `chart-0`, data);
+          console.log('template-1.html:', bind['function'], `chart-0`, data);
 
       }
 
@@ -101,8 +104,8 @@
       //
       function layoutOptionB(bind, nrows, placeholder) {
           let ncols = Math.ceil(bind.length / nrows);
-          console.log('template-overview-b.html: layoutOptionB: bind = ', bind);
-          console.log('template-overview-b.html: layoutOptionB: nrows = ', nrows, ', ncols = ', ncols);
+          console.log('template-1.html: layoutOptionB: bind = ', bind);
+          console.log('template-1.html: layoutOptionB: nrows = ', nrows, ', ncols = ', ncols);
 
           let idx = 0;
           // add row and col divs
@@ -145,7 +148,7 @@
           idx = 0;
           bind.forEach(async (d) => {
               let data = await fetchData(d['endpoint'])
-              console.log('template-vis.html: DATA = ', data);
+              console.log('template-1.html: DATA = ', data);
               console.log(data.length)
 
               let args = {
@@ -153,14 +156,14 @@
                   data: data,
               };
               new VisFunctionFactory(d['function'], args);
-              console.log('template-vis.html:', d['function'], `chart-${idx}`, data);
+              console.log('template-1.html:', d['function'], `chart-${idx}`, data);
               idx++;
           });
       }
 
 
       async function fetchData(endpoint) {
-          console.log('template-vis.html: endpoint = ', endpoint);
+          console.log('template-1.html: endpoint = ', endpoint);
           if (typeof endpoint === 'string') {
               try {
                   return await fetch(endpoint)
