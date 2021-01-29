@@ -218,21 +218,6 @@ def route_test_pages():
         return render_template('page-500.html'), 500
 
 
-# @blueprint.route('/v0.x/<id>')
-# def route_onto_page(id):
-#     print('route_onto_page: id = ', id)
-
-#     page_data = service.get_onto_page_by_id(id)
-#     print('route_onto_page: page_data = ', page_data)
-
-#     try:
-#         return render_template('template-vis.html', option=page_data)
-#     except TemplateNotFound:
-#         return render_template('page-404.html'), 404
-#     except:
-#         return render_template('page-500.html'), 500
-
-
 @blueprint.route('/<id_or_name>')
 def route_page(id_or_name):
     logging.debug(f'routes.py:route_page: id_or_name = {id_or_name}')
@@ -242,16 +227,18 @@ def route_page(id_or_name):
 
     # check if the page name exist in local ontology
     page_data = ontology.get_page_by_name(id_or_name)
-    if page_data:
+    if page_data != None:
         logging.debug(f'routes.py:route_page: local ontology page_data = {page_data}')
         try:
             return render_template('template-1.html', option=page_data)
         except TemplateNotFound:
+            logging.error(f'routes.py:route_page: exception1 = TemplateNotFound')
             return render_template('page-404.html'), 404
         except:
+            logging.error(f'routes.py:route_page: exception1 = {e}')
             return render_template('page-500.html'), 500
 
-    else:
+    elif page_data == None:
         # page_data = None, i.e.,
         # check if the page id exist in ontology database
         page_data = service.get_onto_page_by_id(id_or_name)
@@ -259,6 +246,8 @@ def route_page(id_or_name):
         try:
             return render_template('template-2.html', option=page_data)
         except TemplateNotFound:
+            logging.error(f'routes.py:route_page: exception2 = TemplateNotFound')
             return render_template('page-404.html'), 404
-        except:
+        except Exception as e: 
+            logging.error(f'routes.py:route_page: exception2 = {e}')
             return render_template('page-500.html'), 500
