@@ -103,22 +103,6 @@ def route_models():
         return render_template('page-500.html'), 500
 
 
-@blueprint.route('/dynamic')
-def route_dynamic():
-    print('dynamic:')
-
-    try:
-        table = ontology.get_pages_by_type('dynamic')
-        print('plots: data = ', table)
-        return render_template('dynamic.html', table=table)
-
-    except TemplateNotFound:
-        return render_template('page-404.html'), 404
-
-    except:
-        return render_template('page-500.html'), 500
-
-
 @blueprint.route('/search', methods=['GET'])
 def route_search():
     query = request.args.get('query')
@@ -156,12 +140,12 @@ def profile():
     return render_template('profile.html')
 
 
-@blueprint.route('pages-table-1')
-def route_released_pages_1():
-    print('route_released_pages_1:')
+@blueprint.route('v05')
+def route_v05():
+    print('route_v05')
     try:
         table = ontology.get_all_pages()
-        print('route_released_pages_1: page_data = ', table)
+        print('route_pages_v0.5: page_data = ', table)
         return render_template('pages-table-1.html', table=table)
 
     except TemplateNotFound:
@@ -177,41 +161,15 @@ def route_released_pages_1():
 
 
 @blueprint.route('/released')
-def route_released_pages():
-    print('route_released_pages:')
-    try:
-        publish_type = 'release'
-        onto_pages = service.get_onto_pages(publish_type)
-        print('route_released_pages: onto_pages = ', onto_pages)
-        return render_template('table-pages.html', table=onto_pages, publishType=publish_type)
-    except TemplateNotFound:
-        return render_template('page-404.html'), 404
-    except:
-        return render_template('page-500.html'), 500
-
-
 @blueprint.route('/review')
-def route_review_pages():
-    print('route_review_pages:')
-    try:
-        publish_type = 'review'
-        onto_pages = service.get_onto_pages(publish_type)
-        print('route_review_pages: onto_pages = ', onto_pages)
-        return render_template('table-pages.html', table=onto_pages, publishType=publish_type)
-    except TemplateNotFound:
-        return render_template('page-404.html'), 404
-    except:
-        return render_template('page-500.html'), 500
-
-
 @blueprint.route('/example')
-def route_test_pages():
-    print('route_test_pages:')
+def route_pages():
+    url_prefix = request.url_rule.rule.replace('/', '')
+    logging.debug(f'routes.py:route_pages: binding_type = {url_prefix}')
     try:
-        publish_type = 'test'
-        onto_pages = service.get_onto_pages(publish_type)
-        print('route_test_pages: onto_pages = ', onto_pages)
-        return render_template('table-pages.html', table=onto_pages, publishType=publish_type)
+        onto_pages = service.get_onto_pages(url_prefix)
+        print('route_released_pages: onto_pages = ', onto_pages)
+        return render_template('pages-table-2.html', table=onto_pages, publishType=url_prefix)
     except TemplateNotFound:
         return render_template('page-404.html'), 404
     except:
