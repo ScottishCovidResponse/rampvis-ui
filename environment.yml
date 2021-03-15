@@ -2,25 +2,23 @@ name: rampvis-ui
 channels:
   - defaults
 dependencies:
-  - _libgcc_mutex=0.1=main
-  - ca-certificates=2020.10.14=0
-  - certifi=2020.6.20=pyhd3eb1b0_3
-  - ld_impl_linux-64=2.33.1=h53a641e_7
-  - libedit=3.1.20191231=h14c3975_1
-  - libffi=3.3=he6710b0_2
-  - libgcc-ng=9.1.0=hdf63c60_0
-  - libstdcxx-ng=9.1.0=hdf63c60_0
-  - ncurses=6.2=he6710b0_1
-  - openssl=1.1.1h=h7b6447c_0
-  - pip=20.2.4=py38h06a4308_0
-  - python=3.8.3=hcff3b4d_2
-  - readline=8.0=h7b6447c_0
-  - setuptools=50.3.1=py38h06a4308_1
-  - sqlite=3.32.3=h62c20be_0
-  - tk=8.6.10=hbc83047_0
-  - wheel=0.35.1=pyhd3eb1b0_0
-  - xz=5.2.5=h7b6447c_0
-  - zlib=1.2.11=h7b6447c_3
+  - ca-certificates=2020.10.14
+  - certifi=2020.6.20
+  - libedit=3.1.20191231
+  - libffi=3.3
+  - libgcc-ng=9.1.0
+  - libstdcxx-ng=9.1.0
+  - ncurses=6.2
+  - openssl=1.1.1h
+  - pip=20.2.4
+  - python=3.8.3
+  - readline=8.0
+  - setuptools=50.3.1
+  - sqlite=3.32.3
+  - tk=8.6.10
+  - wheel=0.35.1
+  - xz=5.2.5
+  - zlib=1.2.11
   - pip:
     - alembic==1.4.3
     - chardet==3.0.4
