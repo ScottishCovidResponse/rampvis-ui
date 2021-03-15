@@ -24,6 +24,9 @@ class Config(object):
 
     DATA_API = os.environ.get('DATA_API')
     STAT_API = os.environ.get('STAT_API')
+    API_PY = os.environ.get('API_PY')
+    API_JS = os.environ.get('API_JS')
+
     MONGODB_URL = os.environ.get('MONGODB_URL')
 
 

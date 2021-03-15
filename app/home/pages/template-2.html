@@ -1,237 +1,151 @@
 <!--
 This template is for v1.0 and above
 -->
-{% extends "base-site.html" %}
-
-{% block title %} Overview {% endblock %}
+{% extends "base-site.html" %} {% block title %} Overview {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
 
-{% block content %}
+<div class="dashboard-container">
+  <div class="card a-dashboard">
+    <div class="card-header card-header-icon card-header-primary">
+      <div class="card-icon"><i class="material-icons">collections</i></div>
+      <!-- Card title -->
+      <h3 class="card-title">
+        {{ option.id }}
+        <span>
+          <!-- Bookmark -->
+          {% if current_user.is_authenticated %}
+          <i class="material-icons" id="bookmark">bookmark</i>
+          {% endif %}
+        </span>
+      </h3>
+    </div>
 
-  <div class="dashboard-container">
-    <div class="card a-dashboard">
-
-      <div class="card-header card-header-icon card-header-primary">
-        <div class="card-icon"><i class="material-icons">collections</i></div>
-        <!-- Card title -->
-        <h3 class="card-title">
-          {{ option.id }}
-          <span>
-            <!-- Bookmark -->
-            {% if current_user.is_authenticated %}
-              <i class="material-icons" id="bookmark">bookmark</i>
-            {% endif %}
-            </span>
-        </h3>
-      </div>
-
-
-      <div class="card-body">
-        <!-- Description -->
-        <p class="card-text">{{ option.id }}</p>
-        <!-- Chart -->
-        <div id="charts"></div>
-      </div>
-
+    <div class="card-body">
+      <!-- Description -->
+      <p class="card-text">{{ option.id }}</p>
+      <!-- Chart -->
+      <div id="charts"></div>
     </div>
   </div>
+</div>
 
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 
-  <script>
+<script>
 
-      let _option = {{ option | tojson }};
-      let token = '{{ session.token | safe }}';
-      let userName = '{{ current_user.username | safe }}';
-      let isAuthorised = {{ current_user.is_authenticated | tojson }};
-      let isBookmarked = false;
-      let DATA_API = {{ config['DATA_API'] | tojson }};
+  let _option = {{ option | tojson }};
+  let token = '{{ session.token | safe }}';
+  let userName = '{{ current_user.username | safe }}';
+  let isAuthorised = {{ current_user.is_authenticated | tojson }};
+  let isBookmarked = false;
+  let DATA_API = {{ config['DATA_API'] | tojson }};
 
-      $(document).ready(function () {
+  $(document).ready(function () {
 
-          console.log('template-2.html: data or template option = ', _option);
-          
-          //
-          // TODO: fix the code onwards
-          //
+      console.log('template-2.html: option = ', _option);
+
+        let placeholder = $('#charts');
+        layout(_option.bindings, placeholder)
+  });
+
+  //
+  // Layout
+  //
+  async function layout(bindings, placeholder) {
+      console.log('template-2.html:layout: bindings = ', bindings);
+
+      // only one row and chart in it
+      let row = document.createElement('div');
+      let col = document.createElement('div');
+
+
+      row.setAttribute('class', 'row');
+
+      col.setAttribute('id', 'chart-0');
+      col.setAttribute('class', 'col');
+      row.append(col);
+      placeholder.append(col);
+
+      let data = await fetchData(bindings?.data);
+      console.log('template-2.html:layout: data = ', data);
+
+      let args = {
+          chartElement: `chart-0`,
+          data: data,
+          links: bindings?.links
+      };
+      new VisFunctionFactory(bindings?.vis?.function, args);
+      console.log('template-2.html:', bind['function'], `chart-0`, data);
+
+  }
+
+  async function fetchData(data) {
+      console.log('template-2.html:fetchData: data = ', data);
+      if (typeof data === 'string') {
+          try {
+              return await fetch(data?.endpoint)
+                  .then(res => res.json());
+          } catch (error) {
+              console.error('template-2.html:fetchData: error = ', error)
+              throw (error)
+          }
+      } else if (Array.isArray(data)) {
+          try {
+              return await Promise.all(
+                  data.map(d => fetch(d?.endpoint).then((response) => response.json())));
+          } catch (error) {
+              console.error('template-2.html:fetchData: error = ', error)
+              throw (error)
+          }
+      }
+
+  }
+
+  //
+  // Bookmark or remove bookmark
+  //
+  $(document).ready(function () {
+      if (!isAuthorised) {
           return;
-          
-          let placeholder = $('#charts');
-          
-          if (_option.bind.length === 1) {
-              layoutOptionA(_option.bind[0], _option.page.type, placeholder)
+      }
+
+      Service.getBookmarkInfo(DATA_API, _option.id, token)
+          .then(data => {
+              // console.log('bookmark style ', data);
+              if (data) {
+                  isBookmarked = true;
+                  data && $('#bookmark').css('color', 'orange');
+              }
+          });
+
+      $('#bookmark').on('click', () => {
+          if (!isBookmarked) {
+              Service.createBookmark(DATA_API, _option.id, token)
+                  .then(data => {
+                      if (data) {
+                          isBookmarked = !isBookmarked;
+                          $('#bookmark').css('color', 'orange');
+                          console.log('onClickBookmark: ', _option.id, token);
+                      }
+                  });
           } else {
-              layoutOptionB(_option.bind, _option.page.nrows, placeholder)
+              Service.removeBookmark(DATA_API, _option.id, token)
+                  .then(data => {
+                      if (data) {
+                          isBookmarked = !isBookmarked;
+                          $('#bookmark').css('color', 'darkgrey');
+                      }
+                  });
           }
 
       });
 
-      //
-      // Layout option A
-      //
-      async function layoutOptionA(bind, type, placeholder) {
-          console.log('template-2.html: layoutOptionA: bind = ', bind);
-
-          // only one row and chart in it
-          let row = document.createElement('div');
-          let col = document.createElement('div');
-
-          if (type === 'plot') {
-              row.setAttribute('class', 'row svg-container details');
-          } else if (type === 'dashboard') {
-              row.setAttribute('class', 'row');
-          }
-
-          col.setAttribute('id', 'chart-0');
-          col.setAttribute('class', 'col');
-          row.append(col);
-          placeholder.append(col);
-
-          let data = await fetchData(bind['endpoint']);
-          console.log('template-2.html: DATA = ', data);
-
-          let args = {
-              chartElement: `chart-0`,
-              data: data,
-              links: _option.links
-          };
-          new VisFunctionFactory(bind['function'], args);
-          console.log('template-2.html:', bind['function'], `chart-0`, data);
-
-      }
-
-      //
-      // layout option B
-      //
-      function layoutOptionB(bind, nrows, placeholder) {
-          let ncols = Math.ceil(bind.length / nrows);
-          console.log('template-2.html: layoutOptionB: bind = ', bind);
-          console.log('template-2.html: layoutOptionB: nrows = ', nrows, ', ncols = ', ncols);
-
-          let idx = 0;
-          // add row and col divs
-          for (let i = 0; i < nrows; i++) {
-              // title
-              let row1 = document.createElement('div');
-              row1.setAttribute('class', 'row');
-
-              // chart
-              let row2 = document.createElement('div');
-              row2.setAttribute('class', 'row');
-
-              for (let j = 0; j < ncols; j++) {
-                  // title
-                  let col1 = document.createElement('div');
-                  col1.setAttribute('class', 'col-md-' + Math.round(12 / ncols) + ' text-center');
-                  let p1 = document.createElement('p');
-                  p1.setAttribute('class', 'title-text');
-                  let title = document.createTextNode(_option.bind[idx].title);
-                  p1.append(title);
-                  col1.append(p1);
-                  row1.append(col1);
-
-                  // chart
-                  let col2 = document.createElement('div');
-                  col2.setAttribute('class', 'col-md-' + Math.round(12 / ncols));
-                  let chart = document.createElement('div');
-                  chart.setAttribute('id', 'chart-' + idx);
-                  col2.append(chart);
-                  row2.append(col2);
-
-                  idx++;
-              }
-
-              placeholder.append(row1);
-              placeholder.append(row2);
-          }
-
-          // draw charts
-          idx = 0;
-          bind.forEach(async (d) => {
-              let data = await fetchData(d['endpoint'])
-              console.log('template-2.html: DATA = ', data);
-              console.log(data.length)
-
-              let args = {
-                  chartElement: `chart-${idx}`,
-                  data: data,
-              };
-              new VisFunctionFactory(d['function'], args);
-              console.log('template-2.html:', d['function'], `chart-${idx}`, data);
-              idx++;
-          });
-      }
-
-
-      async function fetchData(endpoint) {
-          console.log('template-2.html: endpoint = ', endpoint);
-          if (typeof endpoint === 'string') {
-              try {
-                  return await fetch(endpoint)
-                      .then(res => res.json());
-              } catch (error) {
-                  console.log(error)
-                  throw (error)
-              }
-          } else if (Array.isArray(endpoint)) {
-              try {
-                  return await Promise.all(
-                      endpoint.map(url => fetch(url).then((response) => response.json())));
-              } catch (error) {
-                  console.log(error)
-                  throw (error)
-              }
-          }
-
-      }
-
-      //
-      // Bookmark or remove bookmark
-      //
-      $(document).ready(function () {
-          if (!isAuthorised) {
-              return;
-          }
-
-          Service.getBookmarkInfo(DATA_API, _option.id, token)
-              .then(data => {
-                  // console.log('bookmark style ', data);
-                  if (data) {
-                      isBookmarked = true;
-                      data && $('#bookmark').css('color', 'orange');
-                  }
-              });
-
-          $('#bookmark').on('click', () => {
-              if (!isBookmarked) {
-                  Service.createBookmark(DATA_API, _option.id, token)
-                      .then(data => {
-                          if (data) {
-                              isBookmarked = !isBookmarked;
-                              $('#bookmark').css('color', 'orange');
-                              console.log('onClickBookmark: ', _option.id, token);
-                          }
-                      });
-              } else {
-                  Service.removeBookmark(DATA_API, _option.id, token)
-                      .then(data => {
-                          if (data) {
-                              isBookmarked = !isBookmarked;
-                              $('#bookmark').css('color', 'darkgrey');
-                          }
-                      });
-              }
-
-          });
-
-      });
-
-
-  </script>
+  });
+</script>
 
 {% endblock javascripts %}

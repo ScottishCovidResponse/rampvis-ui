@@ -6,6 +6,9 @@ export FLASK_ENV=development
 export DATA_API='http://localhost:2000/api/v1'
 export STAT_API='http://localhost:3000/stat/v1'
 
+export API_JS='http://localhost:2000/api/v1'
+export API_PY='http://localhost:3000/stat/v1'
+
 # MongoDB link is deleted for security reason, you can use your local database
 export MONGODB_URL='<set_the_database_url>'
 
