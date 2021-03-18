@@ -3,9 +3,9 @@ class StackedBarChartWith6Places {
     CHART_HEIGHT = 400
 
     constructor(options) {
+        console.log('Phong said', options.data);
         const data = this.processData(options.data);
 
-        console.log('Phong said', data);
         
 
         const container = d3.select('#' + options.chartElement);
