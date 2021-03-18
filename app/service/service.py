@@ -113,8 +113,8 @@ def get_onto_page_by_id(id):
     vis = bindings[0].get('vis')
     # print('SK', data)
 
+    # [print(get_api_url(d.get('urlCode')), d.get('endpoint')) for d in data]
     data = [{**d, 'endpoint': get_api_url(d.get('urlCode')) + d.get('endpoint')} for d in data]
-    # print(endpoint)
 
     onto_page['bindings'] = {'data': data, 'vis': vis}
     logging.debug(f'service.py:get_onto_page_by_id: onto_page = {onto_page}')
