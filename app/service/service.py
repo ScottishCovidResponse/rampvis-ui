@@ -90,7 +90,7 @@ def get_onto_pages(binding_type):
     token = session['token']
     print(f'service.py:get_onto_pages: session[token] = {token}')
 
-    response = requests.get(API_JS + '/template/pages/?bindingType=' + binding_type)
+    response = requests.get(API_JS + '/template/pages/?filterPageType=' + binding_type)
     onto_pages = json.loads(response.content)
     data = onto_pages.get('data', [])
 
