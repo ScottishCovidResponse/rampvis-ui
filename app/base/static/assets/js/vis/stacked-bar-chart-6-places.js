@@ -1,18 +1,14 @@
 class StackedBarChartWith6Places {
-    CHART_WIDTH = 800
+    CHART_WIDTH = 1000
     CHART_HEIGHT = 400
 
     constructor(options) {
-        console.log('Phong said', options.data);
         const data = this.processData(options.data);
-
-        
-
         const container = d3.select('#' + options.chartElement);
         container.innerHTML = '';
 
         const vis = pv.stackedBarChart()
-            .margin({ top: 10, right: 10, bottom: 30, left: 50 })
+            .margin({ top: 10, right: 10, bottom: 40, left: 50 })
             .colorScale(Common.Colors.SITUATION_SCALE)
             .width(this.CHART_WIDTH)
             .height(this.CHART_HEIGHT);
@@ -30,25 +26,42 @@ class StackedBarChartWith6Places {
     }
 
     processData(data) {
-        // The first column is for time
-        const columns = data.columns = Object.keys(data[0]).slice(1);
-        data.forEach(d => {
-            columns.forEach(c => {
-                d[c] = this.preprocessValue(d[c])
+        // Correct field names: Adur___Hospice -> Hospice
+        data.forEach(list => {
+            list.forEach(d => {
+                const oldKeys = [];
+                for (let key in d) {
+                    if (key.includes('___')) {
+                        d[key.split('___')[1]] = d[key];
+                        oldKeys.push(key);
+                    }
+                }
+                oldKeys.forEach(k => {
+                    delete d[k];
+                });
             });
         });
 
-        // Exclude weeks with all 0
-        data = data.filter(d => data.columns.some(att => d[att]));
+        // Will merge data[1:] to this new data
+        const newData = data[0];
 
-        const parseWeek = d3.timeParse('%d-%b-%y');
-        data.forEach(d => {
-            d.time = parseWeek(d.Week);
-            d.label = d3.timeFormat('%b %d')(d.time);
+        // For each record and each other fields, merge into the first one
+        for (let i = 1; i < data.length; i++) {
+            for (let j = 0; j < newData.length; j++) {
+                Object.assign(newData[j], data[i][j]);
+            }
+        }
+
+        newData.columns = Object.keys(newData[0]);
+        newData.columns.splice(newData.columns.indexOf('index'), 1);
+
+        const parseWeek = d3.timeParse('%Y-%m-%d');
+        newData.forEach(d => {
+            d.time = parseWeek(d.index);
+            d.label = d3.timeFormat('%d %b')(d.time);
         });
-
-        data.columns = columns;
-        return data;
+        
+        return newData;
     }
 
     preprocessValue(s) {

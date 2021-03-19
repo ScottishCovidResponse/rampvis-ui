@@ -33,7 +33,7 @@ pv.stackedBarChart = function() {
      */
     const xScale = d3.scaleBand().padding(0.1),
         yScale = d3.scaleLinear(),
-        xAxis = d3.axisBottom().scale(xScale).ticks(d3.timeWeek),
+        xAxis = d3.axisBottom().scale(xScale),
         yAxis = d3.axisLeft().scale(yScale).ticks(5);
     let colorScale;
 
@@ -72,7 +72,7 @@ pv.stackedBarChart = function() {
          * Computation.
          */
         const series = d3.stack().keys(data.columns)(data);
-        
+
         xScale.domain(data.map(label))
             .range([0, width]);
         yScale.domain([0, d3.max(series, d => d3.max(d, d => d[1]))]).nice()
@@ -98,7 +98,10 @@ pv.stackedBarChart = function() {
                         return `${label(d.data)}: ${key} (${(d.data[key])})`;
                     });
 
-        xAxisContainer.call(xAxis);
+        xAxisContainer.call(xAxis)
+            .selectAll('text')
+            .attr('transform', 'rotate(-45)')
+            .style('text-anchor', 'end')
         yAxisContainer.call(yAxis);
     }
 
