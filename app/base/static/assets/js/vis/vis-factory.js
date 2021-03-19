@@ -31,10 +31,7 @@ class VisFunctionFactory {
         if (type === "SuperimposedPercentiles") 
             return new SuperimposedPercentiles(args);
 
-        const vises = {
-            "StackedBarChartWith6Places": new StackedBarChartWith6Places(args)
-        }
-        
-        return vises[type];
+        const vis = eval(type);
+        return new vis(args);
     }
 }
