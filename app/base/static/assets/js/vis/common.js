@@ -22,7 +22,7 @@ class Common {
     static Colors = {
         SITUATION_SCALE: d3.scaleOrdinal()
                             .domain(['Care home', 'Elsewhere', 'Home', 'Hospice', 'Hospital', 'Other communal establishment'])
-                            .range(["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854","#888888","#ffd92f","#e5c494"]),
+                            .range(["#66c2a5","#ffce52","#8da0cb","#e78ac3","#a6d854","#888888","#ffd92f","#e5c494"]),
         AGE_GROUP_SCALE: d3.scaleOrdinal()
                             .domain(['Under 1 year', '01-14', '15-44', '45-64', '65-74', '75-84', '85+'])
                             .range(['gray', 'gray', 'gray'].concat(d3.schemeBlues[5].slice(0, 4))),
