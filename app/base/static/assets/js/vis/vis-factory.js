@@ -30,5 +30,8 @@ class VisFunctionFactory {
             return new DefaultDashboard(args);
         if (type === "SuperimposedPercentiles") 
             return new SuperimposedPercentiles(args);
+
+        const vis = eval(type);
+        return new vis(args);
     }
 }

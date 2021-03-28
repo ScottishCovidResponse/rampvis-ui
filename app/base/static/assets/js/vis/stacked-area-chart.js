@@ -8,7 +8,7 @@ class StackedAreaChart {
         container.innerHTML = '';
 
         const vis = pv.stackedAreaChart()
-            .margin({ top: 10, right: 10, bottom: 30, left: 50 })
+            .margin({ top: 10, right: 10, bottom: 40, left: 50 })
             .colorScale(Common.Colors.SITUATION_SCALE)
             .width(this.CHART_WIDTH)
             .height(this.CHART_HEIGHT);

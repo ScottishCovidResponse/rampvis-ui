@@ -72,7 +72,7 @@ pv.stackedBarChart = function() {
          * Computation.
          */
         const series = d3.stack().keys(data.columns)(data);
-        
+
         xScale.domain(data.map(label))
             .range([0, width]);
         yScale.domain([0, d3.max(series, d => d3.max(d, d => d[1]))]).nice()
@@ -98,14 +98,10 @@ pv.stackedBarChart = function() {
                         return `${label(d.data)}: ${key} (${(d.data[key])})`;
                     });
 
-        xAxisContainer.call(xAxis).selectAll('.tick').each(function() {
-            const trans = d3.select(this).attr('transform');
-            const coords = trans.substring(trans.indexOf('(') + 1, trans.indexOf(')'));
-            const [x, y] = coords.split(',');
-            // Move tick half a bandwidth back
-            d3.select(this).attr('transform', `translate(${x - xScale.bandwidth() * 0.55}, ${y})`);
-        });
-
+        xAxisContainer.call(xAxis)
+            .selectAll('text')
+            .attr('transform', 'rotate(-45)')
+            .style('text-anchor', 'end')
         yAxisContainer.call(yAxis);
     }
 

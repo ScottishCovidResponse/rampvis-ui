@@ -1,20 +1,27 @@
 import requests
-import json
 import jwt
 from flask import redirect, json, session
 import os
+import logging
 
 import app.service.ontology as ontology
 from app import app
 
-# DATA_API = app.config.get('DATA_API')
-# STAT_API = app.config.get('STAT_API')
-DATA_API = os.environ.get('DATA_API')
-STAT_API = os.environ.get('STAT_API')
+
+API_JS = os.environ.get('API_JS')
+API_PY = os.environ.get('API_PY')
+
+
+def get_api_url(key):
+    """
+    Returns API_JS and API_PY from config
+    """
+    print(key)
+    return os.environ.get(key)
 
 
 def github_login():
-    return redirect(DATA_API + '/auth/github-login')
+    return redirect(API_JS + '/auth/github-login')
 
 
 def get_user(token):
@@ -25,7 +32,7 @@ def get_user(token):
 
     user_id = decoded_token.get('id')
     headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + token}
-    response = requests.get(DATA_API + '/user/' + user_id, headers=headers)
+    response = requests.get(API_JS + '/user/' + user_id, headers=headers)
 
     user = json.loads(response.content)
     print('service: get_user: user = ', user)
@@ -33,7 +40,7 @@ def get_user(token):
 
 
 def search(query):
-    response = requests.get(DATA_API + '/scotland/search/?query=' + query)
+    response = requests.get(API_JS + '/scotland/search/?query=' + query)
     result = json.loads(response.content)
     print('service: search: query = ', query, '\nresult = ', result)
     return result
@@ -46,7 +53,7 @@ def get_bookmarks():
         return None
 
     headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + token}
-    response = requests.get(DATA_API + '/bookmark/', headers=headers)
+    response = requests.get(API_JS + '/bookmark/', headers=headers)
     bookmarks = json.loads(response.content)
 
     print('get_bookmarks: bookmarks = ', bookmarks)
@@ -55,7 +62,7 @@ def get_bookmarks():
     for d in bookmarks:
         page_id = d.get('pageId')
         thumbnail = d.setdefault('thumbnail', "abc")
-        #print('service: get_bookmarks: d =', d, 'page_id = ', page_id)
+        # print('service: get_bookmarks: d =', d, 'page_id = ', page_id)
         page_data_from_ontology = ontology.get_page_by_id(int(page_id))
         page_data_from_ontology.get('page')['thumbnail'] = thumbnail
 
@@ -77,22 +84,39 @@ def update_bookmark(page_id):
 #
 # call backend ontology
 #
-def get_onto_pages(publish_type):
-    token = session['token']
-    print('get_onto_pages: session[token] = ', token)
-    
-    response = requests.get(DATA_API + '/template/pages/?publishType=' + publish_type)
-    onto_pages = json.loads(response.content)
 
-    print('get_onto_pages: onto_pages = ', onto_pages.get('data', []))
-    return onto_pages.get('data', [])
+
+def get_onto_pages(binding_type):
+    token = session['token']
+    print(f'service.py:get_onto_pages: session[token] = {token}')
+
+    response = requests.get(API_JS + '/template/pages/?filterPageType=' + binding_type)
+    onto_pages = json.loads(response.content)
+    data = onto_pages.get('data', [])
+
+    print(f'service.py: get_onto_pages: onto_pages={data}')
+    return data
+
 
 def get_onto_page_by_id(id):
     token = session['token']
-    print('get_onto_page_by_id: id = ', id)
-    
-    response = requests.get(DATA_API + '/template/page/' + id)
+    logging.debug(f'service.py:get_onto_page_by_id: id = {id}')
+
+    response = requests.get(API_JS + '/template/page/' + id)
     onto_page = json.loads(response.content)
 
-    print('get_onto_page_by_id: onto_page = ', onto_page)
+    bindings = onto_page.get('bindings')
+    # print('\n\n..............................................', bindings)
+    # print('SK', bindings[0])
+
+    data = bindings[0].get('data')
+    vis = bindings[0].get('vis')
+    # print('SK', data)
+
+    # [print(get_api_url(d.get('urlCode')), d.get('endpoint')) for d in data]
+    data = [{**d, 'endpoint': get_api_url(d.get('urlCode')) + d.get('endpoint')} for d in data]
+
+    onto_page['bindings'] = {'data': data, 'vis': vis}
+    logging.debug(f'service.py:get_onto_page_by_id: onto_page = {onto_page}')
+
     return onto_page

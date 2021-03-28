@@ -136,7 +136,7 @@ def resolve_endpoint(data_id, query_params):
     endpoint = get_api_url(data_obj.get('url')) + data_obj.get('endpoint')
 
     print('endpoint = ', endpoint)
-    print ('dat_id = ', data_id, 'query_params = ', query_params)
+    print('dat_id = ', data_id, 'query_params = ', query_params)
 
     # if query_params [{k: v}, {k: v}] are provided
     if query_params:

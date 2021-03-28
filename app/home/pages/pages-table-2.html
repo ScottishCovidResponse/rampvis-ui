@@ -1,3 +1,8 @@
+
+<!--
+  This template is for v1.0 and above
+  Template for displaying list of pages
+-->
 {% extends "base-site.html" %}
 
 {% block title %} Details {% endblock %}
@@ -20,20 +25,22 @@
         <div class="table-responsive">
           <table class="table">
             <thead class=" text-primary">
-            <th> ID</th>
-            <th> Title</th>
-            <!-- <th> Description</th>
-            <th> Type</th> -->
-            <th> Link </th>
+            <th>Page ID</th>
+            <th>Title (Vis) </th>
+            <th>Description (Data) </th>
+            <th>Date</th>
+            <th>Release Status</th>
+            <th>Link </th>
             </thead>
 
             {% for d in table %}
               <tr>
                 <td>{{ d.id  }}</td>
-                <td>{{ d.title  }}</td>
-                <!-- <td>{{ d.description  }}</td>
-                <td>{{ d.type  }}</td> -->
-                <td><a href="/v0.x/{{ d.id }}"> <i class="material-icons">link</i>  </a></td>
+                <td>{{ d.bindingExts[0].vis.description }}</td>
+                <td>{{ d.bindingExts[0].data[0].description   }}</td>
+                <td>{{ d.date  }}</td>
+                <td>{{ d.bindingType  }}</td>
+                <td><a href="/{{ d.id }}"> <i class="material-icons">link</i>  </a></td>
               </tr>
             {% endfor %}
 
