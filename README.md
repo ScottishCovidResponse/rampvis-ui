@@ -4,23 +4,30 @@
 
 The API code can be found in [ScottishCovidResponse/rampvis-api](https://github.com/ScottishCovidResponse/rampvis-api).
 
-## Getting Started
+## Requirements
 
 Requirements
 - Python 3.8.3
 - conda 
-
-Start development instance
+- virtualenv
 
 ```bash
-conda remove --name rampvis-ui --all
-conda env create -f environment.yml
-conda activate rampvis-ui
+pip install virtualenv
+virtualenv venv
 
-# to use production API
+source ./venv/bin/activate
+pip install -r requirements.txt
+```
+
+## Running the Project in Development
+
+```bash
+source ./venv/bin/activate
+
+# to use production RESTful API data
 ./run-use-prod-api.sh
 
-# to use development or local API instance
+# to use development or local RESTful API instance
 ./run-use-dev-api.sh
 
 ```

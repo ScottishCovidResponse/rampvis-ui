@@ -87,8 +87,7 @@ def update_bookmark(page_id):
 
 
 def get_onto_pages(binding_type):
-    token = session['token']
-    print(f'service.py:get_onto_pages: session[token] = {token}')
+    print(f'service.py:get_onto_pages:  API_JS = {API_JS}')
 
     response = requests.get(API_JS + '/template/pages/?filterPageType=' + binding_type)
     onto_pages = json.loads(response.content)
@@ -99,7 +98,6 @@ def get_onto_pages(binding_type):
 
 
 def get_onto_page_by_id(id):
-    token = session['token']
     logging.debug(f'service.py:get_onto_page_by_id: id = {id}')
 
     response = requests.get(API_JS + '/template/page/' + id)
