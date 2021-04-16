@@ -88,7 +88,7 @@ This template is for v1.0 and above
         //console.log('template-2.html:fetchData: data = ', data);
         if (typeof data === 'string') {
             try {
-                let values = await wait (await fetch(data?.endpoint)).json();
+                let values = await (await fetch(data?.endpoint)).json();
                 return { 'endpoint': data?.endpoint, 'values': values };
             } catch (error) {
                 console.error('template-2.html:fetchData: error = ', error)
