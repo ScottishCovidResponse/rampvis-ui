@@ -24,6 +24,8 @@ The VIM will
 ### 4. [VFD] Build your vis
 The VIM will point the VFD to a JS file and a CSS file created in step 3. The VFD just needs to start a server that use production data (see the steps below) and start building inside the JS file.
 
+> **Note on data:** the input is an array of objects {endpoint, values}. Don't assume the order of elements in the array is stable (such as the first one is covid deaths), always check the endpoint (it's informative enough) to know which data stream each element is.
+
 `Python 3.8` is required before running
 
 ```bash
@@ -39,7 +41,7 @@ source ./venv/bin/activate
 ./run-use-prod-api.sh
 ```
 
-Access the dashboard in browser: `http://localhost:5000`.
+Access the dashboard in browser: `http://localhost:5000`, but the VIM will give the VFD the precise link to the example.
 
 
 ## Instruction for Infrastructure Manager
