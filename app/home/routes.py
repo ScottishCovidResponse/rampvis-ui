@@ -197,10 +197,13 @@ def route_page(id_or_name):
             return render_template('page-500.html'), 500
 
     elif page_data is None:
-        # page_data = None, i.e.,
         # check if the page id exist in ontology database
         page_data = service.get_onto_page_by_id(id_or_name)
         logging.debug(f'routes.py:route_page: page_data = {page_data}')
+
+        if page_data is None:
+            return render_template('page-404.html'), 404
+
         try:
             return render_template('template-2.html', option=page_data)
         except TemplateNotFound:

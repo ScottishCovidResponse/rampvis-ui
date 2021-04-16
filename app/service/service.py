@@ -104,8 +104,11 @@ def get_onto_page_by_id(id):
     onto_page = json.loads(response.content)
 
     bindings = onto_page.get('bindings')
-    # print('\n\n..............................................', bindings)
+    print('\n\n..............................................', bindings)
     # print('SK', bindings[0])
+
+    if bindings is None:
+        return None
 
     data = bindings[0].get('data')
     vis = bindings[0].get('vis')
