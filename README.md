@@ -1,4 +1,4 @@
-# RAMP VIS UI
+# RAMPVIS UI
 
 
 ## Developing a new visualisation 
