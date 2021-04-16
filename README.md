@@ -1,32 +1,8 @@
 # RAMP VIS UI
 
-## Installation
 
-`Python 3.8` is required before running
+## Developing a new visualisation 
 
-```bash
-pip install virtualenv
-virtualenv venv
-
-source ./venv/bin/activate
-pip install -r requirements.txt
-```
-
-## Starting the server
-
-```bash
-source ./venv/bin/activate
-
-# to use production RESTful API data
-./run-use-prod-api.sh
-
-# to use development or local RESTful API instance
-./run-use-dev-api.sh
-```
-
-Access the dashboard in browser: `http://localhost:5000`.
-
-## Developing a new visualisation
 This section summarises what a vis-function developer (VFD) needs to do to build a new visualisation in our system. Step 1 is just communication between VFD and a vis-infrastructure manager (VIM) who is Saiful or Phong. Step 2 & 3 will be handled by VIM (good to read them though). So, only need to follow a simple instruction in Step 4.
 
 ### 1. [VFD + VIM] Register a new vis function
@@ -46,4 +22,47 @@ The VIM will
 - If you have a css file, include it in `app/base/templates/base-site.html`
 
 ### 4. [VFD] Build your vis
-The VIM will point the VFD to a JS file and a CSS file created in step 3. The VFD just needs to start a server that use production data (see Installation above) and start building inside the JS file.
+The VIM will point the VFD to a JS file and a CSS file created in step 3. The VFD just needs to start a server that use production data (see the steps below) and start building inside the JS file.
+
+`Python 3.8` is required before running
+
+```bash
+pip install virtualenv
+virtualenv venv
+
+source ./venv/bin/activate
+pip install -r requirements.txt
+```
+
+```bash
+source ./venv/bin/activate
+./run-use-prod-api.sh
+```
+
+Access the dashboard in browser: `http://localhost:5000`.
+
+
+## Instruction for Infrastructure Manager
+
+`Python 3.8` is required before running
+
+```bash
+pip install virtualenv
+virtualenv venv
+
+source ./venv/bin/activate
+pip install -r requirements.txt
+```
+
+Starting the server
+
+```bash
+source ./venv/bin/activate
+
+# to use production RESTful API data
+./run-use-prod-api.sh
+# to use development or local RESTful API instance
+./run-use-dev-api.sh
+```
+
+Access the dashboard in browser: `http://localhost:5000`.
