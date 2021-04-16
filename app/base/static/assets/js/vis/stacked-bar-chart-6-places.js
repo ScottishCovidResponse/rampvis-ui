@@ -26,6 +26,8 @@ class StackedBarChartWith6Places {
     }
 
     processData(data) {
+        data = data.map(d => d.values);
+
         // Correct field names: Adur___Hospice -> Hospice
         data.forEach(list => {
             list.forEach(d => {
