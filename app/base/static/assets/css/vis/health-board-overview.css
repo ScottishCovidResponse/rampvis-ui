@@ -1,5 +1,68 @@
 .vis-example-container {
-    background-color: lightblue;
-    text-align: center;
+    background-color: white;
     padding: 20px;
 }
+
+
+div#main{ 
+    font-family:"Poppins";
+    margin:20px;
+    width: 1060px;
+}
+
+table.layout tr{
+    vertical-align: top;
+}
+
+table.layout td{
+    padding-right: 40px;
+}
+
+
+h1{
+    font-weight: bold;
+    line-height: 100%;
+}
+.description{
+    margin-top:-20px;
+    font-weight: 300;
+}
+.date{
+    font-weight: 200;
+    color: #777;
+    float: right;
+}
+.thin{
+    margin-top: 0px;
+    font-weight: 200;
+}
+
+text.bigNumber{
+    font-size: 35pt;
+    font-weight: bold;
+}
+
+.arrow{
+    stroke-width: 7;
+    stroke-linecap: round;
+}
+
+.label{
+    font-weight: 500;
+    font-size: 12pt;
+}
+
+.title{
+    font-weight: bold;
+    font-size: 20;
+}
+
+.separator{
+    stroke: #ddd;
+}
+.weekBar{
+    stroke: #ccc;
+    stroke-width: 3;
+
+}
+  
