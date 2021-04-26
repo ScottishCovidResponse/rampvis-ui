@@ -25,7 +25,8 @@ var TILE_WIDTH = 40;
 var TILE_HEIGHT = 40;
 var TILE_GAP = 4;
 
-var NHSBOARD = 'Lothian';
+var nhsBoardField = '';
+var latestUpdateTime = '';
 
 // DATA STREAMS 
 var DATASTREAM_0 = "Covid19 Patients in Hospital, Normalized";
@@ -49,7 +50,10 @@ class HealthBoardOverview {
                 // .style('height', '1000px')
         
         ///  NEW CODE ///
-
+        nhsBoardField = Object.keys(options.data[0].values[0])[1];
+    
+        latestUpdateTime = console.log(options.data[0].values[options.data[0].values.length-1].index);
+     
         createDashboardLayout(div);
         visualizeAllStreams(options.data)
     }
@@ -78,12 +82,11 @@ var createDashboardLayout = function(div)
 
 var visualizeAllStreams = function(data)
 {
-    var field = 'Lothian'
 
     visualizeDataStream(
         "#board-hospital-normalized",
         DATASTREAM_0,
-        field,
+        nhsBoardField,
         d3.rgb(COLOR_HOSPITAL).brighter(1),
         data[0].values,
         MODE_CURRENT,
@@ -92,7 +95,7 @@ var visualizeAllStreams = function(data)
     visualizeDataStream(
         "#board-hospital",
         DATASTREAM_1,
-        field,
+        nhsBoardField,
         d3.rgb(COLOR_HOSPITAL).brighter(2),
         data[1].values,
         MODE_CURRENT);
@@ -100,7 +103,7 @@ var visualizeAllStreams = function(data)
     visualizeDataStream(
         "#board-covid-icu",
         DATASTREAM_2,
-        field,
+        nhsBoardField,
         d3.rgb(COLOR_HOSPITAL).brighter(2.5),
         data[2].values,
         MODE_CURRENT);
@@ -108,7 +111,7 @@ var visualizeAllStreams = function(data)
     visualizeDataStream(
         "#tests",
         DATASTREAM_3,
-        field,
+        nhsBoardField,
         COLOR_TESTS,
         data[3].values,
         MODE_DAILY);
@@ -116,7 +119,7 @@ var visualizeAllStreams = function(data)
     visualizeDataStream(
         "#covid-deaths",
         DATASTREAM_4,
-        field,
+        nhsBoardField,
         COLOR_DEATHS,
         data[4].values,
         MODE_WEEKLY);
@@ -124,19 +127,16 @@ var visualizeAllStreams = function(data)
     visualizeDataStream(
         "#all-deaths",
         DATASTREAM_5,
-        field,
+        nhsBoardField,
         d3.rgb(COLOR_DEATHS).darker(.5),
         data[5].values,
         MODE_WEEKLY);
-
-
 }
 
 
 // visualizes a dataset for a dashboard with number, trend, and chart
 var visualizeDataStream = function (id, title, field, color, dataStream, mode, normalized) {
     
-
     var svg = d3.select(id)
         .append("svg")
         .attr("width", width)
