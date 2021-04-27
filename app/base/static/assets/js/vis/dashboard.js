@@ -1,6 +1,22 @@
 /* Namespace for dashboard functions */
 dashboard = {}
 
+var baseline_title = 22
+var baseline_label = height - 30;
+var top_content = baseline_title + 30;
+
+dashboard.MODE_DAILY = 0
+dashboard.MODE_CURRENT = 1
+dashboard.MODE_CUMULATIVE = 2
+dashboard.MODE_WEEKLY = 3
+
+var LINE_1 = 17;
+var LINE_2 = 40;
+var TILE_WIDTH = 40;
+var TILE_HEIGHT = 40;
+var TILE_GAP = 4;
+
+
 // visualizes a dataset for a dashboard with number, trend, and chart
 dashboard.visualizeDataStream = function (id, title, field, color, dataStream, mode, normalized) {
     
@@ -43,7 +59,6 @@ var visualizeNumber = function (svg, data, xOffset, field, color, mode, normaliz
         .each(function () {
             bigNumber.width = this.getBBox().width;
         })
-
 
     if (normalized) {
         g.append('text')
