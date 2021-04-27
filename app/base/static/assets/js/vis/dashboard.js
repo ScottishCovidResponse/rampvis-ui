@@ -1,8 +1,11 @@
 /* Namespace for dashboard functions */
 dashboard = {}
 
+dashboard.height = 150;
+dashboard.width = 510;
+
 var baseline_title = 22
-var baseline_label = height - 30;
+var baseline_label = dashboard.height - 30;
 var top_content = baseline_title + 30;
 
 dashboard.MODE_DAILY = 0
@@ -16,14 +19,109 @@ var TILE_WIDTH = 40;
 var TILE_HEIGHT = 40;
 var TILE_GAP = 4;
 
+dashboard.createDashboard = function(div, config){
+
+    var tr = div.append('table')
+        .attr('class', 'vis-example-container')
+        .append('tr')
+
+    // CREATE GROUP LAYOUT
+    var parentHTMLElementId
+    for(var col=0 ; col < config.layout.length ; col++){
+        var htmlCol = tr.append('td').attr('class', 'layout')
+
+        parentHTMLElementId = canonizeNames(config.layout[col]) 
+        htmlCol.attr('id', parentHTMLElementId)
+
+        // console.log('config.layout[col]',config.layout[col])
+        if( typeof(config.layout[col]) == "string")
+        {    
+            attachGroup(parentHTMLElementId, config.layout[col], config)
+        }else{
+            for(var row=0 ; row < config.layout[col].length ; row++)
+            {
+                // console.log('config.layout[col][row]',config.layout[col][row])                
+                if( typeof(config.layout[col][row]) == "string"){
+                    attachGroup(parentHTMLElementId, config.layout[col][row], config)
+                }
+            }    
+        }
+    }
+
+    // CREATE PANEL LAYOUTS
+}
+
+var attachGroup = function(parentHTMLElementId, name, config){
+
+    // console.log('\tAttach Group', name, '--> ', parentHTMLElementId)
+    var group = config.groups.filter(function (el) {
+        return el.name == name
+    })[0];
+
+    var div = d3.select('#' + parentHTMLElementId)
+        .append('div')
+        .attr('id', 'div_'+ parentHTMLElementId)
+        .attr('class', 'dashboard')
+
+    parentHTMLElementId = 'div_'+ parentHTMLElementId;
+    // show group title
+    div.append('h3')
+        .attr('class', 'dashboard')
+        .text(group.title)
+
+    // console.log(group)
+    if(group.layout.length == 1){
+        attachPanel(parentHTMLElementId, group.layout[0], config)
+    }else{
+        var firstElement = group.layout[0]
+        if(typeof(firstElement) == 'string'){
+            // new horizontal layout
+            for(var row = 0 ; row< group.layout.length ; row++){
+                
+            }
+        }else{
+            // simple vertical layout
+            for(var row = 0 ; row< group.layout.length ; row++){
+                attachPanel(parentHTMLElementId, group.layout[row], config) 
+            }
+        }
+    }
+}
+
+var attachPanel = function(parentHtmlElementId, name, config){
+    
+    // console.log('\t\tAttach Panel: ', name, '-->', parentHtmlElementId)
+    var panel = config.panels.filter(function (el) {
+        return el.name == name
+    })[0];
+
+    var normalized = false || panel.normalized;
+    dashboard.visualizeDataStream(
+        parentHtmlElementId,
+        panel.title,
+        panel.dataField,
+        panel.color,
+        panel.data,
+        panel.mode,
+        normalized);
+}
+
+var canonizeNames = function(s){
+    return (String(s)).toLowerCase()
+        .replaceAll(',', '-')
+        .replaceAll('[', '-')
+        .replaceAll(']', '-')
+}
+
 
 // visualizes a dataset for a dashboard with number, trend, and chart
 dashboard.visualizeDataStream = function (id, title, field, color, dataStream, mode, normalized) {
     
-    var svg = d3.select(id)
+    console.log('\t\t\tVisualizeDataStream', title, '-->', id)
+    var svg = d3.select('#' + id)
         .append("svg")
-        .attr("width", width)
-        .attr("height", height)
+        .attr("width", dashboard.width)
+        .attr("height", dashboard.height)
 
     setVisTitle(svg, title)
     visualizeNumber(svg, dataStream, 0, field, color, mode, normalized)
@@ -36,11 +134,11 @@ var visualizeNumber = function (svg, data, xOffset, field, color, mode, normaliz
     var g = svg.append("g")
         .attr("transform", "translate(" + xOffset + ",0)")
 
-    if (mode == MODE_DAILY) {
+    if (mode == dashboard.MODE_DAILY) {
         setVisLabel(g, 'Today')
-    } else if (mode == MODE_CURRENT) {
+    } else if (mode == dashboard.MODE_CURRENT) {
         setVisLabel(g, 'Current')
-    } else if (mode == MODE_WEEKLY) {
+    } else if (mode == dashboard.MODE_WEEKLY) {
         setVisLabel(g, 'This week')
     } else {
         setVisLabel(g, 'Total')
@@ -120,7 +218,7 @@ var visualizeTrendArrow = function (svg, data, xOffset, field, color, mode) {
     var g = svg.append("g")
         .attr("transform", "translate(" + xOffset + ",0)")
 
-    if (mode == MODE_WEEKLY)
+    if (mode == dashboard.MODE_WEEKLY)
         setVisLabel(g, "From last week")
     else
         setVisLabel(g, "From yesterday")
@@ -199,7 +297,7 @@ var visualizeMiniChart = function (svg, data, xOffset, field, color, mode) {
     var chartWidth = 100;
     var chartHeight = 35;
     var trendWindow = 14 // days
-    if (mode == MODE_WEEKLY)
+    if (mode == dashboard.MODE_WEEKLY)
         trendWindow = 8
 
     var barWidth = (chartWidth - 10) / trendWindow;
@@ -208,7 +306,7 @@ var visualizeMiniChart = function (svg, data, xOffset, field, color, mode) {
     var gg = svg.append('g')
         .attr("transform", "translate(" + xOffset + ",0)")
 
-    if (mode == MODE_WEEKLY) {
+    if (mode == dashboard.MODE_WEEKLY) {
         setVisLabel(gg, 'Last ' + trendWindow + ' Weeks ')
     } else {
         setVisLabel(gg, 'Last ' + trendWindow + ' Days')
@@ -232,8 +330,8 @@ var visualizeMiniChart = function (svg, data, xOffset, field, color, mode) {
         .domain([0, max])
         .range([chartHeight, 0]);
 
-    if (mode == MODE_CUMULATIVE
-        || mode == MODE_CURRENT) {
+    if (mode == dashboard.MODE_CUMULATIVE
+        || mode == dashboard.MODE_CURRENT) {
         g.append("path")
             .datum(data)
             .attr("fill", color)
@@ -280,9 +378,9 @@ var visualizeMiniChart = function (svg, data, xOffset, field, color, mode) {
 
     }
 
-    if (mode == MODE_DAILY
-        || mode == MODE_CUMULATIVE
-        || mode == MODE_CURRENT) {
+    if (mode == dashboard.MODE_DAILY
+        || mode == dashboard.MODE_CUMULATIVE
+        || mode == dashboard.MODE_CURRENT) {
         g.append('line')
             .attr('x1', x(6.9))
             .attr('x2', x(7.1))
