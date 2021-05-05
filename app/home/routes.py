@@ -169,7 +169,7 @@ def route_pages():
     try:
         onto_pages = service.get_onto_pages(url_prefix)
         print('route_released_pages: onto_pages = ', onto_pages)
-        return render_template('pages-table-2.html', table=onto_pages, publishType=url_prefix)
+        return render_template('pages-table-2.html', table=onto_pages, publishType=url_prefix, enumerate=enumerate)
     except TemplateNotFound:
         return render_template('page-404.html'), 404
     except:

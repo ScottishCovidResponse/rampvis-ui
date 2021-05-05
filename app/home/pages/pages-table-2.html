@@ -25,7 +25,8 @@
         <div class="table-responsive">
           <table class="table">
             <thead class=" text-primary">
-            <th>Page ID</th>
+            <th>Index</th>    
+            <th>Vis.</th>
             <th>Title (Vis) </th>
             <th>Description (Data) </th>
             <th>Date</th>
@@ -33,9 +34,10 @@
             <th>Link </th>
             </thead>
 
-            {% for d in table %}
+            {% for i, d in enumerate(table) %}
               <tr>
-                <td>{{ d.id  }}</td>
+                <td>{{ i + 1 }}</td>
+                <td>{{ d.bindingExts[0].vis.function }}</td>
                 <td>{{ d.bindingExts[0].vis.description }}</td>
                 <td>{{ d.bindingExts[0].data[0].description   }}</td>
                 <td>{{ d.date  }}</td>
