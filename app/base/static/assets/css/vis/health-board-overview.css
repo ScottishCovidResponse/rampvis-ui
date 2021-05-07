@@ -15,13 +15,14 @@ table.layout tr{
 }
 
 table.layout td{
-    padding-right: 40px;
+    /* padding-right: 40px; */
 }
 
 
-h1{
+h3.dashboard{
     font-weight: bold;
     line-height: 100%;
+    /* font-size: 14pt; */
 }
 .description{
     margin-top:-20px;
