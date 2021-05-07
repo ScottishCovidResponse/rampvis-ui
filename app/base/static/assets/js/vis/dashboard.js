@@ -572,12 +572,18 @@ dashboard.visulizeScotlandNHSBoardCartogram = function (id, title, color, data, 
             return 100 + TILEMAP_LAYOUT_SCOTLAND[d.name][0] * TILE_HEIGHT + TILE_HEIGHT * .8;
         })
         .text(function (d) { 
-            return Math.round(d.value * 10) / 10
+            if(d.value < 9){
+                return Math.round(d.value * 10) / 10
+            }else if(d.value < 999){
+                return Math.round(d.value)
+            }else{
+                return Math.round(Math.round(d.value) / 1000) + 'k'
+            }
         })
         .filter(function (d) {
-            return d.value == max
-                || d.value == min;
+            return !(d.value == max
+                || d.value == min);
         })
-        .style('opacity', .3)
+        .attr('class', 'cartogramLabel-nonextremes')
 
 }
