@@ -380,7 +380,8 @@ var visualizeMiniChart = function (svg, data, xOffset, field, color, mode) {
         .range([chartHeight, 0]);
 
     if (mode == dashboard.MODE_CUMULATIVE
-        || mode == dashboard.MODE_CURRENT) {
+        || mode == dashboard.MODE_CURRENT) 
+    {
         g.append("path")
             .datum(data)
             .attr("fill", color)
@@ -408,7 +409,9 @@ var visualizeMiniChart = function (svg, data, xOffset, field, color, mode) {
             .attr("r", 3)
             .attr("cx", x(data.length - 1))
             .attr("cy", y(data[data.length - 1][field]))
-    } else {
+    } 
+    else 
+    {
         g.selectAll("bar")
             .data(data)
             .enter().append("rect")
@@ -423,7 +426,7 @@ var visualizeMiniChart = function (svg, data, xOffset, field, color, mode) {
             })
             .attr("width", barWidth)
             .attr("y", function (d) { return y(d[field]); })
-            .attr("height", function (d) { return chartHeight - y(d[field]); });
+            .attr("height", function (d) { return chartHeight - y(d[field]); })
 
     }
 
@@ -438,6 +441,7 @@ var visualizeMiniChart = function (svg, data, xOffset, field, color, mode) {
             .attr('class', 'weekBar')
     }
 }
+
 
 
 var setVisTitle = function (g, text) {
@@ -553,10 +557,10 @@ dashboard.visulizeScotlandNHSBoardCartogram = function (id, title, color, data, 
         .data(array)
         .enter()
         .append('text')
-        .filter(function (d) {
-            return d.value == max
-                || d.value == min;
-        })
+        // .filter(function (d) {
+        //     return d.value == max
+        //         || d.value == min;
+        // })
         .attr('class', 'cartogramLabel')
         .style('fill', function (d) {
             return valueScale(d.value) >= .6 ? '#fff' : '#000';
@@ -570,5 +574,10 @@ dashboard.visulizeScotlandNHSBoardCartogram = function (id, title, color, data, 
         .text(function (d) { 
             return Math.round(d.value * 10) / 10
         })
+        .filter(function (d) {
+            return d.value == max
+                || d.value == min;
+        })
+        .style('opacity', .3)
 
 }
