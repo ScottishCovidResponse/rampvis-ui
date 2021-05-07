@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, request, session
 from flask_login import login_required, current_user
 from jinja2 import TemplateNotFound
-import logging
+from loguru import logger
 
 from app.home import blueprint
 import app.service.service as service
@@ -15,11 +15,10 @@ def route_default():
 
 @blueprint.route('/scotland')
 def route_scotland():
-    print('route_scotland:')
+    logger.debug('route_scotland:')
 
     page_data = ontology.get_page_by_name('scotland')
-
-    print('route_template_vis: page_data = ', page_data)
+    logger.debug('route_scotlandroute_template_vis: page_data = ', page_data)
 
     try:
         return render_template('scotland.html', option=page_data)
@@ -42,10 +41,10 @@ def route_portal():
 
 @blueprint.route('/dashboards')
 def route_dashboards():
-    print('dashboards:')
+    logger.debug('dashboards:')
     try:
         table = ontology.get_pages_by_type('dashboard')
-        print('dashboards: data = ', table)
+        logger.debug('dashboards: data = ', table)
         return render_template('dashboards.html', table=table)
 
     except TemplateNotFound:
@@ -57,11 +56,11 @@ def route_dashboards():
 
 @blueprint.route('/plots')
 def route_plots():
-    print('plots:')
+    logger.debug('plots:')
 
     try:
         table = ontology.get_pages_by_type('plot')
-        print('plots: data = ', table)
+        logger.debug('plots: data = ', table)
         return render_template('plots.html', table=table)
 
     except TemplateNotFound:
@@ -73,11 +72,11 @@ def route_plots():
 
 @blueprint.route('/analytics')
 def route_analytics():
-    print('analytics:')
+    logger.debug('analytics:')
 
     try:
         table = ontology.get_pages_by_type('analytics')
-        print('plots: data = ', table)
+        logger.debug('analytics: data = ', table)
         return render_template('analytics.html', table=table)
 
     except TemplateNotFound:
@@ -89,11 +88,11 @@ def route_analytics():
 
 @blueprint.route('/models')
 def route_models():
-    print('route_models:')
+    logger.debug('route_models:')
 
     try:
         table = ontology.get_pages_by_type('model')
-        print('models: data = ', table)
+        logger.debug('models: data = ', table)
         return render_template('plots.html', table=table)
 
     except TemplateNotFound:
@@ -106,7 +105,7 @@ def route_models():
 @blueprint.route('/search', methods=['GET'])
 def route_search():
     query = request.args.get('query')
-    print('route_search: search: query = ', query)
+    logger.debug('route_search: search: query = ', query)
 
     if query:
         result = service.search(query)
@@ -118,8 +117,7 @@ def route_search():
 @blueprint.route('/settings', methods=['GET'])
 @login_required
 def route_settings():
-    print('route_settings:')
-    print('route_settings: token = ', session.get('token '))
+    logger.debug('route_settings: token = ', session.get('token '))
 
     try:
         return render_template('settings.html')
@@ -142,10 +140,10 @@ def profile():
 
 @blueprint.route('v05')
 def route_v05():
-    print('route_v05')
+    logger.debug('route_v05')
     try:
         table = ontology.get_all_pages()
-        print('route_pages_v0.5: page_data = ', table)
+        logger.debug('route_pages_v0.5: page_data = ', table)
         return render_template('pages-table-1.html', table=table)
 
     except TemplateNotFound:
@@ -165,10 +163,10 @@ def route_v05():
 @blueprint.route('/example')
 def route_pages():
     url_prefix = request.url_rule.rule.replace('/', '')
-    logging.debug(f'routes.py:route_pages: binding_type = {url_prefix}')
+    logger.debug(f'routes.py:route_pages: binding_type = {url_prefix}')
     try:
         onto_pages = service.get_onto_pages(url_prefix)
-        print('route_released_pages: onto_pages = ', onto_pages)
+        logger.debug('route_released_pages: onto_pages = ', onto_pages)
         return render_template('pages-table-2.html', table=onto_pages, publishType=url_prefix, enumerate=enumerate)
     except TemplateNotFound:
         return render_template('page-404.html'), 404
@@ -178,7 +176,7 @@ def route_pages():
 
 @blueprint.route('/<id_or_name>')
 def route_page(id_or_name):
-    logging.debug(f'routes.py:route_page: id_or_name = {id_or_name}')
+    logger.debug(f'routes.py:route_page: id_or_name = {id_or_name}')
 
     if id_or_name == 'page-blank':
         return render_template('page-blank.html')
@@ -186,20 +184,20 @@ def route_page(id_or_name):
     # check if the page name exist in local ontology
     page_data = ontology.get_page_by_name(id_or_name)
     if page_data is not None:
-        logging.debug(f'routes.py:route_page: local ontology page_data = {page_data}')
+        logger.debug(f'routes.py:route_page: local ontology page_data = {page_data}')
         try:
             return render_template('template-1.html', option=page_data)
         except TemplateNotFound:
-            logging.error(f'routes.py:route_page: exception1 = TemplateNotFound')
+            logger.error(f'routes.py:route_page: exception1 = TemplateNotFound')
             return render_template('page-404.html'), 404
         except Exception as e:
-            logging.error(f'routes.py:route_page: exception1 = {e}')
+            logger.error(f'routes.py:route_page: exception1 = {e}')
             return render_template('page-500.html'), 500
 
     elif page_data is None:
         # check if the page id exist in ontology database
         page_data = service.get_onto_page_by_id(id_or_name)
-        logging.debug(f'routes.py:route_page: page_data = {page_data}')
+        logger.debug(f'routes.py:route_page: page_data = {page_data}')
 
         if page_data is None:
             return render_template('page-404.html'), 404
@@ -207,8 +205,8 @@ def route_page(id_or_name):
         try:
             return render_template('template-2.html', option=page_data)
         except TemplateNotFound:
-            logging.error(f'routes.py:route_page: exception2 = TemplateNotFound')
+            logger.error(f'routes.py:route_page: exception2 = TemplateNotFound')
             return render_template('page-404.html'), 404
         except Exception as e:
-            logging.error(f'routes.py:route_page: exception2 = {e}')
+            logger.error(f'routes.py:route_page: exception2 = {e}')
             return render_template('page-500.html'), 500

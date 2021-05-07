@@ -3,9 +3,9 @@ export FLASK_APP=run.py
 # Set up the DEBUG environment
 export FLASK_ENV=development
 
+export UI_URL='http://vis.scrc.uk'
 export API_JS='http://vis.scrc.uk/api/v1'
 export API_PY='http://vis.scrc.uk/stat/v1'
-
 export DATA_API='http://vis.scrc.uk/api/v1'
 export STAT_API='http://vis.scrc.uk/stat/v1'
 

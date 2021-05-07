@@ -14,3 +14,4 @@ requests~=2.24.0
 Flask-JWT-Extended
 py2neo
 flask_table
+loguru
