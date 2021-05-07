@@ -1,4 +1,5 @@
-/* Namespace for dashboard functions */
+/* Namespace for dashboard functions 
+author: Benjamin Bach, bbach@ed.ac.uk*/
 dashboard = {}
 
 dashboard.height = 150;
