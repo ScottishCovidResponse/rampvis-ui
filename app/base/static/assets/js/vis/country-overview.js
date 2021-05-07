@@ -32,12 +32,10 @@ class CountryOverview {
                 {
                     name: 'regions',
                     title: 'Regions',
-                    layout: ['regionsTestsNorm','covidInHospital','covidInICU']
-                },
-                {
-                    name: 'regions2',
-                    title: '',
-                    layout: ['covidDeaths','allDeaths']
+                    layout: [
+                        ['regionsTestsNorm','covidInHospital','covidInICU'],
+                        ['covidDeaths','allDeaths']
+                    ]
                 }
             ], 
             panels:[

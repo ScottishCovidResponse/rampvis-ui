@@ -42,7 +42,7 @@ class HealthBoardOverview {
                 {
                     name: 'testing',
                     title: 'Testing',
-                    layout: ['dailyTests']
+                    layout: [['dailyTests']]
                 }, 
                 {
                     name: 'deaths',

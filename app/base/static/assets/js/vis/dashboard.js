@@ -57,16 +57,15 @@ dashboard.createDashboard = function(div, config){
         parentHTMLElementId = canonizeNames(config.layout[col]) 
         htmlCol.attr('id', parentHTMLElementId)
 
-        // console.log('config.layout[col]',config.layout[col])
         if( typeof(config.layout[col]) == "string")
         {    
-            attachGroup(parentHTMLElementId, config.layout[col], config)
+            addGroup(parentHTMLElementId, config.layout[col], config)
         }else{
             for(var row=0 ; row < config.layout[col].length ; row++)
             {
                 // console.log('config.layout[col][row]',config.layout[col][row])                
                 if( typeof(config.layout[col][row]) == "string"){
-                    attachGroup(parentHTMLElementId, config.layout[col][row], config)
+                    addGroup(parentHTMLElementId, config.layout[col][row], config)
                 }
             }    
         }
@@ -75,7 +74,7 @@ dashboard.createDashboard = function(div, config){
     // CREATE PANEL LAYOUTS
 }
 
-var attachGroup = function(parentHTMLElementId, name, config){
+var addGroup = function(parentHTMLElementId, name, config){
 
     // console.log('\tAttach Group', name, '--> ', parentHTMLElementId)
     var group = config.groups.filter(function (el) {
@@ -94,25 +93,33 @@ var attachGroup = function(parentHTMLElementId, name, config){
         .text(group.title)
 
     if(group.layout.length == 1){
-        attachPanel(parentHTMLElementId, group.layout[0], config)
+        addPanel(parentHTMLElementId, group.layout[0], config)
     }else{
-        var firstElement = group.layout[0]
-        if(typeof(firstElement) == 'string'){
-            // new horizontal layout
-            for(var row = 0 ; row< group.layout.length ; row++){
-                attachPanel(parentHTMLElementId, group.layout[row], config) 
+        
+        for(var row = 0 ; row< group.layout.length ; row++){
+            for(var panel = 0 ; panel< group.layout[row].length ; panel++){
+                addPanel(parentHTMLElementId, group.layout[row][panel], config)
             }
-        }else{
-            // simple vertical layout
-            for(var row = 0 ; row< group.layout.length ; row++){
-                attachPanel(parentHTMLElementId, group.layout[row], config) 
-                d3.select('#' + parentHTMLElementId).append('br')
-            }
+            d3.select('#' + parentHTMLElementId).append('br')   
         }
+       
+        // // var firstElement = group.layout[0]
+        // if(typeof(firstElement) == 'string'){
+        //     // new horizontal layout
+        //     for(var row = 0 ; row< group.layout.length ; row++){
+        //         addPanel(parentHTMLElementId, group.layout[row], config) 
+        //     }
+        // }else{
+        //     // simple vertical layout
+        //     for(var row = 0 ; row< group.layout.length ; row++){
+        //         addPanel(parentHTMLElementId, group.layout[row], config) 
+        //         d3.select('#' + parentHTMLElementId).append('br')
+        //     }
+        // }
     }
 }
 
-var attachPanel = function(parentHtmlElementId, name, config){
+var addPanel = function(parentHtmlElementId, name, config){
     
     console.log('\t\tAttach Panel: ', name, '-->', parentHtmlElementId)
     var panels = config.panels.filter(function (el) {
