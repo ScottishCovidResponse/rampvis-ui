@@ -174,8 +174,8 @@ dashboard.visualizeDataStream = function (id, title, field, color, dataStream, m
 
     setVisTitle(svg, title)
     visualizeNumber(svg, dataStream, 0, field, color, mode, normalized)
-    visualizeTrendArrow(svg, dataStream, 250, field, color, mode)
-    visualizeMiniChart(svg, dataStream, 400, field, color, mode);
+    visualizeTrendArrow(svg, dataStream, 150, field, color, mode)
+    visualizeMiniChart(svg, dataStream, 300, field, color, mode);
 }
 
 var visualizeNumber = function (svg, data, xOffset, field, color, mode, normalized) {
