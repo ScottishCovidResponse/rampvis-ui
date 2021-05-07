@@ -26,12 +26,12 @@ class CountryOverview {
             groups: [
                 {
                     name: 'summary',
-                    title: 'Summary',
+                    title: 'Nation Summary',
                     layout: [['cases'],['deaths'],['patients']]
                 }, 
                 {
                     name: 'regions',
-                    title: 'Regions',
+                    title: 'NHS Board Data',
                     layout: [
                         ['regionsTestsNorm','covidInHospital','covidInICU'],
                         ['covidDeaths','allDeaths']
