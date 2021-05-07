@@ -10,19 +10,34 @@ div#main{
     width: 1060px;
 }
 
-table.layout tr{
+
+
+/* DASHBOARD TABLE AND LAYOUT */
+table.dashboardLayout td, table.dashboardLayout td * {
     vertical-align: top;
+    text-align: left;
 }
 
-table.layout td{
-    /* padding-right: 40px; */
+table.dashboardLayout td{
+    padding-right: 50px;
+}
+
+table.dashboardLayout svg{
+    margin-right: 30px;
+    margin-bottom: 30px;
+
+}
+
+.separator{
+    stroke: #ddd;
+
 }
 
 
+/* FONTS */
 h3.dashboard{
     font-weight: bold;
     line-height: 100%;
-    /* font-size: 14pt; */
 }
 .description{
     margin-top:-20px;
@@ -58,9 +73,14 @@ text.bigNumber{
     font-size: 20;
 }
 
-.separator{
-    stroke: #ddd;
+text.cartogramLabel{
+    font-weight: 500;
 }
+
+
+
+/* VISUALISATION ENCODINGS */
+
 .weekBar{
     stroke: #ccc;
     stroke-width: 3;

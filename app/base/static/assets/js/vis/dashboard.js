@@ -9,6 +9,8 @@ var baseline_title = 22
 var baseline_label = dashboard.height - 30;
 var top_content = baseline_title + 30;
 
+LINE_HIGHT= 20;
+
 dashboard.MODE_DAILY = 0
 dashboard.MODE_CURRENT = 1
 dashboard.MODE_CUMULATIVE = 2
@@ -16,14 +18,35 @@ dashboard.MODE_WEEKLY = 3
 
 var LINE_1 = 17;
 var LINE_2 = 40;
+
+// Cartogram/Tilemap
 var TILE_WIDTH = 40;
 var TILE_HEIGHT = 40;
 var TILE_GAP = 4;
 
+var TILEMAP_LAYOUT_SCOTLAND = {
+    'Ayrshire and Arran': [5, 1],
+    'Borders': [6, 3],
+    'Dumfries and Galloway': [6, 1],
+    'Fife': [4, 2],
+    'Forth Valley': [4, 1],
+    'Grampian': [3, 2],
+    'Greater Glasgow and Clyde': [5, 2],
+    'Highland': [2, 1],
+    'Lanarkshire': [6, 2],
+    'Lothian': [5, 3],
+    'Orkney': [1, 2],
+    'Shetland': [0, 2],
+    'Tayside': [3, 1],
+    'Western Isles': [2, 0]
+}
+
+
+
 dashboard.createDashboard = function(div, config){
 
     var tr = div.append('table')
-        .attr('class', 'vis-example-container')
+        .attr('class', 'dashboardLayout')
         .append('tr')
 
     // CREATE GROUP LAYOUT
@@ -70,7 +93,6 @@ var attachGroup = function(parentHTMLElementId, name, config){
         .attr('class', 'dashboard')
         .text(group.title)
 
-    // console.log(group)
     if(group.layout.length == 1){
         attachPanel(parentHTMLElementId, group.layout[0], config)
     }else{
@@ -78,12 +100,13 @@ var attachGroup = function(parentHTMLElementId, name, config){
         if(typeof(firstElement) == 'string'){
             // new horizontal layout
             for(var row = 0 ; row< group.layout.length ; row++){
-                
+                attachPanel(parentHTMLElementId, group.layout[row], config) 
             }
         }else{
             // simple vertical layout
             for(var row = 0 ; row< group.layout.length ; row++){
                 attachPanel(parentHTMLElementId, group.layout[row], config) 
+                d3.select('#' + parentHTMLElementId).append('br')
             }
         }
     }
@@ -91,20 +114,38 @@ var attachGroup = function(parentHTMLElementId, name, config){
 
 var attachPanel = function(parentHtmlElementId, name, config){
     
-    // console.log('\t\tAttach Panel: ', name, '-->', parentHtmlElementId)
-    var panel = config.panels.filter(function (el) {
+    console.log('\t\tAttach Panel: ', name, '-->', parentHtmlElementId)
+    var panels = config.panels.filter(function (el) {
         return el.name == name
-    })[0];
+    });
 
-    var normalized = false || panel.normalized;
-    dashboard.visualizeDataStream(
-        parentHtmlElementId,
-        panel.title,
-        panel.dataField,
-        panel.color,
-        panel.data,
-        panel.mode,
-        normalized);
+    if (panels.length == 0){
+        console.log('NO PANEL FOUND WITH NAME:', name)
+        return;
+    }
+    var panel = panels[0];
+        
+
+    var normalized = false || (panel && panel.normalized);
+    if(panel.type == 'cartogram'){
+        dashboard.visulizeScotlandNHSBoardCartogram(
+            parentHtmlElementId,
+            panel.title, 
+            panel.color, 
+            panel.data,
+            panel.normalized ? panel.normalized : false
+        )
+    }else if(panel.type == 'stats')
+    {
+        dashboard.visualizeDataStream(
+            parentHtmlElementId,
+            panel.title,
+            panel.dataField,
+            panel.color,
+            panel.data,
+            panel.mode,
+            normalized);    
+    }
 }
 
 var canonizeNames = function(s){
@@ -418,4 +459,109 @@ var setVisLabelRow2 = function (g, text) {
         .text(text)
         .attr('class', 'label')
         .attr('y', baseline_label + 15)
+}
+
+
+dashboard.visulizeScotlandNHSBoardCartogram = function (id, title, color, data, normalized) 
+{
+    // data comes in JSON
+    var svg = d3.select('#' + id)
+        .append("svg")
+        .attr("width", TILE_WIDTH * 4)
+        .attr("height", 100 + TILE_HEIGHT * 7)
+
+    setVisTitle(svg, title)
+    svg.append('text')
+        .attr('x', 0)
+        .attr('y', baseline_title + 30)
+        .attr('class', 'thin')
+        .text('per NHS Board')
+
+    if (normalized){
+        svg.append('text')
+        .attr('x', 0)
+        .attr('y', baseline_title + 30 + LINE_HIGHT)
+        .attr('class', 'thin')
+        .text('per 1000 people')
+    }
+
+    var current = data[data.length - 1]
+    var array = [];
+    var max = 0
+    var min = 10000000;
+
+    for (r in current) {
+        if (!(r == 'week commencing'
+            || r == 'date'
+            || r == 'index')) {
+            array.push({ 'name': r, 'value': current[r] })
+            max = Math.max(max, current[r])
+            min = Math.min(min, current[r])
+        }
+    }
+    console.log(array);
+
+    var valueScale = d3.scaleLinear()
+        .domain([0, max])
+        .range([0, 1])
+
+    svg.selectAll("rect")
+        .data(array)
+        .enter()
+        .append('rect')
+        .style('stroke', '#ccc')
+        .style('fill', '#fff')
+        .attr('x', function (d) {
+            return TILEMAP_LAYOUT_SCOTLAND[d.name][1] * TILE_WIDTH;
+        })
+        .attr('y', function (d) {
+            return 100 + TILEMAP_LAYOUT_SCOTLAND[d.name][0] * TILE_HEIGHT;
+        })
+        .attr('width', TILE_WIDTH - TILE_GAP)
+        .attr('height', TILE_HEIGHT - TILE_GAP)
+        .on('mouseclick', function (d) {
+            window.open(PATH_NHSBOARD + d.name + ".html");
+        })
+
+
+    svg.selectAll(".rect")
+        .data(array)
+        .enter()
+        .append('rect')
+        .style('opacity', function (d) {
+            return valueScale(d.value);
+        })
+        .style('fill', color)
+        .attr('x', function (d) {
+            return TILEMAP_LAYOUT_SCOTLAND[d.name][1] * TILE_WIDTH;
+        })
+        .attr('y', function (d) {
+            return 100 + TILEMAP_LAYOUT_SCOTLAND[d.name][0] * TILE_HEIGHT;
+        })
+        .attr('width', TILE_WIDTH - TILE_GAP)
+        .attr('height', TILE_HEIGHT - TILE_GAP)
+    svg.selectAll("rect")
+
+    svg.selectAll(".cartogramLabel")
+        .data(array)
+        .enter()
+        .append('text')
+        .filter(function (d) {
+            return d.value == max
+                || d.value == min;
+        })
+        .attr('class', 'cartogramLabel')
+        .style('fill', function (d) {
+            return valueScale(d.value) >= .6 ? '#fff' : '#000';
+        })
+        .attr('x', function (d) {
+            return TILEMAP_LAYOUT_SCOTLAND[d.name][1] * TILE_WIDTH + TILE_HEIGHT * .05;
+        })
+        .attr('y', function (d) {
+            return 100 + TILEMAP_LAYOUT_SCOTLAND[d.name][0] * TILE_HEIGHT + TILE_HEIGHT * .8;
+        })
+        .text(function (d) { 
+            return Math.round(d.value * 10) / 10
+        })
+
 }

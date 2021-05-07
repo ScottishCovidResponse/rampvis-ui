@@ -6,7 +6,7 @@ var COLOR_HOSPITAL = '#264653'; // blue
 var nhsBoardField = '';
 var latestUpdateTime = '';
 
-// DATA STREAMS 
+// DATA STREAM TITLES 
 var DATASTREAM_0 = "Covid19 Patients in Hospital, Normalized";
 var DATASTREAM_1 = "Covid19 Patients in Hospital";
 var DATASTREAM_2 = "Covid19 Patients in ICU";
@@ -57,6 +57,7 @@ class HealthBoardOverview {
                     dataField: nhsBoardField,
                     color: d3.rgb(COLOR_HOSPITAL).brighter(1),
                     data: data[0].values,
+                    type: 'stats',
                     mode: dashboard.MODE_CURRENT,
                     normalized: true
                 },{
@@ -65,17 +66,20 @@ class HealthBoardOverview {
                     dataField: nhsBoardField,
                     color: d3.rgb(COLOR_HOSPITAL).brighter(2),
                     data: data[1].values,
+                    type: 'stats',
                     mode: dashboard.MODE_CURRENT
                 }, {
                     name: 'hospital-normalized',
                     title: DATASTREAM_2,
                     dataField: nhsBoardField,
                     color: d3.rgb(COLOR_HOSPITAL).brighter(2.5),
+                    type: 'stats',
                     data: data[2].values,
                     mode: dashboard.MODE_CURRENT
                 },{
                     name: 'dailyTests',
                     title: DATASTREAM_3,
+                    type: 'stats',
                     dataField: nhsBoardField,
                     color: COLOR_TESTS,
                     data: data[3].values,
@@ -83,6 +87,7 @@ class HealthBoardOverview {
                 },{
                     name: 'deaths-weekly', 
                     title: DATASTREAM_4,
+                    type: 'stats',
                     dataField: nhsBoardField,
                     color: COLOR_DEATHS,
                     data: data[4].values,
@@ -91,6 +96,7 @@ class HealthBoardOverview {
                     name: 'deaths-all', 
                     title: DATASTREAM_5,
                     dataField: nhsBoardField,
+                    type: 'stats',
                     color: d3.rgb(COLOR_DEATHS).darker(.5),
                     data: data[5].values,
                     mode: dashboard.MODE_WEEKLY
