@@ -48,24 +48,32 @@ dashboard.createDashboard = function(div, config){
     var tr = div.append('table')
         .attr('class', 'dashboardLayout')
         .append('tr')
-
+    var layout = config.layout;
+    
     // CREATE GROUP LAYOUT
-    var parentHTMLElementId
-    for(var col=0 ; col < config.layout.length ; col++){
-        var htmlCol = tr.append('td').attr('class', 'layout')
+    var tdId
+    for(var col=0 ; col < layout.length ; col++)
+    {
+        var td = tr.append('td').attr('class', 'layout')
+        tdId = canonizeNames(config.layout[col]) 
+        td.attr('id', tdId)
 
-        parentHTMLElementId = canonizeNames(config.layout[col]) 
-        htmlCol.attr('id', parentHTMLElementId)
-
-        if( typeof(config.layout[col]) == "string")
+        if( typeof(layout[col]) == "string")
         {    
-            addGroup(parentHTMLElementId, config.layout[col], config)
-        }else{
-            for(var row=0 ; row < config.layout[col].length ; row++)
+            addGroup(tdId, layout[col], config)
+        }
+        else
+        {
+            for(var row=0 ; row < layout[col].length ; row++)
             {
-                // console.log('config.layout[col][row]',config.layout[col][row])                
-                if( typeof(config.layout[col][row]) == "string"){
-                    addGroup(parentHTMLElementId, config.layout[col][row], config)
+                if( typeof(layout[col][row]) == "string")
+                {    
+                    addGroup(tdId, layout[col][row], config)
+                    tr.append('br')
+                }else{
+                    // for(var col2 = 0 ; col2 < layout[col][row].length ; col2++){
+                    //     addGroup(tdId, layout[col][row], config)
+                    // }
                 }
             }    
         }
@@ -76,32 +84,43 @@ dashboard.createDashboard = function(div, config){
 
 var addGroup = function(parentHTMLElementId, name, config){
 
-    // console.log('\tAttach Group', name, '--> ', parentHTMLElementId)
+    console.log('\tAttach Group', name, '--> ', parentHTMLElementId)
     var group = config.groups.filter(function (el) {
         return el.name == name
     })[0];
 
+    var divId = 'div_'+ group.name;
     var div = d3.select('#' + parentHTMLElementId)
         .append('div')
-        .attr('id', 'div_'+ parentHTMLElementId)
+        .attr('id', divId)
         .attr('class', 'dashboard')
 
-    parentHTMLElementId = 'div_'+ parentHTMLElementId;
     // show group title
     div.append('h3')
         .attr('class', 'dashboard')
         .text(group.title)
 
-    if(group.layout.length == 1){
-        addPanel(parentHTMLElementId, group.layout[0], config)
-    }else{
-        
-        for(var row = 0 ; row< group.layout.length ; row++){
-            for(var panel = 0 ; panel< group.layout[row].length ; panel++){
-                addPanel(parentHTMLElementId, group.layout[row][panel], config)
+    var layout = group.layout;
+    for(var col = 0 ; col < layout.length ; col++)
+    {
+        if( typeof(layout[col]) == "string")
+        {
+            addPanel(divId, layout[col], config)  
+        }else
+        {
+            for(var row = 0 ; row < layout[col].length ; row++)
+            {
+                if( typeof(layout[col][row]) == "string"){
+                    addPanel(divId, layout[col][row], config)
+                }else{
+                    for(var col2 = 0 ; col2 < layout[col][row].length ; col2++){
+                        addPanel(divId, layout[col][row][col2], config)
+                    }
+                }
+                d3.select('#' + divId).append('br')   
             }
-            d3.select('#' + parentHTMLElementId).append('br')   
         }
+    }
        
         // // var firstElement = group.layout[0]
         // if(typeof(firstElement) == 'string'){
@@ -116,7 +135,6 @@ var addGroup = function(parentHTMLElementId, name, config){
         //         d3.select('#' + parentHTMLElementId).append('br')
         //     }
         // }
-    }
 }
 
 var addPanel = function(parentHtmlElementId, name, config){

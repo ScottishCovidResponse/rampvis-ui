@@ -22,20 +22,20 @@ class CountryOverview {
         var data = options.data;
 
         var config = {  
-            layout: ['summary',['regions', 'regions2']],
+            layout: ['summary','regions'],
             groups: [
                 {
                     name: 'summary',
                     title: 'Nation Summary',
-                    layout: [['cases'],['deaths'],['patients']]
+                    layout: [['cases', 'deaths','patients']]
                 }, 
                 {
                     name: 'regions',
-                    title: 'NHS Board Data',
-                    layout: [
+                    title: 'NHS Boards',
+                    layout: [[
                         ['regionsTestsNorm','covidInHospital','covidInICU'],
                         ['covidDeaths','allDeaths']
-                    ]
+                    ]]
                 }
             ], 
             panels:[
