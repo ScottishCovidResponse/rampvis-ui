@@ -72,9 +72,12 @@ text.bigNumber{
     font-size: 12pt;
 }
 
-.title{
+.datastream-title{
     font-weight: bold;
     font-size:12pt;
+}
+.datastream-title.hover{
+    text-decoration: underline;
 }
 
 text.cartogramLabel{

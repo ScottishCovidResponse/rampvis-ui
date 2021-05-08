@@ -1,3 +1,6 @@
+/* 
+author: Benjamin Bach, bbach@ed.ac.uk
+*/
 var COLOR_CASES = '#e93516';    // orange
 var COLOR_DEATHS = '#f0852d';   // orange
 var COLOR_TESTS = '#2a9d8f';    // green

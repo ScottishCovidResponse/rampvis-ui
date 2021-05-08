@@ -1,5 +1,7 @@
-/* Namespace for dashboard functions 
-author: Benjamin Bach, bbach@ed.ac.uk*/
+/* 
+Namespace for dashboard functions 
+author: Benjamin Bach, bbach@ed.ac.uk
+*/
 dashboard = {}
 
 dashboard.height = 150;
@@ -78,13 +80,11 @@ dashboard.createDashboard = function(div, config){
             }    
         }
     }
-
-    // CREATE PANEL LAYOUTS
 }
 
 var addGroup = function(parentHTMLElementId, name, config){
 
-    console.log('\tAttach Group', name, '--> ', parentHTMLElementId)
+    // console.log('\tAttach Group', name, '--> ', parentHTMLElementId)
     var group = config.groups.filter(function (el) {
         return el.name == name
     })[0];
@@ -139,7 +139,7 @@ var addGroup = function(parentHTMLElementId, name, config){
 
 var addPanel = function(parentHtmlElementId, name, config){
     
-    console.log('\t\tAttach Panel: ', name, '-->', parentHtmlElementId)
+    // console.log('\t\tAttach Panel: ', name, '-->', parentHtmlElementId)
     var panels = config.panels.filter(function (el) {
         return el.name == name
     });
@@ -162,6 +162,7 @@ var addPanel = function(parentHtmlElementId, name, config){
         )
     }else if(panel.type == 'stats')
     {
+        console.log('panel.link', panel.link)
         dashboard.visualizeDataStream(
             parentHtmlElementId,
             panel.title,
@@ -169,7 +170,8 @@ var addPanel = function(parentHtmlElementId, name, config){
             panel.color,
             panel.data,
             panel.mode,
-            normalized);    
+            normalized, 
+            panel.link ? panel.link : null);    
     }
 }
 
@@ -182,15 +184,15 @@ var canonizeNames = function(s){
 
 
 // visualizes a dataset for a dashboard with number, trend, and chart
-dashboard.visualizeDataStream = function (id, title, field, color, dataStream, mode, normalized) {
+dashboard.visualizeDataStream = function (id, title, field, color, dataStream, mode, normalized, link) {
     
-    console.log('\t\t\tVisualizeDataStream', title, '-->', id)
+    // console.log('\t\t\tVisualizeDataStream', title, '-->', id)
     var svg = d3.select('#' + id)
         .append("svg")
         .attr("width", dashboard.width)
         .attr("height", dashboard.height)
 
-    setVisTitle(svg, title)
+    setVisTitle(svg, title, link)
     visualizeNumber(svg, dataStream, 0, field, color, mode, normalized)
     visualizeTrendArrow(svg, dataStream, 150, field, color, mode)
     visualizeMiniChart(svg, dataStream, 300, field, color, mode);
@@ -462,7 +464,8 @@ var visualizeMiniChart = function (svg, data, xOffset, field, color, mode) {
 
 
 
-var setVisTitle = function (g, text) {
+var setVisTitle = function (g, text, link) 
+{
     g.append('line')
         .attr('x1', 0)
         .attr('x2', 10000)
@@ -470,10 +473,24 @@ var setVisTitle = function (g, text) {
         .attr('y2', baseline_title + 7)
         .attr('class', 'separator')
 
-    g.append('text')
+    var text = g.append('text')
         .text(text)
-        .attr('class', 'title')
+        .attr('class', 'datastream-title')
         .attr('y', baseline_title)
+    
+    if(link)
+    {
+        g.append("svg:image")
+            .attr("xlink:href", '@Url.Content("http://vis.scrc.uk/static/assets/img/link-icon.png")')
+            .attr("x", 100)
+            .attr('y', baseline_title-10)
+            .attr("width", 20)
+            .attr("height", 20);
+            
+        text.on('click', function(){window.open(link)});
+        text.on('mouseover', function(){d3.select(this).classed('hover', true)})
+        text.on('mouseout', function(){d3.select(this).classed('hover', false)})  
+    }
 }
 
 var setVisLabel = function (g, text) {
@@ -499,7 +516,7 @@ dashboard.visulizeScotlandNHSBoardCartogram = function (id, title, color, data, 
         .attr("width", TILE_WIDTH * 4)
         .attr("height", 100 + TILE_HEIGHT * 7)
 
-    setVisTitle(svg, title)
+    setVisTitle(svg, title, null)
     svg.append('text')
         .attr('x', 0)
         .attr('y', baseline_title + 30)
@@ -528,7 +545,7 @@ dashboard.visulizeScotlandNHSBoardCartogram = function (id, title, color, data, 
             min = Math.min(min, current[r])
         }
     }
-    console.log(array);
+    // console.log(array);
 
     var valueScale = d3.scaleLinear()
         .domain([0, max])
