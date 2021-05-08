@@ -480,13 +480,13 @@ var setVisTitle = function (g, text, link)
     
     if(link)
     {
-        g.append("svg:image")
-            .attr("xlink:href", '@Url.Content("http://vis.scrc.uk/static/assets/img/link-icon.png")')
-            .attr("x", 100)
-            .attr('y', baseline_title-10)
-            .attr("width", 20)
-            .attr("height", 20);
-            
+        // g.append("svg:image")
+        //     .attr("xlink:href", '@Url.Content("http://vis.scrc.uk/static/assets/img/link-icon.png")')
+        //     .attr("x", 100)
+        //     .attr('y', baseline_title-10)
+        //     .attr("width", 20)
+        //     .attr("height", 20);
+        text.classed('hasLink', true)
         text.on('click', function(){window.open(link)});
         text.on('mouseover', function(){d3.select(this).classed('hover', true)})
         text.on('mouseout', function(){d3.select(this).classed('hover', false)})  

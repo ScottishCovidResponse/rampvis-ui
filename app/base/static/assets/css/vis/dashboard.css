@@ -76,8 +76,11 @@ text.bigNumber{
     font-weight: bold;
     font-size:12pt;
 }
-.datastream-title.hover{
+.datastream-title.hasLink{
     text-decoration: underline;
+}
+.datastream-title.hasLink.hover{
+    color: #777;
 }
 
 text.cartogramLabel{
