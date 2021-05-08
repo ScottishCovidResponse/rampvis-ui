@@ -472,7 +472,11 @@ var setVisTitle = function (g, text, link)
         .attr('y1', baseline_title + 7)
         .attr('y2', baseline_title + 7)
         .attr('class', 'separator')
-
+    
+    if(link){
+        text = text + ' [details available]'
+    }
+    
     var text = g.append('text')
         .text(text)
         .attr('class', 'datastream-title')
@@ -480,12 +484,6 @@ var setVisTitle = function (g, text, link)
     
     if(link)
     {
-        // g.append("svg:image")
-        //     .attr("xlink:href", '@Url.Content("http://vis.scrc.uk/static/assets/img/link-icon.png")')
-        //     .attr("x", 100)
-        //     .attr('y', baseline_title-10)
-        //     .attr("width", 20)
-        //     .attr("height", 20);
         text.classed('hasLink', true)
         text.on('click', function(){window.open(link)});
         text.on('mouseover', function(){d3.select(this).classed('hover', true)})

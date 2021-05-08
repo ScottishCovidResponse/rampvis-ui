@@ -78,6 +78,7 @@ text.bigNumber{
 }
 .datastream-title.hasLink{
     text-decoration: underline;
+    cursor:pointer;
 }
 .datastream-title.hasLink.hover{
     color: #777;
