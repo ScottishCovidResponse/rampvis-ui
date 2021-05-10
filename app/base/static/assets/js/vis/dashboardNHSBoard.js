@@ -1,3 +1,6 @@
+/* 
+author: Benjamin Bach, bbach@ed.ac.uk
+*/
 var COLOR_CASES = '#e93516';    // orange
 var COLOR_DEATHS = '#f0852d';   // orange
 var COLOR_TESTS = '#2a9d8f';    // green
@@ -12,7 +15,7 @@ var DATASTREAM_1 = "Covid19 Patients in Hospital";
 var DATASTREAM_2 = "Covid19 Patients in ICU";
 var DATASTREAM_3 = "Daily Tests";
 var DATASTREAM_4 = "Covid19 related deaths (weekly)";
-var DATASTREAM_5 = "'All Deaths (weekly)";
+var DATASTREAM_5 = "All Deaths (weekly)";
 
 
 class HealthBoardOverview {
@@ -37,17 +40,17 @@ class HealthBoardOverview {
                 {
                     name: 'hospital',
                     title: 'Hospital',
-                    layout: [['icu'],['hospital2'],['hospital-normalized']]
+                    layout: [['icu','hospital2', 'hospital-normalized']]
                 }, 
                 {
                     name: 'testing',
                     title: 'Testing',
-                    layout: [['dailyTests']]
+                    layout: ['dailyTests']
                 }, 
                 {
                     name: 'deaths',
                     title: 'Deaths',
-                    layout: [['deaths-weekly'], ['deaths-all']]
+                    layout: [['deaths-weekly', 'deaths-all']]
                 }
             ], 
             panels:[

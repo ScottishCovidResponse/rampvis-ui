@@ -20,22 +20,23 @@ class CountryOverview {
         nhsBoardField = Object.keys(options.data[0].values[0])[1];
         latestUpdateTime = console.log(options.data[0].values[options.data[0].values.length-1].index);
         var data = options.data;
+        var links = options.links;
 
         var config = {  
-            layout: ['summary',['regions', 'regions2']],
+            layout: ['summary','regions'],
             groups: [
                 {
                     name: 'summary',
                     title: 'Nation Summary',
-                    layout: [['cases'],['deaths'],['patients']]
+                    layout: [['cases', 'deaths','patients']]
                 }, 
                 {
                     name: 'regions',
-                    title: 'NHS Board Data',
-                    layout: [
+                    title: 'NHS Boards',
+                    layout: [[
                         ['regionsTestsNorm','covidInHospital','covidInICU'],
                         ['covidDeaths','allDeaths']
-                    ]
+                    ]]
                 }
             ], 
             panels:[
@@ -47,6 +48,7 @@ class CountryOverview {
                     color: COLOR_CASES,
                     data: data[0].values,
                     mode: dashboard.MODE_DAILY,
+                    link: links[0]
                 },{
                     name: 'deaths',
                     title: 'COVID-19 Patients in Hospital',

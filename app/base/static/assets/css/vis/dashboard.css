@@ -38,6 +38,10 @@ table.dashboardLayout svg{
 h3.dashboard{
     font-weight: bold;
     line-height: 100%;
+    background-color: #f3f3f3;
+    padding: 4px;
+    margin-left: -4px;
+    border-radius: 3px;
 }
 .description{
     margin-top:-20px;
@@ -68,13 +72,25 @@ text.bigNumber{
     font-size: 12pt;
 }
 
-.title{
+.datastream-title{
     font-weight: bold;
-    font-size: 20;
+    font-size:12pt;
+}
+.datastream-title.hasLink{
+    text-decoration: underline;
+    cursor:pointer;
+}
+.datastream-title.hasLink.hover{
+    color: #777;
 }
 
 text.cartogramLabel{
-    font-weight: 500;
+    font-weight: 800;
+    font-size: 1.2em;
+}
+text.cartogramLabel-nonextremes{
+    font-weight: 100;
+    opacity: .4;
 }
 
 

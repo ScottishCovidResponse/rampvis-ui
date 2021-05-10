@@ -1,5 +1,7 @@
-/* Namespace for dashboard functions 
-author: Benjamin Bach, bbach@ed.ac.uk*/
+/* 
+Namespace for dashboard functions 
+author: Benjamin Bach, bbach@ed.ac.uk
+*/
 dashboard = {}
 
 dashboard.height = 150;
@@ -48,30 +50,36 @@ dashboard.createDashboard = function(div, config){
     var tr = div.append('table')
         .attr('class', 'dashboardLayout')
         .append('tr')
-
+    var layout = config.layout;
+    
     // CREATE GROUP LAYOUT
-    var parentHTMLElementId
-    for(var col=0 ; col < config.layout.length ; col++){
-        var htmlCol = tr.append('td').attr('class', 'layout')
+    var tdId
+    for(var col=0 ; col < layout.length ; col++)
+    {
+        var td = tr.append('td').attr('class', 'layout')
+        tdId = canonizeNames(config.layout[col]) 
+        td.attr('id', tdId)
 
-        parentHTMLElementId = canonizeNames(config.layout[col]) 
-        htmlCol.attr('id', parentHTMLElementId)
-
-        if( typeof(config.layout[col]) == "string")
+        if( typeof(layout[col]) == "string")
         {    
-            addGroup(parentHTMLElementId, config.layout[col], config)
-        }else{
-            for(var row=0 ; row < config.layout[col].length ; row++)
+            addGroup(tdId, layout[col], config)
+        }
+        else
+        {
+            for(var row=0 ; row < layout[col].length ; row++)
             {
-                // console.log('config.layout[col][row]',config.layout[col][row])                
-                if( typeof(config.layout[col][row]) == "string"){
-                    addGroup(parentHTMLElementId, config.layout[col][row], config)
+                if( typeof(layout[col][row]) == "string")
+                {    
+                    addGroup(tdId, layout[col][row], config)
+                    tr.append('br')
+                }else{
+                    // for(var col2 = 0 ; col2 < layout[col][row].length ; col2++){
+                    //     addGroup(tdId, layout[col][row], config)
+                    // }
                 }
             }    
         }
     }
-
-    // CREATE PANEL LAYOUTS
 }
 
 var addGroup = function(parentHTMLElementId, name, config){
@@ -81,27 +89,38 @@ var addGroup = function(parentHTMLElementId, name, config){
         return el.name == name
     })[0];
 
+    var divId = 'div_'+ group.name;
     var div = d3.select('#' + parentHTMLElementId)
         .append('div')
-        .attr('id', 'div_'+ parentHTMLElementId)
+        .attr('id', divId)
         .attr('class', 'dashboard')
 
-    parentHTMLElementId = 'div_'+ parentHTMLElementId;
     // show group title
     div.append('h3')
         .attr('class', 'dashboard')
         .text(group.title)
 
-    if(group.layout.length == 1){
-        addPanel(parentHTMLElementId, group.layout[0], config)
-    }else{
-        
-        for(var row = 0 ; row< group.layout.length ; row++){
-            for(var panel = 0 ; panel< group.layout[row].length ; panel++){
-                addPanel(parentHTMLElementId, group.layout[row][panel], config)
+    var layout = group.layout;
+    for(var col = 0 ; col < layout.length ; col++)
+    {
+        if( typeof(layout[col]) == "string")
+        {
+            addPanel(divId, layout[col], config)  
+        }else
+        {
+            for(var row = 0 ; row < layout[col].length ; row++)
+            {
+                if( typeof(layout[col][row]) == "string"){
+                    addPanel(divId, layout[col][row], config)
+                }else{
+                    for(var col2 = 0 ; col2 < layout[col][row].length ; col2++){
+                        addPanel(divId, layout[col][row][col2], config)
+                    }
+                }
+                d3.select('#' + divId).append('br')   
             }
-            d3.select('#' + parentHTMLElementId).append('br')   
         }
+    }
        
         // // var firstElement = group.layout[0]
         // if(typeof(firstElement) == 'string'){
@@ -116,12 +135,11 @@ var addGroup = function(parentHTMLElementId, name, config){
         //         d3.select('#' + parentHTMLElementId).append('br')
         //     }
         // }
-    }
 }
 
 var addPanel = function(parentHtmlElementId, name, config){
     
-    console.log('\t\tAttach Panel: ', name, '-->', parentHtmlElementId)
+    // console.log('\t\tAttach Panel: ', name, '-->', parentHtmlElementId)
     var panels = config.panels.filter(function (el) {
         return el.name == name
     });
@@ -144,6 +162,7 @@ var addPanel = function(parentHtmlElementId, name, config){
         )
     }else if(panel.type == 'stats')
     {
+        console.log('panel.link', panel.link)
         dashboard.visualizeDataStream(
             parentHtmlElementId,
             panel.title,
@@ -151,7 +170,8 @@ var addPanel = function(parentHtmlElementId, name, config){
             panel.color,
             panel.data,
             panel.mode,
-            normalized);    
+            normalized, 
+            panel.link ? panel.link : null);    
     }
 }
 
@@ -164,18 +184,18 @@ var canonizeNames = function(s){
 
 
 // visualizes a dataset for a dashboard with number, trend, and chart
-dashboard.visualizeDataStream = function (id, title, field, color, dataStream, mode, normalized) {
+dashboard.visualizeDataStream = function (id, title, field, color, dataStream, mode, normalized, link) {
     
-    console.log('\t\t\tVisualizeDataStream', title, '-->', id)
+    // console.log('\t\t\tVisualizeDataStream', title, '-->', id)
     var svg = d3.select('#' + id)
         .append("svg")
         .attr("width", dashboard.width)
         .attr("height", dashboard.height)
 
-    setVisTitle(svg, title)
+    setVisTitle(svg, title, link)
     visualizeNumber(svg, dataStream, 0, field, color, mode, normalized)
-    visualizeTrendArrow(svg, dataStream, 250, field, color, mode)
-    visualizeMiniChart(svg, dataStream, 400, field, color, mode);
+    visualizeTrendArrow(svg, dataStream, 150, field, color, mode)
+    visualizeMiniChart(svg, dataStream, 300, field, color, mode);
 }
 
 var visualizeNumber = function (svg, data, xOffset, field, color, mode, normalized) {
@@ -380,7 +400,8 @@ var visualizeMiniChart = function (svg, data, xOffset, field, color, mode) {
         .range([chartHeight, 0]);
 
     if (mode == dashboard.MODE_CUMULATIVE
-        || mode == dashboard.MODE_CURRENT) {
+        || mode == dashboard.MODE_CURRENT) 
+    {
         g.append("path")
             .datum(data)
             .attr("fill", color)
@@ -408,7 +429,9 @@ var visualizeMiniChart = function (svg, data, xOffset, field, color, mode) {
             .attr("r", 3)
             .attr("cx", x(data.length - 1))
             .attr("cy", y(data[data.length - 1][field]))
-    } else {
+    } 
+    else 
+    {
         g.selectAll("bar")
             .data(data)
             .enter().append("rect")
@@ -423,7 +446,7 @@ var visualizeMiniChart = function (svg, data, xOffset, field, color, mode) {
             })
             .attr("width", barWidth)
             .attr("y", function (d) { return y(d[field]); })
-            .attr("height", function (d) { return chartHeight - y(d[field]); });
+            .attr("height", function (d) { return chartHeight - y(d[field]); })
 
     }
 
@@ -440,18 +463,32 @@ var visualizeMiniChart = function (svg, data, xOffset, field, color, mode) {
 }
 
 
-var setVisTitle = function (g, text) {
+
+var setVisTitle = function (g, text, link) 
+{
     g.append('line')
         .attr('x1', 0)
         .attr('x2', 10000)
         .attr('y1', baseline_title + 7)
         .attr('y2', baseline_title + 7)
         .attr('class', 'separator')
-
-    g.append('text')
+    
+    if(link){
+        text = text + ' [details available]'
+    }
+    
+    var text = g.append('text')
         .text(text)
-        .attr('class', 'title')
+        .attr('class', 'datastream-title')
         .attr('y', baseline_title)
+    
+    if(link)
+    {
+        text.classed('hasLink', true)
+        text.on('click', function(){window.open(link)});
+        text.on('mouseover', function(){d3.select(this).classed('hover', true)})
+        text.on('mouseout', function(){d3.select(this).classed('hover', false)})  
+    }
 }
 
 var setVisLabel = function (g, text) {
@@ -477,7 +514,7 @@ dashboard.visulizeScotlandNHSBoardCartogram = function (id, title, color, data, 
         .attr("width", TILE_WIDTH * 4)
         .attr("height", 100 + TILE_HEIGHT * 7)
 
-    setVisTitle(svg, title)
+    setVisTitle(svg, title, null)
     svg.append('text')
         .attr('x', 0)
         .attr('y', baseline_title + 30)
@@ -506,7 +543,7 @@ dashboard.visulizeScotlandNHSBoardCartogram = function (id, title, color, data, 
             min = Math.min(min, current[r])
         }
     }
-    console.log(array);
+    // console.log(array);
 
     var valueScale = d3.scaleLinear()
         .domain([0, max])
@@ -553,10 +590,10 @@ dashboard.visulizeScotlandNHSBoardCartogram = function (id, title, color, data, 
         .data(array)
         .enter()
         .append('text')
-        .filter(function (d) {
-            return d.value == max
-                || d.value == min;
-        })
+        // .filter(function (d) {
+        //     return d.value == max
+        //         || d.value == min;
+        // })
         .attr('class', 'cartogramLabel')
         .style('fill', function (d) {
             return valueScale(d.value) >= .6 ? '#fff' : '#000';
@@ -568,7 +605,18 @@ dashboard.visulizeScotlandNHSBoardCartogram = function (id, title, color, data, 
             return 100 + TILEMAP_LAYOUT_SCOTLAND[d.name][0] * TILE_HEIGHT + TILE_HEIGHT * .8;
         })
         .text(function (d) { 
-            return Math.round(d.value * 10) / 10
+            if(d.value < 9){
+                return Math.round(d.value * 10) / 10
+            }else if(d.value < 999){
+                return Math.round(d.value)
+            }else{
+                return Math.round(Math.round(d.value) / 1000) + 'k'
+            }
         })
+        .filter(function (d) {
+            return !(d.value == max
+                || d.value == min);
+        })
+        .attr('class', 'cartogramLabel-nonextremes')
 
 }
