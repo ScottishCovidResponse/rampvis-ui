@@ -125,7 +125,9 @@ def get_onto_page_by_id(id):
     # print('SK', data)
     # [print(get_api_url(d.get('urlCode')), d.get('endpoint')) for d in data]
     data = [{**d, 'endpoint': get_api_url(d.get('urlCode')) + d.get('endpoint')} for d in data]
-    links = [f'{get_ui_url("UI_URL")}/{l}' for l in links]
+
+    if links is not None:
+        links = [f'{get_ui_url("UI_URL")}/{l}' for l in links]
 
     onto_page['bindings'] = {'data': data, 'vis': vis, 'links': links}
     logger.debug(f'service.py:get_onto_page_by_id: onto_page = {onto_page}')
