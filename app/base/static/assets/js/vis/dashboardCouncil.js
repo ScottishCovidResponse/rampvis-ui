@@ -4,17 +4,50 @@ class CouncilOverview {
 
     constructor(options) {
         console.log('Input data', options.data);
-        d3.select('#' + options.chartElement)
+        var div = d3.select('#' + options.chartElement)
             .append('div')
                 .attr('class', 'vis-example-container')
-                .style('width', this.CHART_WIDTH + 'px')
-                .style('height', this.CHART_HEIGHT + 'px')
-                .text('an awesome visualisation');
+                // .style('width', this.CHART_WIDTH + 'px')
+                // .style('height', this.CHART_HEIGHT + 'px')
+                // .text('an awesome visualisation');
 
         // This could be a way to get data without relying on stream order.
         const allDeathData = Data.from(options.data, Data.Fields.COUNCIL_ALL_DEATHS);
         const covidDeathData = Data.from(options.data, Data.Fields.COUNCIL_COVID_DEATHS);
         console.log('allDeathData', allDeathData);
         console.log('covidDeathData', covidDeathData);
+
+        var config = {
+            layout : ['council'], 
+            groups : [
+                {
+                    name: 'council',
+                    title: 'Council data',
+                    layout: ['covidDeathData', 'allDeathData']        
+                }
+            ],
+            panels:[
+                {
+                    name: 'covidDeathData', 
+                    title: 'Covid Deaths',
+                    dataField: 'Aberdeen City',
+                    type: 'stats',
+                    color: COLOR_DEATHS,
+                    data: Data.from(options.data, Data.Fields.COUNCIL_COVID_DEATHS),
+                    mode: dashboard.MODE_DAILY
+                },
+                {
+                    name: 'allDeathData', 
+                    title: 'All Deaths',
+                    dataField: 'Aberdeen City',
+                    type: 'stats',
+                    color: d3.color(COLOR_DEATHS).brighter(.8),
+                    data: Data.from(options.data, Data.Fields.COUNCIL_ALL_DEATHS),
+                    mode: dashboard.MODE_DAILY
+                }
+            ]
+        }
+
+        dashboard.createDashboard(div, config)
     }
 }
