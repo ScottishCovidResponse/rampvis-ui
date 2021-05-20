@@ -14,8 +14,9 @@ class CouncilOverview {
         // This could be a way to get data without relying on stream order.
         const allDeathData = Data.from(options.data, Data.Fields.COUNCIL_ALL_DEATHS);
         const covidDeathData = Data.from(options.data, Data.Fields.COUNCIL_COVID_DEATHS);
-        console.log('allDeathData', allDeathData);
-        console.log('covidDeathData', covidDeathData);
+        const vaccineData = Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP);
+        console.log(vaccineData);
+        
 
         var config = {
             layout : ['council'], 

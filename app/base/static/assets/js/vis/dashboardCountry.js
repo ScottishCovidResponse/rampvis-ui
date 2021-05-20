@@ -13,6 +13,18 @@ class CountryOverview {
     constructor(options) {
         console.log('Input data', options.data);
 
+        // Notes: please use these
+        console.log('COUNTRY_NEW_CASES', Data.from(options.data, Data.Fields.COUNTRY_NEW_CASES));
+        console.log('COUNTRY_HOSPITAL', Data.from(options.data, Data.Fields.COUNTRY_HOSPITAL));
+        console.log('COUNTRY_ICU', Data.from(options.data, Data.Fields.COUNTRY_ICU));
+        console.log('COUNTRY_VACCINE_TOTAL', Data.from(options.data, Data.Fields.COUNTRY_VACCINE_TOTAL));
+        console.log('COUNTRY_VACCINE_SEX_AGEGROUP', Data.from(options.data, Data.Fields.COUNTRY_VACCINE_SEX_AGEGROUP));
+        console.log('HEALTH_BOARD_TESTS_NORMALIZED', Data.from(options.data, Data.Fields.HEALTH_BOARD_TESTS_NORMALIZED));
+        console.log('HEALTH_BOARD_HOSPITAL_NORMALIZED', Data.from(options.data, Data.Fields.HEALTH_BOARD_HOSPITAL_NORMALIZED));
+        console.log('HEALTH_BOARD_ICU_NORMALIZED', Data.from(options.data, Data.Fields.HEALTH_BOARD_ICU_NORMALIZED));
+        console.log('HEALTH_BOARD_COVID_DEATHS_NORMALIZED', Data.from(options.data, Data.Fields.HEALTH_BOARD_COVID_DEATHS_NORMALIZED));
+        console.log('HEALTH_BOARD_ALL_DEATHS_NORMALIZED', Data.from(options.data, Data.Fields.HEALTH_BOARD_ALL_DEATHS_NORMALIZED));
+
         var div = d3.select('#' + options.chartElement)
             .append('div')
                 .attr('class', 'vis-example-container')
