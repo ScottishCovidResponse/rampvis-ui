@@ -350,7 +350,7 @@ var visualizeTrendArrow = function (svg, data, xOffset, field, color, mode, unit
             .text(function(){
                 v = Math.abs(v)
                 if(unit){
-                    if(unit == '%')
+                    if(unit == MODE_PERCENT)
                     v += '% pts.'; 
                 }
                 return v;
