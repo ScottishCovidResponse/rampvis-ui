@@ -91,7 +91,7 @@ class CouncilOverview {
                     type: 'stats',
                     color: d3.color(COLOR_VACCINATON).darker(.5),
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
-                    mode: dashboard.MODE_CUMULATIVE, 
+                    mode: dashboard.MODE_PERCENT, 
                     conditions:[
                         'Sex == "Total"',
                         'Dose == "Dose 2"',
@@ -105,7 +105,7 @@ class CouncilOverview {
                     type: 'stats',
                     color: d3.color(COLOR_VACCINATON).darker(1),
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
-                    mode: dashboard.MODE_CUMULATIVE, 
+                    mode: dashboard.MODE_PERCENT, 
                     conditions:[
                         'Sex == "Total"',
                         'Dose == "Dose 1"',
@@ -119,7 +119,7 @@ class CouncilOverview {
                     type: 'stats',
                     color: d3.color(COLOR_VACCINATON).darker(1.5),
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
-                    mode: dashboard.MODE_CUMULATIVE, 
+                    mode: dashboard.MODE_PERCENT, 
                     conditions:[
                         'Sex == "Total"',
                         'Dose == "Dose 1"',
@@ -133,7 +133,7 @@ class CouncilOverview {
                     type: 'stats',
                     color: d3.color(COLOR_VACCINATON).darker(2),
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
-                    mode: dashboard.MODE_CUMULATIVE, 
+                    mode: dashboard.MODE_PERCENT, 
                     conditions:[
                         'Sex == "Total"',
                         'Dose == "Dose 1"',
@@ -147,7 +147,7 @@ class CouncilOverview {
                     type: 'stats',
                     color: d3.color(COLOR_VACCINATON).darker(2.5),
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
-                    mode: dashboard.MODE_CUMULATIVE, 
+                    mode: dashboard.MODE_PERCENT, 
                     conditions:[
                         'Sex == "Total"',
                         'Dose == "Dose 1"',
@@ -161,7 +161,7 @@ class CouncilOverview {
                     type: 'stats',
                     color: d3.color(COLOR_VACCINATON).darker(3),
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
-                    mode: dashboard.MODE_CUMULATIVE, 
+                    mode: dashboard.MODE_PERCENT, 
                     conditions:[
                         'Sex == "Total"',
                         'Dose == "Dose 1"',
@@ -175,7 +175,7 @@ class CouncilOverview {
                     type: 'stats',
                     color: d3.color(COLOR_VACCINATON).darker(3.5),
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
-                    mode: dashboard.MODE_CUMULATIVE, 
+                    mode: dashboard.MODE_PERCENT, 
                     conditions:[
                         'Sex == "Total"',
                         'Dose == "Dose 1"',
@@ -189,7 +189,7 @@ class CouncilOverview {
                     type: 'stats',
                     color: d3.color(COLOR_VACCINATON).darker(4),
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
-                    mode: dashboard.MODE_CUMULATIVE, 
+                    mode: dashboard.MODE_PERCENT, 
                     conditions:[
                         'Sex == "Total"',
                         'Dose == "Dose 1"',
@@ -215,7 +215,7 @@ class CouncilOverview {
                     type: 'stats',
                     color: d3.color(COLOR_VACCINATON).darker(5),
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
-                    mode: dashboard.MODE_CUMULATIVE, 
+                    mode: dashboard.MODE_PERCENT, 
                     conditions:[
                         'Sex == "Total"',
                         'Dose == "Dose 1"',
@@ -230,7 +230,7 @@ class CouncilOverview {
                     type: 'stats',
                     color: d3.color(COLOR_VACCINATON).darker(1),
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
-                    mode: dashboard.MODE_CUMULATIVE, 
+                    mode: dashboard.MODE_PERCENT, 
                     conditions:[
                         'Sex == "Total"',
                         'Dose == "Dose 2"',
@@ -244,7 +244,7 @@ class CouncilOverview {
                     type: 'stats',
                     color: d3.color(COLOR_VACCINATON).darker(1.5),
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
-                    mode: dashboard.MODE_CUMULATIVE, 
+                    mode: dashboard.MODE_PERCENT, 
                     conditions:[
                         'Sex == "Total"',
                         'Dose == "Dose 2"',
@@ -258,7 +258,7 @@ class CouncilOverview {
                     type: 'stats',
                     color: d3.color(COLOR_VACCINATON).darker(2),
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
-                    mode: dashboard.MODE_CUMULATIVE, 
+                    mode: dashboard.MODE_PERCENT, 
                     conditions:[
                         'Sex == "Total"',
                         'Dose == "Dose 2"',
@@ -272,7 +272,7 @@ class CouncilOverview {
                     type: 'stats',
                     color: d3.color(COLOR_VACCINATON).darker(2.5),
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
-                    mode: dashboard.MODE_CUMULATIVE, 
+                    mode: dashboard.MODE_PERCENT, 
                     conditions:[
                         'Sex == "Total"',
                         'Dose == "Dose 2"',
@@ -286,7 +286,7 @@ class CouncilOverview {
                     type: 'stats',
                     color: d3.color(COLOR_VACCINATON).darker(3),
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
-                    mode: dashboard.MODE_CUMULATIVE, 
+                    mode: dashboard.MODE_PERCENT, 
                     conditions:[
                         'Sex == "Total"',
                         'Dose == "Dose 2"',
@@ -300,7 +300,7 @@ class CouncilOverview {
                     type: 'stats',
                     color: d3.color(COLOR_VACCINATON).darker(3.5),
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
-                    mode: dashboard.MODE_CUMULATIVE, 
+                    mode: dashboard.MODE_PERCENT, 
                     conditions:[
                         'Sex == "Total"',
                         'Dose == "Dose 2"',
@@ -314,7 +314,7 @@ class CouncilOverview {
                     type: 'stats',
                     color: d3.color(COLOR_VACCINATON).darker(4),
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
-                    mode: dashboard.MODE_CUMULATIVE, 
+                    mode: dashboard.MODE_PERCENT, 
                     conditions:[
                         'Sex == "Total"',
                         'Dose == "Dose 2"',
@@ -340,7 +340,7 @@ class CouncilOverview {
                     type: 'stats',
                     color: d3.color(COLOR_VACCINATON).darker(5),
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
-                    mode: dashboard.MODE_CUMULATIVE, 
+                    mode: dashboard.MODE_PERCENT, 
                     conditions:[
                         'Sex == "Total"',
                         'Dose == "Dose 2"',
