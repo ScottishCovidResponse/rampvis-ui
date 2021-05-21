@@ -4,6 +4,12 @@ author: Benjamin Bach, bbach@ed.ac.uk
 */
 dashboard = {}
 
+var COLOR_CASES = '#e93516';   // orange
+var COLOR_DEATHS = '#f0852d';   // orange
+var COLOR_TESTS = '#2a9d8f';    // green
+var COLOR_HOSPITAL = '#264653'; // blue
+var COLOR_VACCINATON = '#b642f5'; // purple
+
 dashboard.height = 150;
 dashboard.width = 510;
 
@@ -17,6 +23,7 @@ dashboard.MODE_DAILY = 0
 dashboard.MODE_CURRENT = 1
 dashboard.MODE_CUMULATIVE = 2
 dashboard.MODE_WEEKLY = 3
+dashboard.MODE_PERCENT = 4
 
 var LINE_1 = 17;
 var LINE_2 = 40;
@@ -44,20 +51,25 @@ var TILEMAP_LAYOUT_SCOTLAND = {
 }
 
 
-
 dashboard.createDashboard = function(div, config){
 
-    var tr = div.append('table')
-        .attr('class', 'dashboardLayout')
-        .append('tr')
     var layout = config.layout;
     
     // CREATE GROUP LAYOUT
+    createLayoutTable(div, layout, config)
+}
+
+var createLayoutTable = function(parentElement, layout, config)
+{
+    var tr = parentElement.append('table')
+        .attr('class', 'dashboardLayout')
+        .append('tr')
+
     var tdId
     for(var col=0 ; col < layout.length ; col++)
     {
         var td = tr.append('td').attr('class', 'layout')
-        tdId = canonizeNames(config.layout[col]) 
+        tdId = canonizeNames(layout[col]) 
         td.attr('id', tdId)
 
         if( typeof(layout[col]) == "string")
@@ -73,6 +85,7 @@ dashboard.createDashboard = function(div, config){
                     addGroup(tdId, layout[col][row], config)
                     tr.append('br')
                 }else{
+                    createLayoutTable(td, layout[col][row], config)
                     // for(var col2 = 0 ; col2 < layout[col][row].length ; col2++){
                     //     addGroup(tdId, layout[col][row], config)
                     // }
@@ -106,13 +119,17 @@ var addGroup = function(parentHTMLElementId, name, config){
         if( typeof(layout[col]) == "string")
         {
             addPanel(divId, layout[col], config)  
-        }else
+        }
+        else
         {
             for(var row = 0 ; row < layout[col].length ; row++)
             {
-                if( typeof(layout[col][row]) == "string"){
+                if( typeof(layout[col][row]) == "string")
+                {
                     addPanel(divId, layout[col][row], config)
-                }else{
+                }else
+                {
+                    // needs o create new table here
                     for(var col2 = 0 ; col2 < layout[col][row].length ; col2++){
                         addPanel(divId, layout[col][row][col2], config)
                     }
@@ -140,8 +157,10 @@ var addGroup = function(parentHTMLElementId, name, config){
 var addPanel = function(parentHtmlElementId, name, config){
     
     // console.log('\t\tAttach Panel: ', name, '-->', parentHtmlElementId)
+    // get latest date: 
+
     var panels = config.panels.filter(function (el) {
-        return el.name == name
+        return el.name == name 
     });
 
     if (panels.length == 0){
@@ -149,30 +168,65 @@ var addPanel = function(parentHtmlElementId, name, config){
         return;
     }
     var panel = panels[0];
-        
+    var data = panel.data;
+    
+    // check for conditions on data
+    if(panel.conditions && panel.conditions.length > 0){
+        for(var i in panel.conditions)
+        {
+            data = executeCondition(data, panel.conditions[i]);
+        }
+    }
+
+    var title = panel.title;
+    if(data[data.length-1].index)
+    {
+        var lastDate;
+        lastDate = moment(data[data.length-1].index, ['YYYYMMDD', 'YYYY-MM-DD'])
+        title = title + ' (' + lastDate.format('MMM DD, YYYY')+ ')'
+        console.log('lastDate', title)
+    }
+
+    
 
     var normalized = false || (panel && panel.normalized);
-    if(panel.type == 'cartogram'){
+    if(panel.type == 'cartogram')
+    {
         dashboard.visulizeScotlandNHSBoardCartogram(
             parentHtmlElementId,
-            panel.title, 
+            title, 
             panel.color, 
-            panel.data,
-            panel.normalized ? panel.normalized : false
+            data,
+            panel.normalized ? panel.normalized : false, 
+            panel.unit
         )
-    }else if(panel.type == 'stats')
+    }
+    else if(panel.type == 'stats')
     {
         console.log('panel.link', panel.link)
         dashboard.visualizeDataStream(
             parentHtmlElementId,
-            panel.title,
+            title,
             panel.dataField,
             panel.color,
-            panel.data,
+            data,
             panel.mode,
             normalized, 
-            panel.link ? panel.link : null);    
+            panel.link ? panel.link : null,
+            panel.unit
+            );    
     }
+}
+
+var executeCondition = function(data, c)
+{
+    c = 'd.' + c;
+    var size = data.length
+    // console.log('condition:', c)
+    return data.filter(function(d)
+    {
+        return eval(c);
+    });
 }
 
 var canonizeNames = function(s){
@@ -184,7 +238,7 @@ var canonizeNames = function(s){
 
 
 // visualizes a dataset for a dashboard with number, trend, and chart
-dashboard.visualizeDataStream = function (id, title, field, color, dataStream, mode, normalized, link) {
+dashboard.visualizeDataStream = function (id, title, field, color, dataStream, mode, normalized, link, unit) {
     
     // console.log('\t\t\tVisualizeDataStream', title, '-->', id)
     var svg = d3.select('#' + id)
@@ -193,12 +247,12 @@ dashboard.visualizeDataStream = function (id, title, field, color, dataStream, m
         .attr("height", dashboard.height)
 
     setVisTitle(svg, title, link)
-    visualizeNumber(svg, dataStream, 0, field, color, mode, normalized)
-    visualizeTrendArrow(svg, dataStream, 150, field, color, mode)
+    visualizeNumber(svg, dataStream, 0, field, color, mode, normalized, unit)
+    visualizeTrendArrow(svg, dataStream, 150, field, color, mode, unit)
     visualizeMiniChart(svg, dataStream, 300, field, color, mode);
 }
 
-var visualizeNumber = function (svg, data, xOffset, field, color, mode, normalized) {
+var visualizeNumber = function (svg, data, xOffset, field, color, mode, normalized, unit) {
 
     var g = svg.append("g")
         .attr("transform", "translate(" + xOffset + ",0)")
@@ -214,8 +268,14 @@ var visualizeNumber = function (svg, data, xOffset, field, color, mode, normaliz
     }
 
     var val = Math.round(data[data.length - 1][field] * 10) / 10;
-    val = val.toLocaleString(
-        undefined)
+    val = val.toLocaleString(undefined)
+
+    if(mode == dashboard.MODE_PERCENT){
+        val += '%'
+    }
+    else if(unit){
+        val += '' + unit; 
+    }
 
     var bigNumber = {}
     var t = g.append('text')
@@ -238,51 +298,13 @@ var visualizeNumber = function (svg, data, xOffset, field, color, mode, normaliz
             .attr('x', bigNumber.width + 10)
             .attr('y', top_content + LINE_2)
             .attr('class', 'thin')
-    } 
-    // else {
-    //     // show rank
-    //     var values = data[data.length - 1];
-    //     var array = []
-    //     for (var v in values) {
-    //         array.push([v, values[v]])
-    //     }
-    //     array.sort(function (a, b) {
-    //         return a[1] - b[1];
-    //     })
-
-    //     var rank;
-    //     for (var i = 1; i < array.length - 1; i++) {
-    //         if (array[i][0] == field) {
-    //             rank = i;
-    //             break;
-    //         }
-    //     }
-
-
-    //     if (rank) {
-    //         g.append('text')
-    //             .text(function () {
-    //                 if (rank == 1) return '1st';
-    //                 else if (rank == 2) return '2nd';
-    //                 else if (rank == 3) return '3rd';
-    //                 else return rank + 'th';
-    //             })
-    //             .attr('x', bigNumber.width + 10)
-    //             .attr('y', top_content + LINE_1)
-    //             .attr('class', 'thin')
-    //         g.append('text')
-    //             .text('Scotland')
-    //             .attr('x', bigNumber.width + 10)
-    //             .attr('y', top_content + LINE_2)
-    //             .attr('class', 'thin')
-    //     }
-    // }
+    }
 
 }
 
 
 
-var visualizeTrendArrow = function (svg, data, xOffset, field, color, mode) {
+var visualizeTrendArrow = function (svg, data, xOffset, field, color, mode, unit) {
 
     var g = svg.append("g")
         .attr("transform", "translate(" + xOffset + ",0)")
@@ -298,6 +320,9 @@ var visualizeTrendArrow = function (svg, data, xOffset, field, color, mode) {
     r = 0
     if (v < 0) r = 45;
     if (v > 0) r = -45;
+
+
+
 
     g.append('text')
         .text(function () {
@@ -322,7 +347,14 @@ var visualizeTrendArrow = function (svg, data, xOffset, field, color, mode) {
             .attr('class', 'thin')
     } else {
         g.append('text')
-            .text(Math.abs(v))
+            .text(function(){
+                v = Math.abs(v)
+                if(unit){
+                    if(unit == '%')
+                    v += '% pts.'; 
+                }
+                return v;
+            })
             .attr('x', 45)
             .attr('y', top_content + LINE_2)
             .style('fill', color)
@@ -389,18 +421,23 @@ var visualizeMiniChart = function (svg, data, xOffset, field, color, mode) {
         .domain([0, trendWindow - 1])
         .range([0, chartWidth - barWidth])
 
-    // get 7 last entries
+    // get N last entries
     data = data.slice(data.length - trendWindow)
 
     var max = d3.max(data, function (d) {
         return parseInt(d[field]);
     })
+    if(mode == dashboard.MODE_PERCENT){
+        max = 100;
+    }
     var y = d3.scaleLinear()
         .domain([0, max])
         .range([chartHeight, 0]);
 
+
     if (mode == dashboard.MODE_CUMULATIVE
-        || mode == dashboard.MODE_CURRENT) 
+        || mode == dashboard.MODE_CURRENT
+        || mode == dashboard.MODE_PERCENT) 
     {
         g.append("path")
             .datum(data)
@@ -515,6 +552,7 @@ dashboard.visulizeScotlandNHSBoardCartogram = function (id, title, color, data, 
         .attr("height", 100 + TILE_HEIGHT * 7)
 
     setVisTitle(svg, title, null)
+    
     svg.append('text')
         .attr('x', 0)
         .attr('y', baseline_title + 30)
@@ -534,7 +572,8 @@ dashboard.visulizeScotlandNHSBoardCartogram = function (id, title, color, data, 
     var max = 0
     var min = 10000000;
 
-    for (r in current) {
+    for (r in current) 
+    {
         if (!(r == 'week commencing'
             || r == 'date'
             || r == 'index')) {
