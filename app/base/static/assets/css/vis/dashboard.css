@@ -20,6 +20,7 @@ table.dashboardLayout td, table.dashboardLayout td * {
 
 table.dashboardLayout td{
     padding-right: 50px;
+    width: 0px;
 }
 
 table.dashboardLayout svg{
@@ -32,6 +33,7 @@ table.dashboardLayout svg{
     stroke: #ddd;
 
 }
+
 
 
 /* FONTS */
@@ -61,6 +63,10 @@ text.bigNumber{
     font-size: 35pt;
     font-weight: bold;
 }
+text.smallNumber{
+    font-size: 18pt;
+    font-weight: bold;
+}
 
 .arrow{
     stroke-width: 7;
@@ -68,8 +74,8 @@ text.bigNumber{
 }
 
 .label{
-    font-weight: 500;
-    font-size: 12pt;
+    font-weight: 200;
+    font-size: 10pt;
 }
 
 .datastream-title{
@@ -82,6 +88,10 @@ text.bigNumber{
 }
 .datastream-title.hasLink.hover{
     color: #777;
+}
+.datastream-date{
+    font-weight: 300;
+    font-size: 6pt;
 }
 
 text.cartogramLabel{
@@ -101,5 +111,13 @@ text.cartogramLabel-nonextremes{
     stroke: #ccc;
     stroke-width: 3;
 
+}
+
+.chartTopLine{
+    stroke: #aaa;
+    stroke-width: 1px;
+}
+.chartTopRect{
+    fill: #eee;
 }
   

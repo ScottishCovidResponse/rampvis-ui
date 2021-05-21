@@ -30,7 +30,13 @@ class CountryOverview {
         var links = options.links;
 
         var config = {  
-            layout: [['summary','vaccinations'], 'regions'],
+            layout: [
+                [
+                    'summary',
+                    'vaccinations'
+                ]
+                ,'regions'
+        ],
             groups: [
                 {
                     name: 'summary',
@@ -40,15 +46,15 @@ class CountryOverview {
                 {
                     name: 'vaccinations',
                     title: 'Vaccinations',
-                    layout: [['vaccinated1', 'vaccinated2','vaccinated3', 'vaccinated4']]
+                    layout: [['vaccinated1', 'vaccinated2',['vaccinated3', 'vaccinated4']]]
                 }, 
                 {
                     name: 'regions',
                     title: 'NHS Boards',
-                    layout: [[
-                        ['regionsTestsNorm','covidInHospital','covidInICU'],
-                        ['covidDeaths','allDeaths']
-                    ]]
+                    layout: [
+                        [['regionsTestsNorm','covidInHospital','covidInICU'],
+                        ['covidDeaths','allDeaths']]
+                    ]
                 }
             ], 
             panels:[
@@ -94,6 +100,7 @@ class CountryOverview {
                     color: d3.color(COLOR_VACCINATON).darker(.5),
                     data: Data.from(options.data, Data.Fields.COUNTRY_VACCINE_SEX_AGEGROUP),
                     mode: dashboard.MODE_PERCENT,
+                    detail: dashboard.DETAIL_COMPACT,
                     conditions: [
                         'Dose == "Dose 1"', 
                         'Sex == "Total"', 
@@ -108,6 +115,7 @@ class CountryOverview {
                     color: d3.color(COLOR_VACCINATON).darker(1.4),
                     data: Data.from(options.data, Data.Fields.COUNTRY_VACCINE_SEX_AGEGROUP),
                     mode: dashboard.MODE_PERCENT,
+                    detail: dashboard.DETAIL_COMPACT,
                     conditions: [
                         'Dose == "Dose 1"', 
                         'Sex == "Total"', 

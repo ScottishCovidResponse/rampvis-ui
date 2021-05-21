@@ -10,12 +10,8 @@ var COLOR_TESTS = '#2a9d8f';    // green
 var COLOR_HOSPITAL = '#264653'; // blue
 var COLOR_VACCINATON = '#b642f5'; // purple
 
-dashboard.height = 150;
-dashboard.width = 510;
-
-var baseline_title = 22
-var baseline_label = dashboard.height - 30;
-var top_content = baseline_title + 30;
+var baseline_title = 20
+var baseline_label = 55;
 
 LINE_HIGHT= 20;
 
@@ -25,8 +21,13 @@ dashboard.MODE_CUMULATIVE = 2
 dashboard.MODE_WEEKLY = 3
 dashboard.MODE_PERCENT = 4
 
-var LINE_1 = 17;
-var LINE_2 = 40;
+dashboard.DETAIL_DETAILED = 'detailed';
+dashboard.DETAIL_NARROW = 'narrow';
+dashboard.DETAIL_COMPACT = 'compact';
+
+var LINE_1 = 10;
+var LINE_2 = 30;
+
 
 // Cartogram/Tilemap
 var TILE_WIDTH = 40;
@@ -56,10 +57,10 @@ dashboard.createDashboard = function(div, config){
     var layout = config.layout;
     
     // CREATE GROUP LAYOUT
-    createLayoutTable(div, layout, config)
+    createLayoutTable(div, layout, config, addGroup)
 }
 
-var createLayoutTable = function(parentElement, layout, config)
+var createLayoutTable = function(parentElement, layout, config, func)
 {
     var tr = parentElement.append('table')
         .attr('class', 'dashboardLayout')
@@ -73,8 +74,9 @@ var createLayoutTable = function(parentElement, layout, config)
         td.attr('id', tdId)
 
         if( typeof(layout[col]) == "string")
-        {    
-            addGroup(tdId, layout[col], config)
+        {   
+            func(tdId, layout[col], config)
+            // addGroup(tdId, layout[col], config)
         }
         else
         {
@@ -82,13 +84,11 @@ var createLayoutTable = function(parentElement, layout, config)
             {
                 if( typeof(layout[col][row]) == "string")
                 {    
-                    addGroup(tdId, layout[col][row], config)
+                    func(tdId, layout[col][row], config)
+                    // addGroup(tdId, layout[col][row], config)
                     tr.append('br')
                 }else{
-                    createLayoutTable(td, layout[col][row], config)
-                    // for(var col2 = 0 ; col2 < layout[col][row].length ; col2++){
-                    //     addGroup(tdId, layout[col][row], config)
-                    // }
+                    createLayoutTable(td, layout[col][row], config, func)
                 }
             }    
         }
@@ -114,47 +114,34 @@ var addGroup = function(parentHTMLElementId, name, config){
         .text(group.title)
 
     var layout = group.layout;
-    for(var col = 0 ; col < layout.length ; col++)
-    {
-        if( typeof(layout[col]) == "string")
-        {
-            addPanel(divId, layout[col], config)  
-        }
-        else
-        {
-            for(var row = 0 ; row < layout[col].length ; row++)
-            {
-                if( typeof(layout[col][row]) == "string")
-                {
-                    addPanel(divId, layout[col][row], config)
-                }else
-                {
-                    // needs o create new table here
-                    for(var col2 = 0 ; col2 < layout[col][row].length ; col2++){
-                        addPanel(divId, layout[col][row][col2], config)
-                    }
-                }
-                d3.select('#' + divId).append('br')   
-            }
-        }
-    }
-       
-        // // var firstElement = group.layout[0]
-        // if(typeof(firstElement) == 'string'){
-        //     // new horizontal layout
-        //     for(var row = 0 ; row< group.layout.length ; row++){
-        //         addPanel(parentHTMLElementId, group.layout[row], config) 
-        //     }
-        // }else{
-        //     // simple vertical layout
-        //     for(var row = 0 ; row< group.layout.length ; row++){
-        //         addPanel(parentHTMLElementId, group.layout[row], config) 
-        //         d3.select('#' + parentHTMLElementId).append('br')
-        //     }
-        // }
+    createLayoutTable(div, layout, config, createPanel)
+    // for(var col = 0 ; col < layout.length ; col++)
+    // {
+    //     if( typeof(layout[col]) == "string")
+    //     {
+    //         createPanel(divId, layout[col], config)  
+    //     }
+    //     else
+    //     {
+    //         for(var row = 0 ; row < layout[col].length ; row++)
+    //         {
+    //             if( typeof(layout[col][row]) == "string")
+    //             {
+    //                 createPanel(divId, layout[col][row], config)
+    //             }else
+    //             {
+    //                 // needs o create new table here
+    //                 for(var col2 = 0 ; col2 < layout[col][row].length ; col2++){
+    //                     createPanel(divId, layout[col][row][col2], config)
+    //                 }
+    //             }
+    //             d3.select('#' + divId).append('br')   
+    //         }
+    //     }
+    // }
 }
 
-var addPanel = function(parentHtmlElementId, name, config){
+var createPanel = function(parentHtmlElementId, name, config){
     
     // console.log('\t\tAttach Panel: ', name, '-->', parentHtmlElementId)
     // get latest date: 
@@ -183,11 +170,7 @@ var addPanel = function(parentHtmlElementId, name, config){
     {
         var lastDate;
         lastDate = moment(data[data.length-1].index, ['YYYYMMDD', 'YYYY-MM-DD'])
-        title = title + ' (' + lastDate.format('MMM DD, YYYY')+ ')'
-        console.log('lastDate', title)
     }
-
-    
 
     var normalized = false || (panel && panel.normalized);
     if(panel.type == 'cartogram')
@@ -198,23 +181,26 @@ var addPanel = function(parentHtmlElementId, name, config){
             panel.color, 
             data,
             panel.normalized ? panel.normalized : false, 
-            panel.unit
+            panel.unit, 
+            panel.detail, 
+            lastDate
         )
     }
     else if(panel.type == 'stats')
     {
-        console.log('panel.link', panel.link)
-        dashboard.visualizeDataStream(
-            parentHtmlElementId,
-            title,
-            panel.dataField,
-            panel.color,
-            data,
-            panel.mode,
-            normalized, 
-            panel.link ? panel.link : null,
-            panel.unit
-            );    
+        dashboard.visualizeStats(
+                parentHtmlElementId,
+                title,
+                panel.dataField,
+                panel.color,
+                data,
+                panel.mode,
+                normalized, 
+                panel.link ? panel.link : null,
+                panel.unit,
+                panel.detail, 
+                lastDate
+                );    
     }
 }
 
@@ -236,35 +222,78 @@ var canonizeNames = function(s){
         .replaceAll(']', '-')
 }
 
-
+////////////////////////////////////////////////////////////////////////
 // visualizes a dataset for a dashboard with number, trend, and chart
-dashboard.visualizeDataStream = function (id, title, field, color, dataStream, mode, normalized, link, unit) {
+////////////////////////////////////////////////////////////////////////
+dashboard.visualizeStats = function (id, title, field, color, dataStream, mode, normalized, link, unit, detail, lastDate) {
     
     // console.log('\t\t\tVisualizeDataStream', title, '-->', id)
+    if(!detail)
+        detail = dashboard.DETAIL_DETAILED;
+
     var svg = d3.select('#' + id)
         .append("svg")
-        .attr("width", dashboard.width)
-        .attr("height", dashboard.height)
+    
 
-    setVisTitle(svg, title, link)
-    visualizeNumber(svg, dataStream, 0, field, color, mode, normalized, unit)
-    visualizeTrendArrow(svg, dataStream, 150, field, color, mode, unit)
-    visualizeMiniChart(svg, dataStream, 300, field, color, mode);
+    setVisTitle(svg, title, link, detail, lastDate)
+    if(detail == dashboard.DETAIL_DETAILED)
+    {
+        svg.attr("width", 400)
+            .attr("height", 110)
+
+        visualizeNumber(svg, dataStream, 0, baseline_title + 25, field, color, mode, normalized, unit)
+        visualizeTrendArrow(svg, dataStream, 150, baseline_title + 25, field, color, mode, unit)
+        visualizeMiniChart(svg, dataStream, 300, baseline_title + 25, 35, 100, field, color, mode);
+    }
+    else
+    if(detail == dashboard.DETAIL_NARROW)
+    {
+        svg.attr("width", 180)
+            .attr("height", 70)
+
+        visualizeNumberSmall(svg, dataStream, 0, baseline_title + 25, field, color, mode, normalized, unit)
+        visualizeMiniChart(svg, dataStream, 100, baseline_title + 25, 18, 70, field, color, mode, true);   
+    }
+    else 
+    if(detail == dashboard.DETAIL_COMPACT)
+    {    
+        var w = 100, h = 100;
+        svg.attr("width", w)
+            .attr("height", h)
+
+        visualizeNumberSmall(svg, dataStream, 0, baseline_title + 25, field, color, mode, normalized, unit)
+        visualizeMiniChart(svg, dataStream, 0, baseline_title + 55, 18, w, field, color, mode, true);   
+    }
 }
 
-var visualizeNumber = function (svg, data, xOffset, field, color, mode, normalized, unit) {
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////////////
+/// VISULIZATION FUNCTION ///
+/////////////////////////////
+
+var visualizeNumber = function (svg, data, x, y, field, color, mode, normalized, unit) {
 
     var g = svg.append("g")
-        .attr("transform", "translate(" + xOffset + ",0)")
+        .attr("transform", "translate(" + x + "," + y +")")
 
     if (mode == dashboard.MODE_DAILY) {
-        setVisLabel(g, 'Today')
+        setVisLabel(g, 'Today', 0, baseline_label)
     } else if (mode == dashboard.MODE_CURRENT) {
-        setVisLabel(g, 'Current')
+        setVisLabel(g, 'Current', 0, baseline_label)
     } else if (mode == dashboard.MODE_WEEKLY) {
-        setVisLabel(g, 'This week')
+        setVisLabel(g, 'This week', 0, baseline_label)
     } else {
-        setVisLabel(g, 'Total')
+        setVisLabel(g, 'Total', 0, baseline_label)
     }
 
     var val = Math.round(data[data.length - 1][field] * 10) / 10;
@@ -280,7 +309,7 @@ var visualizeNumber = function (svg, data, xOffset, field, color, mode, normaliz
     var bigNumber = {}
     var t = g.append('text')
         .text(val)
-        .attr('y', top_content + 40)
+        .attr('y', 33)
         .attr('class', 'bigNumber')
         .style('fill', color)
         .each(function () {
@@ -291,28 +320,74 @@ var visualizeNumber = function (svg, data, xOffset, field, color, mode, normaliz
         g.append('text')
             .text('per')
             .attr('x', bigNumber.width + 10)
-            .attr('y', top_content + LINE_1)
+            .attr('y', y + LINE_1)
             .attr('class', 'thin')
         g.append('text')
             .text('100,000')
             .attr('x', bigNumber.width + 10)
-            .attr('y', top_content + LINE_2)
+            .attr('y', y + LINE_2)
             .attr('class', 'thin')
     }
+}
 
+var visualizeNumberSmall = function (svg, data, x, y, field, color, mode, normalized, unit) {
+
+    // var g = svg.append("g")
+    //     .attr("transform", "translate(" + xOffset + ",0)")
+
+    // if (mode == dashboard.MODE_DAILY) {
+    //     setVisLabel(g, 'Today')
+    // } else if (mode == dashboard.MODE_CURRENT) {
+    //     setVisLabel(g, 'Current')
+    // } else if (mode == dashboard.MODE_WEEKLY) {
+    //     setVisLabel(g, 'This week')
+    // } else {
+    //     setVisLabel(g, 'Total')
+    // }
+
+    var val = Math.round(data[data.length - 1][field] * 10) / 10;
+    val = val.toLocaleString(undefined)
+
+    if(mode == dashboard.MODE_PERCENT){
+        val += '%'
+    }
+    else if(unit){
+        val += '' + unit; 
+    }
+
+    var bigNumber = {}
+    svg.append('text')
+        .text(val)
+        .attr('y', y + 18)
+        .attr('x', x)
+        .attr('class', 'smallNumber')
+        .style('fill', color)
+
+    // if (normalized) {
+    //     g.append('text')
+    //         .text('per')
+    //         .attr('x', bigNumber.width + 10)
+    //         .attr('y', top_content + LINE_1)
+    //         .attr('class', 'thin')
+    //     g.append('text')
+    //         .text('100,000')
+    //         .attr('x', bigNumber.width + 10)
+    //         .attr('y', top_content + LINE_2)
+    //         .attr('class', 'thin')
+    // }
 }
 
 
 
-var visualizeTrendArrow = function (svg, data, xOffset, field, color, mode, unit) {
+var visualizeTrendArrow = function (svg, data, x, y, field, color, mode, unit) {
 
     var g = svg.append("g")
-        .attr("transform", "translate(" + xOffset + ",0)")
+        .attr("transform", "translate(" + x + ","+ y +")")
 
     if (mode == dashboard.MODE_WEEKLY)
-        setVisLabel(g, "From last week")
+        setVisLabel(g, "From last week", 0, baseline_label)
     else
-        setVisLabel(g, "From yesterday")
+        setVisLabel(g, "From yesterday", 0, baseline_label)
 
     var secondLast = parseInt(data[data.length - 2][field])
     var last = parseInt(data[data.length - 1][field])
@@ -320,9 +395,6 @@ var visualizeTrendArrow = function (svg, data, xOffset, field, color, mode, unit
     r = 0
     if (v < 0) r = 45;
     if (v > 0) r = -45;
-
-
-
 
     g.append('text')
         .text(function () {
@@ -336,27 +408,27 @@ var visualizeTrendArrow = function (svg, data, xOffset, field, color, mode, unit
                 }
         })
         .attr('x', 45)
-        .attr('y', top_content + LINE_1)
+        .attr('y', LINE_1)
         .attr('class', 'thin')
 
     if (v == 0) {
         g.append('text')
             .text('change')
             .attr('x', 45)
-            .attr('y', top_content + LINE_2)
+            .attr('y', LINE_2)
             .attr('class', 'thin')
     } else {
         g.append('text')
             .text(function(){
                 v = Math.abs(v)
-                if(unit){
-                    if(unit == MODE_PERCENT)
+                if(mode == dashboard.MODE_PERCENT)
+                {
                     v += '% pts.'; 
                 }
                 return v;
             })
             .attr('x', 45)
-            .attr('y', top_content + LINE_2)
+            .attr('y', LINE_2)
             .style('fill', color)
     }
 
@@ -364,7 +436,7 @@ var visualizeTrendArrow = function (svg, data, xOffset, field, color, mode, unit
     var g2 = g.append('g')
         .attr('transform',
             function () {
-                return 'translate(17,' + (top_content + 22) + '),rotate(' + r + ')';
+                return 'translate(17,' + (20) + '),rotate(' + r + ')';
             }
         );
 
@@ -393,29 +465,22 @@ var visualizeTrendArrow = function (svg, data, xOffset, field, color, mode, unit
 }
 
 
-var visualizeMiniChart = function (svg, data, xOffset, field, color, mode) {
+var visualizeMiniChart = function (svg, data, x, y, chartHeight, chartWidth, field, color, mode, noTitle) {
 
-    var chartWidth = 100;
-    var chartHeight = 35;
     var trendWindow = 14 // days
     if (mode == dashboard.MODE_WEEKLY)
         trendWindow = 8
 
     var barWidth = (chartWidth - 10) / trendWindow;
 
+    var g = svg.append('g')
+        .attr("transform", "translate(" + x + ","+ y +")");
 
-    var gg = svg.append('g')
-        .attr("transform", "translate(" + xOffset + ",0)")
-
-    if (mode == dashboard.MODE_WEEKLY) {
-        setVisLabel(gg, 'Last ' + trendWindow + ' Weeks ')
-    } else {
-        setVisLabel(gg, 'Last ' + trendWindow + ' Days')
+    if (mode == dashboard.MODE_WEEKLY && !noTitle) {
+        setVisLabel(g, 'Last ' + trendWindow + ' Weeks', 0, baseline_label)
+    } else if(!noTitle){
+        setVisLabel(g, 'Last ' + trendWindow + ' Days', 0, baseline_label)
     }
-
-    var g = gg.append("g")
-        .attr("transform", "translate(0," + (top_content + 5) + ")")
-
 
     var x = d3.scaleLinear()
         .domain([0, trendWindow - 1])
@@ -434,6 +499,22 @@ var visualizeMiniChart = function (svg, data, xOffset, field, color, mode) {
         .domain([0, max])
         .range([chartHeight, 0]);
 
+    // if perentage, show 100% line
+    if(mode == dashboard.MODE_PERCENT)
+    {
+        g.append('line')
+            .attr('y1', y(max))
+            .attr('y2', y(max))
+            .attr('x1', x(0))
+            .attr('x2', x(data.length - 1))
+            .attr('class', 'chartTopLine')
+        g.append('rect')
+            .attr('x', x(0))
+            .attr('y', y(max))
+            .attr('height', Math.abs(y(max) - y(0)))
+            .attr('width', x(data.length - 1) - x(0))
+            .attr('class', 'chartTopRect')
+    }
 
     if (mode == dashboard.MODE_CUMULATIVE
         || mode == dashboard.MODE_CURRENT
@@ -446,7 +527,7 @@ var visualizeMiniChart = function (svg, data, xOffset, field, color, mode) {
             .attr("d", d3.area()
                 .x(function (d, i) { 
                     return x(i) })
-                .y0(35)
+                .y0(y(0))
                 .y1(function (d) { 
                     return y(d[field]); })
             )
@@ -466,6 +547,7 @@ var visualizeMiniChart = function (svg, data, xOffset, field, color, mode) {
             .attr("r", 3)
             .attr("cx", x(data.length - 1))
             .attr("cy", y(data[data.length - 1][field]))
+
     } 
     else 
     {
@@ -501,13 +583,13 @@ var visualizeMiniChart = function (svg, data, xOffset, field, color, mode) {
 
 
 
-var setVisTitle = function (g, text, link) 
+var setVisTitle = function (g, text, link, detail, lastDate) 
 {
     g.append('line')
         .attr('x1', 0)
         .attr('x2', 10000)
-        .attr('y1', baseline_title + 7)
-        .attr('y2', baseline_title + 7)
+        .attr('y1', baseline_title + 5)
+        .attr('y2', baseline_title + 5)
         .attr('class', 'separator')
     
     if(link){
@@ -518,7 +600,20 @@ var setVisTitle = function (g, text, link)
         .text(text)
         .attr('class', 'datastream-title')
         .attr('y', baseline_title)
-    
+ 
+    if(detail == dashboard.DETAIL_NARROW 
+        || dashboard.DETAIL_COMPACT)
+    {
+        text.style('font-size', '9pt')
+    }
+
+    if(lastDate){
+        g.append('text')
+        .text(lastDate.format('MMM DD, YYYY'))
+        .attr('class', 'datastream-date')
+        .attr('y', baseline_title+15)
+    }
+        
     if(link)
     {
         text.classed('hasLink', true)
@@ -528,22 +623,24 @@ var setVisTitle = function (g, text, link)
     }
 }
 
-var setVisLabel = function (g, text) {
+var setVisLabel = function (g, text, x, y) {
     g.append('text')
         .text(text)
         .attr('class', 'label')
-        .attr('y', baseline_label)
+        .attr('x', x)
+        .attr('y', y)
 }
 
-var setVisLabelRow2 = function (g, text) {
+var setVisLabelRow2 = function (g, text, x, y) {
     g.append('text')
         .text(text)
         .attr('class', 'label')
-        .attr('y', baseline_label + 15)
+        .attr('x', x)
+        .attr('y', y + 15)
 }
 
 
-dashboard.visulizeScotlandNHSBoardCartogram = function (id, title, color, data, normalized) 
+dashboard.visulizeScotlandNHSBoardCartogram = function (id, title, color, data, normalized, detail, lastDate) 
 {
     // data comes in JSON
     var svg = d3.select('#' + id)
@@ -551,7 +648,7 @@ dashboard.visulizeScotlandNHSBoardCartogram = function (id, title, color, data, 
         .attr("width", TILE_WIDTH * 4)
         .attr("height", 100 + TILE_HEIGHT * 7)
 
-    setVisTitle(svg, title, null)
+    setVisTitle(svg, title, null, detail, lastDate)
     
     svg.append('text')
         .attr('x', 0)
