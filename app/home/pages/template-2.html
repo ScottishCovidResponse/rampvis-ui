@@ -12,7 +12,7 @@ This template is for v1.0 and above
             <div class="card-icon"><i class="material-icons">collections</i></div>
             <!-- Card title -->
             <h3 class="card-title">
-                {{ option.bindings.data[0].description | safe }}
+                {{ option.title | safe }}
                 <span>
                     <!-- Bookmark -->
                     {% if current_user.is_authenticated %}
@@ -24,7 +24,7 @@ This template is for v1.0 and above
 
         <div class="card-body">
             <!-- Description -->
-            <p class="card-text">{{ option.bindings.vis.description | safe }}</p>
+            <!-- <p class="card-text">{{ option.bindings.vis.description | safe }}</p> -->
             <!-- Chart -->
             <div id="charts"></div>
         </div>
@@ -85,11 +85,11 @@ This template is for v1.0 and above
     }
 
     async function fetchData(data) {
-        //console.log('template-2.html:fetchData: data = ', data);
+        // console.log('template-2.html:fetchData: data = ', data);
         if (typeof data === 'string') {
             try {
                 let values = await (await fetch(data?.endpoint)).json();
-                return { 'endpoint': data?.endpoint, 'values': values };
+                return { 'description': data?.description, 'endpoint': data?.endpoint, 'values': values };
             } catch (error) {
                 console.error('template-2.html:fetchData: error = ', error)
                 throw (error)
@@ -99,7 +99,7 @@ This template is for v1.0 and above
                 return await Promise.all(
                     data.map(async (d) => {
                         let values = await (await fetch(d?.endpoint)).json()
-                        return { 'endpoint': d?.endpoint, 'values': await values }
+                        return { 'description': d?.description, 'endpoint': d?.endpoint, 'values': await values }
                       }));
             } catch (error) {
                 console.error('template-2.html:fetchData: error = ', error)

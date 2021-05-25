@@ -7,6 +7,7 @@ from loguru import logger
 import app.service.ontology as ontology
 from app import app
 
+from .title import generate_title
 
 API_JS = os.environ.get('API_JS')
 API_PY = os.environ.get('API_PY')
@@ -105,16 +106,16 @@ def get_onto_pages(binding_type):
 
 
 def get_onto_page_by_id(id):
-    logger.debug(f'service.py:get_onto_page_by_id: id = {id}')
-    logger.debug(f'\n\n..............................................')
+    # logger.debug(f'service.py:get_onto_page_by_id: id = {id}')
+    # logger.debug(f'\n\n..............................................')
 
     response = requests.get(API_JS + '/template/page/' + id)
     onto_page = json.loads(response.content)
 
     bindings = onto_page.get('bindings')
     bindingExts = onto_page.get('bindingExts')
-    logger.debug(f'service.py:get_onto_page_by_id: bindings = {bindings}')
-    logger.debug(f'service.py:get_onto_page_by_id: bindingExts = {bindingExts}')
+    # logger.debug(f'service.py:get_onto_page_by_id: bindings = {bindings}')
+    # logger.debug(f'service.py:get_onto_page_by_id: bindingExts = {bindingExts}')
 
     if bindings is None or bindingExts is None:
         return None
@@ -122,14 +123,20 @@ def get_onto_page_by_id(id):
     data = bindingExts[0].get('data')
     vis = bindingExts[0].get('vis')
     links = bindings[0].get('pageIds')
-    # print('SK', data)
-    # [print(get_api_url(d.get('urlCode')), d.get('endpoint')) for d in data]
     data = [{**d, 'endpoint': get_api_url(d.get('urlCode')) + d.get('endpoint')} for d in data]
 
     if links is not None:
         links = [f'{get_ui_url("UI_URL")}/{l}' for l in links]
 
     onto_page['bindings'] = {'data': data, 'vis': vis, 'links': links}
-    logger.debug(f'service.py:get_onto_page_by_id: onto_page = {onto_page}')
+
+    # Extract title
+    keywords_list = [d['keywords'] for d in data]
+    onto_page['title'] = generate_title(keywords_list)
+
+    # Update stream description
+    for d in data:
+        d['description'] = generate_title([d['keywords']])
+    # logger.debug(f'service.py:get_onto_page_by_id: onto_page = {onto_page}')
 
     return onto_page
