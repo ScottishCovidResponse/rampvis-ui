@@ -9,7 +9,7 @@ COUNTRIES = ['england', 'scotland', 'wales']
 LOCATIONS = COUNCILS + REGIONS + COUNTRIES
 TOPICS = ['vaccination', 'all_deaths', 'covid_deaths', 'tests_carried_out', 'people_tested', 'hospital_confirmed', 'icu_confirmed', 'tests_reported', 'new_cases']
 TIMES = ['daily', 'weekly']
-GROUPS = ['place_of_death', 'all_sexes_agegroups']
+GROUPS = ['place_of_death', 'all_sexes_agegroups', 'all_boards', 'all_local_authorities']
 
 with open(os.path.join(os.path.dirname(__file__), 'name_mapping.json')) as f:
     NAME_MAPPING = json.load(f)

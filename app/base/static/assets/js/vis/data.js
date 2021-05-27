@@ -9,6 +9,7 @@ class Data {
         'COUNCIL_ALL_DEATHS': 'component=council_area/week-all_deaths',
         'COUNCIL_COVID_DEATHS': 'component=council_area/week-covid_related_deaths',
         'COUNCIL_VACCINE_SEX_AGEGROUP': 'vaccination&component=daily_local_authority',
+        'COUNCIL_VACCINE_SEX_AGEGROUP_ALL': 'vaccination&component=daily_local_authorities',
         
         'HEALTH_BOARD_TESTS': 'component=nhsboard/date-total_daily_tests_reported',
         'HEALTH_BOARD_TESTS_NORMALIZED': 'component=nhsboard/date-total_daily_tests_reported_normalized',
@@ -21,6 +22,7 @@ class Data {
         'HEALTH_BOARD_ALL_DEATHS': 'component=nhs_health_board/week-all_deaths',
         'HEALTH_BOARD_ALL_DEATHS_NORMALIZED': 'component=nhs_health_board/week-all_deaths_normalized',
         'HEALTH_BOARD_VACCINE_SEX_AGEGROUP': 'vaccination&component=daily_health_board',
+        'HEALTH_BOARD_VACCINE_SEX_AGEGROUP_ALL': 'vaccination&component=daily_health_boards',
     }
 
     static from(data, field) {
