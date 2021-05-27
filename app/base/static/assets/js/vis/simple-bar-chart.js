@@ -13,6 +13,10 @@ class SimpleBarChart {
                 .style('height', this.CHART_HEIGHT + 'px');
         
         let data = options.data[0].values;
+        
+        const field = Common.getValueField(data[0]);
+        console.log('Field is', field);
+        
         let canvas = document.getElementById("vis-example-container");
         
         let max_value = Math.max.apply(Math, data.map(function(o) { return o["Testing - New cases reported"]; }))

@@ -31,4 +31,10 @@ class Common {
                             .range(d3.schemeSet2),
         CORRELATION_SCALE: d3.scaleSequential(d3.interpolatePiYG).domain([-1, 1])
     };
+
+    static getValueField(d) {
+        const fields = Object.keys(d);
+        fields.splice(fields.indexOf('index'), 1);
+        return fields[0];
+    }
 }
