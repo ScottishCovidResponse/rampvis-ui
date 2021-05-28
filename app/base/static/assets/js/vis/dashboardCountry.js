@@ -5,7 +5,8 @@ class CountryOverview {
     CHART_WIDTH = 1000
     CHART_HEIGHT = 400
 
-    constructor(options) {
+    constructor(options) 
+    {
         console.log('Input data', options.data);
 
         // Notes: please use these
@@ -172,7 +173,7 @@ class CountryOverview {
                 },
                 {
                     data: Data.from(options.data, Data.Fields.HEALTH_BOARD_ALL_DEATHS_NORMALIZED),
-                    name: 'allDeaths',
+                    name: 'allDeaths',  
                     title: 'Weekly All Deaths',
                     type: 'cartogram',
                     color: d3.color(COLOR_DEATHS).darker(1),

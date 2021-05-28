@@ -158,11 +158,18 @@ var createPanel = function(parentHtmlElementId, name, config){
     var data = panel.data;
     
     // check for conditions on data
-    if(panel.conditions && panel.conditions.length > 0){
+    if(panel.conditions && panel.conditions.length > 0)
+    {
         for(var i in panel.conditions)
         {
             data = executeCondition(data, panel.conditions[i]);
         }
+    }
+
+    if(data.length == 0)
+    {
+        console.log('data.length == 0')
+        return;        
     }
 
     var title = panel.title;
