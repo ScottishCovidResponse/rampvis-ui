@@ -395,5 +395,6 @@
     "new_cases": "new cases",
     "vaccination": "vaccination",
     "people_tested": "people tested",
-    "tests_carried_out": "tests carried out"
+    "tests_carried_out": "tests carried out",
+    "cumulative": "cumulative"
 }

@@ -10,6 +10,7 @@ LOCATIONS = COUNCILS + REGIONS + COUNTRIES
 TOPICS = ['vaccination', 'all_deaths', 'covid_deaths', 'tests_carried_out', 'people_tested', 'hospital_confirmed', 'icu_confirmed', 'tests_reported', 'new_cases']
 TIMES = ['daily', 'weekly']
 GROUPS = ['place_of_death', 'all_sexes_agegroups', 'all_boards', 'all_local_authorities']
+TYPES = ['cumulative']
 
 with open(os.path.join(os.path.dirname(__file__), 'name_mapping.json')) as f:
     NAME_MAPPING = json.load(f)
@@ -39,7 +40,7 @@ def same_keyword(keywords):
     return None
 
 def generate_title(keywords_list):
-    locs, times, topics, groups = [], [], [], []
+    locs, times, topics, groups, types = [], [], [], [], []
     for keywords in keywords_list:
         loc = find_keyword(keywords, LOCATIONS)
         if loc is None:
@@ -59,14 +60,17 @@ def generate_title(keywords_list):
         group = find_keyword(keywords, GROUPS)
         groups.append(group)
 
+        type = find_keyword(keywords, TYPES)
+        types.append(type)
+
     # Single stream
     if len(keywords_list) == 1:
-        return comnbine_to_title(locs[0], times[0], topics[0], groups[0])
+        return comnbine_to_title(locs[0], times[0], topics[0], groups[0], types[0])
     
     # Multiple streams
-    return comnbine_to_title(max_loc(locs), same_keyword(times), same_keyword(topics), same_keyword(groups))
+    return comnbine_to_title(max_loc(locs), same_keyword(times), same_keyword(topics), same_keyword(groups), same_keyword(types))
     
-def comnbine_to_title(loc, time, topic, group):
+def comnbine_to_title(loc, time, topic, group, type):
     if topic is None:
         return NAME_MAPPING[loc]
     result = ''
@@ -76,4 +80,6 @@ def comnbine_to_title(loc, time, topic, group):
         result = f'{NAME_MAPPING[loc]} - {NAME_MAPPING[time]} {NAME_MAPPING[topic]}'
     if group is not None:
         result += ' by ' + NAME_MAPPING[group]
+    if type is not None:
+        result += ' (cumulative)'
     return result
