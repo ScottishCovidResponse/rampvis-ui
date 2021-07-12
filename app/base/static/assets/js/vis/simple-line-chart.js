@@ -1,9 +1,15 @@
 class SimpleLineChart {
+    /*
     CHART_WIDTH = 1000;
     CHART_HEIGHT = 600;
+    */
+    CHART_WIDTH = window.innerWidth - 260;//side bar width is 260
+    CHART_HEIGHT = window.innerHeight;
     GAP = 10;
 
     constructor(options) {
+        let gap = this.GAP; //pass gap to resize function
+       
         d3.select('#' + options.chartElement)
             .append('div')
                 .attr('class', 'vis-example-container')
@@ -50,18 +56,18 @@ class SimpleLineChart {
         let g = svg.append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        // format the data
+        // format the data        
         data.forEach(function(d) {
             d.index = parser(d.index);
             d[field] = +d[field];
         });
-
+        
         // Scale the range of the data
         x.domain(d3.extent(data, function(d) { return d.index; }));
         y.domain([min_value, max_value]);
         
-        // Add the valueline path.
-        g.append("path")
+        //declare path variable to be used in resize function
+        let path=g.append("path")
             .data([data])
             .attr("class", "line")
             .attr("d", valueline)
@@ -74,20 +80,22 @@ class SimpleLineChart {
             })
             .on("mouseout", function(d){ tooltip_linechart.style("display", "none");});
 
-        // Add the x Axis
-        g.append("g")
-            .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x)
-                .tickFormat(d3.timeFormat("%d-%b-%y")))
+        //declare xAxis and xAxis element variable to be used in resize function
+        let xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m-%d"));
+        let xAxisEL=g.append("g")
+            .call(xAxis);
+
+         xAxisEL.attr("transform", "translate(0," + height + ")")
             .selectAll("text")
             .style("text-anchor", "end")
             .attr("dx", "-.8em")
             .attr("dy", ".15em")
             .attr("transform", "rotate(-65)");
 
-        // Add the y Axis
-        g.append("g")
-            .call(d3.axisLeft(y));
+        //declare yAxis and yAxis element variable to be used in resize function
+        let yAxis = d3.axisLeft(y);
+        let yAxisEL = g.append("g")
+                     .call(yAxis);
 
         let focus = g.append("g")
             .attr("class", "focus")
@@ -133,5 +141,46 @@ class SimpleLineChart {
             focus.select(".x-hover-line").attr("y2", height - y(d[field]));
             focus.select(".y-hover-line").attr("x2", width + width);
         }
+
+        //declare resize function
+        function resize() {
+
+            let w=window.innerWidth - 260 - margin.left - margin.right;
+            let h=window.innerHeight - margin.top - margin.bottom;
+     
+            //resize canvas size
+            canvas.style.width=(window.innerWidth - 260) +"px";
+            canvas.style.height=(window.innerHeight+gap)+"px";
+
+            //resize svg size
+            svg.attr("width", (window.innerWidth - 260))
+               .attr("height", (window.innerHeight - gap));
+
+            svg.attr("width", w + margin.left + margin.right);
+  
+            //update x and y range
+            x.range([0, w]);
+            y.range([h, 0]);
+
+            //resize xAxis and yAxis based on x and y range
+            xAxis.scale(x);
+            yAxis.scale(y);
+
+            //update axis element
+            xAxisEL.attr("transform", "translate(0," + h + ")")
+                   .call(xAxis);
+            yAxisEL.call(yAxis);
+             
+            //update data
+            valueline.x(function(d) { return x(d.index); })
+                     .y(function(d) { return y(d[field]); });
+
+            path.attr('d', valueline);   
+
+        }
+
+        // resize when window size changes
+        d3.select(window).on('resize', resize);
+
     }
 }
