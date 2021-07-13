@@ -7,10 +7,11 @@ COUNCILS = SCOTLAND_COUNCILS + ENGLAND_COUNCILS
 REGIONS = ['ayrshire_and_arran', 'borders', 'dumfries_and_galloway', 'fife', 'forth_valley', 'grampian', 'greater_glasgow_and_clyde', 'highland', 'lanarkshire', 'lothian', 'orkney', 'shetland', 'tayside', 'western_isles']
 COUNTRIES = ['england', 'scotland', 'wales']
 LOCATIONS = COUNCILS + REGIONS + COUNTRIES
-TOPICS = ['vaccination', 'all_deaths', 'covid_deaths', 'tests_carried_out', 'people_tested', 'hospital_confirmed', 'icu_confirmed', 'tests_reported', 'new_cases']
-TIMES = ['daily', 'weekly']
-GROUPS = ['place_of_death', 'all_sexes_agegroups', 'all_boards', 'all_local_authorities']
+TOPICS = ['vaccination', 'all_deaths', 'covid_deaths', 'tests_carried_out', 'people_tested', 'hospital_confirmed', 'icu_confirmed', 'tests_reported', 'new_cases', 'hospital_admission']
+TIMES = ['daily', 'weekly', 'model']
+GROUPS = ['place_of_death', 'all_sexes_agegroups', 'all_boards', 'all_local_authorities', 'age_group']
 TYPES = ['cumulative']
+MODELS = ['eera']
 
 with open(os.path.join(os.path.dirname(__file__), 'name_mapping.json')) as f:
     NAME_MAPPING = json.load(f)
@@ -40,7 +41,7 @@ def same_keyword(keywords):
     return None
 
 def generate_title(keywords_list):
-    locs, times, topics, groups, types = [], [], [], [], []
+    locs, times, topics, groups, types, models = [], [], [], [], [], []
     for keywords in keywords_list:
         loc = find_keyword(keywords, LOCATIONS)
         if loc is None:
@@ -49,7 +50,7 @@ def generate_title(keywords_list):
             
         time = find_keyword(keywords, TIMES)
         if time is None:
-            raise Exception(keywords, 'should have daily or weekly')
+            raise Exception(keywords, 'should have daily, weekly or model')
         times.append(time)
             
         topic = find_keyword(keywords, TOPICS)
@@ -63,21 +64,28 @@ def generate_title(keywords_list):
         type = find_keyword(keywords, TYPES)
         types.append(type)
 
+        model = find_keyword(keywords, MODELS)
+        models.append(model)
+
     # Single stream
     if len(keywords_list) == 1:
-        return comnbine_to_title(locs[0], times[0], topics[0], groups[0], types[0])
+        return comnbine_to_title(locs[0], times[0], topics[0], groups[0], types[0], models[0])
     
     # Multiple streams
-    return comnbine_to_title(max_loc(locs), same_keyword(times), same_keyword(topics), same_keyword(groups), same_keyword(types))
+    return comnbine_to_title(max_loc(locs), same_keyword(times), same_keyword(topics), same_keyword(groups), same_keyword(types), same_keyword(models))
     
-def comnbine_to_title(loc, time, topic, group, type):
+def comnbine_to_title(loc, time, topic, group, type, model):
     if topic is None:
         return NAME_MAPPING[loc]
     result = ''
-    if time is None:
-        result = f'{NAME_MAPPING[loc]} - {NAME_MAPPING[topic]}'
-    if loc and time and topic:
-        result = f'{NAME_MAPPING[loc]} - {NAME_MAPPING[time]} {NAME_MAPPING[topic]}'
+    if model is None:
+        if time is None:
+            result = f'{NAME_MAPPING[loc]} - {NAME_MAPPING[topic]}'
+        if loc and time and topic:
+            result = f'{NAME_MAPPING[loc]} - {NAME_MAPPING[time]} {NAME_MAPPING[topic]}'
+    else:
+        result = f'{NAME_MAPPING[loc]} - {NAME_MAPPING[time]} {NAME_MAPPING[model]} {NAME_MAPPING[topic]}'
+
     if group is not None:
         result += ' by ' + NAME_MAPPING[group]
     if type is not None:

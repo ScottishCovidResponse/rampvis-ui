@@ -1,11 +1,11 @@
-class SuperimposedPercentiles {
+class OldSuperimposedPercentiles {
     CHART_WIDTH = 850
     CHART_HEIGHT = 450
 
     constructor(options) {
         const container = d3.select('#' + options.chartElement);
         container.innerHTML = '';
-        const data = options.data[0].values;
+        const data = options.data;
         const legendData = data.ys.map(d => d.label);
         const colors = d3.schemeDark2;
         
