@@ -730,7 +730,8 @@ pre {
     word-break: normal; }
 
 .pre-scrollable {
-  max-height: 340px;
+  /*max-height: 340px;*/
+  height: 100%;
   overflow-y: scroll; }
 
 .container {
@@ -10442,8 +10443,9 @@ a[aria-expanded="true"] .caret,
   width: calc(100% - 260px);
   transition: 0.33s, cubic-bezier(0.685, 0.0473, 0.346, 1); }
   .main-panel > .content {
-    margin-top: 10px;
-    padding: 30px 15px;
+    margin-top: 30px;
+    /* margin-top: 10px; */
+    /*padding: 30px 15px;*/
     min-height: calc(100vh - 123px); }
   .main-panel > .footer {
     border-top: 1px solid #e7e7e7; }
@@ -11539,8 +11541,8 @@ label {
 
 .card {
   border: 0;
-  margin-bottom: 30px;
-  margin-top: 30px;
+  /* margin-bottom: 30px;
+  margin-top: 30px; */
   border-radius: 6px;
   color: #333333;
   background: #fff;

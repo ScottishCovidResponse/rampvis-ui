@@ -3,9 +3,10 @@ class SimpleBarChart {
     CHART_WIDTH = 1000;
     CHART_HEIGHT = 600;
     */
-    CHART_WIDTH = window.innerWidth - 260;//side bar width is 260
-    CHART_HEIGHT = window.innerHeight;
-    GAP = 10;
+
+    CHART_WIDTH = document.getElementById('charts').offsetWidth-50;
+    CHART_HEIGHT = window.innerHeight-120;
+    GAP = 20;
 
     constructor(options) {
         console.log('Input data', options.data);
@@ -29,10 +30,11 @@ class SimpleBarChart {
         const parseDate = d3.timeParse("%Y-%m-%d");	
         
         // set the dimensions and margins of the graph
-        let margin = {top: 20, right: 50, bottom: 80, left: 60},
-            width = this.CHART_WIDTH - margin.left - margin.right,
-            height = this.CHART_HEIGHT - margin.top - margin.bottom;
-        
+        // let margin = {top: 20, right: 50, bottom: 80, left: 60},
+        let margin = {top: 20, right: 100, bottom: 120, left: 100},
+        width = this.CHART_WIDTH - margin.left - margin.right,
+        height = this.CHART_HEIGHT - margin.top - margin.bottom;
+            
         data.forEach(function(d) {
            d.index = parseDate(d.index); 
         });
@@ -50,6 +52,7 @@ class SimpleBarChart {
             .attr("height", this.CHART_HEIGHT - this.GAP);
 
         svg.append("rect")
+            .attr("id","rect")
             .attr("fill", "#ffffff")
             .attr("width", this.CHART_WIDTH)
             .attr("height", this.CHART_HEIGHT - this.GAP);
@@ -110,27 +113,34 @@ class SimpleBarChart {
 
         //declare resize function
         function resize() {
+            //260 is side bar width43
             let w=window.innerWidth - 260 - margin.left - margin.right;
             let h=window.innerHeight - margin.top - margin.bottom;
+            let card=document.getElementById('charts');
+            w=card.offsetWidth - gap - gap;
 
-            //resize canvas size
-            canvas.style.width=(window.innerWidth - 260) +"px";
-            canvas.style.height=(window.innerHeight+gap)+"px";
+            canvas.style.width=card.offsetWidth +"px";
+            canvas.style.height=(h+20)+"px";
 
             //resize svg size
-            svg.attr("width", (window.innerWidth - 260))
-                .attr("height", (window.innerHeight - gap));
+            svg.attr("width", card.offsetWidth)
+            .attr("height", h);            
+
+            //resize rect
+            let rectEL=document.getElementById('rect');
+            rectEL.setAttribute("width",w);
+            rectEL.setAttribute("height",h);
 
             //update x and y range
-            x.range([0, w]);
-            y.range([h, 0]);
+            x.range([0, w-100]);
+            y.range([h-100, 0]);
 
-            //resize xAxis and yAxis based on x and y range
+            //rescale
             xAxis.scale(x);
             yAxis.scale(y);
 
             //update axis element
-            xAxisEL.attr("transform", "translate(0," + h + ")")
+            xAxisEL.attr("transform", "translate(0," + (h-100) + ")")
                     .call(xAxis);
             yAxisEL.call(yAxis);
 
@@ -143,11 +153,11 @@ class SimpleBarChart {
             })
             .attr("width", x.bandwidth())
             .attr("height", function (d) {
-                return h - y(d[field]);
+                return h - 100 - y(d[field]);
             })
         }
 
         // resize when window size changes
-        d3.select(window).on('resize', resize);
+        d3.select(window).on('resize.updatesvg', resize);
     }
 }
