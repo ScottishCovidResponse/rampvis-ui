@@ -23,16 +23,23 @@ def find_keyword(keywords, check_list):
             return c
     return None
 
+def up_level(loc):
+    if loc in SCOTLAND_COUNCILS: return 'scotland'
+    if loc in ENGLAND_COUNCILS: return 'england'
+    if loc in REGIONS: return 'scotland'
+    return ''
+
 def max_loc(locs):
+    locs = list(set(locs))
     for loc in locs:
         if loc in COUNTRIES:
-            return loc
+            return loc if len(locs) == 1 else 'Global'
     for loc in locs:
         if loc in REGIONS:
-            return loc
+            return loc if len(locs) == 1 else up_level(loc)
     for loc in locs:
         if loc in COUNCILS:
-            return loc
+            return loc if len(locs) == 1 else up_level(loc)
     return None
 
 def same_keyword(keywords):
@@ -72,6 +79,7 @@ def generate_title(keywords_list):
         return comnbine_to_title(locs[0], times[0], topics[0], groups[0], types[0], models[0])
     
     # Multiple streams
+    print(locs)
     return comnbine_to_title(max_loc(locs), same_keyword(times), same_keyword(topics), same_keyword(groups), same_keyword(types), same_keyword(models))
     
 def comnbine_to_title(loc, time, topic, group, type, model):
