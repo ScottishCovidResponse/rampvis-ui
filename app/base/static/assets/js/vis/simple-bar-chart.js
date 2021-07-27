@@ -113,11 +113,10 @@ class SimpleBarChart {
 
         //declare resize function
         function resize() {
-            //260 is side bar width43
-            let w=window.innerWidth - 260 - margin.left - margin.right;
+
             let h=window.innerHeight - margin.top - margin.bottom;
             let card=document.getElementById('charts');
-            w=card.offsetWidth - gap - gap;
+            let w=card.offsetWidth - gap - gap;
 
             canvas.style.width=card.offsetWidth +"px";
             canvas.style.height=(h+20)+"px";
