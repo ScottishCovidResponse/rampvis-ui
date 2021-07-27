@@ -7,8 +7,8 @@ COUNCILS = SCOTLAND_COUNCILS + ENGLAND_COUNCILS
 REGIONS = ['ayrshire_and_arran', 'borders', 'dumfries_and_galloway', 'fife', 'forth_valley', 'grampian', 'greater_glasgow_and_clyde', 'highland', 'lanarkshire', 'lothian', 'orkney', 'shetland', 'tayside', 'western_isles']
 COUNTRIES = ['england', 'scotland', 'wales']
 LOCATIONS = COUNCILS + REGIONS + COUNTRIES
-TOPICS = ['vaccination', 'all_deaths', 'covid_deaths', 'tests_carried_out', 'people_tested', 'hospital_confirmed', 'icu_confirmed', 'tests_reported', 'new_cases', 'hospital_admission']
-TIMES = ['daily', 'weekly', 'model']
+TOPICS = ['vaccination', 'all_deaths', 'covid_deaths', 'tests_carried_out', 'people_tested', 'hospital_confirmed', 'icu_confirmed', 'tests_reported', 'new_cases', 'hospital_admission', 'cumulative_cases']
+TIMES = ['daily', 'weekly', 'model', 'correlation']
 GROUPS = ['place_of_death', 'all_sexes_agegroups', 'all_boards', 'all_local_authorities', 'age_group']
 TYPES = ['cumulative']
 MODELS = ['eera']
@@ -57,7 +57,7 @@ def generate_title(keywords_list):
             
         time = find_keyword(keywords, TIMES)
         if time is None:
-            raise Exception(keywords, 'should have daily, weekly or model')
+            raise Exception(keywords, 'should have daily, weekly, model, correlation')
         times.append(time)
             
         topic = find_keyword(keywords, TOPICS)
