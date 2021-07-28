@@ -3,23 +3,20 @@ class SimpleLineChart {
     CHART_WIDTH = 1000;
     CHART_HEIGHT = 600;
     */
-    CHART_WIDTH = document.getElementById('charts').offsetWidth-50;
-    CHART_HEIGHT = window.innerHeight-120;
+    CHART_WIDTH = document.getElementById('charts').offsetWidth - 50;
+    CHART_HEIGHT = window.innerHeight - 120;
     GAP = 20;
 
-    constructor(options) {
-        let gap = this.GAP; //pass gap to resize function
-       
+    constructor(options) {      
         d3.select('#' + options.chartElement)
             .append('div')
                 .attr('class', 'vis-example-container')
                 .attr('id', 'vis-example-container')
                 .style('width', this.CHART_WIDTH + 'px')
-                .style('height', this.CHART_HEIGHT + 'px');
+                .style('height', this.CHART_HEIGHT + 'px');        
         
         let data = options.data[0].values;
-        const field = Common.getValueField(data[0]);
-        
+        const field = Common.getValueField(data[0]);        
         let canvas = document.getElementById("vis-example-container");
         const min_value = Math.min.apply(Math, data.map(function(o) { return o[field]; }));
         const max_value = Math.max.apply(Math, data.map(function(o) { return o[field]; }));
@@ -41,21 +38,20 @@ class SimpleLineChart {
 
         // define the line
         let valueline = d3.line()
-            .x(function(d) { return x(d.index); })
-            .y(function(d) { return y(d[field]); });
+                          .x(function(d) { return x(d.index); })
+                          .y(function(d) { return y(d[field]); });
 
         let svg = d3.select(canvas).append("svg")
             .attr("width", this.CHART_WIDTH)
             .attr("height", this.CHART_HEIGHT - this.GAP);
-
         svg.append("rect")
-            .attr("id","rect")
+            .attr("id", "rect")
             .attr("fill", "#ffffff")
             .attr("width", this.CHART_WIDTH)
             .attr("height", this.CHART_HEIGHT);
 
         let g = svg.append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         // format the data        
         data.forEach(function(d) {
@@ -143,29 +139,31 @@ class SimpleLineChart {
             focus.select(".y-hover-line").attr("x2", width + width);
         }
 
+        let gap = this.GAP; 
+
         //declare resize function
         function resize() {
             
-            let h=window.innerHeight - margin.top - margin.bottom;
-            let card=document.getElementById('charts');
-            let w=card.offsetWidth - gap - gap;
+            let h = window.innerHeight - margin.top - margin.bottom;
+            let card = document.getElementById('charts');
+            let w = card.offsetWidth - gap - gap;
 
             //resize canvas size
-            canvas.style.width=card.offsetWidth +"px";
-            canvas.style.height=(h+20)+"px";
+            canvas.style.width = card.offsetWidth + "px";
+            canvas.style.height = (h + 20) + "px";
 
             // //resize svg size
             svg.attr("width", card.offsetWidth)
-            .attr("height", h);            
+                .attr("height", h);            
 
             //resize rect
             let rectEL=document.getElementById('rect');
-            rectEL.setAttribute("width",w);
-            rectEL.setAttribute("height",h);
+            rectEL.setAttribute("width", w);
+            rectEL.setAttribute("height", h);
 
             //update x and y range
-            x.range([0, w-100]);
-            y.range([h-100, 0]);
+            x.range([0, w - 100]);
+            y.range([h - 100, 0]);
 
             //rescale
             xAxis.scale(x);
@@ -173,20 +171,20 @@ class SimpleLineChart {
 
                      
             //update axis element
-            xAxisEL.attr("transform", "translate(0," + (h-100) + ")")
-                    .call(xAxis);
+            xAxisEL.attr("transform", "translate(0," + (h - 100) + ")")
+                .call(xAxis);
             yAxisEL.call(yAxis);
 
             //update data
             valueline.x(function(d) { return x(d.index); })
-                     .y(function(d) { return y(d[field]); });
+                .y(function(d) { return y(d[field]); });
 
             path.attr('d', valueline);   
 
         }
 
         // resize when window size changes
-        d3.select(window).on('resize', resize);
+        d3.select(window).on('resize.updatesvg', resize);
 
     }
 }
