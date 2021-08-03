@@ -1,11 +1,12 @@
 class SimpleBarChart {
-    /*
-    CHART_WIDTH = 1000;
-    CHART_HEIGHT = 600;
-    */
 
+    //HART_WIDTH is white card whidth, and svg should be smaller than it, so let minus by 50
     CHART_WIDTH = document.getElementById('charts').offsetWidth - 50;
+
+    //contentMarginTop(10)+contentPaddingTop(30)+contentPddingBotton(30)+cardMarginTop(30)+cardMarginBotton(30)=130
+    //so here just minus by 120
     CHART_HEIGHT = window.innerHeight - 120;
+    
     GAP = 20;
 
     constructor(options) {
