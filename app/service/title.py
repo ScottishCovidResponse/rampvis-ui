@@ -9,7 +9,7 @@ COUNTRIES = ['england', 'scotland', 'wales']
 LOCATIONS = COUNCILS + REGIONS + COUNTRIES
 TOPICS = ['vaccination', 'all_deaths', 'covid_deaths', 'tests_carried_out', 'people_tested', 'hospital_confirmed', 'icu_confirmed', 'tests_reported', 'new_cases', 'hospital_admission', 'cumulative_cases']
 TIMES = ['daily', 'weekly', 'model', 'correlation']
-GROUPS = ['place_of_death', 'all_sexes_agegroups', 'all_boards', 'all_local_authorities', 'age_group']
+GROUPS = ['place_of_death', 'all_sexes_agegroups', 'all_boards', 'all_local_authorities', 'age_group', 'location_type']
 TYPES = ['cumulative']
 MODELS = ['eera']
 
