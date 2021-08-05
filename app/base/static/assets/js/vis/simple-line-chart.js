@@ -1,11 +1,9 @@
 class SimpleLineChart {
-    /*
-    CHART_WIDTH = 1000;
-    CHART_HEIGHT = 600;
-    */
-    CHART_WIDTH = document.getElementById('charts').offsetWidth - 50;
-    CHART_HEIGHT = window.innerHeight - 120;
-    GAP = 20;
+
+    CHART_WIDTH = document.getElementById('charts').offsetWidth;
+    CHART_HEIGHT = window.innerHeight - Common.MainContent_Gap;
+    
+    GAP = 10;
 
     constructor(options) {      
         d3.select('#' + options.chartElement)
@@ -22,7 +20,7 @@ class SimpleLineChart {
         const max_value = Math.max.apply(Math, data.map(function(o) { return o[field]; }));
         
         // set the dimensions and margins of the graph
-        let margin = {top: 20, right: 100, bottom: 120, left: 100},
+        let margin = {top: 20, right: 50, bottom: 80, left: 60},
         width = this.CHART_WIDTH - margin.left - margin.right,
         height = this.CHART_HEIGHT - margin.top - margin.bottom;
 
@@ -143,14 +141,13 @@ class SimpleLineChart {
 
         //declare resize function
         function resize() {
-            
-            let h = window.innerHeight - margin.top - margin.bottom;
+            let h = window.innerHeight - Common.MainContent_Gap - gap;
             let card = document.getElementById('charts');
-            let w = card.offsetWidth - gap - gap;
+            let w = card.offsetWidth;
 
             //resize canvas size
             canvas.style.width = card.offsetWidth + "px";
-            canvas.style.height = (h + 20) + "px";
+            canvas.style.height = h + "px";
 
             // //resize svg size
             svg.attr("width", card.offsetWidth)
@@ -162,16 +159,15 @@ class SimpleLineChart {
             rectEL.setAttribute("height", h);
 
             //update x and y range
-            x.range([0, w - 100]);
-            y.range([h - 100, 0]);
+            x.range([0, w - margin.left - margin.right]);
+            y.range([h - margin.top - margin.bottom, 0]);
 
             //rescale
             xAxis.scale(x);
             yAxis.scale(y);
-
                      
             //update axis element
-            xAxisEL.attr("transform", "translate(0," + (h - 100) + ")")
+            xAxisEL.attr("transform", "translate(0," + (h - margin.top - margin.bottom) + ")")
                 .call(xAxis);
             yAxisEL.call(yAxis);
 
