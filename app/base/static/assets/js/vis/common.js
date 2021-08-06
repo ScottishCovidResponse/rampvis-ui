@@ -49,5 +49,5 @@ class Common {
     IcondHeight = 53px
     total = 213px
     */
-   static MainContent_Gap = 220;
+   static MAIN_CONTENT_GAP = 220;
 }
