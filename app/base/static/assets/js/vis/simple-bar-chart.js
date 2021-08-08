@@ -1,7 +1,7 @@
 class SimpleBarChart {
 
     CHART_WIDTH = document.getElementById('charts').offsetWidth;
-    CHART_HEIGHT = window.innerHeight - Common.MainContent_Gap;
+    CHART_HEIGHT = window.innerHeight - Common.MAIN_CONTENT_GAP;
     
     GAP = 10;
 
@@ -103,7 +103,7 @@ class SimpleBarChart {
         //declare resize function
         function resize() {
 
-            let h = window.innerHeight - Common.MainContent_Gap - gap;
+            let h = window.innerHeight - Common.MAIN_CONTENT_GAP - gap;
             let card = document.getElementById('charts');
             let w = card.offsetWidth;
 
