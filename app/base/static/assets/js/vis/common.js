@@ -37,4 +37,17 @@ class Common {
         fields.splice(fields.indexOf('index'), 1);
         return fields[0];
     }
+
+    /*
+    ContentMarginTop = 10px
+    ContentPaddingTop = 30px
+    ContentPadingBottom = 30px
+    CardMarginTop = 30px     
+    CardMarginBottom = 30px
+    CardHeadPaddingTop = 15px
+    CardHeadPaddingBottom = 15px
+    IcondHeight = 53px
+    total = 213px
+    */
+   static MAIN_CONTENT_GAP = 220;
 }

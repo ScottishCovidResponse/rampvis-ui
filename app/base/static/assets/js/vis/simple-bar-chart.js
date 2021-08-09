@@ -1,12 +1,9 @@
 class SimpleBarChart {
-    /*
-    CHART_WIDTH = 1000;
-    CHART_HEIGHT = 600;
-    */
 
-    CHART_WIDTH = document.getElementById('charts').offsetWidth-50;
-    CHART_HEIGHT = window.innerHeight-120;
-    GAP = 20;
+    CHART_WIDTH = document.getElementById('charts').offsetWidth;
+    CHART_HEIGHT = window.innerHeight - Common.MAIN_CONTENT_GAP;
+    
+    GAP = 10;
 
     constructor(options) {
         console.log('Input data', options.data);
@@ -17,21 +14,14 @@ class SimpleBarChart {
                 .style('width', this.CHART_WIDTH + 'px')
                 .style('height', this.CHART_HEIGHT + 'px');
 
-        let gap = this.GAP; //pass gap to resize function
-
-        let data = options.data[0].values;
-        
-        const field = Common.getValueField(data[0]);
-        
-        let canvas = document.getElementById("vis-example-container");
-        
-        let max_value = Math.max.apply(Math, data.map(function(o) { return o[field]; }));
-        
+        let data = options.data[0].values;        
+        const field = Common.getValueField(data[0]);        
+        let canvas = document.getElementById("vis-example-container");        
+        let max_value = Math.max.apply(Math, data.map(function(o) { return o[field]; }));        
         const parseDate = d3.timeParse("%Y-%m-%d");	
         
         // set the dimensions and margins of the graph
-        // let margin = {top: 20, right: 50, bottom: 80, left: 60},
-        let margin = {top: 20, right: 100, bottom: 120, left: 100},
+        let margin = {top: 20, right: 50, bottom: 80, left: 60},
         width = this.CHART_WIDTH - margin.left - margin.right,
         height = this.CHART_HEIGHT - margin.top - margin.bottom;
             
@@ -50,9 +40,8 @@ class SimpleBarChart {
         let svg = d3.select(canvas).append("svg")
             .attr("width", this.CHART_WIDTH)
             .attr("height", this.CHART_HEIGHT - this.GAP);
-
         svg.append("rect")
-            .attr("id","rect")
+            .attr("id", "rect")
             .attr("fill", "#ffffff")
             .attr("width", this.CHART_WIDTH)
             .attr("height", this.CHART_HEIGHT - this.GAP);
@@ -62,33 +51,32 @@ class SimpleBarChart {
 
         //declare xAxis and xAxisE element variable to be used in resize function
         let xAxis = d3.axisBottom(x)
-                      .tickFormat(d3.timeFormat("%Y-%m-%d")).tickValues(x.domain().filter(function (d, i) {
-                            return !(i % 10)
-                        }));
-        let xAxisEL=g.append("g")
-                     .call(xAxis);
-
+            .tickFormat(d3.timeFormat("%Y-%m-%d")).tickValues(x.domain().filter(function (d, i) {
+                return !(i % 10)
+            }));
+        let xAxisEL = g.append("g")
+            .call(xAxis);
         xAxisEL.attr("class", "axis axis--x")
-               .attr("transform", "translate(0," + height + ")")
-               .selectAll("text")
-               .style("text-anchor", "end")
-               .attr("dx", "-.8em")
-               .attr("dy", ".15em")
-               .attr("transform", "rotate(-65)");
+            .attr("transform", "translate(0," + height + ")")
+            .selectAll("text")
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em")
+            .attr("transform", "rotate(-65)");
 
 
         //declare yAxis and yAxis element variable to be used in resize function
         let yAxis = d3.axisLeft().scale(y);
-        let yAxisEL=g.append("g")
+        let yAxisEL = g.append("g")
             .call(yAxis);
         yAxisEL.attr("class", "axis axis--y")
-               .append("text")
-               .attr("class", "axis-title");
+            .append("text")
+            .attr("class", "axis-title");
 
-       //declare bar variable to be used in resize function
-       let bar=g.selectAll(".bar")
-                .data(data)
-                .enter().append("rect");
+        //declare bar variable to be used in resize function
+        let bar = g.selectAll(".bar")
+            .data(data)
+            .enter().append("rect");
 
         bar.attr("x", function (d) {
             return x(d.index);
@@ -110,37 +98,38 @@ class SimpleBarChart {
         })
         .on("mouseout", function(d){ tooltip_barchart.style("display", "none");});
 
+        let gap = this.GAP;
 
         //declare resize function
         function resize() {
 
-            let h=window.innerHeight - margin.top - margin.bottom;
-            let card=document.getElementById('charts');
-            let w=card.offsetWidth - gap - gap;
+            let h = window.innerHeight - Common.MAIN_CONTENT_GAP - gap;
+            let card = document.getElementById('charts');
+            let w = card.offsetWidth;
 
-            canvas.style.width=card.offsetWidth +"px";
-            canvas.style.height=(h+20)+"px";
+            canvas.style.width = card.offsetWidth + "px";
+            canvas.style.height = h + "px";
 
             //resize svg size
             svg.attr("width", card.offsetWidth)
-            .attr("height", h);            
+                .attr("height", h);            
 
             //resize rect
-            let rectEL=document.getElementById('rect');
-            rectEL.setAttribute("width",w);
-            rectEL.setAttribute("height",h);
+            let rectEL = document.getElementById('rect');
+            rectEL.setAttribute("width", w);
+            rectEL.setAttribute("height", h);
 
             //update x and y range
-            x.range([0, w-100]);
-            y.range([h-100, 0]);
+            x.range([0, w - margin.left - margin.right]);
+            y.range([h - margin.top - margin.bottom, 0]);
 
             //rescale
             xAxis.scale(x);
             yAxis.scale(y);
 
             //update axis element
-            xAxisEL.attr("transform", "translate(0," + (h-100) + ")")
-                    .call(xAxis);
+            xAxisEL.attr("transform", "translate(0," + (h - margin.top - margin.bottom) + ")")
+                .call(xAxis);
             yAxisEL.call(yAxis);
 
             //update data
@@ -152,7 +141,7 @@ class SimpleBarChart {
             })
             .attr("width", x.bandwidth())
             .attr("height", function (d) {
-                return h - 100 - y(d[field]);
+                return h - margin.top -margin.bottom - y(d[field]);
             })
         }
 
