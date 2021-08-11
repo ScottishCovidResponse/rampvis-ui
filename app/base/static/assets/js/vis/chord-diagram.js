@@ -4,16 +4,9 @@ class ChordDiagram {
     boards = Common.scotlandBoards;
     element = null;
     chartId = null;
-    matrix = [];
-    min = 0;
-    max = 0;
 
-    color20map=["#ff0000","#00ff00","#0000ff","#ffff00","#ff00ff","#66ff99","#33ccff","#ff99ff","#ff9966","#666699",
-              "#99cc00","#996633","#993333","#cc6699","#99ccff","#6600ff","#3366cc","#669999","#333300","#b3b3b3"];
     names = [];
-    colors = [];
     newData = null;
-    color = null;
     radius = 200;
     
 
@@ -22,22 +15,10 @@ class ChordDiagram {
         let pearsonrItems = values.pearsonr;
         this.names = values.var1_names;        
 
-        if( this.names.length <= 20){
-            this.colors = this.color20map.slice(0,this.names.length)
-        }else{
-            this.colors = this.color20map.slice(0,20);
-            let n=0;
-            while(n < this.names.length-20 ){
-                this.colors.push( '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6) );
-            }
+        let name = {
+            names: values.var1_names
         }
-
-        let namecolors = {
-            names: values.var1_names,
-            colors: this.colors
-        }
-
-        this.newData = Object.assign(pearsonrItems,namecolors);        
+        this.newData = Object.assign(pearsonrItems,name);             
 
         this.element = options.chartElement;
 
@@ -68,10 +49,8 @@ class ChordDiagram {
 
     draw(gap) {
         let step = 0;
-        let names = this.names;
-        let colors = this.colors;
-        let color = d3.scaleOrdinal(names, colors);
-        let maxL = Math.max(...this.names.map(el => el.length));
+        let maxL = Math.max(...this.names.map(el => el.length));  
+        let colors = Common.Colors.CORRELATION_SCALE;
 
         // set the dimensions and margins of the graph
         let margin = {top: 20, right: 45, bottom: 20, left: 60},
@@ -112,7 +91,7 @@ class ChordDiagram {
                 .radius(this.radius)
             )
             .style("fill", function (d) {
-                return color(names[d.source.index]);
+                return colors(d.source.value);
             })
             .style("stroke", "#000000");
 
