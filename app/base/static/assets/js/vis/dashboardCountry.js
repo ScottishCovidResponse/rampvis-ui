@@ -29,7 +29,7 @@ class CountryOverview {
         latestUpdateTime = console.log(options.data[0].values[options.data[0].values.length-1].index);
         var data = options.data;
         var links = options.links;
-
+        
         var config = {  
             layout: [
                 [
