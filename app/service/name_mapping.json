@@ -394,6 +394,7 @@
     "covid_deaths": "COVID deaths",
     "place_of_death": "places",
     "location_type": "locations",
+    "case_trends": "case trends",
     "all_sexes_agegroups": "genders, age groups",
     "all_boards": "boards",
     "all_local_authorities": "local authorities",
