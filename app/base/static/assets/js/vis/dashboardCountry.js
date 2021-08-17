@@ -41,17 +41,17 @@ class CountryOverview {
         ],
             groups: [
                 {
-                    name: 'summary',
+                    id: 'summary',
                     title: 'Nation Summary',
                     layout: [['cases', 'deaths','patients']]
                 }, 
                 {
-                    name: 'vaccinations',
+                    id: 'vaccinations',
                     title: 'Vaccinations',
                     layout: [['vaccinated1', 'vaccinated2',['vaccinated3', 'vaccinated4']]]
                 }, 
                 {
-                    name: 'regions',
+                    id: 'regions',
                     title: 'NHS Boards',
                     layout: [
                         [['regionsTestsNorm','covidInHospital','covidInICU'],
@@ -59,21 +59,21 @@ class CountryOverview {
                     ]
                 }
             ], 
-            panels:[
+            widgets:[
                 {
-                    name: 'cases', 
+                    id: 'cases', 
                     title: 'New Cases',
                     dataField: 'Testing - New cases reported',
-                    type: 'stats',
+                    visualization: 'linechart',
                     color: COLOR_CASES,
                     data: Data.from(options.data, Data.Fields.COUNTRY_NEW_CASES),
                     mode: dashboard.MODE_DAILY,
                     link: links[0]
                 },{
-                    name: 'vaccinated1',
+                    id: 'vaccinated1',
                     title: '1st Dose Vaccination',
                     dataField: 'NumberVaccinated',
-                    type: 'stats',
+                    visualization: 'linechart',
                     color: d3.color(COLOR_VACCINATON).brighter(.6),
                     data: Data.from(options.data, Data.Fields.COUNTRY_VACCINE_TOTAL),
                     mode: dashboard.MODE_DAILY,
@@ -83,10 +83,10 @@ class CountryOverview {
                         'Product == "Total"'
                     ]
                 },{
-                    name: 'vaccinated2',
+                    id: 'vaccinated2',
                     title: '2nd Dose Vaccination',
                     dataField: 'NumberVaccinated',
-                    type: 'stats',
+                    visualization: 'linechart',
                     color: d3.color(COLOR_VACCINATON),
                     data: Data.from(options.data, Data.Fields.COUNTRY_VACCINE_TOTAL),
                     mode: dashboard.MODE_DAILY,
@@ -95,10 +95,10 @@ class CountryOverview {
                         'Product == "Total"'
                     ]
                 },{
-                    name: 'vaccinated3',
+                    id: 'vaccinated3',
                     title: 'Vaccination (30-39 age group)',
                     dataField: 'CumulativePercentCoverage',
-                    type: 'stats',
+                    visualization: 'linechart',
                     color: d3.color(COLOR_VACCINATON).darker(.5),
                     data: Data.from(options.data, Data.Fields.COUNTRY_VACCINE_SEX_AGEGROUP),
                     mode: dashboard.MODE_PERCENT,
@@ -110,10 +110,10 @@ class CountryOverview {
                     ]
 
                 },{
-                    name: 'vaccinated4',
+                    id: 'vaccinated4',
                     title: 'Vaccination (40-49 age group)',
                     dataField: 'CumulativePercentCoverage',
-                    type: 'stats',
+                    visualization: 'linechart',
                     color: d3.color(COLOR_VACCINATON).darker(1.4),
                     data: Data.from(options.data, Data.Fields.COUNTRY_VACCINE_SEX_AGEGROUP),
                     mode: dashboard.MODE_PERCENT,
@@ -124,59 +124,59 @@ class CountryOverview {
                         'AgeGroup == "40 - 49"'
                     ]
                 },{
-                    name: 'deaths',
+                    id: 'deaths',
                     title: 'COVID-19 Patients in Hospital',
                     dataField: 'COVID-19 patients in hospital - Confirmed',
-                    type: 'stats',
+                    visualization: 'linechart',
                     color: d3.color(COLOR_HOSPITAL).brighter(1.5),
                     data: Data.from(options.data, Data.Fields.COUNTRY_HOSPITAL),
                     mode: dashboard.MODE_CUMULATIVE
                 },{
-                    name: 'patients',
+                    id: 'patients',
                     title: "Covid Patients in ICU",
                     dataField: "COVID-19 patients in ICU - Confirmed",
                     color: COLOR_HOSPITAL,
-                    type: 'stats',
+                    visualization: 'linechart',
                     data: Data.from(options.data, Data.Fields.COUNTRY_ICU),
                     mode: dashboard.MODE_CURRENT
                 },
                 {
                     data: Data.from(options.data, Data.Fields.HEALTH_BOARD_TESTS_NORMALIZED),
-                    name: 'regionsTestsNorm',
+                    id: 'regionsTestsNorm',
                     title: 'Tests per 1000 people',
-                    type: 'cartogram',
+                    visualization: 'cartogram',
                     color: COLOR_TESTS, 
                     normalized: true
                 },
                 {
                     data: Data.from(options.data, Data.Fields.HEALTH_BOARD_HOSPITAL_NORMALIZED),
-                    name: 'covidInHospital',
+                    id: 'covidInHospital',
                     title: 'Covid Patients in Hospital',
                     color: d3.color(COLOR_HOSPITAL).brighter(1.5),
-                    type: 'cartogram',
+                    visualization: 'cartogram',
                     normalized: true
                 },
                 {
                     data: Data.from(options.data, Data.Fields.HEALTH_BOARD_ICU_NORMALIZED),
-                    name: 'covidInICU',
+                    id: 'covidInICU',
                     title: 'Covid Patients in ICU',
-                    type: 'cartogram',
+                    visualization: 'cartogram',
                     color: COLOR_HOSPITAL,
                     normalized: true
                 },
                 {
                     data: Data.from(options.data, Data.Fields.HEALTH_BOARD_COVID_DEATHS_NORMALIZED),
-                    name: 'covidDeaths',
+                    id: 'covidDeaths',
                     title: 'Weekly Covid Deaths',
-                    type: 'cartogram',
+                    visualization: 'cartogram',
                     color: COLOR_DEATHS,
                     normalized: true 
                 },
                 {
                     data: Data.from(options.data, Data.Fields.HEALTH_BOARD_ALL_DEATHS_NORMALIZED),
-                    name: 'allDeaths',  
+                    id: 'allDeaths',  
                     title: 'Weekly All Deaths',
-                    type: 'cartogram',
+                    visualization: 'cartogram',
                     color: d3.color(COLOR_DEATHS).darker(1),
                     normalized: true
                 }

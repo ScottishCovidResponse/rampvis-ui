@@ -30,7 +30,7 @@ class HealthBoardAgeGroupSex {
             ],
             groups: [
                 {
-                    name: 'vaccine-total',
+                    id: 'vaccine-total',
                     title: 'Overview',
                     layout: [
                         [
@@ -40,7 +40,7 @@ class HealthBoardAgeGroupSex {
     
                 },
                 {
-                    name: 'vaccine-gender',
+                    id: 'vaccine-gender',
                     title: 'Vaccine by Gender', 
                     layout: [
                         [
@@ -58,23 +58,23 @@ class HealthBoardAgeGroupSex {
                     ]      
                 }, 
                 {
-                    name: 'vaccine-by-age',
+                    id: 'vaccine-by-age',
                     title: 'Vaccinations by Age Group', 
                     layout: [
                         'vaccination-agegroups-dose1',
                         'vaccination-agegroups-dose2'] 
                 }
             ],
-            panels: [
+            widgets: [
                 {   
-                    name: 'vaccinations-total-dose1', 
+                    id: 'vaccinations-total-dose1', 
                     title: 'First Dose, total population', 
                     dataField: 'CumulativePercentCoverage',
-                    type: 'stats',
+                    visualization: 'linechart',
                     color: this.COLOR_TOTAL,
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
                     mode: dashboard.MODE_PERCENT,
-                    detail: 'detailed',
+                    detail: 'high',
                     conditions:[
                         'Sex == "Total"',
                         'Dose == "Dose 1"',
@@ -82,14 +82,14 @@ class HealthBoardAgeGroupSex {
                     ]
                 },
                 {   
-                    name: 'vaccinations-total-dose2', 
+                    id: 'vaccinations-total-dose2', 
                     title: 'Second Dose, total population', 
                     dataField: 'CumulativePercentCoverage',
-                    type: 'stats',
+                    visualization: 'linechart',
                     color: this.COLOR_TOTAL,
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
                     mode: dashboard.MODE_PERCENT,
-                    detail: 'detailed',
+                    detail: 'high',
                     conditions:[
                         'Sex == "Total"',
                         'Dose == "Dose 2"',
@@ -97,14 +97,14 @@ class HealthBoardAgeGroupSex {
                     ]
                 },
                 {   
-                    name: 'vaccinations-total-femaledose1', 
+                    id: 'vaccinations-total-femaledose1', 
                     title: '1st Dose, Female Population', 
                     dataField: 'CumulativePercentCoverage',
-                    type: 'stats',
+                    visualization: 'linechart',
                     color: this.COLOR_FEMALE,
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
                     mode: dashboard.MODE_PERCENT,
-                    detail: 'narrow',
+                    detail: 'low',
                     conditions:[
                         'Sex == "Female"',
                         'Dose == "Dose 1"',
@@ -112,14 +112,14 @@ class HealthBoardAgeGroupSex {
                     ]
                 },
                 {   
-                    name: 'vaccinations-total-femaledose2', 
+                    id: 'vaccinations-total-femaledose2', 
                     title: '2nd Dose, Female Population', 
                     dataField: 'CumulativePercentCoverage',
-                    type: 'stats',
+                    visualization: 'linechart',
                     color: this.COLOR_FEMALE,
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
                     mode: dashboard.MODE_PERCENT,
-                    detail: 'narrow',
+                    detail: 'low',
                     conditions:[
                         'Sex == "Female"',
                         'Dose == "Dose 2"',
@@ -127,14 +127,14 @@ class HealthBoardAgeGroupSex {
                     ]
                 },
                 {   
-                    name: 'vaccinations-total-maledose1', 
+                    id: 'vaccinations-total-maledose1', 
                     title: '1st Dose, Male Population', 
                     dataField: 'CumulativePercentCoverage',
-                    type: 'stats',
+                    visualization: 'linechart',
                     color: this.COLOR_MALE,
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
                     mode: dashboard.MODE_PERCENT,
-                    detail: 'narrow',
+                    detail: 'low',
                     conditions:[
                         'Sex == "Male"',
                         'Dose == "Dose 1"',
@@ -142,24 +142,24 @@ class HealthBoardAgeGroupSex {
                     ]
                 },
                 {   
-                    name: 'vaccinations-total-maledose2', 
+                    id: 'vaccinations-total-maledose2', 
                     title: '2nd Dose, Male Population', 
                     dataField: 'CumulativePercentCoverage',
-                    type: 'stats',
+                    visualization: 'linechart',
                     color: this.COLOR_MALE,
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
                     mode: dashboard.MODE_PERCENT,
-                    detail: 'narrow',
+                    detail: 'low',
                     conditions:[
                         'Sex == "Male"',
                         'Dose == "Dose 2"',
                         'AgeGroup == "18 years and over"' 
                     ]
                 },{
-                    name: 'vaccination-agegroups-dose1',
+                    id: 'vaccination-agegroups-dose1',
                     title: 'Dose 1', 
                     dataField: 'CumulativePercentCoverage',
-                    type: 'barchart',
+                    visualization: 'barchart',
                     color: this.COLOR_TOTAL,
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
                     mode: dashboard.MODE_PERCENT,
@@ -171,10 +171,10 @@ class HealthBoardAgeGroupSex {
                         'AgeGroup.indexOf("and over") < 0'
                     ]
                 },{
-                    name: 'vaccination-agegroups-dose2',
+                    id: 'vaccination-agegroups-dose2',
                     title: 'Dose 2', 
                     dataField: 'CumulativePercentCoverage',
-                    type: 'barchart',
+                    visualization: 'barchart',
                     color: this.COLOR_TOTAL,
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
                     mode: dashboard.MODE_PERCENT,
@@ -186,14 +186,14 @@ class HealthBoardAgeGroupSex {
                         'AgeGroup.indexOf("and over") < 0'
                     ]
                 },{
-                    name: 'vaccination-allfemale-dose1',
+                    id: 'vaccination-allfemale-dose1',
                     title: 'Females Dose 1', 
                     dataField: 'CumulativePercentCoverage',
-                    type: 'barchart',
+                    visualization: 'barchart',
                     color: this.COLOR_FEMALE,
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
                     mode: dashboard.MODE_PERCENT,
-                    detail: 'compact',
+                    detail: 'medium',
                     bars: 'AgeGroup', 
                     conditions:[
                         'Sex == "Female"',
@@ -201,14 +201,14 @@ class HealthBoardAgeGroupSex {
                         'AgeGroup.indexOf("and over") < 0'
                     ]
                 },{
-                    name: 'vaccination-allmale-dose1',
+                    id: 'vaccination-allmale-dose1',
                     title: 'Males Dose 1', 
                     dataField: 'CumulativePercentCoverage',
-                    type: 'barchart',
+                    visualization: 'barchart',
                     color: this.COLOR_MALE,
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
                     mode: dashboard.MODE_PERCENT,
-                    detail: 'compact',
+                    detail: 'medium',
                     bars: 'AgeGroup', 
                     conditions:[
                         'Sex == "Male"',
@@ -217,14 +217,14 @@ class HealthBoardAgeGroupSex {
                     ]
                 },
                 {
-                    name: 'vaccination-allfemale-dose2',
+                    id: 'vaccination-allfemale-dose2',
                     title: 'Females Dose 2', 
                     dataField: 'CumulativePercentCoverage',
-                    type: 'barchart',
+                    visualization: 'barchart',
                     color: this.COLOR_FEMALE,
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
                     mode: dashboard.MODE_PERCENT,
-                    detail: 'compact',
+                    detail: 'medium',
                     bars: 'AgeGroup', 
                     conditions:[
                         'Sex == "Female"',
@@ -233,14 +233,14 @@ class HealthBoardAgeGroupSex {
                     ]
                 },
                 {
-                    name: 'vaccination-allmale-dose2',
+                    id: 'vaccination-allmale-dose2',
                     title: 'Males Dose 2', 
                     dataField: 'CumulativePercentCoverage',
-                    type: 'barchart',
+                    visualization: 'barchart',
                     color: this.COLOR_MALE,
                     data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
                     mode: dashboard.MODE_PERCENT,
-                    detail: 'compact',
+                    detail: 'medium',
                     bars: 'AgeGroup', 
                     conditions:[
                         'Sex == "Male"',
@@ -261,10 +261,10 @@ class HealthBoardAgeGroupSex {
 //     let name = 'dose1-1-'+ageGroups[i].replaceAll(/\s/g,'');
 //     panels.push(
 //     {
-//         name: name, 
+//         id: name, 
 //         title: 'Age group ' + ageGroups[i],
 //         dataField: 'CumulativePercentCoverage',
-//         type: 'stats',
+//         visualization: 'linechart',
 //         color: '#555',
 //         data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
 //         mode: dashboard.MODE_PERCENT,
@@ -281,10 +281,10 @@ class HealthBoardAgeGroupSex {
 //     name = 'dose2-1-'+ageGroups[i].replaceAll(/\s/g,'');
 //     panels.push(
 //     {
-//         name: name, 
+//         id: name, 
 //         title: 'Age group ' + ageGroups[i],
 //         dataField: 'CumulativePercentCoverage',
-//         type: 'stats',
+//         visualization: 'linechart',
 //         color: '#555',
 //         data: Data.from(options.data, Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP),
 //         mode: dashboard.MODE_PERCENT,
