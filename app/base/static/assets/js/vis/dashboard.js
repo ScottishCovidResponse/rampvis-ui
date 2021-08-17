@@ -25,6 +25,10 @@ dashboard.DETAIL_DETAILED = 'detailed';
 dashboard.DETAIL_NARROW = 'narrow';
 dashboard.DETAIL_COMPACT = 'compact';
 
+dashboard.TYPE_LINECHART = 'stats';
+dashboard.TYPE_CARTOGRAM = 'cartogram';
+dashboard.TYPE_BARCHART = 'barchart';
+
 var LINE_1 = 10;
 var LINE_2 = 30;
 
@@ -180,7 +184,7 @@ var createPanel = function(parentHtmlElementId, name, config){
     }
 
     var normalized = false || (panel && panel.normalized);
-    if(panel.type == 'cartogram')
+    if(panel.type == dashboard.TYPE_CARTOGRAM)
     {
         dashboard.visulizeScotlandNHSBoardCartogram(
             parentHtmlElementId,
@@ -193,9 +197,9 @@ var createPanel = function(parentHtmlElementId, name, config){
             lastDate
         )
     }
-    else if(panel.type == 'stats')
+    else if(panel.type == dashboard.TYPE_LINECHART)
     {
-        dashboard.visualizeStats(
+        dashboard.visualizeLinechart(
                 parentHtmlElementId,
                 title,
                 panel.dataField,
@@ -209,13 +213,32 @@ var createPanel = function(parentHtmlElementId, name, config){
                 lastDate
                 );    
     }
+    else if(panel.type == dashboard.TYPE_BARCHART)
+    {
+        dashboard.visualizeBarChart(
+            parentHtmlElementId,
+            title,
+            panel.dataField,
+            panel.color,
+            data,
+            panel.mode,
+            normalized, 
+            panel.link ? panel.link : null,
+            panel.unit,
+            panel.detail, 
+            lastDate, 
+            panel.bars
+        )
+    }else{
+        console.error('Chart type "'+ panel.type + '" not defined. Please check https://github.com/rampvis/rampvis.github.io/wiki/widgets.')
+    }
+
 }
 
 var executeCondition = function(data, c)
 {
     c = 'd.' + c;
     var size = data.length
-    // console.log('condition:', c)
     return data.filter(function(d)
     {
         return eval(c);
@@ -229,10 +252,17 @@ var canonizeNames = function(s){
         .replaceAll(']', '-')
 }
 
-////////////////////////////////////////////////////////////////////////
-// visualizes a dataset for a dashboard with number, trend, and chart
-////////////////////////////////////////////////////////////////////////
-dashboard.visualizeStats = function (id, title, field, color, dataStream, mode, normalized, link, unit, detail, lastDate) {
+
+
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+/// TYPE STATS 
+/////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+
+dashboard.visualizeLinechart = function (id, title, field, color, dataStream, mode, normalized, link, unit, detail, lastDate) {
     
     // console.log('\t\t\tVisualizeDataStream', title, '-->', id)
     if(!detail)
@@ -272,13 +302,6 @@ dashboard.visualizeStats = function (id, title, field, color, dataStream, mode, 
         visualizeMiniChart(svg, dataStream, 0, baseline_title + 55, 18, w, field, color, mode, true);   
     }
 }
-
-
-
-
-
-
-
 
 
 
@@ -647,6 +670,21 @@ var setVisLabelRow2 = function (g, text, x, y) {
 }
 
 
+
+
+
+
+
+
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+/// TYPE CARTOGRAM 
+/////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+
+
 dashboard.visulizeScotlandNHSBoardCartogram = function (id, title, color, data, normalized, detail, lastDate) 
 {
     // data comes in JSON
@@ -763,3 +801,83 @@ dashboard.visulizeScotlandNHSBoardCartogram = function (id, title, color, data, 
         .attr('class', 'cartogramLabel-nonextremes')
 
 }
+
+
+
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+//  TYPE GROUPS
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+dashboard.visualizeBarChart = function (id, title, dataField, color, dataStream, mode, normalized, link, unit, detail, lastDate, barField){
+
+    var svg = d3.select('#' + id)
+        .append("svg")
+        .attr('height', 40)
+        .style('margin-bottom', 0)
+    
+    setVisTitle(svg, title, link, detail, lastDate)
+
+    // display only last data
+    lastDate = dataStream[dataStream.length-1].index;
+    dataStream = dataStream.filter(e=>{
+        return e.index == lastDate;
+    })
+
+    if(!detail)
+        detail = dashboard.DETAIL_DETAILED;
+
+
+    // dashboard.DETAILED
+    let width = 150
+    let barWidth = 20;
+    if(detail == dashboard.DETAIL_NARROW)
+    {
+        width = 70
+        barWidth = 10
+    }else 
+    if(detail == dashboard.DETAIL_COMPACT)
+    {
+        width = 100
+        barWidth = 15
+    } 
+    svg.attr('width', width)
+
+    var vegaBarchart = {
+        $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+        data: {
+            values: dataStream,
+        },
+        width: width, 
+        height: {step: barWidth},
+        mark: "bar",
+        encoding: {
+            y: {
+                field: barField,
+                type: "nominal",
+                title: ''
+            },
+            x: {
+                field: dataField, 
+                type: 'quantitative',
+                title: ''
+            },
+            "color": {"value": color}
+        }
+    }
+    var random = Math.floor(Math.random() * 1000);
+    d3.select('#' + id)
+        .append("div")
+        .attr('id', 'vegadiv-'+id+random)
+
+    vegaEmbed('#vegadiv-'+id+random, vegaBarchart, {"actions": false});
+
+
+
+}
+
+    
+
+
