@@ -29,22 +29,22 @@ class CountryAgeGroupSex {
         ]
 
         // create panels
-        var panels = [];
+        var widgets = [];
         var vaccinationPanelIds = []
         for(var i=0 ; i < ageGroups.length ; i++)
         {
             // vaccination panel
             let name = 'dose2-1-'+ageGroups[i].replaceAll(/\s/g,'');
-            panels.push(
+            widgets.push(
             {
-                name: name, 
+                id: name, 
                 title: 'Age group ' + ageGroups[i],
                 dataField: 'PercentCoverage',
-                type: 'stats',
+                visualization: 'linechart',
                 color: '#555',
                 data: Data.from(options.data, Data.Fields.COUNTRY_VACCINE_SEX_AGEGROUP),
                 mode: dashboard.MODE_PERCENT,
-                detail: dashboard.DETAIL_NARROW,
+                detail: 'low',
                 conditions:[
                     'Sex == "Total"',
                     'Dose == "Dose 2"',
@@ -60,39 +60,39 @@ class CountryAgeGroupSex {
             ],
             groups: [
                 {
-                    name: 'vaccinated',
+                    id: 'vaccinated',
                     title: 'Fully Vaccinated', 
                     layout: [vaccinationPanelIds] 
                 }
             ],
-            panels: panels
+            widgets: widgets
         }
         dashboard.createDashboard(div, config)
     }
 }
 
-class Panel 
-{
-    constructor(object){
-        for(var k in object){
-            this[k] = object[k]
-        }
-    }
-    set(attr, value){
-        this[attr] = value;
-        return this;
-    }
-    condition(condition)
-    {
-        if(!this.hasOwnProperty('conditions'))
-        {
-            this.conditions = [];
-        }
-        this['conditions'].push(condition)
-        return this;
-    }
-}
+// class Panel 
+// {
+//     constructor(object){
+//         for(var k in object){
+//             this[k] = object[k]
+//         }
+//     }
+//     set(attr, value){
+//         this[attr] = value;
+//         return this;
+//     }
+//     condition(condition)
+//     {
+//         if(!this.hasOwnProperty('conditions'))
+//         {
+//             this.conditions = [];
+//         }
+//         this['conditions'].push(condition)
+//         return this;
+//     }
+// }
 
-function template(template){
-    return new Panel(template);
-}
+// function template(template){
+//     return new Panel(template);
+// }
