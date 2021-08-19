@@ -1,4 +1,4 @@
-class NewStackedAreaChart {
+class NewMirroredStackedAreaChart {
     CHART_WIDTH = 1000
     CHART_HEIGHT = 400
 
