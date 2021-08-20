@@ -55,7 +55,7 @@ const AccountPopover: FC = () => {
         }}
       >
         <Avatar
-          src={user.avatar}
+          src={user?.avatar}
           sx={{
             height: 32,
             width: 32,
@@ -77,10 +77,10 @@ const AccountPopover: FC = () => {
       >
         <Box sx={{ p: 2 }}>
           <Typography color="textPrimary" variant="subtitle2">
-            {user.name}
+            {user?.name}
           </Typography>
           <Typography color="textSecondary" variant="subtitle2">
-            {user.email}
+            {user?.email}
           </Typography>
         </Box>
         <Divider />

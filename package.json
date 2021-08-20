@@ -4,7 +4,8 @@
   "scripts": {
     "lint": "eslint ./src",
     "lint-fix": "eslint --fix ./src",
-    "start": "react-scripts start",
+    "start": "env-cmd -f .env.dev react-scripts start",
+    "start-prod": "env-cmd -f .env.prod react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject"
   },
@@ -77,6 +78,7 @@
   "devDependencies": {
     "@types/d3": "^5.16.0",
     "@types/jquery": "^3.5.6",
+    "env-cmd": "^10.1.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-config-prettier": "^8.3.0",

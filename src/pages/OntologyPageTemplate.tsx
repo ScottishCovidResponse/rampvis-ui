@@ -21,9 +21,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-
 import useSettings from "../hooks/useSettings";
 import { visFactory } from "../lib/vis/vis-factory";
+
+const API = {
+  API_PY: process.env.REACT_APP_API_PY,
+  API_JS: process.env.REACT_APP_API_JS,
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,8 +55,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const API_PY = "http://localhost:3000/stat/v1";
-const API_JS = "http://localhost:2000/api/v1";
 
 const OntologyPageTemplate: FC = () => {
   const { pageId } = useParams(); // 60ae9fce8839aa3ae916e217
@@ -66,7 +68,7 @@ const OntologyPageTemplate: FC = () => {
   const [X, setX] = useState<any>(null);
 
   const fetchMyAPI = useCallback(async () => {
-    const apiUrl = `${API_JS}/template/page/${pageId}`; // TODO
+    const apiUrl = `${API.API_JS}/template/page/${pageId}`;
     const res = await axios.get(apiUrl);
     const page = res.data;
     console.log("page data = ", page);
@@ -74,7 +76,7 @@ const OntologyPageTemplate: FC = () => {
     const dataForVisFunction = await Promise.all(
       page?.bindingExts[0]?.data?.map(async (d: any) => {
         console.log(d.description, d.urlCode, d.endpoint);
-        const endpoint = `${API_PY}${d.endpoint}`; // `${d.urlCode}${d.endpoint}`; // TODO
+        const endpoint = `${API[d.urlCode]}${d.endpoint}`;
         const values = (await axios.get(endpoint)).data;
         const { description } = d;
         return { endpoint, values, description };
@@ -94,19 +96,6 @@ const OntologyPageTemplate: FC = () => {
       links,
     });
 
-    // apiUrl =
-    //   "http://localhost:3000/stat/v1/data/?product=records/SARS-CoV-2/scotland/cases-and-management/hospital&component=date-country-covid19_patients_in_icu-confirmed";
-    // res = await axios.get(apiUrl);
-    // const datastream = res.data;
-    // console.log(datastream);
-
-    // new SimpleBarChart({
-    //   chartElement: "charts", // ref.current,
-    //   data: dataForVisFunction,
-    //   links,
-    // });
-
-    // setX(data)
   }, [pageId]);
   // if pageId changes, useEffect will run again
   // if you want to run only once, just leave array empty []

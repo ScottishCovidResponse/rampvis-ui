@@ -9,7 +9,6 @@ import DashboardLayout from "./components/dashboard/DashboardLayout";
 import LoadingScreen from "./components/LoadingScreen";
 import MainLayout from "./components/MainLayout";
 
-
 const Loadable = (Component) => (props) =>
   (
     <Suspense fallback={<LoadingScreen />}>
@@ -20,53 +19,20 @@ const Loadable = (Component) => (props) =>
 // Authentication pages
 const Login = Loadable(lazy(() => import("./pages/auth/Login")));
 
-// Dashboard & plot pages
-const Overview = Loadable(lazy(() => import("./pages/dashboards/Overview")));
-const Spectrum = Loadable(lazy(() => import("./pages/plots/Spectrum")));
-const Waterfall = Loadable(lazy(() => import("./pages/plots/Waterfall")));
-
 // Error pages
-const AuthorizationRequired = Loadable(
-  lazy(() => import("./pages/AuthorizationRequired"))
-);
+const AuthorizationRequired = Loadable( lazy(() => import("./pages/AuthorizationRequired")));
 const NotFound = Loadable(lazy(() => import("./pages/NotFound")));
 const ServerError = Loadable(lazy(() => import("./pages/ServerError")));
 
-
+// Templates using ontology data
 const OntologyPageTemplate =  Loadable(lazy(() => import("./pages/OntologyPageTemplate")));
 const OntologyPageListTemplate =  Loadable(lazy(() => import("./pages/OntologyPageListTemplate")));
 
 const routes: PartialRouteObject[] = [
-  // {
-  //   path: "dashboard",
-  //   element: (
-  //     <AuthGuard>
-  //       <DashboardLayout />
-  //     </AuthGuard>
-  //   ),
-  //   children: [
-  //     {
-  //       path: "/",
-  //       element: <Navigate to="/dashboard/overview" replace />,
-  //     },
-  //     {
-  //       path: "overview",
-  //       element: <Overview />,
-  //     },
-  //   ],
-  // },
   {
     path: "page",
-    element: (
-      <AuthGuard>
-        <DashboardLayout />
-      </AuthGuard>
-    ),
+    element: <DashboardLayout />,
     children: [
-      // {
-      //   path: "/",
-      //   element: <Navigate to="/plot/spectrum" replace />,
-      // },
       {
         path: "/:pageId",
         element: <OntologyPageTemplate />,
@@ -75,16 +41,8 @@ const routes: PartialRouteObject[] = [
   },
   {
     path: "pages",
-    element: (
-      <AuthGuard>
-        <DashboardLayout />
-      </AuthGuard>
-    ),
+    element: <DashboardLayout />,
     children: [
-      // {
-      //   path: "/",
-      //   element: <Navigate to="/plot/spectrum" replace />,
-      // },
       {
         path: "/:bindingType",
         element: <OntologyPageListTemplate />,
@@ -110,7 +68,7 @@ const routes: PartialRouteObject[] = [
     children: [
       {
         path: "/",
-        element: <Navigate to="/dashboard/overview" replace />,
+        element: <Navigate to="/dashboard" replace />,
       },
       {
         path: "401",

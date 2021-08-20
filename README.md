@@ -13,11 +13,14 @@ Install the dependencies.
 npm install
 ```
 
-Run the app in development mode.
-
+Run the app in development mode using local development APIs.
 ```bash
-export NODE_ENV=development && export PORT=5000
 npm start
+```
+
+Run the app in development mode using production APIs.
+```bash
+npm run start-prod
 ```
 
 Open [http://localhost:5000](http://localhost:5000) to view it in the browser.

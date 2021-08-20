@@ -29,6 +29,9 @@ import useSettings from "../hooks/useSettings";
 import { blue } from "@material-ui/core/colors";
 import moment from "moment";
 
+const API_PY = process.env.REACT_APP_API_PY;
+const API_JS = process.env.REACT_APP_API_JS;
+
 // Table code start
 
 interface Column {
@@ -129,7 +132,7 @@ const OntologyPageListTemplate: FC = () => {
   const [rows, setRows] = useState<any>([]);
 
   const fetchMyAPI = useCallback(async () => {
-    const apiUrl = `http://localhost:2000/api/v1/template/pages/?filterPageType=${bindingType}`;
+    const apiUrl = `${API_JS}/template/pages/?filterPageType=${bindingType}`;
     const res = await axios.get(apiUrl);
 
     console.log(res.data);
