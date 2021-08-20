@@ -1,0 +1,25 @@
+#chart {
+    max-width: 1000px;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 10px;
+}
+.item {
+    border-radius: 3px;
+    background-color: #fff;
+    padding: 5px;
+    -webkit-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -o-transition: 0.2s;
+    border: 1px solid #ccc;
+    max-width: 350px;
+}
+.div-svg {
+    text-align: center;
+    cursor: pointer;
+}
+.line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 3px;
+}
