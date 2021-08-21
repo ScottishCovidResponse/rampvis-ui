@@ -95,7 +95,7 @@ const OntologyPageListTemplate: FC = () => {
   const [rows, setRows] = useState<any>([]);
 
   const fetchMyAPI = useCallback(async () => {
-    const apiUrl = `${API_JS}/template/pages/?filterPageType=${bindingType}`;
+    const apiUrl = `${API_JS}/template/pages/?filterBindingType=${bindingType}`;
     const res = await axios.get(apiUrl);
 
     console.log(res.data);

@@ -5,7 +5,7 @@ import { CssBaseline, ThemeProvider } from "@material-ui/core";
 
 import "./i18n";
 import RTL from "./components/RTL";
-import SettingsDrawer from "./components/SettingsDrawer";
+// import SettingsDrawer from "./components/SettingsDrawer";
 import SplashScreen from "./components/SplashScreen";
 import useAuth from "./hooks/useAuth";
 import useScrollReset from "./hooks/useScrollReset";
@@ -32,7 +32,7 @@ const App: FC = () => {
       <RTL direction={settings.direction}>
         <CssBaseline />
         <Toaster position="top-center" />
-        <SettingsDrawer />
+        {/* <SettingsDrawer /> */}
         {auth.isInitialized ? content : <SplashScreen />}
       </RTL>
     </ThemeProvider>
