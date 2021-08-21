@@ -68,7 +68,7 @@ const routes: PartialRouteObject[] = [
     children: [
       {
         path: "/",
-        element: <Navigate to="/dashboard" replace />,
+        element: <Navigate to="/pages/example" replace />,
       },
       {
         path: "401",
