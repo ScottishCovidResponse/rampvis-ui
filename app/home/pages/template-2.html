@@ -23,8 +23,6 @@ This template is for v1.0 and above
         </div>
 
         <div class="card-body">
-            <!-- Description -->
-            <!-- <p class="card-text">{{ option.bindings.vis.description | safe }}</p> -->
             <!-- Chart -->
             <div id="charts"></div>
         </div>
@@ -39,31 +37,20 @@ This template is for v1.0 and above
 <script>
 
     let _option = {{ option | tojson }};
-    let visDescription = _option.bindings?.vis?.description;
     let token = '{{ session.token | safe }}';
     let userName = '{{ current_user.username | safe }}';
     let isAuthorised = {{ current_user.is_authenticated | tojson }};
     let isBookmarked = false;
     let DATA_API = {{ config['DATA_API'] | tojson }};
 
-    $(document).ready(function () {
-          //visDescription = _option.bindings?.vis?.description
-          console.log('template-2.html: option = ', _option, ', visDescription = ', visDescription);
+    $(document).ready(function() {
+         console.log('template-2.html: option = ', _option);
 
-          let placeholder = $('#charts');
-          layout(_option.bindings, placeholder)
-    });
-
-    //
-    // Layout
-    //
-    async function layout(bindings, placeholder) {
-        console.log('template-2.html:layout: bindings = ', bindings);
+        let placeholder = $('#charts');
 
         // only one row and chart in it
         let row = document.createElement('div');
         let col = document.createElement('div');
-
 
         row.setAttribute('class', 'row');
 
@@ -72,16 +59,19 @@ This template is for v1.0 and above
         row.append(col);
         placeholder.append(col);
 
-        let data = await fetchData(bindings?.data);
+        fetchDataAndCallVis(_option)
+    });
 
-        console.log('template-2.html:layout: no. of data streams = ', data.length);
+    async function fetchDataAndCallVis(_option) {
+        let data = await fetchData(_option.data);
+        console.log('template-2.html:fetchDataAndCallVis: no. of data streams = ', data.length);
 
         let args = {
             chartElement: `chart-0`,
             data: data,
-            links: bindings?.links
+            links: _option.links
         };
-        new VisFunctionFactory(bindings?.vis?.function, args);
+        new VisFunctionFactory(_option.vis?.function, args);
     }
 
     async function fetchData(data) {

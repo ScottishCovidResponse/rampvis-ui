@@ -94,10 +94,10 @@ def update_bookmark(page_id):
 #
 
 
-def get_onto_pages(binding_type):
+def get_onto_pages(page_type):
     logger.debug(f'service.py:get_onto_pages:  API_JS = {API_JS}')
 
-    response = requests.get(API_JS + '/template/pages/?filterPageType=' + binding_type)
+    response = requests.get(API_JS + '/template/pages/?filterPageType=' + page_type)
     onto_pages = json.loads(response.content)
     data = onto_pages.get('data', [])
 
@@ -106,29 +106,21 @@ def get_onto_pages(binding_type):
 
 
 def get_onto_page_by_id(id):
-    # logger.debug(f'service.py:get_onto_page_by_id: id = {id}')
-    # logger.debug(f'\n\n..............................................')
-
+    logger.debug(f'service.py:get_onto_page_by_id: id = {id}')
+    
     response = requests.get(API_JS + '/template/page/' + id)
     onto_page = json.loads(response.content)
 
-    bindings = onto_page.get('bindings')
-    bindingExts = onto_page.get('bindingExts')
-    # logger.debug(f'service.py:get_onto_page_by_id: bindings = {bindings}')
-    # logger.debug(f'service.py:get_onto_page_by_id: bindingExts = {bindingExts}')
-
-    if bindings is None or bindingExts is None:
-        return None
-
-    data = bindingExts[0].get('data')
-    vis = bindingExts[0].get('vis')
-    links = bindings[0].get('pageIds')
+    data = onto_page.get('data')
     data = [{**d, 'endpoint': get_api_url(d.get('urlCode')) + d.get('endpoint')} for d in data]
 
-    if links is not None:
-        links = [f'{get_ui_url("UI_URL")}/{l}' for l in links]
+    pageIds = onto_page.get('pageIds')
+    links = []
+    if pageIds is not None:
+        links = [f'{get_ui_url("UI_URL")}/{l}' for l in pageIds]
 
-    onto_page['bindings'] = {'data': data, 'vis': vis, 'links': links}
+    onto_page['data'] = data
+    onto_page['links'] = links
 
     # Extract title
     keywords_list = [d['keywords'] for d in data]

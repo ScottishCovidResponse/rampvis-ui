@@ -17,7 +17,7 @@
     <div class="card">
       <div class="card-header card-header-icon card-header-primary">
         <div class="card-icon"><i class="material-icons">table_view</i></div>
-        <h4 class="card-title ">Pages - {{publishType}}</h4>
+        <h4 class="card-title ">Pages - {{pageType}}</h4>
       </div>
 
       <div class="card-body">
@@ -37,11 +37,11 @@
             {% for i, d in enumerate(table) %}
               <tr>
                 <td>{{ i + 1 }}</td>
-                <td>{{ d.bindingExts[0].vis.function }}</td>
-                <td>{{ d.bindingExts[0].vis.description }}</td>
-                <td>{{ d.bindingExts[0].data[0].description   }}</td>
+                <td>{{ d.vis.function }}</td>
+                <td>{{ d.vis.description }}</td>
+                <td>{{ d.data[0].description   }}</td>
                 <td>{{ d.date  }}</td>
-                <td>{{ d.bindingType  }}</td>
+                <td>{{ d.pageType  }}</td>
                 <td><a href="/{{ d.id }}"> <i class="material-icons">link</i>  </a></td>
               </tr>
             {% endfor %}
