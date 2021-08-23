@@ -67,7 +67,7 @@ const OntologyPageTemplate: FC = () => {
 
   const [X, setX] = useState<any>(null);
 
-  const fetchMyAPI = useCallback(async () => {
+  const fetchOntoPage = useCallback(async () => {
     const apiUrl = `${API.API_JS}/template/page/${pageId}`;
     const res = await axios.get(apiUrl);
     const page = res.data;
@@ -75,7 +75,6 @@ const OntologyPageTemplate: FC = () => {
 
     const dataForVisFunction = await Promise.all(
       page?.data?.map(async (d: any) => {
-        console.log(d.description, d.urlCode, d.endpoint);
         const endpoint = `${API[d.urlCode]}${d.endpoint}`;
         const values = (await axios.get(endpoint)).data;
         const { description } = d;
@@ -88,7 +87,7 @@ const OntologyPageTemplate: FC = () => {
       return `page/${d}`;
     });
 
-    console.log("dataForVisFunction = ", dataForVisFunction);
+    console.log("OntologyPageTemplate: dataForVisFunction = ", dataForVisFunction);
 
     visFactory(page?.vis?.function, {
       chartElement: "charts", // ref.current,
@@ -102,13 +101,13 @@ const OntologyPageTemplate: FC = () => {
 
   useEffect(() => {
     console.log("OntologyPageTemplate: useEffect:");
-    fetchMyAPI();
-  }, [fetchMyAPI]);
+    fetchOntoPage();
+  }, [fetchOntoPage]);
 
   return (
     <>
       <Helmet>
-        <title>[Ontology] Page</title>
+        <title>RAMPVIS- Page</title>
       </Helmet>
 
       <Box
@@ -133,7 +132,7 @@ const OntologyPageTemplate: FC = () => {
                       <TimelineIcon />
                     </Avatar>
                   }
-                  title="Page Template ..."
+                  title="TODO: Title..."
                   subheader=""
                 />
 

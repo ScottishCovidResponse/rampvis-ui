@@ -89,20 +89,22 @@ const OntologyPageListTemplate: FC = () => {
   // Dynamic url path
   const { pageType } = useParams();
   const { visType } = useParams();
-  const apiUrl: URL = new URL(`${API_JS}/template/pages/${pageType}/${visType}/`);
+  let url: string = `${API_JS}/template/pages/${pageType}/`;
+  if (visType) url = `${url}${visType}/`
 
   // Query to use for pagination of tables
   const query = useQuery();
+  // const apiUrl: URL = new URL(url)
   // if (pageType) apiUrl.searchParams.append("page", query.get("page"));
   // if (visType) apiUrl.searchParams.append("index", query.get("index"));
-
-  console.log("OntologyPageListTemplate: apiUrl = ", apiUrl.href);
+  // url = apiUrl.href
+  console.log("OntologyPageListTemplate: API url = ", url);
 
   const [rows, setRows] = useState<any>([]);
 
   const fetchOntoPages = useCallback(async () => {
     try {
-      const res = await axios.get(apiUrl.href);
+      const res = await axios.get(url);
       console.log('OntologyPageListTemplate: fetched data = ', res.data);
       const pages = res.data.data.map((d) => {
         const { id, date } = d;
@@ -120,7 +122,7 @@ const OntologyPageListTemplate: FC = () => {
       setRows(pages);
     } catch (err) {
       // prettier-ignore
-      console.error(`OntologyPageListTemplate: Fetching API ${apiUrl}, error = ${err}`);
+      console.error(`OntologyPageListTemplate: Fetching API ${url}, error = ${err}`);
     }
   }, [pageType, visType]);
   // if pageType, visType changes, useEffect will run again
@@ -176,8 +178,8 @@ const OntologyPageListTemplate: FC = () => {
                       <StorageIcon />
                     </Avatar>
                   }
-                  title={_.startCase(visType)}
-                  subheader={`List of ${_.camelCase(pageType)} visualizations of type ${_.camelCase(visType)} `}
+                  title={_.startCase(visType) && _.startCase(visType) || _.startCase(pageType) }
+                  subheader={`List of ${_.camelCase(pageType)} visualizations`}
                 />
 
                 <CardContent sx={{ pt: "8px" }}>
