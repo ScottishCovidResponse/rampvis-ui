@@ -20,9 +20,9 @@ import * as d3 from "d3";
 import Common from "./common";
 import { pv } from "./pv"
 
-export class NewMatrix {
-    CHART_WIDTH = 500;
-    CHART_HEIGHT = 500;
+export class Matrix {
+    CHART_WIDTH = document.getElementById('charts').offsetWidth;
+    CHART_HEIGHT = window.innerHeight - Common.MAIN_CONTENT_GAP;
 
     constructor(options) {
         const data = this.processData(options.data);

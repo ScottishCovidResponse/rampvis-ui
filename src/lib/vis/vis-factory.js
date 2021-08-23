@@ -4,10 +4,10 @@ import { HealthBoardOverview } from "./health-board-overview";
 import { CouncilOverview } from './council-overview';
 import { CountryOverview } from './country-overview';
 import { ChordDiagram } from './chord-diagram';
-import { NewMatrix } from './new-matrix';
+import { Matrix } from './matrix';
 import { SuperimposedPercentiles } from './superimposed-percentiles';
 import { StackedBarChartWith6Places } from './stacked-bar-chart-6-places';
-
+import { StackedAreaChart } from './stacked-area-chart';
 
 export const visFactory = (type, args) => {
     if (type === "SimpleBarChart")
@@ -22,13 +22,14 @@ export const visFactory = (type, args) => {
         return new CountryOverview(args);
     if (type === "ChordDiagram")
         return new ChordDiagram(args);
-    if (type === "NewMatrix")
-        return new NewMatrix(args);
+    if (type === "Matrix")
+        return new Matrix(args);
     if (type === "SuperimposedPercentiles")
         return new SuperimposedPercentiles(args);
     if (type === "StackedBarChartWith6Places")
         return new StackedBarChartWith6Places(args);
-
+    if (type === "StackedAreaChart")
+        return new StackedAreaChart(args);
         
     return null;
 }
