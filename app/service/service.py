@@ -97,7 +97,7 @@ def update_bookmark(page_id):
 def get_onto_pages(page_type):
     logger.debug(f'service.py:get_onto_pages:  API_JS = {API_JS}')
 
-    response = requests.get(API_JS + '/template/pages/?filterPageType=' + page_type)
+    response = requests.get(API_JS + '/template/pages/' + page_type)
     onto_pages = json.loads(response.content)
     data = onto_pages.get('data', [])
 
