@@ -50,22 +50,22 @@ const sections = [
     items: [
       {
         title: 'Dashboards',
-        path: '/pages/example/dashboard',
+        path: '/pages/release/dashboard',
         icon: <DashboardIcon fontSize="small" />
       },
       {
         title: 'Plots',
-        path: '/pages/example/plot',
+        path: '/pages/release/plot',
         icon: <DonutSmallIcon fontSize="small" />
       },
       {
         title: 'Analytics',
-        path: '/pages/example/analytics',
+        path: '/pages/release/analytics',
         icon: <TimelineIcon fontSize="small" />
       },
       {
         title: 'Models',
-        path: '/pages/example/model',
+        path: '/pages/release/model',
         icon: <AssessmentIcon fontSize="small" />
       }
     ]

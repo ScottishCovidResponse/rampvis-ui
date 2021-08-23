@@ -27,6 +27,7 @@ import LinkIcon from '@material-ui/icons/Link';
 import { blue } from "@material-ui/core/colors";
 import moment from "moment";
 import axios from "axios";
+import _ from "lodash";
 
 import useSettings from "../hooks/useSettings";
 import useQuery from "src/hooks/useQuery";
@@ -150,7 +151,7 @@ const OntologyPageListTemplate: FC = () => {
   return (
     <>
       <Helmet>
-        <title>[Ontology] Page List</title>
+        <title>RAMPVIS- List of Pages</title>
       </Helmet>
 
       <Box
@@ -175,8 +176,8 @@ const OntologyPageListTemplate: FC = () => {
                       <StorageIcon />
                     </Avatar>
                   }
-                  title={pageType}
-                  subheader=""
+                  title={_.startCase(visType)}
+                  subheader={`List of ${_.camelCase(pageType)} visualizations of type ${_.camelCase(visType)} `}
                 />
 
                 <CardContent sx={{ pt: "8px" }}>
