@@ -1,6 +1,6 @@
 class NewMatrix {
-    CHART_WIDTH = 500;
-    CHART_HEIGHT = 500;
+    CHART_WIDTH = document.getElementById('charts').offsetWidth;
+    CHART_HEIGHT = window.innerHeight - Common.MAIN_CONTENT_GAP;
 
     constructor(options) {
         const data = this.processData(options.data);
