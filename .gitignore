@@ -23,3 +23,36 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# tests and coverage
+*.pytest_cache
+.coverage
+
+# database & logs
+*.db
+*.log
+
+# venv
+env
+venv
+
+# other
+.DS_Store
+
+# sphinx docs 
+_build
+_static
+_templates
+
+# javascript
+package-lock.json
+.idea
+node_modules
+error.log
+
+.vscode
+._.DS_Store

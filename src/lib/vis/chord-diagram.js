@@ -19,8 +19,8 @@ import Common from "./common";
 import $ from 'jquery'; 
 
 export class ChordDiagram {
-    CHART_WIDTH = 800;
-    CHART_HEIGHT = 800;
+    CHART_WIDTH = document.getElementById('charts').offsetWidth;
+    CHART_HEIGHT = window.innerHeight - Common.MAIN_CONTENT_GAP;
     boards = Common.scotlandBoards;
     element = null;
     chartId = null;
