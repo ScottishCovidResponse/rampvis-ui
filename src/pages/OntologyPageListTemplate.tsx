@@ -1,4 +1,3 @@
-/* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
@@ -24,23 +23,21 @@ import {
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import StorageIcon from "@material-ui/icons/Storage";
-import axios from "axios";
-import useSettings from "../hooks/useSettings";
+import LinkIcon from '@material-ui/icons/Link';
 import { blue } from "@material-ui/core/colors";
 import moment from "moment";
+import axios from "axios";
+
+import useSettings from "../hooks/useSettings";
+import useQuery from "src/hooks/useQuery";
+import useMounted from "src/hooks/useMounted";
 
 const API_JS = process.env.REACT_APP_API_JS;
 
 // Table code start
 
 interface Column {
-  id:
-    | "id"
-    | "visFunction"
-    | "visDescription"
-    | "visType"
-    | "pageType"
-    | "date";
+  id: "id" | "visFunction" | "visDescription" | "visType" | "pageType" | "date";
   label: string;
   minWidth?: number;
   align?: "right";
@@ -52,14 +49,14 @@ const columns: Column[] = [
   { id: "visFunction", label: "VIS", minWidth: 100 },
   { id: "visDescription", label: "VIS (Description)", minWidth: 100 },
   { id: "visType", label: "VIS (Type)", minWidth: 100 },
-  { id: "pageType", label: "Type", minWidth: 100 },
+  { id: "pageType", label: "Page (Type)", minWidth: 100 },
   { id: "date", label: "Date", minWidth: 100 },
 
   //   label: "XX",
   //   minWidth: 170,
   //   align: "right",
   //   format: (value: number) => value.toLocaleString("en-US"),  // OR
-  //   format: (value: number) => value.toFixed(2), // OR   
+  //   format: (value: number) => value.toFixed(2), // OR
   //   format: (value: number) => value.toLocaleString("en-US"),
 ];
 
@@ -85,42 +82,53 @@ const useStyles = makeStyles({
 });
 
 const OntologyPageListTemplate: FC = () => {
-  const { pageType } = useParams(); 
-  const { visType } = useParams(); 
-  let apiUrl: URL = new URL(`${API_JS}/template/pages/`);
-  if (pageType) apiUrl.searchParams.append("pageType", pageType);
-  if (visType) apiUrl.searchParams.append("visType", visType);
-  console.log("apiUrl = ", apiUrl.href);
-  
+  // const mounted = useMounted();
   const { settings } = useSettings();
+
+  // Dynamic url path
+  const { pageType } = useParams();
+  const { visType } = useParams();
+  const apiUrl: URL = new URL(`${API_JS}/template/pages/${pageType}/${visType}/`);
+
+  // Query to use for pagination of tables
+  const query = useQuery();
+  // if (pageType) apiUrl.searchParams.append("page", query.get("page"));
+  // if (visType) apiUrl.searchParams.append("index", query.get("index"));
+
+  console.log("OntologyPageListTemplate: apiUrl = ", apiUrl.href);
+
   const [rows, setRows] = useState<any>([]);
 
-  const fetchMyAPI = useCallback(async () => {
-    const res = await axios.get(apiUrl.href);
+  const fetchOntoPages = useCallback(async () => {
+    try {
+      const res = await axios.get(apiUrl.href);
+      console.log('OntologyPageListTemplate: fetched data = ', res.data);
+      const pages = res.data.data.map((d) => {
+        const { id, date } = d;
+        return {
+          id,
+          visFunction: d?.vis?.function,
+          visType: d?.vis?.type,
+          visDescription: d?.vis?.description,
+          pageType: d?.pageType,
+          date: moment(date).format("DD-MM-YYYY"),
+        };
+      });
 
-    console.log(res.data);
-    const pages = res.data.data.map((d) => {
-      const { id, date } = d;
-      return {
-        id,
-        visFunction: d?.vis?.function,
-        visType: d?.vis?.type,
-        visDescription: d?.vis?.description,
-        pageType: d?.pageType,
-        date: moment(date).format("DD-MM-YYYY"),
-      };
-    });
-
-    console.log("rows = ", pages);
-    setRows(pages);
-  }, [pageType]);
-  // if bindingType changes, useEffect will run again
+      console.log("rows = ", pages);
+      setRows(pages);
+    } catch (err) {
+      // prettier-ignore
+      console.error(`OntologyPageListTemplate: Fetching API ${apiUrl}, error = ${err}`);
+    }
+  }, [pageType, visType]);
+  // if pageType, visType changes, useEffect will run again
   // if you want to run only once, just leave array empty []
 
   useEffect(() => {
     console.log("OntologyPageListTemplate: useEffect:");
-    fetchMyAPI();
-  }, [fetchMyAPI]);
+    fetchOntoPages();
+  }, [fetchOntoPages]);
 
   // Table code
 

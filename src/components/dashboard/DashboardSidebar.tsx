@@ -50,22 +50,22 @@ const sections = [
     items: [
       {
         title: 'Dashboards',
-        path: '/pages/release/dashboards',
+        path: '/pages/example/dashboard',
         icon: <DashboardIcon fontSize="small" />
       },
       {
         title: 'Plots',
-        path: '/pages/release/plots',
+        path: '/pages/example/plot',
         icon: <DonutSmallIcon fontSize="small" />
       },
       {
         title: 'Analytics',
-        path: '/pages/release/analytics',
+        path: '/pages/example/analytics',
         icon: <TimelineIcon fontSize="small" />
       },
       {
         title: 'Models',
-        path: '/pages/release/models',
+        path: '/pages/example/model',
         icon: <AssessmentIcon fontSize="small" />
       }
     ]
@@ -84,7 +84,7 @@ const sections = [
       },
       {
         title: 'N. ireland',
-        path: '/n.ireland',
+        path: '/northern-ireland',
         icon: <PlaceIcon fontSize="small" />
       },
       {
