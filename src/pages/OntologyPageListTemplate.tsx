@@ -29,7 +29,6 @@ import useSettings from "../hooks/useSettings";
 import { blue } from "@material-ui/core/colors";
 import moment from "moment";
 
-const API_PY = process.env.REACT_APP_API_PY;
 const API_JS = process.env.REACT_APP_API_JS;
 
 // Table code start
@@ -37,13 +36,11 @@ const API_JS = process.env.REACT_APP_API_JS;
 interface Column {
   id:
     | "id"
-    | "vis"
+    | "visFunction"
     | "visDescription"
     | "visType"
-    | "bindingType"
-    | "date"
-    | "size"
-    | "density";
+    | "pageType"
+    | "date";
   label: string;
   minWidth?: number;
   align?: "right";
@@ -52,10 +49,10 @@ interface Column {
 
 const columns: Column[] = [
   { id: "id", label: "Link", minWidth: 170 },
-  { id: "vis", label: "VIS", minWidth: 100 },
+  { id: "visFunction", label: "VIS", minWidth: 100 },
   { id: "visDescription", label: "VIS (Description)", minWidth: 100 },
   { id: "visType", label: "VIS (Type)", minWidth: 100 },
-  { id: "bindingType", label: "Type", minWidth: 100 },
+  { id: "pageType", label: "Type", minWidth: 100 },
   { id: "date", label: "Date", minWidth: 100 },
 
   //   label: "XX",
@@ -88,33 +85,35 @@ const useStyles = makeStyles({
 });
 
 const OntologyPageListTemplate: FC = () => {
-  const { bindingType } = useParams(); // example
-  console.log(bindingType);
-
+  const { pageType } = useParams(); 
+  const { visType } = useParams(); 
+  let apiUrl: URL = new URL(`${API_JS}/template/pages/`);
+  if (pageType) apiUrl.searchParams.append("pageType", pageType);
+  if (visType) apiUrl.searchParams.append("visType", visType);
+  console.log("apiUrl = ", apiUrl.href);
+  
   const { settings } = useSettings();
   const [rows, setRows] = useState<any>([]);
 
   const fetchMyAPI = useCallback(async () => {
-    const apiUrl = `${API_JS}/template/pages/?filterBindingType=${bindingType}`;
-    const res = await axios.get(apiUrl);
+    const res = await axios.get(apiUrl.href);
 
     console.log(res.data);
     const pages = res.data.data.map((d) => {
-      const { id, date, bindingExts } = d;
-
+      const { id, date } = d;
       return {
         id,
-        vis: d.bindingExts[0]?.vis?.function,
-        bindingType,
+        visFunction: d?.vis?.function,
+        visType: d?.vis?.type,
+        visDescription: d?.vis?.description,
+        pageType: d?.pageType,
         date: moment(date).format("DD-MM-YYYY"),
-        visDescription: d.bindingExts[0]?.vis?.description,
-        visType: d.bindingExts[0]?.vis?.type,
       };
     });
 
     console.log("rows = ", pages);
     setRows(pages);
-  }, [bindingType]);
+  }, [pageType]);
   // if bindingType changes, useEffect will run again
   // if you want to run only once, just leave array empty []
 
@@ -168,7 +167,7 @@ const OntologyPageListTemplate: FC = () => {
                       <StorageIcon />
                     </Avatar>
                   }
-                  title={bindingType}
+                  title={pageType}
                   subheader=""
                 />
 

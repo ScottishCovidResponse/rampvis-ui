@@ -44,7 +44,11 @@ const routes: PartialRouteObject[] = [
     element: <DashboardLayout />,
     children: [
       {
-        path: "/:bindingType",
+        path: "/:pageType",
+        element: <OntologyPageListTemplate />,
+      },
+      {
+        path: "/:pageType/:visType",
         element: <OntologyPageListTemplate />,
       }
     ],

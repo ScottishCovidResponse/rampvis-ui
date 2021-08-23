@@ -74,7 +74,7 @@ const OntologyPageTemplate: FC = () => {
     console.log("page data = ", page);
 
     const dataForVisFunction = await Promise.all(
-      page?.bindingExts[0]?.data?.map(async (d: any) => {
+      page?.data?.map(async (d: any) => {
         console.log(d.description, d.urlCode, d.endpoint);
         const endpoint = `${API[d.urlCode]}${d.endpoint}`;
         const values = (await axios.get(endpoint)).data;
@@ -83,14 +83,14 @@ const OntologyPageTemplate: FC = () => {
       })
     );
 
-    const links = page?.bindings[0]?.pageIds?.map((d: any) => {
+    const links = page?.pageIds?.map((d: any) => {
       console.log(d);
       return `page/${d}`;
     });
 
     console.log("dataForVisFunction = ", dataForVisFunction);
 
-    visFactory(page?.bindingExts[0]?.vis?.function, {
+    visFactory(page?.vis?.function, {
       chartElement: "charts", // ref.current,
       data: dataForVisFunction,
       links,

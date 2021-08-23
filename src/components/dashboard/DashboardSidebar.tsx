@@ -50,22 +50,22 @@ const sections = [
     items: [
       {
         title: 'Dashboards',
-        path: '/dashboards',
+        path: '/pages/release/dashboards',
         icon: <DashboardIcon fontSize="small" />
       },
       {
         title: 'Plots',
-        path: '/plots',
+        path: '/pages/release/plots',
         icon: <DonutSmallIcon fontSize="small" />
       },
       {
         title: 'Analytics',
-        path: '/analytics',
+        path: '/pages/release/analytics',
         icon: <TimelineIcon fontSize="small" />
       },
       {
         title: 'Models',
-        path: '/models',
+        path: '/pages/release/models',
         icon: <AssessmentIcon fontSize="small" />
       }
     ]
@@ -99,7 +99,7 @@ const sections = [
     items: [
       {
         title: 'Development',
-        path: '/pages/released',
+        path: '/pages/release',
         icon: <SettingsIcon fontSize="small" />,
         children: [
           {
