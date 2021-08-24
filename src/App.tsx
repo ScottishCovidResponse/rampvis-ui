@@ -29,7 +29,7 @@ const App: FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <RTL direction={settings.direction}>
+      <RTL direction={settings.direction as "ltr" | "rtl"}>
         <CssBaseline />
         <Toaster position="top-center" />
         {/* <SettingsDrawer /> */}

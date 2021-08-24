@@ -13,7 +13,7 @@ const AuthGuard: FC<AuthGuardProps> = (props) => {
   const { children } = props;
   const auth = useAuth();
   const location = useLocation();
-  const [requestedLocation, setRequestedLocation] = useState(null);
+  const [requestedLocation, setRequestedLocation] = useState<string>(null as any);
 
   if (!auth.isAuthenticated) {
     if (location.pathname !== requestedLocation) {
@@ -27,7 +27,7 @@ const AuthGuard: FC<AuthGuardProps> = (props) => {
   // means between the moment of request and the render we navigate to the initially
   // requested route.
   if (requestedLocation && location.pathname !== requestedLocation) {
-    setRequestedLocation(null);
+    setRequestedLocation(null as any);
     return <Navigate to={requestedLocation} />;
   }
 

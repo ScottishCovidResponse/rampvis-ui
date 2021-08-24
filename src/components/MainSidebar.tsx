@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import type { FC } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Box, Button, Chip, Drawer, Link } from '@material-ui/core';
+import { Box, Chip, Drawer } from '@material-ui/core';
 import type { Theme } from '@material-ui/core';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Logo from './Logo';
@@ -55,15 +55,6 @@ const MainSidebar: FC<MainSidebarProps> = (props) => {
             pt: 3
           }}
         >
-          <Link
-            color="textSecondary"
-            component={RouterLink}
-            to="/browse"
-            underline="none"
-            variant="body1"
-          >
-            Browse Components
-          </Link>
           <Chip
             color="primary"
             label="NEW"
@@ -75,26 +66,7 @@ const MainSidebar: FC<MainSidebarProps> = (props) => {
             }}
           />
         </Box>
-        <Link
-          color="textSecondary"
-          component={RouterLink}
-          to="/docs"
-          underline="none"
-          variant="body1"
-        >
-          Documentation XX
-        </Link>
-        <Button
-          color="primary"
-          component="a"
-          href="https://material-ui.com/store/items/devias-kit-pro"
-          size="small"
-          sx={{ mt: 4 }}
-          target="_blank"
-          variant="contained"
-        >
-          Get the kit XXX
-        </Button>
+       
       </Box>
     </Drawer>
   );
