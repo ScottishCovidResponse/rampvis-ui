@@ -148,12 +148,16 @@ def get_onto_page_by_id(id):
     return onto_page
 
 
-def timeseries_sim_search(query):
+def timeseries_sim_search(start_date,country,end_date,indicator,method,result_number):
     result = None
-    logger.debug(f"service:timeseries_sim_search: query = {query}")
-
+    logger.debug(f"service:timeseries_sim_search: query = {start_date}")
+    logger.debug(f"service:timeseries_sim_search: country = {country}")
+    logger.debug(f"service:timeseries_sim_search: end date = {end_date}")
+    logger.debug(f"service:timeseries_sim_search: indicator = {indicator}")
+    logger.debug(f"service:timeseries_sim_search: method = {method}")
+    logger.debug(f"service:timeseries_sim_search: result number = {result_number}")
     try:
-        response = requests.get(f"{API_PY}/timeseries-sim-search?q1={query}&q2=todo")
+        response = requests.get(f"{API_PY}/timeseries-sim-search?start_date={start_date}&country={country}&end_date={end_date}&indicator={indicator}&method={method}&result_number={result_number}&q2=todo")
         result = json.loads(response.content)
         logger.debug(f"service:timeseries_sim_search: result = {result}")
 
