@@ -181,15 +181,20 @@ def route_pages():
 
 @blueprint.route("/timeseries-sim-search", methods=["GET"])
 def route_timeseries_sim_search():
-    query = request.args.get("query")
-    logger.debug("route_timeseries_sim_search: query = ", query)
+    start_date = request.args.get("start_date")
+    country  = request.args.get("country")
+    end_date  =  request.args.get("end_date")
+    indicator  =  request.args.get("indicator")
+    method =  request.args.get("method")
+    result_number = request.args.get("result_number")
 
-    if query is None:
+    logger.debug("route_timeseries_sim_search: query = ", start_date)
+    if start_date is None:
         return render_template("timeseries-sim-search.html", data={})
     else:
-        result = service.timeseries_sim_search(query)
+        result = service.timeseries_sim_search(start_date,country,end_date,indicator,method,result_number)
         return render_template(
-            "timeseries-sim-search.html", data={"query": query, "result": result}
+            "timeseries-sim-search.html", data={"query": start_date, "result": result}
         )
 
 
