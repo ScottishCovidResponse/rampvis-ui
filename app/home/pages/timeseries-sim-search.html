@@ -3,46 +3,737 @@
 {% block title %} Search {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+
+{% block stylesheets %}
+<style>
+    path {
+        fill: none;
+        stroke-width: 5px;
+    }
+</style>
+
+
+
+
+<style>
+    .container {
+        display: grid;
+        grid-template-columns: 0.4fr 1.7fr;
+        grid-template-rows: 0.9fr 0.3fr;
+        gap: 0px 0px;
+        grid-template-areas:
+            "first_search containerd3"
+            "advanced_filters first_output";
+        padding: 4%:
+    }
+
+    .advanced_filters {
+        grid-area: advanced_filters;
+        padding: 4%;
+    }
+
+    .first_search {
+        grid-area: first_search;
+        padding: 4%;
+        border
+    }
+
+    .containerd3 {
+        grid-area: containerd3;
+        padding: 4%:
+    }
+
+    .first_output {
+        display: grid;
+        grid-template-columns: 1.5fr;
+        grid-template-rows: 1.7fr 0.3fr;
+        gap: 0px 0px;
+        grid-template-areas:
+            "first_output_list"
+            "second_run_button";
+        grid-area: first_output;
+        padding: 4%:
+    }
+
+    .first_output_list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+        gap: 0px 0px;
+        grid-template-areas:
+            "second_run_col1 second_run_col2";
+        grid-area: first_output_list;
+        padding: 4%:
+    }
+
+    .second_run_col1 {
+        grid-area: second_run_col1;
+        padding: 4%:
+    }
+
+    .second_run_col2 {
+        grid-area: second_run_col2;
+        padding: 4%:
+    }
+
+    .second_run_button {
+        grid-area: second_run_button;
+        padding: 4%:
+    }
+
+    #country_list {
+        overflow-y: auto;
+        position: relative;
+        max-height: 10em;
+        width: 100%;
+    }
+</style>
+
+{% endblock stylesheets %}
+
 
 {% block content %}
 
-  <div class="dashboard-container">
 
-    <form action="/timeseries-sim-search" method="GET" name="search">
-      <div class="input-group">
-        <input type="text" name="query" class="form-control" placeholder="Search..." size="100">
-        <button type="submit" class="btn btn-primary btn-round btn-just-icon">
-          <i class="material-icons">search</i>
-          <div class="ripple-container"></div>
-        </button>
-      </div>
-    </form>
+<div class="dashboard-container">
+
+
 
     <div class="card">
-      <div class="card-header card-header-icon card-header-primary">
-      </div>
 
-      <div class="card-body">
 
-      </div>
 
+        <div class="card-body">
+
+            <!-- Country filter popup -->
+            <div id="filter_modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h5>Continents</h5>
+                            <!-- Continent: Africa -->
+                            <div class="form-check form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" id="filter_continent_af"
+                                        value="africa">Africa
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+
+                            <!-- Continent: Asia -->
+                            <div class="form-check form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" id="filter_continent_as"
+                                        value="asia">Asia
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+
+                            <!-- Continent: Australia -->
+                            <div class="form-check form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" id="filter_continent_aus"
+                                        value="australia">Australia
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+
+                            <!-- Continent: Europe -->
+                            <div class="form-check form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" id="filter_continent_eu"
+                                        value="europe">Europe
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+
+                            <!-- Continent: North America -->
+                            <div class="form-check form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" id="filter_continent_na"
+                                        value="na">North America
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+
+                            <!-- Continent: South America -->
+                            <div class="form-check form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" id="filter_continent_sa"
+                                        value="sa">South America
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+
+                            <!-- Break -->
+                            <br /><br />
+
+                            <!-- Other filters-->
+
+                            <div class="form-group">
+                                <label for="first_period">Minimum population</label>
+                                <input type="number" class="form-control" id="filter_population" type="number"
+                                    placeholder="">
+                            </div>
+
+
+
+                            <div class="form-row">
+                                <div class="col">
+                                    <label for="first_datestart">Start Date</label>
+                                    <input type="date" class="form-control" id="first_datestart" placeholder="">
+                                </div>
+                                <div class="col">
+                                    <label for="first_dateend">End Date</label>
+                                    <input type="date" class="form-control" id="first_dateend" placeholder="">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Apply</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Second run output popup -->
+            <div id="output_modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Time Series Comparison</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body"></div>
+                        <table>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full content container -->
+        <div class="container">
+            <!-- Sidebar for First Run search -->
+            <div class="first_search">
+                <form action="/timeseries-sim-search" method="GET" name="search">
+                    <div class="form-group">
+                        <label for="first_country">Target country</label>
+                        <input type="text" name="country" class="form-control" id="first_country" placeholder=""
+                            aria-describedby="first_country_help">
+                        <small id="first_country_help" class="form-text text-muted">Type or select from list</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="first_datelast">Start date</label>
+                        <input type="date" name = "start_date" class="form-control" id="first_datelast" placeholder="">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="first_period">End date</label>
+                        <input type="date" name ="end_date" class="form-control" id="first_period" placeholder="">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="first_indicator">Covid indicator</label>
+                        <select class="form-control" name = "indicator" data-style="btn btn-link" id="first_indicator">
+                            <option>Cases</option>
+                            <option>Deaths</option>
+                            <option>ICU Patients</option>
+                            <option>Tests</option>
+                            <option>Positivity Rate</option>
+                            <option>Vaccinated</option>
+                            <option>Fully vaccinated</option>
+                            <option>Reproduction Rate</option>
+                            <option>Stringency Index</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="first_similarity">Similarity measure</label>
+                        <select class="form-control" name ="method" data-style="btn btn-link" id="first_similarity">
+                            <option>Euclidean Distance</option>
+                            <option>Manhattan Distance</option>
+                            <option>Chebyshev Distance</option>
+                            <option>Cosine Similarity</option>
+                            <option>Pearson Correlation</option>
+                            <option>Dynamic Time Warping</option>
+                            <option>Longest Common Subsequence</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="first_n">Number of countries</label>
+                        <input type="number" name = "result_number" class="form-control" id="first_n" placeholder=""
+                            aria-describedby="first_n_help">
+                        <small id="first_n_help" class="form-text text-muted">Maximum 10</small>
+                    </div>
+
+
+
+
+
+
+
+                    <button type="submit" class="btn btn-primary btn-round btn-just-icon">
+                        <i class="material-icons">search</i>
+                        <div class="ripple-container"></div>
+                    </button>
+                </form>
+
+
+
+
+
+
+
+
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#filter_modal">Advanced
+                    Filters</button>
+            </div>
+
+            <div class="containerd3">
+                <div id="containerd3plot" class="svg-container"> </div>
+            </div>
+
+            <!-- Main content pain, showing First Run output -->
+            <div class="first_output">
+                <div class="second_run_button">
+                    <p>Select countries and indicators for further comparison.</p>
+                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                        data-target="#output_modal">Run</button>
+                </div>
+
+
+                <div class="first_output_list">
+
+
+
+                    <div class="second_run_col1">
+                        <h3>Countries</h3>
+                        <div class="form-check form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id="second_country1"
+                                    value="country1">Country 1
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id="second_country2"
+                                    value="country2">Country 2
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id="second_country3"
+                                    value="country3">Country 3
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id="second_country4"
+                                    value="country4">Country 4
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id="second_country5"
+                                    value="country5">Country 5
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id="second_country6"
+                                    value="country6">Country 6
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id="second_country7"
+                                    value="country7">Country 7
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id="second_country8"
+                                    value="country8">Country 8
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id="second_country9"
+                                    value="country9">Country 9
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id="second_country10"
+                                    value="country10">Country 10
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id="second_country11"
+                                    value="country11">Country 11
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id="second_country12"
+                                    value="country12">Country 12
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+
+                    <div class="second_run_col2">
+                        <h3>Covid Indicators</h3>
+                        <div class="form-check form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id="second_indicator1"
+                                    value="indicator1">Cases
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id="second_indicator2"
+                                    value="indicator2">Deaths
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id="second_indicator3"
+                                    value="indicator3">ICU Patients
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id="second_indicator4"
+                                    value="indicator4">Tests
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id="second_indicator5"
+                                    value="indicator5">Positivity Rate
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id="second_indicator6"
+                                    value="indicator6">Vaccinated
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id="second_indicator7"
+                                    value="indicator7">Fully Vaccinated
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id="second_indicator8"
+                                    value="indicator8">Reproduction Rate
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id="second_indicator9"
+                                    value="indicator9">Stringency Index
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="advanced_filters">
+                <form>
+                    <h5>Smart Country Picker</h5>
+
+                    <select id="country_list" size="8">
+                        <option>Country</option>
+                        <option>Country</option>
+                        <option>Country</option>
+                        <option>Country</option>
+                        <option>Country</option>
+                        <option>Country</option>
+                        <option>Country</option>
+                        <option>Country</option>
+                        <option>Country</option>
+                        <option>Country</option>
+                        <option>Country</option>
+                        <option>Country</option>
+                        <option>Country</option>
+                        <option>Country</option>
+                        <option>Country</option>
+                        <option>Country</option>
+                        <option>Country</option>
+                        <option>Country</option>
+                        <option>Country</option>
+                    </select>
+
+
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
 
 
 
-{% endblock content %}
 
-<!-- Specific Page JS goes HERE  -->
-{% block javascripts %}
+    {% endblock content %}
 
-  <script>
-      $(document).ready(function () {
-          let data = {{ data | safe }};
-          console.log('timeseries_sim_search.html: data = ', data);
-      });
+    <!-- Specific Page JS goes HERE  -->
+    {% block javascripts %}
 
-  </script>
+    <script>
 
-{% endblock javascripts %}
+        // svg definition for the line graph 
+
+        const width = 960;
+        const height = 500;
+        const margin = 5;
+        const padding = 5;
+        const adj = 30;
+        const svg = d3.select("div#containerd3plot").append("svg")
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "-"
+                + adj + " -"
+                + adj + " "
+                + (width + adj * 3) + " "
+                + (height + adj * 3))
+            .style("padding", padding)
+            .style("margin", margin)
+            .classed("svg-content", true);
+
+
+
+
+
+        $(document).ready(function () {
+            // get data
+            let data = {{ data | safe
+        }};
+
+        console.log(data['result'])
+
+           
+        // data transformation for multi-line graph 
+        res = data['result']
+        res[0].date = "2020-09-10"  // there was an outlier in Phong's data stream
+        test = new Array()
+        valueArray = new Array()
+        slices = new Array()
+        const parseTime = d3.timeParse("%Y-%m-%d")
+
+
+        for (let i = 1; i < Object.keys(res[0]).length; i++) {
+            for (let j = 0; j < res.length; j++) {
+                valueArray.push({
+                    date: parseTime(res[j]['date']),
+                    measurement: res[j][Object.keys(res[j])[i]]
+                })
+            }
+            slices.push({
+                "id": Object.keys(res[0])[i],
+                "values": valueArray
+            }
+            )
+            valueArray = []
+        }
+        dates = new Array()
+
+
+        for (let j = 0; j < res.length; j++) {
+            dates.push(slices[0]['values'][j].date)
+        }
+
+        console.log(slices)
+
+        const xScale = d3.scaleTime().range([0, width]);
+        const yScale = d3.scaleLinear().rangeRound([height, 0]);
+        xScale.domain(d3.extent(dates));
+        yScale.domain([(0), d3.max(slices, function (c) {
+            return d3.max(c.values, function (d) {
+                return d.measurement + 4;
+            });
+        })
+        ]);
+
+        const yaxis = d3.axisLeft().scale(yScale);
+        const xaxis = d3.axisBottom().scale(xScale);
+
+        svg.append("g")
+            .attr("class", "axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xaxis);
+
+        svg.append("g")
+            .attr("class", "axis")
+            .call(yaxis);
+
+
+
+        const line = d3.line()
+            .x(function (d) { return xScale(d.date); })
+            .y(function (d) { return yScale(d.measurement); });
+
+        const color = d3.scaleOrdinal(d3.schemeCategory10);
+
+        colormapex = new Array()
+        for (let j = 0; j < slices.length; j++) {
+            colormapex.push(color(slices[j].id))
+
+        }
+
+        const lines = svg.selectAll("lines")
+            .data(slices)
+            .enter()
+            .append("g")
+            .attr("stroke", function (d, i) { return colormapex[i]; });
+
+
+
+
+        lines.append("path")
+            .attr("d", function (d) { return line(d.values); })
+            .attr("stroke", function (d, i) { return colormapex[i]; });
+          
+          
+          
+         
+         
+        }
+      )
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+
+
+
+
+    {% endblock javascripts %}
