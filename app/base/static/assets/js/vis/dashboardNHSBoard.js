@@ -22,16 +22,16 @@ class HealthBoardOverview {
                 .attr('class', 'vis-example-container')
 
         // Notes: please use these
-        console.log('HEALTH_BOARD_TESTS', Data.from(options.data, Data.Fields.HEALTH_BOARD_TESTS));
-        console.log('HEALTH_BOARD_TESTS_NORMALIZED', Data.from(options.data, Data.Fields.HEALTH_BOARD_TESTS_NORMALIZED));
-        console.log('HEALTH_BOARD_HOSPITAL', Data.from(options.data, Data.Fields.HEALTH_BOARD_HOSPITAL));
-        console.log('HEALTH_BOARD_HOSPITAL_NORMALIZED', Data.from(options.data, Data.Fields.HEALTH_BOARD_HOSPITAL_NORMALIZED));
-        console.log('HEALTH_BOARD_ICU', Data.from(options.data, Data.Fields.HEALTH_BOARD_ICU));
-        console.log('HEALTH_BOARD_ICU_NORMALIZED', Data.from(options.data, Data.Fields.HEALTH_BOARD_ICU_NORMALIZED));
-        console.log('HEALTH_BOARD_COVID_DEATHS', Data.from(options.data, Data.Fields.HEALTH_BOARD_COVID_DEATHS));
-        console.log('HEALTH_BOARD_COVID_DEATHS_NORMALIZED', Data.from(options.data, Data.Fields.HEALTH_BOARD_COVID_DEATHS_NORMALIZED));
-        console.log('HEALTH_BOARD_ALL_DEATHS', Data.from(options.data, Data.Fields.HEALTH_BOARD_ALL_DEATHS));
-        console.log('HEALTH_BOARD_ALL_DEATHS_NORMALIZED', Data.from(options.data, Data.Fields.HEALTH_BOARD_ALL_DEATHS_NORMALIZED));
+        // console.log('HEALTH_BOARD_TESTS', Data.from(options.data, Data.Fields.HEALTH_BOARD_TESTS));
+        // console.log('HEALTH_BOARD_TESTS_NORMALIZED', Data.from(options.data, Data.Fields.HEALTH_BOARD_TESTS_NORMALIZED));
+        // console.log('HEALTH_BOARD_HOSPITAL', Data.from(options.data, Data.Fields.HEALTH_BOARD_HOSPITAL));
+        // console.log('HEALTH_BOARD_HOSPITAL_NORMALIZED', Data.from(options.data, Data.Fields.HEALTH_BOARD_HOSPITAL_NORMALIZED));
+        // console.log('HEALTH_BOARD_ICU', Data.from(options.data, Data.Fields.HEALTH_BOARD_ICU));
+        // console.log('HEALTH_BOARD_ICU_NORMALIZED', Data.from(options.data, Data.Fields.HEALTH_BOARD_ICU_NORMALIZED));
+        // console.log('HEALTH_BOARD_COVID_DEATHS', Data.from(options.data, Data.Fields.HEALTH_BOARD_COVID_DEATHS));
+        // console.log('HEALTH_BOARD_COVID_DEATHS_NORMALIZED', Data.from(options.data, Data.Fields.HEALTH_BOARD_COVID_DEATHS_NORMALIZED));
+        // console.log('HEALTH_BOARD_ALL_DEATHS', Data.from(options.data, Data.Fields.HEALTH_BOARD_ALL_DEATHS));
+        // console.log('HEALTH_BOARD_ALL_DEATHS_NORMALIZED', Data.from(options.data, Data.Fields.HEALTH_BOARD_ALL_DEATHS_NORMALIZED));
         console.log('HEALTH_BOARD_VACCINE_SEX_AGEGROUP', Data.from(options.data, Data.Fields.HEALTH_BOARD_VACCINE_SEX_AGEGROUP));
                 
         ///  NEW CODE ///
@@ -40,70 +40,90 @@ class HealthBoardOverview {
         var data = options.data;
 
         var config = {  
-            layout: [['testing', 'vaccination'], ['deaths','hospital']],
+            layout: [
+                [
+                    'testing', 
+                    'vaccination'
+                ], 
+                [
+                    'deaths',
+                    'hospital'
+                ],
+                'vaccination-agegroups'
+            ],
             groups: [
                 {
-                    name: 'hospital',
+                    id: 'hospital',
                     title: 'Covid19 in Hospital',
                     layout: ['icu', 'hospital2', 'hospital-normalized']
                 }, 
                 {
-                    name: 'testing',
+                    id: 'testing',
                     title: 'Testing',
                     layout: ['dailyTests']
                 }, 
                 {
-                    name: 'deaths',
+                    id: 'deaths',
                     title: 'Deaths',
                     layout: [['deaths-weekly', 'deaths-all']]
                 },
                 {
-                    name: 'vaccination',
-                    title: 'Vaccination',
-                    layout: [['vaccination-total-1st', 'vaccination-total-2nd']]
+                    id: 'vaccination',
+                    title: 'Vaccinations Total',
+                    layout: [
+                        [
+                            'vaccination-total-1st', 
+                            'vaccination-agegroups-dose1',
+                        ],[ 
+                            'vaccination-total-2nd',
+                            'vaccination-agegroups-dose2'
+                        ]
+                    ]
+                },
+                {
                 }
             ], 
-            panels:[
+            widgets: [
                 {
-                    name: 'icu', 
+                    id: 'icu', 
                     title: 'In ICU',
                     dataField: nhsBoardField,
                     color: d3.rgb(COLOR_HOSPITAL).brighter(1),
                     data: Data.from(options.data, Data.Fields.HEALTH_BOARD_ICU),
-                    type: 'stats',
+                    visualization: 'linechart',
                     mode: dashboard.MODE_CURRENT,
-                    detail: 'compact',
+                    detail: 'medium',
                     normalized: true
                 },{
-                    name: 'hospital2',
+                    id: 'hospital2',
                     title: "In Hospital",
                     dataField: nhsBoardField,
                     color: d3.rgb(COLOR_HOSPITAL).brighter(2),
                     data: Data.from(options.data, Data.Fields.HEALTH_BOARD_HOSPITAL),
-                    type: 'stats',
-                    detail: 'compact',
+                    visualization: 'linechart',
+                    detail: 'medium',
                     mode: dashboard.MODE_CURRENT
                 }, {
-                    name: 'hospital-normalized',
+                    id: 'hospital-normalized',
                     title: "In Hospital, Normalized",
                     dataField: nhsBoardField,
                     color: d3.rgb(COLOR_HOSPITAL).brighter(2.5),
-                    type: 'stats',
-                    detail: 'compact',
+                    visualization: 'linechart',
+                    detail: 'medium',
                     data: Data.from(options.data, Data.Fields.HEALTH_BOARD_HOSPITAL_NORMALIZED),
                     mode: dashboard.MODE_CURRENT
                 },{
-                    name: 'dailyTests',
+                    id: 'dailyTests',
                     title: "Daily Tests",
-                    type: 'stats',
+                    visualization: 'linechart',
                     dataField: nhsBoardField,
                     color: COLOR_TESTS,
                     data: Data.from(options.data, Data.Fields.HEALTH_BOARD_TESTS),
                     mode: dashboard.MODE_DAILY
                 },{
-                    name: 'deaths-weekly', 
+                    id: 'deaths-weekly', 
                     title: "Covid19 related deaths (weekly)",
-                    type: 'stats',
+                    visualization: 'linechart',
                     dataField: nhsBoardField,
                     color: COLOR_DEATHS,
                     data: Data.from(options.data, Data.Fields.HEALTH_BOARD_COVID_DEATHS),
@@ -112,10 +132,10 @@ class HealthBoardOverview {
                         'index.length > 4'
                     ]
                 },{
-                    name: 'deaths-all', 
+                    id: 'deaths-all', 
                     title: "All Deaths (weekly)",
                     dataField: nhsBoardField,
-                    type: 'stats',
+                    visualization: 'linechart',
                     color: d3.rgb(COLOR_DEATHS).darker(.5),
                     data: Data.from(options.data, Data.Fields.HEALTH_BOARD_ALL_DEATHS),
                     mode: dashboard.MODE_WEEKLY,
@@ -124,32 +144,64 @@ class HealthBoardOverview {
                     ]
                 },
                 {
-                    name: 'vaccination-total-1st', 
-                    title: 'Vaccination over 18 years (1st Dose)',
+                    id: 'vaccination-total-1st', 
+                    title: 'Total Vaccination Dose 1',
                     dataField: 'CumulativePercentCoverage',
-                    type: 'stats',
+                    visualization: 'linechart',
                     color: COLOR_VACCINATON,
                     data: Data.from(options.data, Data.Fields.HEALTH_BOARD_VACCINE_SEX_AGEGROUP),
                     mode: dashboard.MODE_PERCENT, 
+                    detail: 'low',
                     conditions:[
                         'Sex == "Total"',
                         'Dose == "Dose 1"',
                         'AgeGroup == "18 years and over"'
                     ]
                 },{
-                    name: 'vaccination-total-2nd', 
-                    title: 'Vaccination over 18 years (2nd Dose)',
+                    id: 'vaccination-total-2nd', 
+                    title: 'Total Vaccination Dose 2',
                     dataField: 'CumulativePercentCoverage',
-                    type: 'stats',
+                    visualization: 'linechart',
                     color: d3.color(COLOR_VACCINATON).darker(.5),
                     data: Data.from(options.data, Data.Fields.HEALTH_BOARD_VACCINE_SEX_AGEGROUP),
                     mode: dashboard.MODE_PERCENT, 
+                    detail: 'low',
                     conditions:[
                         'Sex == "Total"',
                         'Dose == "Dose 2"',
                         'AgeGroup == "18 years and over"'
                     ] 
-                },
+                },{
+                    id: 'vaccination-agegroups-dose1',
+                    title: 'Dose 1', 
+                    dataField: 'CumulativePercentCoverage',
+                    visualization: 'barchart',
+                    color: COLOR_VACCINATON,
+                    data: Data.from(options.data, Data.Fields.HEALTH_BOARD_VACCINE_SEX_AGEGROUP),
+                    mode: dashboard.MODE_PERCENT,
+                    detail: 'medium',
+                    bars: 'AgeGroup', 
+                    conditions:[
+                        'Sex == "Total"',
+                        'Dose == "Dose 1"',
+                        'AgeGroup.indexOf("and over") < 0'
+                    ]
+                },{
+                    id: 'vaccination-agegroups-dose2',
+                    title: 'Dose 2', 
+                    dataField: 'CumulativePercentCoverage',
+                    visualization: 'barchart',
+                    color: COLOR_VACCINATON,
+                    data: Data.from(options.data, Data.Fields.HEALTH_BOARD_VACCINE_SEX_AGEGROUP),
+                    mode: dashboard.MODE_PERCENT,
+                    detail: 'medium',
+                    bars: 'AgeGroup', 
+                    conditions:[
+                        'Sex == "Total"',
+                        'Dose == "Dose 2"',
+                        'AgeGroup.indexOf("and over") < 0'
+                    ]
+                }
             ]
         }
 

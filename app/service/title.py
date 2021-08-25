@@ -7,14 +7,15 @@ COUNCILS = SCOTLAND_COUNCILS + ENGLAND_COUNCILS
 REGIONS = ['ayrshire_and_arran', 'borders', 'dumfries_and_galloway', 'fife', 'forth_valley', 'grampian', 'greater_glasgow_and_clyde', 'highland', 'lanarkshire', 'lothian', 'orkney', 'shetland', 'tayside', 'western_isles']
 COUNTRIES = ['england', 'scotland', 'wales']
 LOCATIONS = COUNCILS + REGIONS + COUNTRIES
-TOPICS = ['vaccination', 'all_deaths', 'covid_deaths', 'tests_carried_out', 'people_tested', 'hospital_confirmed', 'icu_confirmed', 'tests_reported', 'new_cases', 'hospital_admission']
-TIMES = ['daily', 'weekly', 'model']
-GROUPS = ['place_of_death', 'all_sexes_agegroups', 'all_boards', 'all_local_authorities', 'age_group']
+TOPICS = ['vaccination', 'all_deaths', 'covid_deaths', 'tests_carried_out', 'people_tested', 'hospital_confirmed', 'icu_confirmed', 'tests_reported', 'new_cases', 'hospital_admission', 'cumulative_cases', 'case_trends']
+TIMES = ['daily', 'weekly', 'model', 'correlation']
+GROUPS = ['place_of_death', 'all_sexes_agegroups', 'all_boards', 'all_local_authorities', 'age_group', 'location_type']
 TYPES = ['cumulative']
 MODELS = ['eera']
 
 with open(os.path.join(os.path.dirname(__file__), 'name_mapping.json')) as f:
     NAME_MAPPING = json.load(f)
+
 
 def find_keyword(keywords, check_list):
     "Return the keyword in the check list."
@@ -23,16 +24,23 @@ def find_keyword(keywords, check_list):
             return c
     return None
 
+def up_level(loc):
+    if loc in SCOTLAND_COUNCILS: return 'scotland'
+    if loc in ENGLAND_COUNCILS: return 'england'
+    if loc in REGIONS: return 'scotland'
+    return ''
+
 def max_loc(locs):
+    locs = list(set(locs))
     for loc in locs:
         if loc in COUNTRIES:
-            return loc
+            return loc if len(locs) == 1 else 'Global'
     for loc in locs:
         if loc in REGIONS:
-            return loc
+            return loc if len(locs) == 1 else up_level(loc)
     for loc in locs:
         if loc in COUNCILS:
-            return loc
+            return loc if len(locs) == 1 else up_level(loc)
     return None
 
 def same_keyword(keywords):
@@ -50,7 +58,7 @@ def generate_title(keywords_list):
             
         time = find_keyword(keywords, TIMES)
         if time is None:
-            raise Exception(keywords, 'should have daily, weekly or model')
+            raise Exception(keywords, 'should have daily, weekly, model, correlation')
         times.append(time)
             
         topic = find_keyword(keywords, TOPICS)
@@ -75,19 +83,26 @@ def generate_title(keywords_list):
     return comnbine_to_title(max_loc(locs), same_keyword(times), same_keyword(topics), same_keyword(groups), same_keyword(types), same_keyword(models))
     
 def comnbine_to_title(loc, time, topic, group, type, model):
+    # print(loc, time, topic, group, type, model)
     if topic is None:
-        return NAME_MAPPING[loc]
+        return get_name_mapping(loc)
     result = ''
     if model is None:
         if time is None:
-            result = f'{NAME_MAPPING[loc]} - {NAME_MAPPING[topic]}'
+            result = f'{get_name_mapping(loc)} - {get_name_mapping(topic)}'
         if loc and time and topic:
-            result = f'{NAME_MAPPING[loc]} - {NAME_MAPPING[time]} {NAME_MAPPING[topic]}'
+            result = f'{get_name_mapping(loc)} - {get_name_mapping(time)} {get_name_mapping(topic)}'
     else:
-        result = f'{NAME_MAPPING[loc]} - {NAME_MAPPING[time]} {NAME_MAPPING[model]} {NAME_MAPPING[topic]}'
+        result = f'{get_name_mapping(loc)} - {get_name_mapping(time)} {get_name_mapping(model)} {get_name_mapping(topic)}'
 
     if group is not None:
-        result += ' by ' + NAME_MAPPING[group]
+        result += ' by ' + get_name_mapping(group)
     if type is not None:
         result += ' (cumulative)'
+    print(result)
     return result
+
+def get_name_mapping(key):
+    if key in NAME_MAPPING:
+        return NAME_MAPPING[key]
+    return key.replace('_', ' ')

@@ -1,12 +1,12 @@
 .vis-example-container {
     background-color: white;
-    padding: 20px;
+    padding: 5px;
 }
 
 
 div#main{ 
     font-family:"Poppins";
-    margin:20px;
+    /* margin:20px; */
     width: 1060px;
 }
 
@@ -24,9 +24,9 @@ table.dashboardLayout td{
 }
 
 table.dashboardLayout svg{
-    margin-right: 30px;
-    margin-bottom: 30px;
-
+    margin-right: 20px;
+    margin-bottom: 20px;
+    
 }
 
 .separator{
@@ -40,7 +40,7 @@ table.dashboardLayout svg{
 h3.dashboard{
     font-weight: bold;
     line-height: 100%;
-    background-color: #f3f3f3;
+    background-color: #f3f3f3;/*#e8f082;  #f3f3f3  */
     padding: 4px;
     margin-left: -4px;
     border-radius: 3px;

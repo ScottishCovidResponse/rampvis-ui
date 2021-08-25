@@ -21,9 +21,13 @@ dashboard.MODE_CUMULATIVE = 2
 dashboard.MODE_WEEKLY = 3
 dashboard.MODE_PERCENT = 4
 
-dashboard.DETAIL_DETAILED = 'detailed';
-dashboard.DETAIL_NARROW = 'narrow';
-dashboard.DETAIL_COMPACT = 'compact';
+dashboard.DETAIL_HIGH = 'high';
+dashboard.DETAIL_NARROW = 'low';
+dashboard.DETAIL_COMPACT = 'medium';
+
+dashboard.VIS_LINECHART = 'linechart';
+dashboard.VIS_CARTOGRAM = 'cartogram';
+dashboard.VIS_BARCHART = 'barchart';
 
 var LINE_1 = 10;
 var LINE_2 = 30;
@@ -95,14 +99,14 @@ var createLayoutTable = function(parentElement, layout, config, func)
     }
 }
 
-var addGroup = function(parentHTMLElementId, name, config){
+var addGroup = function(parentHTMLElementId, id, config){
 
-    // console.log('\tAttach Group', name, '--> ', parentHTMLElementId)
+    // console.log('\tAttach Group', id, '--> ', parentHTMLElementId)
     var group = config.groups.filter(function (el) {
-        return el.name == name
+        return el.id == id
     })[0];
 
-    var divId = 'div_'+ group.name;
+    var divId = 'div_'+ group.id;
     var div = d3.select('#' + parentHTMLElementId)
         .append('div')
         .attr('id', divId)
@@ -114,10 +118,10 @@ var addGroup = function(parentHTMLElementId, name, config){
         .text(group.title)
 
     var layout = group.layout;
-    createLayoutTable(div, layout, config, createPanel)
+    createLayoutTable(div, layout, config, createWidget)
     // for(var col = 0 ; col < layout.length ; col++)
     // {
-    //     if( typeof(layout[col]) == "string")
+    //     if( visualizationof(layout[col]) == "string")
     //     {
     //         createPanel(divId, layout[col], config)  
     //     }
@@ -141,28 +145,28 @@ var addGroup = function(parentHTMLElementId, name, config){
     // }
 }
 
-var createPanel = function(parentHtmlElementId, name, config){
+var createWidget = function(parentHtmlElementId, id, config){
     
-    // console.log('\t\tAttach Panel: ', name, '-->', parentHtmlElementId)
+    // console.log('\t\tAttach Panel: ', id, '-->', parentHtmlElementId)
     // get latest date: 
 
-    var panels = config.panels.filter(function (el) {
-        return el.name == name 
+    var widgets = config.widgets.filter(function (el) {
+        return el.id == id 
     });
 
-    if (panels.length == 0){
-        console.log('NO PANEL FOUND WITH NAME:', name)
+    if (widgets.length == 0){
+        console.log('NO WIDGET FOUND WITH id:', id)
         return;
     }
-    var panel = panels[0];
-    var data = panel.data;
+    var widget = widgets[0];
+    var data = widget.data;
     
     // check for conditions on data
-    if(panel.conditions && panel.conditions.length > 0)
+    if(widget.conditions && widget.conditions.length > 0)
     {
-        for(var i in panel.conditions)
+        for(var i in widget.conditions)
         {
-            data = executeCondition(data, panel.conditions[i]);
+            data = executeCondition(data, widget.conditions[i]);
         }
     }
 
@@ -172,50 +176,69 @@ var createPanel = function(parentHtmlElementId, name, config){
         return;        
     }
 
-    var title = panel.title;
+    var title = widget.title;
     if(data[data.length-1].index)
     {
         var lastDate;
         lastDate = moment(data[data.length-1].index, ['YYYYMMDD', 'YYYY-MM-DD'])
     }
 
-    var normalized = false || (panel && panel.normalized);
-    if(panel.type == 'cartogram')
+    var normalized = false || (widget && widget.normalized);
+    if(widget.visualization == dashboard.VIS_CARTOGRAM)
     {
         dashboard.visulizeScotlandNHSBoardCartogram(
             parentHtmlElementId,
             title, 
-            panel.color, 
+            widget.color, 
             data,
-            panel.normalized ? panel.normalized : false, 
-            panel.unit, 
-            panel.detail, 
+            widget.normalized ? widget.normalized : false, 
+            widget.unit, 
+            widget.detail, 
             lastDate
         )
     }
-    else if(panel.type == 'stats')
+    else if(widget.visualization == dashboard.VIS_LINECHART)
     {
-        dashboard.visualizeStats(
+        dashboard.visualizeLinechart(
                 parentHtmlElementId,
                 title,
-                panel.dataField,
-                panel.color,
+                widget.dataField,
+                widget.color,
                 data,
-                panel.mode,
+                widget.mode,
                 normalized, 
-                panel.link ? panel.link : null,
-                panel.unit,
-                panel.detail, 
+                widget.link ? widget.link : null,
+                widget.unit,
+                widget.detail, 
                 lastDate
                 );    
     }
+    else if(widget.visualization == dashboard.VIS_BARCHART)
+    {
+        dashboard.visualizeBarChart(
+            parentHtmlElementId,
+            title,
+            widget.dataField,
+            widget.color,
+            data,
+            widget.mode,
+            normalized, 
+            widget.link ? widget.link : null,
+            widget.unit,
+            widget.detail, 
+            lastDate, 
+            widget.bars
+        )
+    }else{
+        console.error('Chart type "'+ widget.visualization + '" not defined. Please check https://github.com/rampvis/rampvis.github.io/wiki/widgets.')
+    }
+
 }
 
 var executeCondition = function(data, c)
 {
     c = 'd.' + c;
     var size = data.length
-    // console.log('condition:', c)
     return data.filter(function(d)
     {
         return eval(c);
@@ -229,21 +252,28 @@ var canonizeNames = function(s){
         .replaceAll(']', '-')
 }
 
-////////////////////////////////////////////////////////////////////////
-// visualizes a dataset for a dashboard with number, trend, and chart
-////////////////////////////////////////////////////////////////////////
-dashboard.visualizeStats = function (id, title, field, color, dataStream, mode, normalized, link, unit, detail, lastDate) {
+
+
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+/// TYPE STATS 
+/////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+
+dashboard.visualizeLinechart = function (id, title, field, color, dataStream, mode, normalized, link, unit, detail, lastDate) {
     
     // console.log('\t\t\tVisualizeDataStream', title, '-->', id)
     if(!detail)
-        detail = dashboard.DETAIL_DETAILED;
+        detail = dashboard.DETAIL_HIGH;
 
     var svg = d3.select('#' + id)
         .append("svg")
     
 
     setVisTitle(svg, title, link, detail, lastDate)
-    if(detail == dashboard.DETAIL_DETAILED)
+    if(detail == dashboard.DETAIL_HIGH)
     {
         svg.attr("width", 400)
             .attr("height", 110)
@@ -272,13 +302,6 @@ dashboard.visualizeStats = function (id, title, field, color, dataStream, mode, 
         visualizeMiniChart(svg, dataStream, 0, baseline_title + 55, 18, w, field, color, mode, true);   
     }
 }
-
-
-
-
-
-
-
 
 
 
@@ -647,6 +670,21 @@ var setVisLabelRow2 = function (g, text, x, y) {
 }
 
 
+
+
+
+
+
+
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+/// TYPE CARTOGRAM 
+/////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+
+
 dashboard.visulizeScotlandNHSBoardCartogram = function (id, title, color, data, normalized, detail, lastDate) 
 {
     // data comes in JSON
@@ -763,3 +801,83 @@ dashboard.visulizeScotlandNHSBoardCartogram = function (id, title, color, data, 
         .attr('class', 'cartogramLabel-nonextremes')
 
 }
+
+
+
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+//  TYPE GROUPS
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+dashboard.visualizeBarChart = function (id, title, dataField, color, dataStream, mode, normalized, link, unit, detail, lastDate, barField){
+
+    var svg = d3.select('#' + id)
+        .append("svg")
+        .attr('height', 40)
+        .style('margin-bottom', 0)
+    
+    setVisTitle(svg, title, link, detail, lastDate)
+
+    // display only last data
+    lastDate = dataStream[dataStream.length-1].index;
+    dataStream = dataStream.filter(e=>{
+        return e.index == lastDate;
+    })
+
+    if(!detail)
+        detail = dashboard.DETAIL_HIGH;
+
+
+    // dashboard.DETAILED
+    let width = 150
+    let barWidth = 20;
+    if(detail == dashboard.DETAIL_NARROW)
+    {
+        width = 70
+        barWidth = 10
+    }else 
+    if(detail == dashboard.DETAIL_COMPACT)
+    {
+        width = 100
+        barWidth = 15
+    } 
+    svg.attr('width', width)
+    console.log('data', dataStream)
+    var vegaBarchart = {
+        $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+        data: {
+            values: dataStream,
+        },
+        width: width, 
+        height: {step: barWidth},
+        mark: "bar",
+        encoding: {
+            y: {
+                field: barField,
+                type: "nominal",
+                title: ''
+            },
+            x: {
+                field: dataField, 
+                type: 'quantitative',
+                title: ''
+            },
+            "color": {"value": color}
+        }
+    }
+    var random = Math.floor(Math.random() * 1000);
+    d3.select('#' + id)
+        .append("div")
+        .attr('id', 'vegadiv-'+id+random)
+
+    vegaEmbed('#vegadiv-'+id+random, vegaBarchart, {"actions": false});
+
+
+
+}
+
+    
+
+

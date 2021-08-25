@@ -1,27 +1,28 @@
 class SimpleLineChart {
-    CHART_WIDTH = 1000;
-    CHART_HEIGHT = 600;
+
+    CHART_WIDTH = document.getElementById('charts').offsetWidth;
+    CHART_HEIGHT = window.innerHeight - Common.MAIN_CONTENT_GAP;
+    
     GAP = 10;
 
-    constructor(options) {
+    constructor(options) {      
         d3.select('#' + options.chartElement)
             .append('div')
                 .attr('class', 'vis-example-container')
                 .attr('id', 'vis-example-container')
                 .style('width', this.CHART_WIDTH + 'px')
-                .style('height', this.CHART_HEIGHT + 'px');
+                .style('height', this.CHART_HEIGHT + 'px');        
         
         let data = options.data[0].values;
-        const field = Common.getValueField(data[0]);
-        
+        const field = Common.getValueField(data[0]);        
         let canvas = document.getElementById("vis-example-container");
         const min_value = Math.min.apply(Math, data.map(function(o) { return o[field]; }));
         const max_value = Math.max.apply(Math, data.map(function(o) { return o[field]; }));
         
         // set the dimensions and margins of the graph
-        let margin = {top: 20, right: 50, bottom: 100, left: 60},
-            width = this.CHART_WIDTH - margin.left - margin.right,
-            height = this.CHART_HEIGHT - margin.top - margin.bottom;
+        let margin = {top: 20, right: 50, bottom: 80, left: 60},
+        width = this.CHART_WIDTH - margin.left - margin.right,
+        height = this.CHART_HEIGHT - margin.top - margin.bottom;
 
         const tooltip_linechart = d3.select("body").append("div").attr("class", "tool-tip-line-chart");
 
@@ -35,33 +36,33 @@ class SimpleLineChart {
 
         // define the line
         let valueline = d3.line()
-            .x(function(d) { return x(d.index); })
-            .y(function(d) { return y(d[field]); });
+                          .x(function(d) { return x(d.index); })
+                          .y(function(d) { return y(d[field]); });
 
         let svg = d3.select(canvas).append("svg")
             .attr("width", this.CHART_WIDTH)
             .attr("height", this.CHART_HEIGHT - this.GAP);
-
         svg.append("rect")
+            .attr("id", "rect")
             .attr("fill", "#ffffff")
             .attr("width", this.CHART_WIDTH)
             .attr("height", this.CHART_HEIGHT);
 
         let g = svg.append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        // format the data
+        // format the data        
         data.forEach(function(d) {
             d.index = parser(d.index);
             d[field] = +d[field];
         });
-
+        
         // Scale the range of the data
         x.domain(d3.extent(data, function(d) { return d.index; }));
         y.domain([min_value, max_value]);
         
-        // Add the valueline path.
-        g.append("path")
+        //declare path variable to be used in resize function
+        let path=g.append("path")
             .data([data])
             .attr("class", "line")
             .attr("d", valueline)
@@ -74,20 +75,22 @@ class SimpleLineChart {
             })
             .on("mouseout", function(d){ tooltip_linechart.style("display", "none");});
 
-        // Add the x Axis
-        g.append("g")
-            .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x)
-                .tickFormat(d3.timeFormat("%d-%b-%y")))
+        //declare xAxis and xAxis element variable to be used in resize function
+        let xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m-%d"));
+        let xAxisEL=g.append("g")
+            .call(xAxis);
+
+         xAxisEL.attr("transform", "translate(0," + height + ")")
             .selectAll("text")
             .style("text-anchor", "end")
             .attr("dx", "-.8em")
             .attr("dy", ".15em")
             .attr("transform", "rotate(-65)");
 
-        // Add the y Axis
-        g.append("g")
-            .call(d3.axisLeft(y));
+        //declare yAxis and yAxis element variable to be used in resize function
+        let yAxis = d3.axisLeft(y);
+        let yAxisEL = g.append("g")
+                     .call(yAxis);
 
         let focus = g.append("g")
             .attr("class", "focus")
@@ -133,5 +136,51 @@ class SimpleLineChart {
             focus.select(".x-hover-line").attr("y2", height - y(d[field]));
             focus.select(".y-hover-line").attr("x2", width + width);
         }
+
+        let gap = this.GAP; 
+
+        //declare resize function
+        function resize() {
+            let h = window.innerHeight - Common.MAIN_CONTENT_GAP - gap;
+            let card = document.getElementById('charts');
+            let w = card.offsetWidth;
+
+            //resize canvas size
+            canvas.style.width = card.offsetWidth + "px";
+            canvas.style.height = h + "px";
+
+            // //resize svg size
+            svg.attr("width", card.offsetWidth)
+                .attr("height", h);            
+
+            //resize rect
+            let rectEL=document.getElementById('rect');
+            rectEL.setAttribute("width", w);
+            rectEL.setAttribute("height", h);
+
+            //update x and y range
+            x.range([0, w - margin.left - margin.right]);
+            y.range([h - margin.top - margin.bottom, 0]);
+
+            //rescale
+            xAxis.scale(x);
+            yAxis.scale(y);
+                     
+            //update axis element
+            xAxisEL.attr("transform", "translate(0," + (h - margin.top - margin.bottom) + ")")
+                .call(xAxis);
+            yAxisEL.call(yAxis);
+
+            //update data
+            valueline.x(function(d) { return x(d.index); })
+                .y(function(d) { return y(d[field]); });
+
+            path.attr('d', valueline);   
+
+        }
+
+        // resize when window size changes
+        d3.select(window).on('resize.updatesvg', resize);
+
     }
 }

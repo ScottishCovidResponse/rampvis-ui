@@ -162,6 +162,7 @@ def route_v05():
 @blueprint.route("/review")
 @blueprint.route("/example")
 def route_pages():
+<<<<<<< HEAD
     url_prefix = request.url_rule.rule.replace("/", "")
     logger.debug(f"routes.py:route_pages: binding_type = {url_prefix}")
     try:
@@ -173,6 +174,14 @@ def route_pages():
             publishType=url_prefix,
             enumerate=enumerate,
         )
+=======
+    url_prefix = request.url_rule.rule.replace('/', '')
+    logger.debug(f'routes.py:route_pages: page_type = {url_prefix}')
+    try:
+        onto_pages = service.get_onto_pages(url_prefix)
+        logger.debug('route_released_pages: onto_pages = ', onto_pages)
+        return render_template('pages-table-2.html', table=onto_pages, pageType=url_prefix, enumerate=enumerate)
+>>>>>>> master
     except TemplateNotFound:
         return render_template("page-404.html"), 404
     except:
