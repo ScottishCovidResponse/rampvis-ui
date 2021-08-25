@@ -8,6 +8,7 @@ import { Matrix } from './matrix';
 import { SuperimposedPercentiles } from './superimposed-percentiles';
 import { StackedBarChartWith6Places } from './stacked-bar-chart-6-places';
 import { StackedAreaChart } from './stacked-area-chart';
+import { StackedBarChart } from './stacked-bar-chart';
 
 export const visFactory = (type, args) => {
     if (type === "SimpleBarChart")
@@ -30,6 +31,8 @@ export const visFactory = (type, args) => {
         return new StackedBarChartWith6Places(args);
     if (type === "StackedAreaChart")
         return new StackedAreaChart(args);
+    if (type === "StackedBarChart")
+        return new StackedBarChart(args);
         
     return null;
 }

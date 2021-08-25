@@ -112,7 +112,10 @@ export function stackedAreaChart() {
             .append('title')
                 .text(({ key }) => key);
 
-        xAxisContainer.call(xAxis);
+        xAxisContainer.call(xAxis)
+            .selectAll('text')
+            .attr('transform', 'rotate(-45)')
+            .style('text-anchor', 'end')
         yAxisContainer.call(yAxis);
     }
 

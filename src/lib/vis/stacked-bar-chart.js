@@ -22,7 +22,7 @@ import * as d3 from "d3";
 import Common from "./common";
 import { pv } from "./pv"
 
-export class StackedAreaChart {
+export class StackedBarChart {
     CHART_WIDTH = document.getElementById('charts').offsetWidth;
     CHART_HEIGHT = window.innerHeight - Common.MAIN_CONTENT_GAP;
 
@@ -47,8 +47,8 @@ export class StackedAreaChart {
         const container = d3.select('#' + options.chartElement);
         container.innerHTML = '';
 
-        const vis = pv.stackedAreaChart()
-            .margin({ top: 10, right: 10, bottom: 50, left: 50 })
+        const vis = pv.stackedBarChart()
+            .margin({ top: 10, right: 10, bottom: 40, left: 50 })
             .colorScale(Common.Colors.SITUATION_SCALE)
             .width(this.CHART_WIDTH)
             .height(this.CHART_HEIGHT);
@@ -73,24 +73,23 @@ export class StackedAreaChart {
                 d[c] = this.preprocessValue(d[c])
             });
         });
-    
+
         // Exclude weeks with all 0
         data = data.filter(d => data.columns.some(att => d[att]));
-    
-        const parseWeek = d3.timeParse("%Y-%m-%d");
+
+        const parseWeek = d3.timeParse("%Y-%m-%d");//%d-%b-%y
         data.forEach(d => {
             d.time = parseWeek(d.Week);
             d.label = d3.timeFormat('%b %d')(d.time);
         });
-    
+
         // Filter data without properly formatted time
         data = data.filter(d => d.time);
-        
-        data.columns = columns;
 
+        data.columns = columns;
         return data;
     }
-    
+
     preprocessValue(s) {
         return typeof(s) === 'number' ? s : parseInt(s.replace(',', '').trim());
     }
