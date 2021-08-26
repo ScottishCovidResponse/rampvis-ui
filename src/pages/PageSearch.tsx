@@ -1,3 +1,7 @@
+/**
+ * Search ontology generated pages
+ */
+
 /* eslint-disable no-new */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
@@ -16,18 +20,23 @@ import {
   Typography,
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import TimelineIcon from '@material-ui/icons/Timeline';
+import SearchIcon from "@material-ui/icons/Search";
 import { makeStyles } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+
 import useSettings from "../hooks/useSettings";
-import { visFactory } from "../lib/vis/vis-factory";
+
+import AppSearchAPIConnector from "@elastic/search-ui-app-search-connector";
+import { SearchProvider, Results, SearchBox } from "@elastic/react-search-ui";
+import { Layout } from "@elastic/react-search-ui-views";
+import "@elastic/react-search-ui-views/lib/styles/styles.css";
 
 const API = {
   API_PY: process.env.REACT_APP_API_PY,
   API_JS: process.env.REACT_APP_API_JS,
-}
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,9 +64,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const connector = new AppSearchAPIConnector({
+  searchKey: "search-371auk61r2bwqtdzocdgutmg",
+  engineName: "search-ui-examples",
+  endpointBase: "http://127.0.0.1:3002",
+  cacheResponses: false,
+});
 
-const OntologyPageTemplate: FC = () => {
-  const { pageId } = useParams(); // 60ae9fce8839aa3ae916e217
+const PageSearch: FC = () => {
+  const { pageId } = useParams();
   console.log(pageId);
 
   const { settings } = useSettings();
@@ -87,14 +102,10 @@ const OntologyPageTemplate: FC = () => {
       return `page/${d}`;
     });
 
-    console.log("OntologyPageTemplate: dataForVisFunction = ", dataForVisFunction);
-
-    visFactory(page?.vis?.function, {
-      chartElement: "charts", // ref.current,
-      data: dataForVisFunction,
-      links,
-    });
-
+    console.log(
+      "OntologyPageTemplate: dataForVisFunction = ",
+      dataForVisFunction
+    );
   }, [pageId]);
   // if pageId changes, useEffect will run again
   // if you want to run only once, just leave array empty []
@@ -107,7 +118,7 @@ const OntologyPageTemplate: FC = () => {
   return (
     <>
       <Helmet>
-        <title>RAMPVIS- Page</title>
+        <title>Search</title>
       </Helmet>
 
       <Box
@@ -129,16 +140,28 @@ const OntologyPageTemplate: FC = () => {
                   }
                   avatar={
                     <Avatar className={classes.avatar}>
-                      <TimelineIcon />
+                      <SearchIcon />
                     </Avatar>
                   }
-                  title="TODO: Title..."
-                  subheader=""
+                  title="Search"
+                  subheader="Search for the ontology generated pages"
                 />
 
                 <CardContent sx={{ pt: "8px" }}>
-                  {/* <svg ref={ref}/> */}
-                  <div id="charts" />
+                  <SearchProvider
+                    config={{
+                      apiConnector: connector,
+                    }}
+                  >
+                    <div className="App">
+                      <Layout
+                        header={<SearchBox />}
+                        bodyContent={
+                          <Results titleField="title" urlField="nps_link" />
+                        }
+                      />
+                    </div>
+                  </SearchProvider>
                 </CardContent>
               </Card>
             </Grid>
@@ -149,4 +172,4 @@ const OntologyPageTemplate: FC = () => {
   );
 };
 
-export default OntologyPageTemplate;
+export default PageSearch;

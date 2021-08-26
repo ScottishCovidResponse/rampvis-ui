@@ -1,4 +1,10 @@
+
+/**
+ * Template for list of ontology generated pages 
+ */
+
 /* eslint-disable @typescript-eslint/no-unused-vars */
+
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -82,7 +88,7 @@ const useStyles = makeStyles({
   },
 });
 
-const OntologyPageListTemplate: FC = () => {
+const PageListTemplate: FC = () => {
   // const mounted = useMounted();
   const { settings } = useSettings();
 
@@ -98,14 +104,14 @@ const OntologyPageListTemplate: FC = () => {
   // if (pageType) apiUrl.searchParams.append("page", query.get("page"));
   // if (visType) apiUrl.searchParams.append("index", query.get("index"));
   // url = apiUrl.href
-  console.log("OntologyPageListTemplate: API url = ", url);
+  console.log("PageListTemplate: API url = ", url);
 
   const [rows, setRows] = useState<any>([]);
 
   const fetchOntoPages = useCallback(async () => {
     try {
       const res = await axios.get(url);
-      console.log('OntologyPageListTemplate: fetched data = ', res.data);
+      console.log('PageListTemplate: fetched data = ', res.data);
       const pages = res.data.data.map((d) => {
         const { id, date } = d;
         return {
@@ -122,14 +128,14 @@ const OntologyPageListTemplate: FC = () => {
       setRows(pages);
     } catch (err) {
       // prettier-ignore
-      console.error(`OntologyPageListTemplate: Fetching API ${url}, error = ${err}`);
+      console.error(`PageListTemplate: Fetching API ${url}, error = ${err}`);
     }
   }, [pageType, visType]);
   // if pageType, visType changes, useEffect will run again
   // if you want to run only once, just leave array empty []
 
   useEffect(() => {
-    console.log("OntologyPageListTemplate: useEffect:");
+    console.log("PageListTemplate: useEffect:");
     fetchOntoPages();
   }, [fetchOntoPages]);
 
@@ -153,7 +159,7 @@ const OntologyPageListTemplate: FC = () => {
   return (
     <>
       <Helmet>
-        <title>RAMPVIS- List of Pages</title>
+        <title>List of Pages</title>
       </Helmet>
 
       <Box
@@ -263,4 +269,4 @@ const OntologyPageListTemplate: FC = () => {
   );
 };
 
-export default OntologyPageListTemplate;
+export default PageListTemplate;

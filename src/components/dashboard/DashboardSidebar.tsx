@@ -25,6 +25,7 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import PlaceIcon from '@material-ui/icons/Place';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import DonutSmallIcon from '@material-ui/icons/DonutSmall';
+import SearchIcon from '@material-ui/icons/Search';
 
 import useAuth from "../../hooks/useAuth";
 import Logo from "../Logo";
@@ -43,6 +44,11 @@ const sections = [
         title: 'My Portal',
         path: '/portal',
         icon: <BookmarksIcon fontSize="small" />
+      },
+      {
+        title: 'Search',
+        path: '/search',
+        icon: <SearchIcon fontSize="small" />
       }
     ]
   },
