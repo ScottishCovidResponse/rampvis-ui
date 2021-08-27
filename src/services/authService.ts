@@ -4,11 +4,8 @@ import jwt_decode from "jwt-decode";
 
 import { apiService } from "./apiService";
 import { IDataStoredInToken } from "../types/dataStoredInToken";
-
 import { User } from "../types/user";
 import { ITokenData } from "src/types/tokenData";
-
-const API_JS = process.env.REACT_APP_API_JS;
 
 export class AuthService {
   async login({ email, password }): Promise<string> {
@@ -18,7 +15,6 @@ export class AuthService {
         email,
         password,
       });
-      apiService.setToken(res.token);
       return res.token;
     } catch (err) {
       console.log("AuthApi:login: error = ", err);

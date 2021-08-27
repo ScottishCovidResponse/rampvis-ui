@@ -22,19 +22,10 @@ export class ApiService {
     return this.endpoint + url;
   }
 
-  setToken(token: string) {
-    localStorage.setItem("accessToken", token);
-    this.token = token;
-  }
-
-  getToken() {
-    return this.token;
-  }
-
   getAxiosInstance() {
     return axios.create({
       timeout: 1000,
-      headers: { Authorization: `Bearer ${this.token}` },
+      headers: { Authorization: `Bearer ${window.localStorage.getItem("accessToken")}` },
     });
   }
 
