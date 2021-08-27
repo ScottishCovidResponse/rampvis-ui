@@ -2,7 +2,8 @@ import { createContext, useEffect, useReducer } from "react";
 import type { FC, ReactNode } from "react";
 import PropTypes from "prop-types";
 import type { User } from "../types/user";
-import { authApi } from "../mock/authApi";
+// import { authApi } from "../mock/authApi";
+import { authService } from "../services/authService";
 
 interface State {
   isInitialized: boolean;
@@ -110,7 +111,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         const accessToken = window.localStorage.getItem("accessToken");
 
         if (accessToken) {
-          const user = await authApi.me(accessToken);
+          const user = await authService.me(accessToken);
 
           dispatch({
             type: "INITIALIZE",
@@ -144,8 +145,8 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   }, []);
 
   const login = async (email: string, password: string): Promise<void> => {
-    const accessToken = await authApi.login({ email, password });
-    const user = await authApi.me(accessToken);
+    const accessToken = await authService.login({ email, password });
+    const user = await authService.me(accessToken);
 
     localStorage.setItem("accessToken", accessToken);
 

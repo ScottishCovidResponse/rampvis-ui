@@ -67,7 +67,7 @@ const Login: FC = () => {
                     Log in
                   </Typography>
                   <Typography color="textSecondary" variant="body2">
-                    Log in on the QA display platform
+                    Log in on the RAMPVIS platform
                   </Typography>
                 </div>
               </Box>

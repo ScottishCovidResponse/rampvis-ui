@@ -20,20 +20,24 @@ const Loadable = (Component) => (props) =>
 const Login = Loadable(lazy(() => import("./pages/auth/Login")));
 
 // Error pages
-const UnderConstruction = Loadable(lazy(() => import("./pages/UnderConstruction")));
-const AuthorizationRequired = Loadable( lazy(() => import("./pages/AuthorizationRequired")));
+const UnderConstruction = Loadable( lazy(() => import("./pages/UnderConstruction")) ); 
+const AuthorizationRequired = Loadable( lazy(() => import("./pages/AuthorizationRequired")) );
 const NotFound = Loadable(lazy(() => import("./pages/NotFound")));
 const ServerError = Loadable(lazy(() => import("./pages/ServerError")));
 
 // Templates using ontology data
-const PageTemplate =  Loadable(lazy(() => import("./pages/PageTemplate")));
-const PageListTemplate =  Loadable(lazy(() => import("./pages/PageListTemplate")));
-const PageSearch =  Loadable(lazy(() => import("./pages/PageSearch")));
+const PageTemplate = Loadable(lazy(() => import("./pages/PageTemplate")));
+const PageListTemplate = Loadable( lazy(() => import("./pages/PageListTemplate")) );
+const PageSearch = Loadable(lazy(() => import("./pages/PageSearch")));
 
 const routes: PartialRouteObject[] = [
   {
     path: "portal",
-    element: <DashboardLayout />,
+    element: (
+      <AuthGuard>
+        <DashboardLayout />
+      </AuthGuard>
+    ),
     children: [
       {
         path: "",
@@ -72,7 +76,7 @@ const routes: PartialRouteObject[] = [
       {
         path: "/:pageType/:visType",
         element: <PageListTemplate />,
-      }
+      },
     ],
   },
   {
