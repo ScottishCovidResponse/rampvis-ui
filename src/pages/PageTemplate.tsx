@@ -25,8 +25,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+
 import useSettings from "../hooks/useSettings";
 import { visFactory } from "../lib/vis/vis-factory";
+import useAuth from "../hooks/useAuth";
+import Bookmark from "../components/Bookmark";
 
 const API = {
   API_PY: process.env.REACT_APP_API_PY,
@@ -62,7 +65,8 @@ const useStyles = makeStyles((theme) => ({
 
 const PageTemplate: FC = () => {
   const { pageId } = useParams(); // 60ae9fce8839aa3ae916e217
-  console.log(pageId);
+  console.log("PageTemplate: pageId = ", pageId);
+  const { user } = useAuth();
 
   const { settings } = useSettings();
   const classes = useStyles();
@@ -127,14 +131,13 @@ const PageTemplate: FC = () => {
               <Card>
                 <CardHeader
                   action={
-                    <IconButton aria-label="settings">
-                      <MoreVertIcon />
-                    </IconButton>
+                    // <IconButton aria-label="settings">
+                    //   { user?.id ? (<MoreVertIcon />) : (<TimelineIcon />)}
+                    // </IconButton> 
+                    <Bookmark pageId={pageId} />
                   }
                   avatar={
-                    <Avatar className={classes.avatar}>
-                      <TimelineIcon />
-                    </Avatar>
+                    <Avatar className={classes.avatar} />
                   }
                   title="TODO: Title..."
                   subheader=""

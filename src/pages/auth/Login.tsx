@@ -8,11 +8,12 @@ import {
   Container,
   Divider,
   Typography,
+  Button
 } from "@material-ui/core";
 import { LoginJWT } from "../../components/auth/login";
 import Logo from "../../components/Logo";
 import useAuth from "../../hooks/useAuth";
-
+ 
 const Login: FC = () => {
   const { platform } = useAuth() as any;
 
@@ -80,6 +81,24 @@ const Login: FC = () => {
                 {platform === "JWT" && <LoginJWT />}
               </Box>
               <Divider sx={{ my: 3 }} />
+
+              <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              mt: 6,
+            }}
+          >
+            <Button
+              color="primary"
+              component={RouterLink}
+              to="/"
+              variant="outlined"
+            >
+              Go to Home
+            </Button>
+          </Box>
+          
             </CardContent>
           </Card>
         </Container>

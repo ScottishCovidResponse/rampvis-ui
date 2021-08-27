@@ -19,6 +19,9 @@ const Loadable = (Component) => (props) =>
 // Authentication pages
 const Login = Loadable(lazy(() => import("./pages/auth/Login")));
 
+// Portal
+const MyPortal = Loadable(lazy(() => import("./pages/MyPortal")));
+
 // Error pages
 const UnderConstruction = Loadable( lazy(() => import("./pages/UnderConstruction")) ); 
 const AuthorizationRequired = Loadable( lazy(() => import("./pages/AuthorizationRequired")) );
@@ -41,7 +44,7 @@ const routes: PartialRouteObject[] = [
     children: [
       {
         path: "",
-        element: <UnderConstruction />,
+        element: <MyPortal />,
       },
     ],
   },

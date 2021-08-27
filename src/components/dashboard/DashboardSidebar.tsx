@@ -182,14 +182,14 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
               p: 2,
             }}
           >
-              <Avatar
+              {/* <Avatar
                 src={user?.avatar}
                 sx={{
                   cursor: "pointer",
                   height: 48,
                   width: 48,
                 }}
-              />
+              /> */}
             
             <Box sx={{ ml: 2 }}>
               <Typography color="textPrimary" variant="subtitle2">

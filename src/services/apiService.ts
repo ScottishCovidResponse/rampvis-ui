@@ -31,13 +31,18 @@ export class ApiService {
 
   // HTTP Methods
 
-  public async get<T extends any>(url: string): Promise<T> {
+  async get<T extends any>(url: string): Promise<T> {
     const res = await this.getAxiosInstance().get(this.getEndpoint(url));
     return res.data;
   }
 
-  public async post<T extends any>(url: string, body: T): Promise<T> {
+  async post<T extends any>(url: string, body: T): Promise<T> {
     const res = await this.getAxiosInstance().post(this.getEndpoint(url), body);
+    return res.data;
+  }
+  
+  async delete<T extends any>(url: string): Promise<T> {
+    const res = await this.getAxiosInstance().delete(this.getEndpoint(url));
     return res.data;
   }
 
