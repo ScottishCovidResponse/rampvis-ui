@@ -10,11 +10,13 @@ import ShowHideGuard from "./ShowHideGuard";
 import { apiService } from "../services/apiService";
 
 const useStyles = makeStyles((theme) => ({
-  bookmarkIcon1: {
+  bookmarkedStyle: {
     color: orange[500],
+    size: "medium",
   },
-  bookmarkIcon2: {
+  unBookmarkedStyle: {
     color: grey[500],
+    size: "medium",
   },
 }));
 
@@ -25,7 +27,6 @@ const Bookmark: FC<any> = ({ pageId }) => {
   const fetchBookmarks = useCallback(async () => {
     try {
       const res = await apiService.get<any>(`/bookmark/${pageId}`);
-      console.log("Bookmark: fetched data = ", res);
       if (res) {
         setBookmark(true);
       } else {
@@ -45,11 +46,9 @@ const Bookmark: FC<any> = ({ pageId }) => {
     console.log(isBookmarked);
     if (isBookmarked) {
       const res = await apiService.delete<any>(`/bookmark/${pageId}`);
-      console.log("Bookmark: deleted = ", res);
       setBookmark(false);
     } else {
       const res = await apiService.post<any>(`/bookmark`, { pageId });
-      console.log("Bookmark: created = ", res);
       setBookmark(true);
     }
   };
@@ -58,9 +57,10 @@ const Bookmark: FC<any> = ({ pageId }) => {
     <ShowHideGuard>
       <IconButton
         aria-label="bookmark"
-        size="small"
         onClick={() => bookmark()}
-        className={isBookmarked ? classes.bookmarkIcon1 : classes.bookmarkIcon2}
+        className={
+          isBookmarked ? classes.bookmarkedStyle : classes.unBookmarkedStyle
+        }
       >
         <BookmarkIcon fontSize="inherit" />
       </IconButton>
