@@ -18,14 +18,14 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import TimelineIcon from "@material-ui/icons/Timeline";
 import InsertChartIcon from "@material-ui/icons/InsertChart";
-import ReceiptIcon from '@material-ui/icons/Receipt';
-import BookmarksIcon from '@material-ui/icons/Bookmarks';
-import SettingsIcon from '@material-ui/icons/Settings';
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import PlaceIcon from '@material-ui/icons/Place';
-import AssessmentIcon from '@material-ui/icons/Assessment';
-import DonutSmallIcon from '@material-ui/icons/DonutSmall';
-import SearchIcon from '@material-ui/icons/Search';
+import ReceiptIcon from "@material-ui/icons/Receipt";
+import BookmarksIcon from "@material-ui/icons/Bookmarks";
+import SettingsIcon from "@material-ui/icons/Settings";
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+import PlaceIcon from "@material-ui/icons/Place";
+import AssessmentIcon from "@material-ui/icons/Assessment";
+import DonutSmallIcon from "@material-ui/icons/DonutSmall";
+import SearchIcon from "@material-ui/icons/Search";
 
 import useAuth from "../../hooks/useAuth";
 import Logo from "../Logo";
@@ -41,91 +41,91 @@ const sections = [
   {
     items: [
       {
-        title: 'My Portal',
-        path: '/portal',
-        icon: <BookmarksIcon fontSize="small" />
+        title: "My Portal",
+        path: "/portal",
+        icon: <BookmarksIcon fontSize="small" />,
       },
       {
-        title: 'Search',
-        path: '/search',
-        icon: <SearchIcon fontSize="small" />
-      }
-    ]
+        title: "Search",
+        path: "/search",
+        icon: <SearchIcon fontSize="small" />,
+      },
+    ],
   },
   {
     items: [
       {
-        title: 'Dashboards',
-        path: '/pages/release/dashboard',
-        icon: <DashboardIcon fontSize="small" />
+        title: "Dashboards",
+        path: "/pages/release/dashboard",
+        icon: <DashboardIcon fontSize="small" />,
       },
       {
-        title: 'Plots',
-        path: '/pages/release/plot',
-        icon: <DonutSmallIcon fontSize="small" />
+        title: "Plots",
+        path: "/pages/release/plot",
+        icon: <DonutSmallIcon fontSize="small" />,
       },
       {
-        title: 'Analytics',
-        path: '/pages/release/analytics',
-        icon: <TimelineIcon fontSize="small" />
+        title: "Analytics",
+        path: "/pages/release/analytics",
+        icon: <TimelineIcon fontSize="small" />,
       },
       {
-        title: 'Models',
-        path: '/pages/release/model',
-        icon: <AssessmentIcon fontSize="small" />
-      }
-    ]
+        title: "Models",
+        path: "/pages/release/model",
+        icon: <AssessmentIcon fontSize="small" />,
+      },
+    ],
   },
   {
     items: [
       {
-        title: 'Scotland',
-        path: '/scotland',
-        icon: <PlaceIcon fontSize="small" />
+        title: "Scotland",
+        path: "/scotland",
+        icon: <PlaceIcon fontSize="small" />,
       },
       {
-        title: 'England',
-        path: '/england',
-        icon: <PlaceIcon fontSize="small" />
+        title: "England",
+        path: "/england",
+        icon: <PlaceIcon fontSize="small" />,
       },
       {
-        title: 'N. ireland',
-        path: '/northern-ireland',
-        icon: <PlaceIcon fontSize="small" />
+        title: "N. ireland",
+        path: "/northern-ireland",
+        icon: <PlaceIcon fontSize="small" />,
       },
       {
-        title: 'Wales',
-        path: '/wales',
-        icon: <PlaceIcon fontSize="small" />
-      }
-    ]
+        title: "Wales",
+        path: "/wales",
+        icon: <PlaceIcon fontSize="small" />,
+      },
+    ],
   },
   {
-    title: '',
+    title: "",
     items: [
       {
-        title: 'Development',
-        path: '/pages/release',
+        title: "Development",
+        path: "/pages/release",
         icon: <SettingsIcon fontSize="small" />,
         children: [
           {
-            title: 'Example',
-            path: '/pages/example',
-            icon: <ArrowForwardIosIcon fontSize="small" />
+            title: "Example",
+            path: "/pages/example",
+            icon: <ArrowForwardIosIcon fontSize="small" />,
           },
           {
-            title: 'Review',
-            path: '/pages/review',
-            icon: <ArrowForwardIosIcon fontSize="small" />
+            title: "Review",
+            path: "/pages/review",
+            icon: <ArrowForwardIosIcon fontSize="small" />,
           },
           {
-            title: 'Released',
-            path: '/pages/release',
-            icon: <ArrowForwardIosIcon fontSize="small" />
-          }
-        ]
+            title: "Released",
+            path: "/pages/release",
+            icon: <ArrowForwardIosIcon fontSize="small" />,
+          },
+        ],
       },
-    ]
+    ],
   },
 ];
 
@@ -182,18 +182,18 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
               p: 2,
             }}
           >
-              {/* <Avatar
-                src={user?.avatar}
-                sx={{
-                  cursor: "pointer",
-                  height: 48,
-                  width: 48,
-                }}
-              /> */}
-            
+            <Avatar
+              // src={user?.avatar}
+              sx={{
+                cursor: "pointer",
+                height: 48,
+                width: 48,
+              }}
+            />
+
             <Box sx={{ ml: 2 }}>
               <Typography color="textPrimary" variant="subtitle2">
-                {user?.name}
+                {user?.name ? user.name : "Guest"}
               </Typography>
               <Typography color="textSecondary" variant="body2">
                 {user?.email}
@@ -204,6 +204,7 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
         {/* End of profile avatar section  */}
 
         <Divider />
+
         <Box sx={{ p: 2 }}>
           {sections.map((section) => (
             <NavSection

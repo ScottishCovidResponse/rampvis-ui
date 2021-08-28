@@ -20,6 +20,7 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import ChatIcon from "@material-ui/icons/Chat";
 import CreditCardIcon from "@material-ui/icons/CreditCard";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import ShowHideGuard from "../ShowHideGuard";
 
 interface Notification {
   id: string;
@@ -74,87 +75,89 @@ const NotificationsPopover: FC = () => {
   };
 
   return (
-    <>
-      <Tooltip title="Notifications">
-        <IconButton color="inherit" ref={anchorRef} onClick={handleOpen}>
-          <Badge color="error" badgeContent={4}>
-            <NotificationsIcon fontSize="small" />
-          </Badge>
-        </IconButton>
-      </Tooltip>
-      <Popover
-        anchorEl={anchorRef.current}
-        anchorOrigin={{
-          horizontal: "center",
-          vertical: "bottom",
-        }}
-        onClose={handleClose}
-        open={open}
-        PaperProps={{
-          sx: { width: 320 },
-        }}
-      >
-        <Box sx={{ p: 2 }}>
-          <Typography color="textPrimary" variant="h6">
-            Notifications
-          </Typography>
-        </Box>
-        {notifications.length === 0 ? (
+    <ShowHideGuard>
+      <>
+        <Tooltip title="Notifications">
+          <IconButton color="inherit" ref={anchorRef} onClick={handleOpen}>
+            <Badge color="error" badgeContent={4}>
+              <NotificationsIcon fontSize="small" />
+            </Badge>
+          </IconButton>
+        </Tooltip>
+        <Popover
+          anchorEl={anchorRef.current}
+          anchorOrigin={{
+            horizontal: "center",
+            vertical: "bottom",
+          }}
+          onClose={handleClose}
+          open={open}
+          PaperProps={{
+            sx: { width: 320 },
+          }}
+        >
           <Box sx={{ p: 2 }}>
-            <Typography color="textPrimary" variant="subtitle2">
-              There are no notifications
+            <Typography color="textPrimary" variant="h6">
+              Notifications
             </Typography>
           </Box>
-        ) : (
-          <>
-            <List disablePadding>
-              {notifications.map((notification) => {
-                const Icon = iconsMap[notification.type];
-
-                return (
-                  <ListItem divider key={notification.id}>
-                    <ListItemAvatar>
-                      <Avatar
-                        sx={{
-                          backgroundColor: "primary.main",
-                          color: "primary.contrastText",
-                        }}
-                      >
-                        <Icon fontSize="small" />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={
-                        <Link
-                          color="textPrimary"
-                          sx={{ cursor: "pointer" }}
-                          underline="none"
-                          variant="subtitle2"
-                        >
-                          {notification.title}
-                        </Link>
-                      }
-                      secondary={notification.description}
-                    />
-                  </ListItem>
-                );
-              })}
-            </List>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                p: 1,
-              }}
-            >
-              <Button color="primary" size="small" variant="text">
-                Mark all as read
-              </Button>
+          {notifications.length === 0 ? (
+            <Box sx={{ p: 2 }}>
+              <Typography color="textPrimary" variant="subtitle2">
+                There are no notifications
+              </Typography>
             </Box>
-          </>
-        )}
-      </Popover>
-    </>
+          ) : (
+            <>
+              <List disablePadding>
+                {notifications.map((notification) => {
+                  const Icon = iconsMap[notification.type];
+
+                  return (
+                    <ListItem divider key={notification.id}>
+                      <ListItemAvatar>
+                        <Avatar
+                          sx={{
+                            backgroundColor: "primary.main",
+                            color: "primary.contrastText",
+                          }}
+                        >
+                          <Icon fontSize="small" />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={
+                          <Link
+                            color="textPrimary"
+                            sx={{ cursor: "pointer" }}
+                            underline="none"
+                            variant="subtitle2"
+                          >
+                            {notification.title}
+                          </Link>
+                        }
+                        secondary={notification.description}
+                      />
+                    </ListItem>
+                  );
+                })}
+              </List>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  p: 1,
+                }}
+              >
+                <Button color="primary" size="small" variant="text">
+                  Mark all as read
+                </Button>
+              </Box>
+            </>
+          )}
+        </Popover>
+      </>
+    </ShowHideGuard>
   );
 };
 

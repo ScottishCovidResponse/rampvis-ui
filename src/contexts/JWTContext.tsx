@@ -146,9 +146,8 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
 
   const login = async (email: string, password: string): Promise<void> => {
     const accessToken = await authService.login({ email, password });
-    const user = await authService.me(accessToken);
-
     localStorage.setItem("accessToken", accessToken);
+    const user = await authService.me(accessToken);
 
     dispatch({
       type: "LOGIN",

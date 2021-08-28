@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { useRef, useState } from "react";
 import type { FC } from "react";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import {
   Avatar,
@@ -17,6 +19,8 @@ import {
 import useAuth from "../../hooks/useAuth";
 import SettingsIcon from "@material-ui/icons/Settings";
 import PersonIcon from "@material-ui/icons/Person";
+
+import ShowHideGuard from "../ShowHideGuard";
 
 const AccountPopover: FC = () => {
   const anchorRef = useRef<HTMLButtonElement | null>(null);
@@ -43,6 +47,11 @@ const AccountPopover: FC = () => {
     }
   };
 
+  const handleLoginClick = () => {
+    navigate("/auth/login");
+  };
+
+
   return (
     <>
       <Box
@@ -55,7 +64,7 @@ const AccountPopover: FC = () => {
         }}
       >
         <Avatar
-          src={user?.avatar}
+          // src={user?.avatar}
           sx={{
             height: 32,
             width: 32,
@@ -75,52 +84,71 @@ const AccountPopover: FC = () => {
           sx: { width: 240 },
         }}
       >
-        <Box sx={{ p: 2 }}>
-          <Typography color="textPrimary" variant="subtitle2">
-            {user?.name}
-          </Typography>
-          <Typography color="textSecondary" variant="subtitle2">
-            {user?.email}
-          </Typography>
-        </Box>
-        <Divider />
+        <ShowHideGuard>
+          <Box sx={{ p: 2 }}>
+            <Typography color="textPrimary" variant="subtitle2">
+              {user?.name}
+            </Typography>
+            <Typography color="textSecondary" variant="subtitle2">
+              {user?.email}
+            </Typography>
+          </Box>
+          <Divider />
 
-        <Box sx={{ mt: 2 }}>
-          <MenuItem component={RouterLink} to="/user/profile">
-            <ListItemIcon>
-              <PersonIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText
-              primary={
-                <Typography color="textPrimary" variant="subtitle2">
-                  Profile
-                </Typography>
-              }
-            />
-          </MenuItem>
-          <MenuItem component={RouterLink} to="/user/settings">
-            <ListItemIcon>
-              <SettingsIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText
-              primary={
-                <Typography color="textPrimary" variant="subtitle2">
-                  Settings
-                </Typography>
-              }
-            />
-          </MenuItem>
-        </Box>
-        <Box sx={{ p: 2 }}>
-          <Button
-            color="primary"
-            fullWidth
-            onClick={handleLogout}
-            variant="outlined"
-          >
-            Logout
-          </Button>
-        </Box>
+          <Box sx={{ mt: 2 }}>
+            {/* 
+            <MenuItem component={Link} to="/user/profile">
+              <ListItemIcon>
+                <PersonIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  <Typography color="textPrimary" variant="subtitle2">
+                    Profile
+                  </Typography>
+                }
+              />
+            </MenuItem> */}
+            {/* <MenuItem component={Link} to="/user/settings">
+              <ListItemIcon>
+                <SettingsIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  <Typography color="textPrimary" variant="subtitle2">
+                    Settings
+                  </Typography>
+                }
+              />
+            </MenuItem> 
+            */}
+          </Box>
+
+          <Box sx={{ p: 2 }}>
+            <Button
+              color="primary"
+              fullWidth
+              onClick={handleLogout}
+              variant="outlined"
+            >
+              Logout
+            </Button>
+          </Box>
+        </ShowHideGuard>
+        {!user ? (
+          <Box sx={{ p: 2 }}>
+            <Button
+              color="primary"
+              fullWidth
+              onClick={handleLoginClick}
+              variant="outlined"
+            >
+              Login
+            </Button>
+          </Box>
+        ) : (
+          <></>
+        )}
       </Popover>
     </>
   );

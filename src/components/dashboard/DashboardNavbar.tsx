@@ -71,6 +71,7 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
         <Box sx={{ ml: 1 }}>
           <NotificationsPopover />
         </Box>
+
         <Box sx={{ ml: 2 }}>
           <AccountPopover />
         </Box>

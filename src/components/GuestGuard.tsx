@@ -11,7 +11,7 @@ const GuestGuard: FC<GuestGuardProps> = ({ children }) => {
   const { isAuthenticated } = useAuth();
 
   if (isAuthenticated) {
-    return <Navigate to="/dashboard/overview" />;
+    return <Navigate to="/pages/example" />;
   }
 
   return <>{children}</>;

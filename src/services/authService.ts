@@ -24,7 +24,7 @@ export class AuthService {
 
   async me(accessToken): Promise<User> {
     try {
-      const decoded: IDataStoredInToken = jwt_decode(accessToken);
+      const decoded: IDataStoredInToken = await jwt_decode(accessToken);
       const url: string = `/user/${decoded.id}`;
       const res = await apiService.get<any>(url);
       return res;
