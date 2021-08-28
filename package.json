@@ -27,8 +27,6 @@
     ]
   },
   "dependencies": {
-    "@elastic/react-search-ui": "^1.7.0",
-    "@elastic/search-ui-app-search-connector": "^1.7.0",
     "@emotion/cache": "^11.4.0",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
