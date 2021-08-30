@@ -56,3 +56,5 @@ error.log
 
 .vscode
 ._.DS_Store
+
+.next

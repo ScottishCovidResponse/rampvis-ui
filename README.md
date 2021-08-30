@@ -14,14 +14,14 @@ Install the dependencies.
 npm install
 ```
 
-Run the app in development mode using local development APIs.
+Run the app in development mode using local development APIs (you need to start the development instances of the API server).
 ```bash
-npm start
+npm run dev
 ```
 
-Run the app in development mode using production APIs.
+Run the app in development mode using production APIs (you don't need to start the development instances of the API server).
 ```bash
-npm run start-prod
+npm run dev-prod
 ```
 
 Open [http://localhost:5000](http://localhost:5000) to view it in the browser.

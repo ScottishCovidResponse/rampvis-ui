@@ -11,9 +11,9 @@
 
 import * as d3 from "d3";
 import Common from "./common";
-import "./css/overview-top-level-screen-a.css";
-import "./css/vis-example.css";
-import "./css/common.css";
+// import "./css/overview-top-level-screen-a.css";
+// import "./css/vis-example.css";
+// import "./css/common.css";
 
 export class SimpleLineChart {
 

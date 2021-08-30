@@ -17,7 +17,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import * as d3 from "d3";
-import "./css/pv-legend.css";
+//import "./css/pv-legend.css";
 
 /**
  * A superimposed visualisation of percentiles for uncertainty.

@@ -26,9 +26,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as d3 from "d3";
 import moment from 'moment';
-import "./css/dashboard.css";
-import "./css/default-dashboard.css";
-import "./css/common.css";
+// import "./css/dashboard.css";
+// import "./css/default-dashboard.css";
+// import "./css/common.css";
 
 /* 
 Namespace for dashboard functions 

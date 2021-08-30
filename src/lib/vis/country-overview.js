@@ -15,9 +15,9 @@
 import * as d3 from "d3";
 import { Data } from "./data"
 import { dashboard, COLOR_VACCINATON, COLOR_HOSPITAL, COLOR_TESTS, COLOR_DEATHS, COLOR_CASES } from "./dashboard";
-import "./css/dashboard.css";
-import "./css/default-dashboard.css";
-import "./css/common.css";
+// import "./css/dashboard.css";
+// import "./css/default-dashboard.css";
+// import "./css/common.css";
 
 
 var nhsBoardField = '';

@@ -7,7 +7,7 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": false,                                 /* TODO: Enable all strict type-checking options. */
+    "strict": false, /* TODO: Enable all strict type-checking options. */
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
@@ -15,7 +15,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "preserve"
   },
-  "include": ["src", "src/pages/.tsx"]
+  "include": ["src", "src/pages/.tsx"],
+  "exclude": ["node_modules"]
 }
