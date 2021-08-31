@@ -1,17 +1,15 @@
 /* eslint-disable arrow-body-style */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { FC, ReactElement, useCallback, useEffect, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Box, Button, Container, Typography } from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 
-import useSettings from "../../hooks/useSettings";
-import { apiService } from "../../services/apiService";
-import useAuth from "src/hooks/useAuth";
+import useSettings from "src/hooks/useSettings";
+import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
+import AuthGuard from "src/components/auth/guards/AuthGuard";
 
 const MyPortal = () => {
   const theme = useTheme();
@@ -45,7 +43,11 @@ const MyPortal = () => {
 };
 
 MyPortal.getLayout = function getLayout(page: ReactElement) {
-  return <DashboardLayout>{page}</DashboardLayout>;
+  return (
+    <AuthGuard>
+      <DashboardLayout>{page}</DashboardLayout>
+    </AuthGuard>
+  );
 };
 
 export default MyPortal;

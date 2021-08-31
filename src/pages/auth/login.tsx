@@ -10,10 +10,10 @@ import {
   Typography,
   Button
 } from "@material-ui/core";
-import { LoginJWT } from "../../components/auth/login";
-import Logo from "../../components/Logo";
-import useAuth from "../../hooks/useAuth";
-import MainLayout from "../../components/main-layout/MainLayout";
+import { LoginJWT } from "src/components/auth/login";
+import Logo from "src/components/Logo";
+import useAuth from "src/hooks/useAuth";
+import MainLayout from "src/components/main-layout/MainLayout";
 
 const Login = () => {
   const { platform } = useAuth() as any;

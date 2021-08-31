@@ -17,11 +17,8 @@ import {
   Popover,
   Typography,
 } from "@material-ui/core";
-import useAuth from "../../hooks/useAuth";
-import SettingsIcon from "@material-ui/icons/Settings";
-import PersonIcon from "@material-ui/icons/Person";
-
-import ShowHideGuard from "../ShowHideGuard";
+import useAuth from "src/hooks/useAuth";
+import ShowHideGuard from "src/components/auth/guards/ShowHideGuard";
 
 const AccountPopover: FC = () => {
   const anchorRef = useRef<HTMLButtonElement | null>(null);

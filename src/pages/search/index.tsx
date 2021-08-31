@@ -1,19 +1,14 @@
-/**
- * Search ontology generated pages
- */
-
 /* eslint-disable no-new */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import React, { FC, Props, ReactElement, useCallback, useEffect, useRef, useState } from "react";
+import React, {ReactElement, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Box, CircularProgress, Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
 import useSettings from "src/hooks/useSettings";
 import SearchBar from "src/components/search/SearchBar";
 import SearchResultView from "src/components/search/SearchResultView";
-import { apiService } from "src/services/apiService";
+import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 
 const useStyles = makeStyles((theme) => ({}));
