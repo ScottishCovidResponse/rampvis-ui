@@ -1,5 +1,4 @@
 import type { FC } from "react";
-import { Link as RouterLink } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Box, Button, Container, Typography } from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -67,6 +66,7 @@ const UnderConstruction: FC = () => {
               mt: 6,
             }}  
           >
+            {/* 
             <Button
               color="primary"
               component={RouterLink}
@@ -74,7 +74,8 @@ const UnderConstruction: FC = () => {
               variant="outlined"
             >
               Back to Home
-            </Button>
+            </Button> 
+            */}
           </Box>
         </Container>
       </Box>

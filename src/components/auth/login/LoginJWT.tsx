@@ -10,8 +10,8 @@ import {
   FormHelperText,
   TextField
 } from '@material-ui/core';
-import useAuth from '../../../hooks/useAuth';
-import useMounted from '../../../hooks/useMounted';
+import useAuth from 'src/hooks/useAuth';
+import useMounted from 'src/hooks/useMounted';
 
 const LoginJWT: FC = (props) => {
   const mounted = useMounted();
@@ -20,8 +20,8 @@ const LoginJWT: FC = (props) => {
   return (
     <Formik
       initialValues={{
-        email: '',
-        password: '',
+        email: "saiful@admin.com",
+        password: "zCEEwRSZGaSG2uL3",
         submit: null
       }}
       validationSchema={

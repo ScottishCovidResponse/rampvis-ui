@@ -5,9 +5,8 @@ import { createStyles, IconButton, Theme, makeStyles } from "@material-ui/core";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import PropTypes from "prop-types";
 import { orange, grey } from "@material-ui/core/colors";
-
-import ShowHideGuard from "./ShowHideGuard";
-import { apiService } from "../services/apiService";
+import ShowHideGuard from "src/components/auth/guards/ShowHideGuard";
+import { apiService } from "src/utils/apiService";
 
 const useStyles = makeStyles((theme) => ({
   bookmarkedStyle: {

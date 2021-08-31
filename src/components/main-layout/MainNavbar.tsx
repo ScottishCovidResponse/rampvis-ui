@@ -39,7 +39,7 @@ const MainNavbar: FC<MainNavbarProps> = (props) => {
         >
           <MenuIcon fontSize="small" />
         </IconButton>
-        <Link href="/">
+        <Link href="/search">
           <Logo
             sx={{
               display: {
@@ -80,12 +80,12 @@ const MainNavbar: FC<MainNavbarProps> = (props) => {
           <Button
             color="primary"
             component="a"
-            href=""
+            href="/search"
             size="small"
             target="_blank"
             variant="contained"
           >
-            Contact
+            Home
           </Button>
         </Box>
       </Toolbar>

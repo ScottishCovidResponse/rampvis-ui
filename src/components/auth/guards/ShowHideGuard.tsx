@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from "react";
 import PropTypes from "prop-types";
-import useAuth from "../hooks/useAuth";
+import useAuth from "src/hooks/useAuth";
 
 interface ShowHideGuardProps {
   children: ReactNode;

@@ -20,7 +20,7 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import ChatIcon from "@material-ui/icons/Chat";
 import CreditCardIcon from "@material-ui/icons/CreditCard";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import ShowHideGuard from "../ShowHideGuard";
+import ShowHideGuard from "src/components/auth/guards/ShowHideGuard";
 
 interface Notification {
   id: string;

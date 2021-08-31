@@ -27,7 +27,7 @@ import useSettings from "src/hooks/useSettings";
 import { visFactory } from "src/lib/vis/vis-factory";
 import useAuth from "src/hooks/useAuth";
 import Bookmark from "src/components/Bookmark";
-import { apiService } from "src/services/apiService";
+import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 
 const API = {

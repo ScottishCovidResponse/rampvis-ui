@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import type { FC } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
 import PropTypes from "prop-types";
 import { Avatar, Box, Divider, Drawer, Typography } from "@material-ui/core";
 import type { Theme } from "@material-ui/core";
@@ -16,11 +15,12 @@ import PlaceIcon from "@material-ui/icons/Place";
 import AssessmentIcon from "@material-ui/icons/Assessment";
 import DonutSmallIcon from "@material-ui/icons/DonutSmall";
 import SearchIcon from "@material-ui/icons/Search";
-
-import useAuth from "../../hooks/useAuth";
-import Logo from "../Logo";
+import AllInboxIcon from '@material-ui/icons/AllInbox';
+import Filter1Icon from '@material-ui/icons/Filter1';
+import useAuth from "src/hooks/useAuth";
+import Logo from "src/components/Logo";
 import NavSection from "src/components/dashboard-layout/NavSection";
-import Scrollbar from "../Scrollbar";
+import Scrollbar from "src/components/Scrollbar";
 
 interface DashboardSidebarProps {
   onMobileClose: () => void;
@@ -72,22 +72,22 @@ const sections = [
     items: [
       {
         title: "Scotland",
-        path: "/scotland",
+        path: "/country/scotland",
         icon: <PlaceIcon fontSize="small" />,
       },
       {
         title: "England",
-        path: "/england",
+        path: "/country/england",
         icon: <PlaceIcon fontSize="small" />,
       },
       {
         title: "N. ireland",
-        path: "/northern-ireland",
+        path: "/country/northern-ireland",
         icon: <PlaceIcon fontSize="small" />,
       },
       {
         title: "Wales",
-        path: "/wales",
+        path: "/country/wales",
         icon: <PlaceIcon fontSize="small" />,
       },
     ],
@@ -98,13 +98,13 @@ const sections = [
       {
         title: "Tools",
         path: "",
-        icon: <SettingsIcon fontSize="small" />,
+        icon: <AllInboxIcon fontSize="small" />,
         children: [
           {
             title: "Timeseries Similarity",
             path: "/tools/timeseries-sim",
-            icon: <ArrowForwardIosIcon fontSize="small" />,
-          }
+            icon: <Filter1Icon fontSize="small" />,
+          },
         ],
       },
     ],
@@ -115,7 +115,7 @@ const sections = [
       {
         title: "Development",
         path: "/development/release",
-        icon: <SettingsIcon fontSize="small" />,
+        icon: <ArrowForwardIosIcon fontSize="small" />,
         children: [
           {
             title: "Example",
@@ -140,7 +140,6 @@ const sections = [
 
 const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
   const { onMobileClose, openMobile } = props;
-  // const location = useLocation();
   const router = useRouter();
 
   const { user } = useAuth();

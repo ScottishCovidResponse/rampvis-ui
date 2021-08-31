@@ -24,15 +24,9 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
 import axios from "axios";
-
-import { useRouter } from "next/router";
 import { GetStaticProps, GetStaticPaths, NextPage } from "next";
-
 import useSettings from "src/hooks/useSettings";
 import { visFactory } from "src/lib/vis/vis-factory";
-import useAuth from "src/hooks/useAuth";
-import Bookmark from "src/components/Bookmark";
-import { apiService } from "src/services/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 
 const API = {
