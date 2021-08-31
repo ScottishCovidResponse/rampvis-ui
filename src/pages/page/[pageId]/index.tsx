@@ -6,6 +6,7 @@ import {
   ReactElement,
   useCallback,
   useEffect,
+  useState
 } from "react";
 import { Helmet } from "react-helmet-async";
 import {
@@ -70,10 +71,13 @@ const PropagatedPage = () => {
   const classes = useStyles();
   const router = useRouter();
   const { pageId } = router.query;
+  const [ title, setTitle ] = useState<string>("");
 
   const fetchOntoPage = useCallback(async () => {
     const page = await apiService.get<any>(`/template/page/${pageId}`);
     console.log("PropagatedPage: page = ", page);
+
+    setTitle(page?.title);
 
     const dataForVisFunction = await Promise.all(
       page?.data?.map(async (d: any) => {
@@ -130,7 +134,7 @@ const PropagatedPage = () => {
                     <Bookmark pageId={pageId} />
                   }
                   avatar={<Avatar className={classes.avatar} />}
-                  title="TODO: Title..."
+                  title={title}
                   subheader=""
                 />
 
