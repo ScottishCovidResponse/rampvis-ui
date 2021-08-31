@@ -17,8 +17,8 @@ const Logo: FC<LogoProps> = (props) => (
     width="52"
     {...props}
   >
-    <title>T</title>
-    <defs>
+    <title>VIS</title>
+    {/* <defs>
       <filter id="filter">
         <feColorMatrix
           in="SourceGraphic"
@@ -30,7 +30,7 @@ const Logo: FC<LogoProps> = (props) => (
     <g
       fill="none"
       stroke="none"
-    >
+    > 
       <g filter="url(#filter)">
         <g>
           <rect
@@ -43,7 +43,8 @@ const Logo: FC<LogoProps> = (props) => (
  
         </g>
       </g>
-    </g>
+    </g> */}
+    <image href="/Favicon52x52.png" />
   </LogoRoot>
 );
 
