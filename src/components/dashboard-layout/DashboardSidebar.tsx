@@ -96,6 +96,23 @@ const sections = [
     title: "",
     items: [
       {
+        title: "Tools",
+        path: "",
+        icon: <SettingsIcon fontSize="small" />,
+        children: [
+          {
+            title: "Timeseries Similarity",
+            path: "/tools/timeseries-sim",
+            icon: <ArrowForwardIosIcon fontSize="small" />,
+          }
+        ],
+      },
+    ],
+  },
+  {
+    title: "",
+    items: [
+      {
         title: "Development",
         path: "/development/release",
         icon: <SettingsIcon fontSize="small" />,
