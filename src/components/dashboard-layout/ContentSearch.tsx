@@ -151,14 +151,16 @@ const ContentSearch: FC = () => {
                       <>
                         {results.map((result, i) => (
                           <Box key={i} sx={{ mb: 2 }}>
-                            {/* <Link
+                            {
+                            /* <Link
                               color="textPrimary"
                               component={RouterLink}
                               to="/dashboard"
                               variant="h5"
                             >
                               {result.title}
-                            </Link> */}
+                            </Link> 
+                            */}
                             <Typography color="textPrimary" variant="body2">
                               {result.description}
                             </Typography>
