@@ -104,7 +104,7 @@ const AuthContext = createContext<AuthContextValue>({
   logout: () => Promise.resolve(),
 });
 
-export const AuthProvider: FC<AuthProviderProps> = (props) => {
+export const AuthProviderJWT: FC<AuthProviderProps> = (props) => {
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
   const router = useRouter()
@@ -115,7 +115,8 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         const accessToken = window.localStorage.getItem("accessToken");
 
         if (accessToken) {
-          const user = await me(accessToken);
+          // TODO: check if we need to call again?
+          const user = await me();
 
           dispatch({
             type: "INITIALIZE",
@@ -134,7 +135,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
           });
         }
       } catch (err) {
-        console.error(err);
+        console.error("AuthProviderJWT: error =", err);
         dispatch({
           type: "INITIALIZE",
           payload: {
@@ -155,8 +156,13 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         password,
       });
 
-      localStorage.setItem("accessToken", res.token);
-      const user = await me(res.token);
+      const accessToken =res.token;
+      const decoded: IDataStoredInToken = await jwt_decode(res.token);
+      let user = null;
+      if (decoded && decoded.id) {
+        localStorage.setItem("accessToken", accessToken);
+        user = await me();
+      }
 
       dispatch({
         type: "LOGIN",
@@ -167,7 +173,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
 
       router.push(`/search`)
     } catch (err) {
-      console.error("login: error =", err);
+      console.error("AuthProviderJWT:login: error =", err);
     }
   };
 
@@ -177,14 +183,11 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     router.push(`/auth/login`)
   };
 
-  const me = async (accessToken): Promise<User> => {
+  const me = async (): Promise<User> => {
     try {
-      const decoded: IDataStoredInToken = await jwt_decode(accessToken);
-      const url: string = `/user/${decoded.id}`;
-      const res = await apiService.get<any>(url);
-      return res;
+      return await apiService.get<any>(`/me`); 
     } catch (err) {
-      console.log("AuthApi:me: error = ", err);
+      console.log("AuthProviderJWT:me: error = ", err);
       return err;
     }
   };
@@ -203,7 +206,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   );
 };
 
-AuthProvider.propTypes = {
+AuthProviderJWT.propTypes = {
   children: PropTypes.node.isRequired,
 };
 

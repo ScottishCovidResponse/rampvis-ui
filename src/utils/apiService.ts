@@ -48,9 +48,11 @@ export class ApiService {
     return res.data;
   }
 
-  //   put<T extends any>(url: string, body: T): Promise<T> {
-  //     return this.getAxiosInstance().put(...);
-  //   }
+  // async put<T extends any>(url: string, body: T): Promise<T> {
+  //     console.log("ApiService:put: url = ", url, "endpoint = ", this.getEndpoint(url))
+  //     const res = await this.getAxiosInstance().put(this.getEndpoint(url));
+  //     return res.data;
+  // }
 
   //   patch<T extends any>(url: string, body: T): Observable<T> {
   //     return ...patch<T>(this.getEndpoint(url), body);

@@ -13,7 +13,6 @@ import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import { Chip, Box } from "@material-ui/core";
 import ImageIcon from "@material-ui/icons/Image";
-// import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -28,8 +27,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: theme.spacing(0.5),
   },
   large: {
-    width: theme.spacing(10),
-    height: theme.spacing(10),
+    width: theme.spacing(5),
+    height: theme.spacing(5),
     margin: "5px 10px",
   },
 }));
@@ -41,9 +40,23 @@ interface SearchResultProps {
 const SearchResultView: FC<SearchResultProps> = ({ data = [] }) => {
   const classes = useStyles();
  
-  const bookmark = async (e) => {
-    console.log(e)
-  }
+  const list = [
+    "605e64ccdfb1d977d34aa3cc.png",
+    "609728d27d47ae21406735bd.png",
+    "60ecc0f3beb7791f01bebe49.png",
+    "61006ed44fef9b1f276003de.png",
+    "61031507be36153857a3de37.png",
+    "608dd7dbd651fc539ce11801.png",
+    "60ad693df52d2d641f4e45b9.png",
+    "61006c9842248f1ef21219b1.png",
+    "610314efc50719383382a6a2.png",
+  ];
+
+  // const bookmark = async (e) => {
+  //   console.log(e)
+  // }
+
+  console.log("SearchResultView: data =", data);
 
   return (
     <Box
@@ -60,12 +73,11 @@ const SearchResultView: FC<SearchResultProps> = ({ data = [] }) => {
               alignItems="flex-start"
             >
               <ListItemAvatar>
-                <Avatar variant="square" className={classes.large} >
-                  <ImageIcon />
+                <Avatar variant="square" className={classes.large} src={`/static/mock-images/${list[Math.floor(Math.random() * list.length)]}`}>
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary="TODO: title"
+                primary={data?.title}
                 secondary={
                   <React.Fragment>
                     <Typography
@@ -74,15 +86,15 @@ const SearchResultView: FC<SearchResultProps> = ({ data = [] }) => {
                       className={classes.inline}
                       color="textPrimary"
                     >
-                      {d.visDescription}
+                      {d.title}
                       <Divider orientation="vertical" />
                     </Typography>
-                    {d.dataDescription}
+                    {d.visDescription}
                     <Divider orientation="vertical" />
 
-                    {d.keywords.map((k: string) => (
-                      <Chip size="small" className={classes.chip} label={k} />
-                    ))}
+                    {/* {d.keywords.map((k: string) => (
+                      <Chip size="small" variant="outlined" className={classes.chip} label={k} />
+                    ))} */}
                   </React.Fragment>
                 }
               />

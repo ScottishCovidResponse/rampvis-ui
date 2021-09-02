@@ -20,7 +20,7 @@ import { HelmetProvider } from "react-helmet-async";
 import RTL from "src/components/RTL";
 import SettingsDrawer from "src/components/SettingsDrawer";
 import { SettingsProvider } from "src/contexts/SettingsContext";
-import { AuthProvider } from "src/contexts/JWTContext";
+import { AuthProviderJWT } from "src/contexts/AuthProviderJWT";
 
 //
 // Import all the css files created for d3 charts
@@ -77,17 +77,17 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
           <StyledEngineProvider injectFirst>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <SettingsProvider>
-                <AuthProvider>
+                <AuthProviderJWT>
                   <ThemeProvider theme={theme}>
                     <RTL direction={settings.direction as "ltr" | "rtl"}>
                       <CssBaseline />
                       <Toaster position="top-center" />
-                      <SettingsDrawer />
+                      {/* <SettingsDrawer /> */}
 
                       {getLayout(<Component {...pageProps} />)}
                     </RTL>
                   </ThemeProvider>
-                </AuthProvider>
+                </AuthProviderJWT>
               </SettingsProvider>
             </LocalizationProvider>
           </StyledEngineProvider>
