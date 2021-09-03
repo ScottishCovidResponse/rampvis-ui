@@ -1,0 +1,34 @@
+name: Check codebase
+
+on:
+  push:
+    branches:
+      - main
+      - nextjs-migrate
+  pull_request:
+    branches:
+      - main
+      - nextjs-migrate
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run yarn lint:next
+        run: yarn lint:next
+        continue-on-error: true ## TODO: remove after fixing all ESLint problems
+
+      - name: Run yarn lint:yarn-deduplicate
+        run: yarn lint:yarn-deduplicate

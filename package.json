@@ -5,8 +5,8 @@
     "dev-prod": "env-cmd -f .env.production next dev",
     "dev": "env-cmd -f .env.development next dev",
     "fix:yarn-deduplicate": "yarn install; yarn-deduplicate --strategy=fewer; yarn install",
+    "lint:next": "next lint",
     "lint:yarn-deduplicate": "yarn-deduplicate --fail --list --strategy=fewer",
-    "lint": "next lint",
     "start": "next start"
   },
   "dependencies": {
