@@ -1,12 +1,6 @@
 {
-  "root": true,
-  "env": {
-    "es6": true,
-    "browser": true,
-    "node": true
-  },
-  "parser": "@typescript-eslint/parser",
-  "extends": ["airbnb-typescript", "prettier"],
+  "plugins": ["@typescript-eslint"],
+  "extends": ["next", "plugin:@typescript-eslint/recommended", "prettier"],
   "rules": {
     "@typescript-eslint/comma-dangle": "off",
     "class-methods-use-this": "off",
