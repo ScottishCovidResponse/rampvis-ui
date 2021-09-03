@@ -70,8 +70,7 @@ const SearchResultView: FC<SearchResultProps> = ({ data = [] }) => {
               alignItems="flex-start"
             >
               <ListItemAvatar>
-                <Avatar variant="square" className={classes.large} src={`/static/mock-images/${list[Math.floor(Math.random() * list.length)]}`}>
-                </Avatar>
+                <Avatar variant="square" className={classes.large} src={`/static/mock-images/${list[Math.floor(Math.random() * list.length)]}`} />
               </ListItemAvatar>
               <ListItemText
                 primary={data?.title}

@@ -44,7 +44,7 @@ const PortalItem: FC<PortalItemProps> = ({ data }) => {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Bookmark pageId={"xxxx"}/>
+        <Bookmark pageId="xxxx"/>
       </CardActions>
     </Card>
   );

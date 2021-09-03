@@ -4,7 +4,7 @@
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useTheme } from "@material-ui/core/styles";
+import { useTheme , makeStyles } from "@material-ui/core/styles";
 import {
   Avatar,
   Box,
@@ -15,7 +15,6 @@ import {
   Card,
 } from "@material-ui/core";
 import { blue } from "@material-ui/core/colors";
-import { makeStyles } from "@material-ui/core/styles";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
 
 import useSettings from "src/hooks/useSettings";
@@ -94,7 +93,7 @@ const MyPortal = () => {
               <Card>
                 <CardHeader
                   avatar={<BookmarksIcon />}
-                  title={"My Bookmarks"}
+                  title="My Bookmarks"
                   subheader=""
                 />
 

@@ -3,10 +3,9 @@
 
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { useTheme } from "@material-ui/core/styles";
+import { useTheme , makeStyles } from "@material-ui/core/styles";
 import { Box, Container } from "@material-ui/core";
 import { blue } from "@material-ui/core/colors";
-import { makeStyles } from "@material-ui/core/styles";
 
 import useSettings from "src/hooks/useSettings";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
@@ -34,7 +33,7 @@ const Ensemble = () => {
           py: 8,
         }}
       >
-        <Container maxWidth={settings.compact ? "xl" : false}></Container>
+        <Container maxWidth={settings.compact ? "xl" : false} />
       </Box>
     </>
   );

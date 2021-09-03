@@ -67,21 +67,19 @@ const PortalView: FC<PortalViewProps> = ({ data = [] }) => {
     "610314efc50719383382a6a2.png",
   ];
 
-  data = data.map((d) => {
-    return {
+  data = data.map((d) => ({
       ...d,
       img: `/static/mock-images/${
         list[Math.floor(Math.random() * list.length)]
       }`,
-    };
-  });
+    }));
 
   return (
 
     <>
       <Grid alignItems="stretch" className={classes.root}>
        {data.map((d) => (
-          <PortalItem data={d}></PortalItem>
+          <PortalItem data={d} />
         ))}
       </Grid>
     </>

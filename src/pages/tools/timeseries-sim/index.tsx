@@ -314,9 +314,7 @@ const TimeseriesSim = () => {
               <Dialog open={advancedFilterPopup} onClose={advancedFilterClickClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Title</DialogTitle>
                 <DialogContent>
-                  <DialogContentText>
-                
-                  </DialogContentText>
+                  <DialogContentText />
                   <TextField
                     autoFocus
                     margin="dense"
