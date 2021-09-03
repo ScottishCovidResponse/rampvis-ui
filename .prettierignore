@@ -14,6 +14,9 @@
 # folders with . (compensates *.*)
 !*.*/
 
+# special cases
+public/_redirects
+
 ########################
 ## Same as in .gitignore
 ########################
