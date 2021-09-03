@@ -5,8 +5,10 @@
     "dev-prod": "env-cmd -f .env.production next dev",
     "dev": "env-cmd -f .env.development next dev",
     "fix:next": "next lint --fix",
+    "fix:prettier": "prettier --write \"**/*\"",
     "fix:yarn-deduplicate": "yarn install; yarn-deduplicate --strategy=fewer; yarn install",
     "lint:next": "next lint",
+    "lint:prettier": "prettier --check \"**/*\"",
     "lint:tsc": "yarn tsc --noEmit",
     "lint:yarn-deduplicate": "yarn-deduplicate --fail --list --strategy=fewer",
     "start": "next start"
@@ -73,6 +75,8 @@
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "prettier": "^2.3.2",
+    "prettier-plugin-packagejson": "^2.2.11",
+    "prettier-plugin-sh": "^0.7.1",
     "typescript": "^4.2.4",
     "yarn-deduplicate": "^3.1.0"
   }
