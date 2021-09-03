@@ -26,9 +26,16 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Run yarn lint:next
+      - name: Run yarn lint:next (exit code is ignored)
+        if: ${{ success() || failure() }}
         run: yarn lint:next
         continue-on-error: true ## TODO: remove after fixing all ESLint problems
 
+      - name: Run yarn lint:tsc (exit code is ignored)
+        if: ${{ success() || failure() }}
+        run: yarn lint:tsc
+        continue-on-error: true ## TODO: remove after fixing all TypeScript compiler problems
+
       - name: Run yarn lint:yarn-deduplicate
+        if: ${{ success() || failure() }}
         run: yarn lint:yarn-deduplicate

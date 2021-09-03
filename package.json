@@ -6,6 +6,7 @@
     "dev": "env-cmd -f .env.development next dev",
     "fix:yarn-deduplicate": "yarn install; yarn-deduplicate --strategy=fewer; yarn install",
     "lint:next": "next lint",
+    "lint:tsc": "yarn tsc --noEmit",
     "lint:yarn-deduplicate": "yarn-deduplicate --fail --list --strategy=fewer",
     "start": "next start"
   },
