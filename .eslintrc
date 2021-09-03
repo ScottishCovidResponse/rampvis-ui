@@ -27,12 +27,6 @@
     "object-curly-newline": "off",
     "react/forbid-prop-types": "off",
     "react/jsx-filename-extension": "off",
-    "react/jsx-max-props-per-line": [
-      1,
-      {
-        "when": "always"
-      }
-    ],
     "react/jsx-props-no-spreading": "off",
     "react/react-in-jsx-scope": "off",
     "react/require-default-props": "off"
