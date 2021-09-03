@@ -105,6 +105,11 @@ const sections = [
             path: "/tools/timeseries-sim",
             icon: <Filter1Icon fontSize="small" />,
           },
+          {
+            title: "Ensemble",
+            path: "/tools/ensemble",
+            icon: <Filter1Icon fontSize="small" />,
+          },
         ],
       },
     ],
