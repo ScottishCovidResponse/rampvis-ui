@@ -52,38 +52,36 @@ interface PortalViewProps {
 
 const PortalView: FC<PortalViewProps> = ({ data = [] }) => {
   const classes = useStyles();
-  data.map((d) => console.log(`/static/mock-images/${d}`));
+  console.log("PortalView: data = ", data);
+
+  // TODO: Use real images from backend
+  const list = [
+    "605e64ccdfb1d977d34aa3cc.png",
+    "609728d27d47ae21406735bd.png",
+    "60ecc0f3beb7791f01bebe49.png",
+    "61006ed44fef9b1f276003de.png",
+    "61031507be36153857a3de37.png",
+    "608dd7dbd651fc539ce11801.png",
+    "60ad693df52d2d641f4e45b9.png",
+    "61006c9842248f1ef21219b1.png",
+    "610314efc50719383382a6a2.png",
+  ];
+
+  data = data.map((d) => {
+    return {
+      ...d,
+      img: `/static/mock-images/${
+        list[Math.floor(Math.random() * list.length)]
+      }`,
+    };
+  });
 
   return (
-    // <div className={classes.root}>
-    //   <ImageList>
-    //     <ImageListItem key="Subheader" cols={3} style={{ height: "auto" }}>
-    //       {/* <ListSubheader component="div">XXXX</ListSubheader> */}
-    //     </ImageListItem>
-    //     {data.map((d) => (
-    //       <ImageListItem key={d} >
-    //         <img src={`/static/mock-images/${d}`} alt={"xx"} />
-    //         <ImageListItemBar
-    //           title={d}
-    //           subtitle={<span>{"xx"}</span>}
-    //           actionIcon={
-    //             <IconButton
-    //               aria-label={`info about ${"xx"}`}
-    //               className={classes.icon}
-    //             >
-    //               <BookmarkIcon />
-    //             </IconButton>
-    //           }
-    //           position="bottom"
-    //         />
-    //       </ImageListItem>
-    //     ))}
-    //   </ImageList>
-    // </div>
+
     <>
       <Grid alignItems="stretch" className={classes.root}>
-        {data.map((d) => (
-          <PortalItem data={`/static/mock-images/${d}`}></PortalItem>
+       {data.map((d) => (
+          <PortalItem data={d}></PortalItem>
         ))}
       </Grid>
     </>

@@ -10,6 +10,7 @@ import SearchBar from "src/components/search/SearchBar";
 import SearchResultView from "src/components/search/SearchResultView";
 import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
+import { mockSearchResults } from "src/components/mock/searchResults";  
 
 const useStyles = makeStyles((theme) => ({}));
 
@@ -18,7 +19,7 @@ const PageSearch = () => {
   const classes = useStyles();
 
   const [input, setInput] = useState("");
-  const [result, setPageList] = useState([]);
+  const [result, setPageList] = useState(mockSearchResults);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const searchPage = async () => {

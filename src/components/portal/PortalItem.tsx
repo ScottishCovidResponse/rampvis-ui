@@ -24,21 +24,22 @@ interface PortalItemProps {
 
 const PortalItem: FC<PortalItemProps> = ({ data }) => {
   const classes = useStyles();
-
-  return (
+  console.log("PortalItem: data =", data)
+  
+  return (  
     <Card className={classes.root}>
       <CardActionArea>
         <CardMedia
           className={classes.media}
-          image={data}
+          image={data.img}
           title=""
         />
         <CardContent>
           <Typography gutterBottom variant="h6" component="h2">
-            Title of page
+            { data.title }
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            Data descriptions
+          { data.vis.description }
           </Typography>
         </CardContent>
       </CardActionArea>

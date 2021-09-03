@@ -40,6 +40,7 @@ interface SearchResultProps {
 const SearchResultView: FC<SearchResultProps> = ({ data = [] }) => {
   const classes = useStyles();
  
+  // TODO: Use real images from backend
   const list = [
     "605e64ccdfb1d977d34aa3cc.png",
     "609728d27d47ae21406735bd.png",
@@ -51,10 +52,6 @@ const SearchResultView: FC<SearchResultProps> = ({ data = [] }) => {
     "61006c9842248f1ef21219b1.png",
     "610314efc50719383382a6a2.png",
   ];
-
-  // const bookmark = async (e) => {
-  //   console.log(e)
-  // }
 
   console.log("SearchResultView: data =", data);
 

@@ -17,8 +17,6 @@ import { createCustomTheme } from "src/theme";
 import useScrollReset from "src/hooks/useScrollReset";
 import useAuth from "src/hooks/useAuth";
 import { HelmetProvider } from "react-helmet-async";
-import RTL from "src/components/RTL";
-import SettingsDrawer from "src/components/SettingsDrawer";
 import { SettingsProvider } from "src/contexts/SettingsContext";
 import { AuthProviderJWT } from "src/contexts/AuthProviderJWT";
 
@@ -79,13 +77,9 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
               <SettingsProvider>
                 <AuthProviderJWT>
                   <ThemeProvider theme={theme}>
-                    <RTL direction={settings.direction as "ltr" | "rtl"}>
                       <CssBaseline />
                       <Toaster position="top-center" />
-                      {/* <SettingsDrawer /> */}
-
                       {getLayout(<Component {...pageProps} />)}
-                    </RTL>
                   </ThemeProvider>
                 </AuthProviderJWT>
               </SettingsProvider>

@@ -23,6 +23,7 @@ import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import AuthGuard from "src/components/auth/guards/AuthGuard";
 import PortalView from "src/components/portal/PortalView";
+import { mockPortalData } from "src/components/mock/portalData";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,36 +57,25 @@ const MyPortal = () => {
   const classes = useStyles();
   const { settings } = useSettings();
 
-  // const mobileDevice = useMediaQuery(theme.breakpoints.down("sm"));
-  // const { settings } = useSettings();
-  // const [bookmarks, setBookmarks] = useState<any>([]);
+  const [portalData, setPortalData] = useState<any[]>(mockPortalData);
 
-  // const fetchBookmarks = useCallback(async () => {
-  //   try {
-  //     const res = await apiService.get<any>(`/bookmark`);
-  //     console.log("PageListTemplate: fetched data = ", res);
-  //     setBookmarks(res);
-  //   } catch (err) {
-  //     // prettier-ignore
-  //     console.error(`PageListTemplate: Fetching error = ${err}`);
-  //   }
-  // }, []);
+  const fetchPortalPages = useCallback(async () => {
+    try {
+      // TODO: Set correct URL once available
+      const url: string = `/template/pages/example/plot/`;
+      const res = (await apiService.get<any>(url))?.data;
+      console.log("MyPortal: fetched data = ", res);
+      setPortalData(res);
+    } catch (err) {
+      // prettier-ignore
+      console.error(`PageListTemplate: Fetching API, error = ${err}`);
+    }
+  }, []);
 
-  // useEffect(() => {
-  //   fetchBookmarks();
-  // }, [fetchBookmarks]);
+  useEffect(() => {
+    fetchPortalPages();
+  }, [fetchPortalPages]);
 
-  const list = [
-    "605e64ccdfb1d977d34aa3cc.png",
-    "609728d27d47ae21406735bd.png",
-    "60ecc0f3beb7791f01bebe49.png",
-    "61006ed44fef9b1f276003de.png",
-    "61031507be36153857a3de37.png",
-    "608dd7dbd651fc539ce11801.png",
-    "60ad693df52d2d641f4e45b9.png",
-    "61006c9842248f1ef21219b1.png",
-    "610314efc50719383382a6a2.png",
-  ];
   return (
     <>
       <Helmet>
@@ -109,7 +99,7 @@ const MyPortal = () => {
                 />
 
                 <CardContent sx={{ pt: "8px" }}>
-                  <PortalView data={list} />
+                  <PortalView data={portalData} />
                 </CardContent>
               </Card>
             </Grid>
