@@ -31,10 +31,9 @@ jobs:
         run: yarn lint:eslint
         continue-on-error: true ## TODO: remove after fixing all ESLint problems
 
-      - name: Run yarn lint:prettier (exit code is ignored)
+      - name: Run yarn lint:prettier
         if: ${{ success() || failure() }}
         run: yarn lint:prettier
-        continue-on-error: true ## TODO: remove after fixing all ESLint problems
 
       - name: Run yarn lint:tsc (exit code is ignored)
         if: ${{ success() || failure() }}
