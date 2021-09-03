@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
     icon: {
       color: orange,
     },
-  })
+  }),
 );
 
 /**
@@ -68,17 +68,14 @@ const PortalView: FC<PortalViewProps> = ({ data = [] }) => {
   ];
 
   data = data.map((d) => ({
-      ...d,
-      img: `/static/mock-images/${
-        list[Math.floor(Math.random() * list.length)]
-      }`,
-    }));
+    ...d,
+    img: `/static/mock-images/${list[Math.floor(Math.random() * list.length)]}`,
+  }));
 
   return (
-
     <>
       <Grid alignItems="stretch" className={classes.root}>
-       {data.map((d) => (
+        {data.map((d) => (
           <PortalItem data={d} />
         ))}
       </Grid>

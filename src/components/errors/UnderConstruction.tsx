@@ -31,7 +31,7 @@ const UnderConstruction: FC = () => {
           >
             The page you are looking for is under construction
           </Typography>
-          
+
           <Typography
             align="center"
             color="textSecondary"
@@ -64,7 +64,7 @@ const UnderConstruction: FC = () => {
               display: "flex",
               justifyContent: "center",
               mt: 6,
-            }}  
+            }}
           >
             {/* 
             <Button

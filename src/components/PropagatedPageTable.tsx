@@ -78,7 +78,7 @@ const PropagatedPageTable: FC<PropagatedPageTableProps> = ({ data = [] }) => {
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setRowsPerPage(+event.target.value);
     setPage(0);

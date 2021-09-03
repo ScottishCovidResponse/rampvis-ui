@@ -1,13 +1,13 @@
-import type { FC } from 'react';
-import type { Theme } from '@material-ui/core';
-import { experimentalStyled } from '@material-ui/core/styles';
-import type { SxProps } from '@material-ui/system';
+import type { FC } from "react";
+import type { Theme } from "@material-ui/core";
+import { experimentalStyled } from "@material-ui/core/styles";
+import type { SxProps } from "@material-ui/system";
 
 interface LogoProps {
   sx?: SxProps<Theme>;
 }
 
-const LogoRoot = experimentalStyled('svg')``;
+const LogoRoot = experimentalStyled("svg")``;
 
 const Logo: FC<LogoProps> = (props) => (
   <LogoRoot

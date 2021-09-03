@@ -4,7 +4,7 @@
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useTheme , makeStyles } from "@material-ui/core/styles";
+import { useTheme, makeStyles } from "@material-ui/core/styles";
 import {
   Avatar,
   Box,

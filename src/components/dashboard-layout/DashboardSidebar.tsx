@@ -165,7 +165,6 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
       }}
     >
       <Scrollbar options={{ suppressScrollX: true }}>
-  
         <Box sx={{ p: 2 }}>
           <Box
             sx={{
@@ -177,7 +176,6 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
               p: 2,
             }}
           >
- 
             <Logo
               sx={{
                 height: 60,
@@ -228,7 +226,7 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
             // top: "64px !Important",
             height: "calc(100% - 0) !important",
             top: "0px !Important",
-             width: 280,
+            width: 280,
           },
         }}
         variant="permanent"

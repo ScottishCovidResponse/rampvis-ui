@@ -39,7 +39,7 @@ interface SearchResultProps {
 
 const SearchResultView: FC<SearchResultProps> = ({ data = [] }) => {
   const classes = useStyles();
- 
+
   // TODO: Use real images from backend
   const list = [
     "605e64ccdfb1d977d34aa3cc.png",
@@ -66,11 +66,15 @@ const SearchResultView: FC<SearchResultProps> = ({ data = [] }) => {
       <List className={classes.root}>
         {data.map((d: any) => (
           <>
-            <ListItem 
-              alignItems="flex-start"
-            >
+            <ListItem alignItems="flex-start">
               <ListItemAvatar>
-                <Avatar variant="square" className={classes.large} src={`/static/mock-images/${list[Math.floor(Math.random() * list.length)]}`} />
+                <Avatar
+                  variant="square"
+                  className={classes.large}
+                  src={`/static/mock-images/${
+                    list[Math.floor(Math.random() * list.length)]
+                  }`}
+                />
               </ListItemAvatar>
               <ListItemText
                 primary={data?.title}

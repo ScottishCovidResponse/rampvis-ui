@@ -1,16 +1,16 @@
-import { sign, decode, JWT_SECRET, JWT_EXPIRES_IN } from '../utils/jwt';
-import wait from '../utils/wait';
-import { User } from '../types/user';
+import { sign, decode, JWT_SECRET, JWT_EXPIRES_IN } from "../utils/jwt";
+import wait from "../utils/wait";
+import { User } from "../types/user";
 
 const users = [
   {
-    id: '5e86809283e28b96d2d38537',
-    avatar: '/static/mock-images/avatar-default.png',
-    email: 'admin@user.org',
-    name: 'Administrator',
-    password: 'Password123!',
-    role: 'Admin'
-  }
+    id: "5e86809283e28b96d2d38537",
+    avatar: "/static/mock-images/avatar-default.png",
+    email: "admin@user.org",
+    name: "Administrator",
+    password: "Password123!",
+    role: "Admin",
+  },
 ];
 
 class AuthApi {
@@ -22,26 +22,23 @@ class AuthApi {
         // Find the user
         const user = users.find((_user) => _user.email === email);
 
-        if (!user || (user.password !== password)) {
-          reject(new Error('Please check your email and password'));
+        if (!user || user.password !== password) {
+          reject(new Error("Please check your email and password"));
           return;
         }
 
         // Create the access token
-        const accessToken = sign(
-          { userId: user.id },
-          JWT_SECRET,
-          { expiresIn: JWT_EXPIRES_IN }
-        );
+        const accessToken = sign({ userId: user.id }, JWT_SECRET, {
+          expiresIn: JWT_EXPIRES_IN,
+        });
 
         resolve(accessToken);
       } catch (err) {
-        console.error('[Auth Api]: ', err);
-        reject(new Error('Internal server error'));
+        console.error("[Auth Api]: ", err);
+        reject(new Error("Internal server error"));
       }
     });
   }
-
 
   me(accessToken): Promise<User> {
     return new Promise((resolve, reject) => {
@@ -53,7 +50,7 @@ class AuthApi {
         const user = users.find((_user) => _user.id === userId);
 
         if (!user) {
-          reject(new Error('Invalid authorization token'));
+          reject(new Error("Invalid authorization token"));
           return;
         }
 
@@ -62,11 +59,11 @@ class AuthApi {
           avatar: user.avatar,
           email: user.email,
           name: user.name,
-          role: user.role
+          role: user.role,
         });
       } catch (err) {
-        console.error('[Auth Api]: ', err);
-        reject(new Error('Internal server error'));
+        console.error("[Auth Api]: ", err);
+        reject(new Error("Internal server error"));
       }
     });
   }

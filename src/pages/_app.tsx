@@ -32,7 +32,6 @@ import "src/lib/vis/css/portal.css";
 import "src/lib/vis/css/pv-legend.css";
 import "src/lib/vis/css/vis-example.css";
 
-
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
@@ -77,9 +76,9 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
               <SettingsProvider>
                 <AuthProviderJWT>
                   <ThemeProvider theme={theme}>
-                      <CssBaseline />
-                      <Toaster position="top-center" />
-                      {getLayout(<Component {...pageProps} />)}
+                    <CssBaseline />
+                    <Toaster position="top-center" />
+                    {getLayout(<Component {...pageProps} />)}
                   </ThemeProvider>
                 </AuthProviderJWT>
               </SettingsProvider>

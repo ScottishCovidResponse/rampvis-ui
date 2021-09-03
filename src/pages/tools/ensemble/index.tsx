@@ -3,7 +3,7 @@
 
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { useTheme , makeStyles } from "@material-ui/core/styles";
+import { useTheme, makeStyles } from "@material-ui/core/styles";
 import { Box, Container } from "@material-ui/core";
 import { blue } from "@material-ui/core/colors";
 

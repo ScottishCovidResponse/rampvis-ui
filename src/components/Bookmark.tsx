@@ -26,18 +26,21 @@ const Bookmark: FC<any> = ({ pageId }) => {
   const { user } = useAuth();
 
   if (user?.bookmarks?.includes(pageId)) {
-    setBookmark(true); 
+    setBookmark(true);
   }
   console.log("Bookmark: isBookmarked = ", isBookmarked);
 
   const onClickBookmark = async () => {
     console.log("Bookmark: !isBookmarked = ", !isBookmarked);
-    const res = await apiService.post<any>(`/me/bookmark`, {pageId, status: !isBookmarked});
+    const res = await apiService.post<any>(`/me/bookmark`, {
+      pageId,
+      status: !isBookmarked,
+    });
     // if (user?.bookmarks?.includes(pageId)) {
-    //   setBookmark(true); 
+    //   setBookmark(true);
     // }
     // TODO update user
-    console.log(res)
+    console.log(res);
   };
 
   return (
@@ -45,7 +48,9 @@ const Bookmark: FC<any> = ({ pageId }) => {
       <IconButton
         aria-label="bookmark"
         onClick={() => onClickBookmark()}
-        className={ isBookmarked ? classes.bookmarkedStyle : classes.unBookmarkedStyle }
+        className={
+          isBookmarked ? classes.bookmarkedStyle : classes.unBookmarkedStyle
+        }
       >
         <BookmarkIcon fontSize="inherit" />
       </IconButton>

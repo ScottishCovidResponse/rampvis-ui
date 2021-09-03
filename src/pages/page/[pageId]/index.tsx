@@ -2,12 +2,7 @@
  * CSR
  */
 
-import {
-  ReactElement,
-  useCallback,
-  useEffect,
-  useState
-} from "react";
+import { ReactElement, useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import {
   Avatar,
@@ -71,7 +66,7 @@ const PropagatedPage = () => {
   const classes = useStyles();
   const router = useRouter();
   const { pageId } = router.query;
-  const [ title, setTitle ] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
 
   const fetchOntoPage = useCallback(async () => {
     const page = await apiService.get<any>(`/template/page/${pageId}`);
@@ -85,7 +80,7 @@ const PropagatedPage = () => {
         const values = (await axios.get(endpoint)).data;
         const { description } = d;
         return { endpoint, values, description };
-      })
+      }),
     );
 
     const links = page?.pageIds?.map((d: any) => {

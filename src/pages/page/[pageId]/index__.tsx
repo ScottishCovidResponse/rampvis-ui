@@ -1,16 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
- 
+
 /**
- * SSR 
+ * SSR
  */
 
-import {
-  ReactElement,
-  useCallback,
-  useEffect,
-} from "react";
+import { ReactElement, useCallback, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import {
   Avatar,
@@ -63,10 +59,10 @@ const useStyles = makeStyles((theme) => ({
 const PropagatedPage = (props) => {
   const { settings } = useSettings();
   const classes = useStyles();
-   
+
   console.log("PropagatedPage: props = ", props);
 
-  visFactory(props.visType, props.visArg) 
+  visFactory(props.visType, props.visArg);
 
   return (
     <>
@@ -107,22 +103,23 @@ PropagatedPage.getLayout = function getLayout(page: ReactElement) {
   return <DashboardLayout>{page}</DashboardLayout>;
 };
 
-
 export const getStaticPaths: GetStaticPaths = async () => {
   const endpoint = `${process.env.NEXT_PUBLIC_API_JS}/template/pages/example/`;
   const { data } = await axios.get(endpoint);
   console.log("getStaticPaths: pages data = ", data.data);
 
-  const paths = data.data.map(d => ({ params: { pageId: d.id }}));
+  const paths = data.data.map((d) => ({ params: { pageId: d.id } }));
   console.log("paths = ", paths);
 
   return {
     paths,
-    fallback: false
+    fallback: false,
   };
 };
 
-export const getStaticProps: GetStaticProps = async ({ params: { pageId } }) => {
+export const getStaticProps: GetStaticProps = async ({
+  params: { pageId },
+}) => {
   const endpoint = `${process.env.NEXT_PUBLIC_API_JS}/template/page/${pageId}`;
   const { data } = await axios.get(endpoint);
   const page = data;
@@ -134,20 +131,19 @@ export const getStaticProps: GetStaticProps = async ({ params: { pageId } }) => 
       const values = (await axios.get(dataStreamEndpoint)).data;
       const { description } = d;
       return { endpoint: dataStreamEndpoint, values, description };
-    })
+    }),
   );
 
   return {
     props: {
       visType: page?.vis?.function,
       visArg: {
-        chartElement: "charts", 
+        chartElement: "charts",
         data: dataStreams,
         links: [],
-      }
-    }
+      },
+    },
   };
 };
-
 
 export default PropagatedPage;
