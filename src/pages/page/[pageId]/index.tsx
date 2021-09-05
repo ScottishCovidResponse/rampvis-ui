@@ -16,7 +16,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
 import axios from "axios";
-
+import InsertChartIcon from "@material-ui/icons/InsertChart";
 import { useRouter } from "next/router";
 
 import useSettings from "src/hooks/useSettings";
@@ -128,7 +128,11 @@ const PropagatedPage = () => {
                     // </IconButton>
                     <Bookmark pageId={pageId} />
                   }
-                  avatar={<Avatar className={classes.avatar} />}
+                  avatar={
+                    <Avatar className={classes.avatar}>
+                      <InsertChartIcon />
+                    </Avatar>
+                  }
                   title={title}
                   subheader=""
                 />
