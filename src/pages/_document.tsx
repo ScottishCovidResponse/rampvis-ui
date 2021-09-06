@@ -65,6 +65,7 @@ MyDocument.getInitialProps = async (ctx) => {
 
   ctx.renderPage = () =>
     originalRenderPage({
+      // eslint-disable-next-line react/display-name -- code borrowed from as is from https://github.com/mui-org/material-ui/blob/e544918cf772b4b4f715a671b4d171ad98af3663/examples/nextjs/pages/_document.js#L58
       enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
     });
 

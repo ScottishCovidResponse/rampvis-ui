@@ -75,8 +75,9 @@ const PortalView: FC<PortalViewProps> = ({ data = [] }) => {
   return (
     <>
       <Grid alignItems="stretch" className={classes.root}>
-        {data.map((d) => (
-          <PortalItem data={d} />
+        {data.map((d, index) => (
+          // TODO: Consider using d.id (or similar) instead of index for better DOM diffing
+          <PortalItem key={index} data={d} />
         ))}
       </Grid>
     </>
