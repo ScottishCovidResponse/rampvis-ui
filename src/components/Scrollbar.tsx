@@ -1,12 +1,14 @@
 import { forwardRef } from "react";
-import PropTypes from "prop-types";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import type { ScrollBarProps as PerfectScrollbarProps } from "react-perfect-scrollbar";
 import { Box } from "@material-ui/core";
 
 type ScrollbarProps = PerfectScrollbarProps;
 
-const Scrollbar = forwardRef<HTMLDivElement, ScrollbarProps>((props, ref) => {
+const Scrollbar: React.ForwardRefRenderFunction<
+  PerfectScrollbar,
+  ScrollbarProps
+> = (props, ref) => {
   const { children, ...other } = props;
 
   const isMobile =
@@ -23,18 +25,10 @@ const Scrollbar = forwardRef<HTMLDivElement, ScrollbarProps>((props, ref) => {
   }
 
   return (
-    <PerfectScrollbar
-      // @ts-ignore
-      ref={ref}
-      {...other}
-    >
+    <PerfectScrollbar ref={ref} {...other}>
       {children}
     </PerfectScrollbar>
   );
-});
-
-Scrollbar.propTypes = {
-  children: PropTypes.node,
 };
 
-export default Scrollbar;
+export default forwardRef(Scrollbar);
