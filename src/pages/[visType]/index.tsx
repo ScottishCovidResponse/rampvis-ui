@@ -48,7 +48,7 @@ const PropagatedPageList = () => {
   const [pages, setPages] = useState<any>([]);
 
   const pageType = "release";
-  const url: string = `/template/pages/example/${visType}/`;
+  const url = `/template/pages/example/${visType}/`;
   console.log("PageListTemplate: visType = ", visType, ", API url = ", url);
 
   const fetchOntoPages = useCallback(async () => {

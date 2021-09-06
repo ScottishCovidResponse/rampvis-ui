@@ -4,7 +4,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import type { ScrollBarProps as PerfectScrollbarProps } from "react-perfect-scrollbar";
 import { Box } from "@material-ui/core";
 
-interface ScrollbarProps extends PerfectScrollbarProps {}
+type ScrollbarProps = PerfectScrollbarProps;
 
 const Scrollbar = forwardRef<HTMLDivElement, ScrollbarProps>((props, ref) => {
   const { children, ...other } = props;
