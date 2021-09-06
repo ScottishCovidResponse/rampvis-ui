@@ -19,8 +19,6 @@ const Ensemble = () => {
   const classes = useStyles();
   const { settings } = useSettings();
 
-  useEffect(() => {}, []);
-
   return (
     <>
       <Helmet>
