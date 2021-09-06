@@ -12,6 +12,8 @@ import useSettings from "src/hooks/useSettings";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import AuthGuard from "src/components/auth/guards/AuthGuard";
 
+import axios from "axios";
+
 const useStyles = makeStyles((theme) => ({}));
 
 const Ensemble = () => {
@@ -20,7 +22,27 @@ const Ensemble = () => {
   const classes = useStyles();
   const { settings } = useSettings();
 
-  useEffect(() => {}, []);
+  const fetchMeta = useCallback(async () => {
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/meta`;
+    const res = await axios.get(apiUrl);
+    console.log("ensemble: meta = ", res.data);
+  }, []);
+
+  const fetchData = useCallback(async () => {
+    // TODO: path is the path to a specific csv file or folder
+    // If a folder is given, such as `?path=data/output/simu_0/`, return an object with keys as filenames
+    // It's supposed to work recursively, so `?path=data/output` will also work.
+    // However it seems only works well with file now.
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data?path=data/output/simu_0/age_0.csv`;
+    const res = await axios.get(apiUrl);
+    console.log("ensemble: data = ", res.data);
+  }, []);
+
+  useEffect(() => {
+    console.log("ensemble: useEffect:");
+    fetchMeta();
+    fetchData()
+  }, [fetchMeta, fetchData]);
 
   return (
     <>
@@ -35,6 +57,7 @@ const Ensemble = () => {
         }}
       >
         <Container maxWidth={settings.compact ? "xl" : false}></Container>
+        <div>HELLO</div>
       </Box>
     </>
   );
