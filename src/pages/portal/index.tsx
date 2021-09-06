@@ -61,7 +61,7 @@ const MyPortal = () => {
   const fetchPortalPages = useCallback(async () => {
     try {
       // TODO: Set correct URL once available
-      const url: string = `/template/pages/example/plot/`;
+      const url = `/template/pages/example/plot/`;
       const res = (await apiService.get<any>(url))?.data;
       console.log("MyPortal: fetched data = ", res);
       setPortalData(res);

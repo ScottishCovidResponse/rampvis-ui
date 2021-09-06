@@ -53,7 +53,7 @@ const PropagatedPageList = () => {
   const [pages, setPages] = useState<any>([]);
 
   const { pageType } = router.query;
-  const url: string = `/template/pages/${pageType}/`;
+  const url = `/template/pages/${pageType}/`;
   console.log("PageListTemplate: pageType = ", pageType, ", API url = ", url);
 
   const fetchOntoPages = useCallback(async () => {
