@@ -2,8 +2,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev-prod": "env-cmd -f .env.production next dev",
-    "dev": "env-cmd -f .env.development next dev",
+    "dev": "next dev --port 5000",
     "fix:eslint": "next lint --fix",
     "fix:prettier": "prettier --write \"**/*\"",
     "fix:yarn-deduplicate": "yarn install; yarn-deduplicate --strategy=fewer; yarn install",
@@ -72,7 +71,6 @@
     "@types/react-router-dom": "^5.1.8",
     "@types/yup": "^0.29.13",
     "@typescript-eslint/eslint-plugin": "^4.30.0",
-    "env-cmd": "^10.1.0",
     "eslint": "^7.32.0",
     "eslint-config-next": "11.1.0",
     "eslint-config-prettier": "^8.3.0",
