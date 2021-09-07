@@ -12,7 +12,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import { Chip, Box } from "@material-ui/core";
-import ImageIcon from "@material-ui/icons/Image";
+import Link from "next/link";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -67,17 +67,23 @@ const SearchResultView: FC<SearchResultProps> = ({ data = [] }) => {
         {data.map((d: any) => (
           <>
             <ListItem alignItems="flex-start">
-              <ListItemAvatar>
-                <Avatar
-                  variant="square"
-                  className={classes.large}
-                  src={`/static/mock-images/${
-                    list[Math.floor(Math.random() * list.length)]
-                  }`}
-                />
-              </ListItemAvatar>
+              <Link href={`/page/${d.id}`} passHref={true}>
+                <ListItemAvatar>
+                  {/* <IconButton color="primary" aria-label="" component="a">
+                    <ImageIcon />
+                  </IconButton> */}
+                  <Avatar
+                    variant="square"
+                    className={classes.large}
+                    src={`/static/mock-images/${
+                      list[Math.floor(Math.random() * list.length)]
+                    }`}
+                  />
+                </ListItemAvatar>
+              </Link>
+
               <ListItemText
-                primary={data?.title}
+                primary={d?.title}
                 secondary={
                   <React.Fragment>
                     <Typography
