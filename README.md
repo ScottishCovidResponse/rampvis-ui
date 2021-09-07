@@ -30,7 +30,7 @@ Run the app in development mode using production APIs (you don’t need to start
 yarn dev
 ```
 
-While the web server is running, you can open [http://localhost:5000](http://localhost:5000) in your browser to view the app.
+While the web server is running, you can open [http://localhost:3000](http://localhost:3000) in your browser to view the app.
 To stop the server, press `CTRL+C` in the terminal.
 
 ---
@@ -38,8 +38,8 @@ To stop the server, press `CTRL+C` in the terminal.
 If you want to use local API endpoints instead of the default remote ones, create a new file called `.env.local` with the following contents:
 
 ```ini
-NEXT_PUBLIC_API_JS=http://localhost:2000/api/v1
-NEXT_PUBLIC_API_PY=http://localhost:3000/stat/v1
+NEXT_PUBLIC_API_JS=http://localhost:4000/api/v1
+NEXT_PUBLIC_API_PY=http://localhost:4010/stat/v1
 ```
 
 The URLs may differ from the examples above depending on your server settings.
