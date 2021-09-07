@@ -29,11 +29,10 @@ const Ensemble = () => {
   }, []);
 
   const fetchData = useCallback(async () => {
-    // TODO: path is the path to a specific csv file or folder
+    // path is the path to a specific csv file or folder
     // If a folder is given, such as `?path=data/output/simu_0/`, return an object with keys as filenames
-    // It's supposed to work recursively, so `?path=data/output` will also work.
-    // However it seems only works well with file now.
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data?path=data/output/simu_0/age_0.csv`;
+    // const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data?path=data/output/simu_0/age_0.csv`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data?path=data/output/simu_0`;
     const res = await axios.get(apiUrl);
     console.log("ensemble: data = ", res.data);
   }, []);
