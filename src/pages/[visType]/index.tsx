@@ -23,6 +23,7 @@ import useSettings from "src/hooks/useSettings";
 import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import PropagatedPageTable from "src/components/PropagatedPageTable";
+import { GetStaticPaths, GetStaticProps } from "next";
 
 const useStyles = makeStyles({
   root: {
@@ -48,7 +49,7 @@ const PropagatedPageList = () => {
   const [pages, setPages] = useState<any>([]);
 
   const pageType = "release";
-  const url = `/template/pages/example/${visType}/`;
+  const url = `${process.env.NEXT_PUBLIC_API_JS}/template/pages/example/${visType}/`;
   console.log("PageListTemplate: visType = ", visType, ", API url = ", url);
 
   const fetchOntoPages = useCallback(async () => {
@@ -74,7 +75,7 @@ const PropagatedPageList = () => {
       // prettier-ignore
       console.error(`PageListTemplate: Fetching API ${url}, error = ${err}`);
     }
-  }, [visType]);
+  }, [url]);
   // if pageType, visType changes, useEffect will run again
   // if you want to run only once, just leave array empty []
 
@@ -132,6 +133,19 @@ const PropagatedPageList = () => {
 
 PropagatedPageList.getLayout = function getLayout(page: ReactElement) {
   return <DashboardLayout>{page}</DashboardLayout>;
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: ["/dashboard", "/plot", "/analytics", "/model"],
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps = () => {
+  return {
+    props: {},
+  };
 };
 
 export default PropagatedPageList;
