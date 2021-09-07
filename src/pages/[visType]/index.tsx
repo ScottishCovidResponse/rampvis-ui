@@ -137,7 +137,7 @@ PropagatedPageList.getLayout = function getLayout(page: ReactElement) {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
-    paths: ["/dashboard", "/plot", "/analytics", "/model"],
+    paths: ["/analytics", "/dashboard", "/model", "/plot"],
     fallback: false,
   };
 };
