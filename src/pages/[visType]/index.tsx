@@ -45,7 +45,8 @@ const PropagatedPageList = () => {
   const { settings } = useSettings();
   const classes = useStyles();
   const router = useRouter();
-  const { visType } = router.query;
+  const visType =
+    typeof router.query.visType === "string" ? router.query.visType : undefined;
   const [pages, setPages] = useState<any>([]);
 
   const pageType = "release";
@@ -112,10 +113,7 @@ const PropagatedPageList = () => {
                       <StorageIcon />
                     </Avatar>
                   }
-                  title={
-                    (_.startCase(visType) && _.startCase(visType)) ||
-                    _.startCase(pageType)
-                  }
+                  title={visType ? _.startCase(visType) : _.startCase(pageType)}
                   subheader={`List of ${_.camelCase(pageType)} visualizations`}
                 />
 
