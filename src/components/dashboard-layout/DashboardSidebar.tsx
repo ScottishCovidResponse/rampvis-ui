@@ -197,9 +197,9 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
         <Divider />
 
         <Box sx={{ p: 2 }}>
-          {sections.map((section) => (
+          {sections.map((section, sectionIndex) => (
             <NavSection
-              key={section.title}
+              key={sectionIndex}
               pathname={router.asPath}
               sx={{
                 "& + &": {
