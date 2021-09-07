@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import LinkIcon from "@material-ui/icons/Link";
 
 import useSettings from "src/hooks/useSettings";
+import Link from "next/link";
 
 interface Column {
   id: "id" | "visFunction" | "visDescription" | "visType" | "pageType" | "date";
@@ -116,14 +117,15 @@ const PropagatedPageTable: FC<PropagatedPageTableProps> = ({ data = [] }) => {
                                         : value} */}
 
                         {column.id === "id" ? (
-                          <IconButton
-                            color="primary"
-                            aria-label=""
-                            component="span"
-                            onClick={() => router.push(`/page/${row.id}`)}
-                          >
-                            <LinkIcon />
-                          </IconButton>
+                          <Link href={`/page/${row.id}`} passHref={true}>
+                            <IconButton
+                              color="primary"
+                              aria-label=""
+                              component="a"
+                            >
+                              <LinkIcon />
+                            </IconButton>
+                          </Link>
                         ) : (
                           value
                         )}
