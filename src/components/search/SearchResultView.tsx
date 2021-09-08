@@ -53,7 +53,10 @@ const SearchResultView: FC<SearchResultProps> = ({ data = [] }) => {
     "610314efc50719383382a6a2.png",
   ];
 
-  console.log("SearchResultView: data =", data);
+  // FIXME: Remove (useEffect makes sure that data is not logged during SSR)
+  React.useEffect(() => {
+    console.log("SearchResultView: data =", data);
+  }, [data]);
 
   return (
     <Box
@@ -64,10 +67,10 @@ const SearchResultView: FC<SearchResultProps> = ({ data = [] }) => {
       m={1}
     >
       <List className={classes.root}>
-        {data.map((d: any) => (
-          <>
+        {data.map((dataRecord, index) => (
+          <React.Fragment key={index}>
             <ListItem alignItems="flex-start">
-              <Link href={`/page/${d.id}`} passHref={true}>
+              <Link href={`/page/${dataRecord.id}`} passHref={true}>
                 <ListItemAvatar>
                   {/* <IconButton color="primary" aria-label="" component="a">
                     <ImageIcon />
@@ -83,7 +86,7 @@ const SearchResultView: FC<SearchResultProps> = ({ data = [] }) => {
               </Link>
 
               <ListItemText
-                primary={d?.title}
+                primary={dataRecord?.title}
                 secondary={
                   <React.Fragment>
                     <Typography
@@ -92,10 +95,10 @@ const SearchResultView: FC<SearchResultProps> = ({ data = [] }) => {
                       className={classes.inline}
                       color="textPrimary"
                     >
-                      {d.title}
+                      {dataRecord.title}
                       <Divider orientation="vertical" />
                     </Typography>
-                    {d.visDescription}
+                    {dataRecord.visDescription}
                     <Divider orientation="vertical" />
 
                     {/* {d.keywords.map((k: string) => (
@@ -107,7 +110,7 @@ const SearchResultView: FC<SearchResultProps> = ({ data = [] }) => {
             </ListItem>
 
             <Divider variant="inset" component="li" />
-          </>
+          </React.Fragment>
         ))}
       </List>
     </Box>
