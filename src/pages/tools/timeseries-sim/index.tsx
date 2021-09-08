@@ -22,28 +22,18 @@ import {
   DialogContentText,
   Button,
   DialogActions,
-  CheckBox,
   FormControlLabel,
   FormGroup,
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import TimelineIcon from "@material-ui/icons/Timeline";
+import TimelineIcon from '@material-ui/icons/Timeline';
 import { makeStyles } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
-<<<<<<< HEAD
 import PropTypes from 'prop-types';
 import useSettings from "src/hooks/useSettings";
 import { visFactory } from "src/lib/vis/vis-factory";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import { ConfirmationNumberTwoTone, SignalWifiConnectedNoInternet4Sharp } from "@material-ui/icons";
-=======
-import PropTypes from "prop-types";
-
-import useSettings from "src/hooks/useSettings";
-import { visFactory } from "src/lib/vis/vis-factory";
-import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
-
->>>>>>> origin/nextjs-migrate
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
@@ -70,11 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
   firstRunForm: {
     marginBottom: theme.spacing(2),
-<<<<<<< HEAD
   }
-=======
-  },
->>>>>>> origin/nextjs-migrate
 }));
 
 function Item(props) {
@@ -82,22 +68,13 @@ function Item(props) {
   return (
     <Box
       sx={{
-<<<<<<< HEAD
         bgcolor: "background.default",
-=======
-        bgcolor: "black",
-        color: "white",
->>>>>>> origin/nextjs-migrate
         p: 1,
         borderRadius: 1,
-        textAlign: "left",
+        textAlign: 'left',
         fontSize: 19,
-<<<<<<< HEAD
         fontWeight: '700',
         width: "auto",
-=======
-        fontWeight: "700",
->>>>>>> origin/nextjs-migrate
         ...sx,
       }}
       {...other}
@@ -108,10 +85,7 @@ Item.propTypes = {
   sx: PropTypes.object,
 };
 
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/nextjs-migrate
 const covidIndicators = [
   {
     label: "Daily Deaths per million",
@@ -119,11 +93,7 @@ const covidIndicators = [
   },
   {
     label: "Daily Cases per million",
-<<<<<<< HEAD
     value: "DC"
-=======
-    value: "DC",
->>>>>>> origin/nextjs-migrate
   },
   {
     label: "Cumulative Deaths per million",
@@ -131,11 +101,7 @@ const covidIndicators = [
   },
   {
     label: "Cumulative Cases per million",
-<<<<<<< HEAD
     value: "CC"
-=======
-    value: "CC",
->>>>>>> origin/nextjs-migrate
   },
   {
     label: "Biweekly Cases per million",
@@ -143,22 +109,17 @@ const covidIndicators = [
   },
   {
     label: "Biweekly Deaths per million",
-    value: "BWD",
+    value: "BWD"
   },
-<<<<<<< HEAD
 ]
-=======
-];
-
->>>>>>> origin/nextjs-migrate
 const similarityMeasures = [
   {
     label: "Euclidean Distance",
-    value: "euclidean",
+    value: "euclidean"
   },
   {
     label: "Manhattan Distance",
-    value: "manhattan",
+    value: "manhattan"
   },
   {
     label: "Chebyshev Distance",
@@ -166,13 +127,12 @@ const similarityMeasures = [
   },
   {
     label: "Dynamic Time Warping Distance",
-    value: "dtw",
+    value: "dtw"
   },
   {
     label: "Longest Common Subsequence Distance",
-    value: "lcs",
+    value: "lcs"
   },
-<<<<<<< HEAD
 ]
 const continents = [
   {
@@ -236,20 +196,10 @@ const initialFirstRunState = {
 }
 
 
-=======
-];
->>>>>>> origin/nextjs-migrate
 
 const TimeseriesSim = () => {
   const { settings } = useSettings();
   const classes = useStyles();
-<<<<<<< HEAD
-=======
-
-  const [indicator, setIndicator] = useState("DC");
-  const [method, setMethod] = useState("euclidean");
-
->>>>>>> origin/nextjs-migrate
   const ref = useRef();
   const [advancedFilterPopup, setAdvancedFilterPopup] = useState(false);
 
@@ -260,7 +210,6 @@ const TimeseriesSim = () => {
     setAdvancedFilterPopup(false);
   };
 
-<<<<<<< HEAD
 
 
   const [firstRunForm, setFirstRunForm] = useState(initialFirstRunState);
@@ -294,15 +243,6 @@ const TimeseriesSim = () => {
     }
 
   }
-=======
-  const indicatorChange = (event) => {
-    setIndicator(event.target.value);
-  };
-
-  const methodChange = (event) => {
-    setMethod(event.target.value);
-  };
->>>>>>> origin/nextjs-migrate
 
   console.log(firstRunForm)
 
@@ -310,20 +250,12 @@ const TimeseriesSim = () => {
     // const apiUrl = `${API.API_PY}/...}`;
     // const res = await axios.get(apiUrl);
     // console.log("TimeseriesSim: res = ", res);
-<<<<<<< HEAD
     const res = ['tunas', 'fake', 'data'];
-    visFactory('TimeseriesSim', {
-=======
-    const res = ["tunas", "fake", "data"];
-
-    visFactory("TimeseriesSim", {
->>>>>>> origin/nextjs-migrate
-      chartElement: "charts", // ref.current,
-      data: res,
-    });
+  
   }, []);
   // if xx changes, useEffect will run again
   // if you want to run only once, just leave array empty []
+  
   useEffect(() => {
     console.log("TimeseriesSim: useEffect:");
     fetchAPI();
@@ -331,6 +263,7 @@ const TimeseriesSim = () => {
 
   //console.log(`${firstDate}-${lastDate}`)
 
+ 
   return (
     <>
       <Helmet>
@@ -341,13 +274,12 @@ const TimeseriesSim = () => {
           backgroundColor: "background.default",
           minHeight: "100%",
           py: 8,
-          display: "grid",
+          display: 'grid',
           gap: 1,
-          gridTemplateColumns: "repeat(2, 1fr)",
+          gridTemplateColumns: 'repeat(2, 1fr)',
         }}
       >
         <Item>
-<<<<<<< HEAD
           <Card>
             <CardContent>
               <form>
@@ -385,106 +317,6 @@ const TimeseriesSim = () => {
                   />
                 </div>
                 <div className={classes.firstRunForm}>
-=======
-          <form>
-            <div className={classes.firstRunForm}>
-              <TextField
-                id="first_run"
-                label="Target Country"
-                type="text"
-                color="primary"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </div>
-
-            <div className={classes.firstRunForm}>
-              <TextField
-                id="first_run"
-                label="First Date"
-                type="date"
-                color="primary"
-                defaultValue="2017-05-24"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </div>
-
-            <div className={classes.firstRunForm}>
-              <TextField
-                id="first_run"
-                label="Last Date"
-                type="date"
-                color="primary"
-                defaultValue="2017-05-24"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </div>
-
-            <div className={classes.firstRunForm}>
-              <TextField
-                select
-                label="Covid Indicator"
-                value={indicator}
-                onChange={indicatorChange}
-              >
-                {covidIndicators.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
-
-            <div className={classes.firstRunForm}>
-              <TextField
-                select
-                label="Similarity Measure"
-                value={method}
-                onChange={methodChange}
-              >
-                {similarityMeasures.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
-
-            <div className={classes.firstRunForm}>
-              <TextField
-                id="first_run"
-                label="Number of results"
-                type="number"
-                color="primary"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                InputProps={{ inputProps: { min: 0, max: 10 } }}
-              />
-            </div>
-
-            <div className={classes.firstRunForm}>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={advancedFilterClickOpen}
-              >
-                Advanced Filters
-              </Button>
-              <Dialog
-                open={advancedFilterPopup}
-                onClose={advancedFilterClickClose}
-                aria-labelledby="form-dialog-title"
-              >
-                <DialogTitle id="form-dialog-title">Title</DialogTitle>
-                <DialogContent>
-                  <DialogContentText />
->>>>>>> origin/nextjs-migrate
                   <TextField
                     id="first_run"
                     label="Last Date"
@@ -557,7 +389,6 @@ const TimeseriesSim = () => {
                   <Button variant="outlined" color="primary">
                     Submit
                   </Button>
-<<<<<<< HEAD
                 </div>
                 <Dialog open={advancedFilterPopup} onClose={advancedFilterClickClose} aria-labelledby="form-dialog-title">
                   <DialogTitle id="form-dialog-title">Advanced Filters</DialogTitle>
@@ -642,12 +473,6 @@ const TimeseriesSim = () => {
               </form>
             </CardContent>
           </Card>
-=======
-                </DialogActions>
-              </Dialog>
-            </div>
-          </form>
->>>>>>> origin/nextjs-migrate
         </Item>
 
         <Item>
@@ -670,15 +495,7 @@ const TimeseriesSim = () => {
     </>
   );
 };
-<<<<<<< HEAD
 TimeseriesSim.getLayout = function getLayout(page: ReactElement) {
   return <DashboardLayout>{page}</DashboardLayout>;
 };
-=======
-
-TimeseriesSim.getLayout = function getLayout(page: ReactElement) {
-  return <DashboardLayout>{page}</DashboardLayout>;
-};
-
->>>>>>> origin/nextjs-migrate
 export default TimeseriesSim;
