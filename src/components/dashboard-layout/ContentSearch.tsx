@@ -158,7 +158,8 @@ const ContentSearch: FC = () => {
                               variant="h5"
                             >
                               {result.title}
-                            </Link> */}
+                            </Link> 
+                            */}
                             <Typography color="textPrimary" variant="body2">
                               {result.description}
                             </Typography>

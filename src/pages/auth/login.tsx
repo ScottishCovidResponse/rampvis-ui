@@ -8,12 +8,12 @@ import {
   Container,
   Divider,
   Typography,
-  Button
+  Button,
 } from "@material-ui/core";
-import { LoginJWT } from "../../components/auth/login";
-import Logo from "../../components/Logo";
-import useAuth from "../../hooks/useAuth";
-import MainLayout from "../../components/main-layout/MainLayout";
+import { LoginJWT } from "src/components/auth/login";
+import Logo from "src/components/Logo";
+import useAuth from "src/hooks/useAuth";
+import MainLayout from "src/components/main-layout/MainLayout";
 
 const Login = () => {
   const { platform } = useAuth() as any;
@@ -40,14 +40,12 @@ const Login = () => {
               mb: 8,
             }}
           >
-            <Link href="/">
-              <Logo
-                sx={{
-                  height: 40,
-                  width: 40,
-                }}
-              />
-            </Link>
+            <Logo
+              sx={{
+                height: 60,
+                width: 60,
+              }}
+            />
           </Box>
           <Card>
             <CardContent
@@ -85,22 +83,23 @@ const Login = () => {
               <Divider sx={{ my: 3 }} />
 
               <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              mt: 6,
-            }}
-          >
-            {/* <Button
-              color="primary"
-              component={Link}
-              href="/"
-              variant="outlined"
-            >
-              Go to Home
-            </Button> */}
-          </Box>
-          
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  mt: 6,
+                }}
+              >
+                {/* 
+                <Button
+                  color="primary"
+                  component={Link}
+                  href="/"
+                  variant="outlined"
+                >
+                  Go to Home
+                </Button> 
+              */}
+              </Box>
             </CardContent>
           </Card>
         </Container>
@@ -109,13 +108,8 @@ const Login = () => {
   );
 };
 
-
 Login.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <MainLayout>
-      {page}
-    </MainLayout>
-  )
-}
+  return <MainLayout>{page}</MainLayout>;
+};
 
 export default Login;

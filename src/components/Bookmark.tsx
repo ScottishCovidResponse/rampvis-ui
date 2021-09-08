@@ -5,9 +5,9 @@ import { createStyles, IconButton, Theme, makeStyles } from "@material-ui/core";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import PropTypes from "prop-types";
 import { orange, grey } from "@material-ui/core/colors";
-
-import ShowHideGuard from "./ShowHideGuard";
-import { apiService } from "../services/apiService";
+import ShowHideGuard from "src/components/auth/guards/ShowHideGuard";
+import { apiService } from "src/utils/apiService";
+import useAuth from "src/hooks/useAuth";
 
 const useStyles = makeStyles((theme) => ({
   bookmarkedStyle: {
@@ -22,42 +22,32 @@ const useStyles = makeStyles((theme) => ({
 
 const Bookmark: FC<any> = ({ pageId }) => {
   const classes = useStyles();
-  const [isBookmarked, setBookmark] = useState<boolean>(null);
+  const [isBookmarked, setBookmark] = useState<boolean>(false);
+  const { user } = useAuth();
 
-  const fetchBookmarks = useCallback(async () => {
-    try {
-      const res = await apiService.get<any>(`/bookmark/${pageId}`);
-      if (res) {
-        setBookmark(true);
-      } else {
-        setBookmark(false);
-      }
-    } catch (err) {
-      // prettier-ignore
-      console.error(`Bookmark: Fetching error = ${err}`);
-    }
-  }, [pageId]);
+  if (user?.bookmarks?.includes(pageId)) {
+    setBookmark(true);
+  }
+  console.log("Bookmark: isBookmarked = ", isBookmarked);
 
-  useEffect(() => {
-    fetchBookmarks();
-  }, [fetchBookmarks]);
-
-  const bookmark = async () => {
-    console.log(isBookmarked);
-    if (isBookmarked) {
-      const res = await apiService.delete<any>(`/bookmark/${pageId}`);
-      setBookmark(false);
-    } else {
-      const res = await apiService.post<any>(`/bookmark`, { pageId });
-      setBookmark(true);
-    }
+  const onClickBookmark = async () => {
+    console.log("Bookmark: !isBookmarked = ", !isBookmarked);
+    const res = await apiService.post<any>(`/me/bookmark`, {
+      pageId,
+      status: !isBookmarked,
+    });
+    // if (user?.bookmarks?.includes(pageId)) {
+    //   setBookmark(true);
+    // }
+    // TODO update user
+    console.log(res);
   };
 
   return (
     <ShowHideGuard>
       <IconButton
         aria-label="bookmark"
-        onClick={() => bookmark()}
+        onClick={() => onClickBookmark()}
         className={
           isBookmarked ? classes.bookmarkedStyle : classes.unBookmarkedStyle
         }

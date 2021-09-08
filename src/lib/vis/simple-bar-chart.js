@@ -34,7 +34,7 @@ export class SimpleBarChart {
       Math,
       data.map(function (o) {
         return o[field];
-      })
+      }),
     );
     const parseDate = d3.timeParse("%Y-%m-%d");
 
@@ -62,7 +62,7 @@ export class SimpleBarChart {
       .domain(
         data.map(function (d) {
           return d.index;
-        })
+        }),
       );
     let y = d3.scaleLinear().rangeRound([height, 0]).domain([0, max_value]);
 
@@ -89,7 +89,7 @@ export class SimpleBarChart {
       .tickValues(
         x.domain().filter(function (d, i) {
           return !(i % 10);
-        })
+        }),
       );
     let xAxisEL = g.append("g").call(xAxis);
     xAxisEL
@@ -166,7 +166,7 @@ export class SimpleBarChart {
       xAxisEL
         .attr(
           "transform",
-          "translate(0," + (h - margin.top - margin.bottom) + ")"
+          "translate(0," + (h - margin.top - margin.bottom) + ")",
         )
         .call(xAxis);
       yAxisEL.call(yAxis);

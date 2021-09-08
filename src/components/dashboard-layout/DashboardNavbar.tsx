@@ -16,7 +16,7 @@ interface DashboardNavbarProps extends AppBarProps {
 
 const DashboardNavbarRoot = experimentalStyled(AppBar)(({ theme }) => ({
   ...(theme.palette.mode === "light" && {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: "transparent",
     boxShadow: "none",
     color: theme.palette.primary.contrastText,
   }),
@@ -35,7 +35,7 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
     <DashboardNavbarRoot {...other}>
       <Toolbar sx={{ minHeight: 64 }}>
         <IconButton
-          color="inherit"
+          color="primary"
           onClick={onSidebarMobileOpen}
           sx={{
             display: {
@@ -46,31 +46,37 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
           <MenuIcon fontSize="small" />
         </IconButton>
 
-        <Link href="/">
-          <Logo
-            sx={{
-              display: {
-                lg: "inline",
-                xs: "none",
-              },
-              height: 40,
-              width: 40,
-            }}
-          />
-        </Link>
+        {/* 
+        <Logo
+          sx={{
+            display: {
+              lg: "inline",
+              xs: "none",
+            },
+            height: 40,
+            width: 40,
+          }}
+        /> 
+        */}
+
         <Box
           sx={{
             flexGrow: 1,
             ml: 2,
           }}
         />
+
+        {/* 
         <Box sx={{ ml: 1 }}>
           <ContentSearch />
-        </Box>
+        </Box> 
+        */}
 
+        {/* 
         <Box sx={{ ml: 1 }}>
           <NotificationsPopover />
-        </Box>
+        </Box> 
+        */}
 
         <Box sx={{ ml: 2 }}>
           <AccountPopover />

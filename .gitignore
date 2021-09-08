@@ -14,7 +14,6 @@
 # misc
 .DS_Store
 .eslintcache
-/.env
 /.env.local
 /.env.development.local
 /.env.test.local
@@ -43,7 +42,7 @@ venv
 # other
 .DS_Store
 
-# sphinx docs 
+# sphinx docs
 _build
 _static
 _templates

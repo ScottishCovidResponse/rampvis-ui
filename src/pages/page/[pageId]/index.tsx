@@ -2,11 +2,7 @@
  * CSR
  */
 
-import {
-  ReactElement,
-  useCallback,
-  useEffect,
-} from "react";
+import { ReactElement, useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import {
   Avatar,
@@ -20,14 +16,14 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
 import axios from "axios";
-
+import InsertChartIcon from "@material-ui/icons/InsertChart";
 import { useRouter } from "next/router";
 
 import useSettings from "src/hooks/useSettings";
 import { visFactory } from "src/lib/vis/vis-factory";
 import useAuth from "src/hooks/useAuth";
 import Bookmark from "src/components/Bookmark";
-import { apiService } from "src/services/apiService";
+import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 
 const API = {
@@ -70,10 +66,13 @@ const PropagatedPage = () => {
   const classes = useStyles();
   const router = useRouter();
   const { pageId } = router.query;
+  const [title, setTitle] = useState<string>("");
 
   const fetchOntoPage = useCallback(async () => {
     const page = await apiService.get<any>(`/template/page/${pageId}`);
     console.log("PropagatedPage: page = ", page);
+
+    setTitle(page?.title);
 
     const dataForVisFunction = await Promise.all(
       page?.data?.map(async (d: any) => {
@@ -81,7 +80,7 @@ const PropagatedPage = () => {
         const values = (await axios.get(endpoint)).data;
         const { description } = d;
         return { endpoint, values, description };
-      })
+      }),
     );
 
     const links = page?.pageIds?.map((d: any) => {
@@ -129,8 +128,12 @@ const PropagatedPage = () => {
                     // </IconButton>
                     <Bookmark pageId={pageId} />
                   }
-                  avatar={<Avatar className={classes.avatar} />}
-                  title="TODO: Title..."
+                  avatar={
+                    <Avatar className={classes.avatar}>
+                      <InsertChartIcon />
+                    </Avatar>
+                  }
+                  title={title}
                   subheader=""
                 />
 

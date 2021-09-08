@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import LinkIcon from "@material-ui/icons/Link";
 
 import useSettings from "src/hooks/useSettings";
+import Link from "next/link";
 
 interface Column {
   id: "id" | "visFunction" | "visDescription" | "visType" | "pageType" | "date";
@@ -78,7 +79,7 @@ const PropagatedPageTable: FC<PropagatedPageTableProps> = ({ data = [] }) => {
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -105,7 +106,7 @@ const PropagatedPageTable: FC<PropagatedPageTableProps> = ({ data = [] }) => {
             {rows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                   {columns.map((column) => {
                     const value = row[column.id];
                     return (
@@ -116,14 +117,15 @@ const PropagatedPageTable: FC<PropagatedPageTableProps> = ({ data = [] }) => {
                                         : value} */}
 
                         {column.id === "id" ? (
-                          <IconButton
-                            color="primary"
-                            aria-label=""
-                            component="span"
-                            onClick={() => router.push(`/page/${row.id}`)}
-                          >
-                            <LinkIcon />
-                          </IconButton>
+                          <Link href={`/page/${row.id}`} passHref={true}>
+                            <IconButton
+                              color="primary"
+                              aria-label=""
+                              component="a"
+                            >
+                              <LinkIcon />
+                            </IconButton>
+                          </Link>
                         ) : (
                           value
                         )}

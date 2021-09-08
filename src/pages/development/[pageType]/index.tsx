@@ -25,9 +25,8 @@ import StorageIcon from "@material-ui/icons/Storage";
 import { blue } from "@material-ui/core/colors";
 import moment from "moment";
 import _ from "lodash";
-
 import useSettings from "src/hooks/useSettings";
-import { apiService } from "src/services/apiService";
+import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import PropagatedPageTable from "src/components/PropagatedPageTable";
 
@@ -54,7 +53,7 @@ const PropagatedPageList = () => {
   const [pages, setPages] = useState<any>([]);
 
   const { pageType } = router.query;
-  const url: string = `/template/pages/${pageType}/`;
+  const url = `/template/pages/${pageType}/`;
   console.log("PageListTemplate: pageType = ", pageType, ", API url = ", url);
 
   const fetchOntoPages = useCallback(async () => {

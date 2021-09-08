@@ -1,20 +1,16 @@
-/**
- * Search ontology generated pages
- */
-
 /* eslint-disable no-new */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import React, { FC, Props, ReactElement, useCallback, useEffect, useRef, useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Box, CircularProgress, Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
 import useSettings from "src/hooks/useSettings";
 import SearchBar from "src/components/search/SearchBar";
 import SearchResultView from "src/components/search/SearchResultView";
-import { apiService } from "src/services/apiService";
+import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
+import { mockSearchResults } from "src/components/mock/searchResults";
 
 const useStyles = makeStyles((theme) => ({}));
 
@@ -23,13 +19,15 @@ const PageSearch = () => {
   const classes = useStyles();
 
   const [input, setInput] = useState("");
-  const [result, setPageList] = useState([]);
+  const [result, setPageList] = useState(mockSearchResults);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const searchPage = async () => {
     try {
       setIsLoading(true);
-      const res = await apiService.get<any>( `/template/pages/search/?query=${input}`);
+      const res = await apiService.get<any>(
+        `/template/pages/search/?query=${input}`,
+      );
       console.log("searchPage: res = ", res);
       setPageList(res);
       setIsLoading(false);
@@ -79,8 +77,7 @@ const PageSearch = () => {
                 <CircularProgress />
               </Box>
             ) : (
-              result &&
-              result.length > 0 && <SearchResultView data={result} />
+              result && result.length > 0 && <SearchResultView data={result} />
             )}
           </>
         </Container>
@@ -92,6 +89,5 @@ const PageSearch = () => {
 PageSearch.getLayout = function getLayout(page: ReactElement) {
   return <DashboardLayout>{page}</DashboardLayout>;
 };
-
 
 export default PageSearch;

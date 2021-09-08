@@ -9,12 +9,8 @@ class MyDocument extends Document {
         <Head>
           <meta charSet="utf-8" />
           <meta name="theme-color" content="#000000" />
-          <link rel="shortcut icon" href="/img/favicon.png" />
-          <link
-            rel="apple-touch-icon"
-            sizes="76x76"
-            href="/img/apple-icon.png"
-          />
+          <link rel="shortcut icon" href="/Favicon32x32.png" />
+          <link rel="apple-touch-icon" sizes="76x76" href="/Favicon64x64.png" />
           {/* Fonts and icons */}
           <link
             rel="stylesheet"
@@ -69,6 +65,7 @@ MyDocument.getInitialProps = async (ctx) => {
 
   ctx.renderPage = () =>
     originalRenderPage({
+      // eslint-disable-next-line react/display-name -- code borrowed from as is from https://github.com/mui-org/material-ui/blob/e544918cf772b4b4f715a671b4d171ad98af3663/examples/nextjs/pages/_document.js#L58
       enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
     });
 

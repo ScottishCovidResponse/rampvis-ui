@@ -19,11 +19,11 @@ import StorageIcon from "@material-ui/icons/Storage";
 import { blue } from "@material-ui/core/colors";
 import moment from "moment";
 import _ from "lodash";
-
 import useSettings from "src/hooks/useSettings";
-import { apiService } from "src/services/apiService";
+import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import PropagatedPageTable from "src/components/PropagatedPageTable";
+import { GetStaticPaths, GetStaticProps } from "next";
 
 const useStyles = makeStyles({
   root: {
@@ -45,11 +45,12 @@ const PropagatedPageList = () => {
   const { settings } = useSettings();
   const classes = useStyles();
   const router = useRouter();
-  const { visType } = router.query;
+  const visType =
+    typeof router.query.visType === "string" ? router.query.visType : undefined;
   const [pages, setPages] = useState<any>([]);
 
   const pageType = "release";
-  const url: string = `/template/pages/example/${visType}/`;
+  const url = `${process.env.NEXT_PUBLIC_API_JS}/template/pages/example/${visType}/`;
   console.log("PageListTemplate: visType = ", visType, ", API url = ", url);
 
   const fetchOntoPages = useCallback(async () => {
@@ -75,7 +76,7 @@ const PropagatedPageList = () => {
       // prettier-ignore
       console.error(`PageListTemplate: Fetching API ${url}, error = ${err}`);
     }
-  }, [visType]);
+  }, [url]);
   // if pageType, visType changes, useEffect will run again
   // if you want to run only once, just leave array empty []
 
@@ -112,10 +113,7 @@ const PropagatedPageList = () => {
                       <StorageIcon />
                     </Avatar>
                   }
-                  title={
-                    (_.startCase(visType) && _.startCase(visType)) ||
-                    _.startCase(pageType)
-                  }
+                  title={visType ? _.startCase(visType) : _.startCase(pageType)}
                   subheader={`List of ${_.camelCase(pageType)} visualizations`}
                 />
 
@@ -133,6 +131,19 @@ const PropagatedPageList = () => {
 
 PropagatedPageList.getLayout = function getLayout(page: ReactElement) {
   return <DashboardLayout>{page}</DashboardLayout>;
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: ["/analytics", "/dashboard", "/model", "/plot"],
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps = () => {
+  return {
+    props: {},
+  };
 };
 
 export default PropagatedPageList;

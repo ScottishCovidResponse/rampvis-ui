@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import type { FC } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
 import PropTypes from "prop-types";
 import { Avatar, Box, Divider, Drawer, Typography } from "@material-ui/core";
 import type { Theme } from "@material-ui/core";
@@ -16,11 +15,12 @@ import PlaceIcon from "@material-ui/icons/Place";
 import AssessmentIcon from "@material-ui/icons/Assessment";
 import DonutSmallIcon from "@material-ui/icons/DonutSmall";
 import SearchIcon from "@material-ui/icons/Search";
-
-import useAuth from "../../hooks/useAuth";
-import Logo from "../Logo";
+import AllInboxIcon from "@material-ui/icons/AllInbox";
+import Filter1Icon from "@material-ui/icons/Filter1";
+import useAuth from "src/hooks/useAuth";
+import Logo from "src/components/Logo";
 import NavSection from "src/components/dashboard-layout/NavSection";
-import Scrollbar from "../Scrollbar";
+import Scrollbar from "src/components/Scrollbar";
 
 interface DashboardSidebarProps {
   onMobileClose: () => void;
@@ -72,22 +72,22 @@ const sections = [
     items: [
       {
         title: "Scotland",
-        path: "/scotland",
+        path: "/country/scotland",
         icon: <PlaceIcon fontSize="small" />,
       },
       {
         title: "England",
-        path: "/england",
+        path: "/country/england",
         icon: <PlaceIcon fontSize="small" />,
       },
       {
         title: "N. ireland",
-        path: "/northern-ireland",
+        path: "/country/northern-ireland",
         icon: <PlaceIcon fontSize="small" />,
       },
       {
         title: "Wales",
-        path: "/wales",
+        path: "/country/wales",
         icon: <PlaceIcon fontSize="small" />,
       },
     ],
@@ -98,13 +98,18 @@ const sections = [
       {
         title: "Tools",
         path: "",
-        icon: <SettingsIcon fontSize="small" />,
+        icon: <AllInboxIcon fontSize="small" />,
         children: [
           {
             title: "Timeseries Similarity",
             path: "/tools/timeseries-sim",
-            icon: <ArrowForwardIosIcon fontSize="small" />,
-          }
+            icon: <Filter1Icon fontSize="small" />,
+          },
+          {
+            title: "Ensemble",
+            path: "/tools/ensemble",
+            icon: <Filter1Icon fontSize="small" />,
+          },
         ],
       },
     ],
@@ -115,7 +120,7 @@ const sections = [
       {
         title: "Development",
         path: "/development/release",
-        icon: <SettingsIcon fontSize="small" />,
+        icon: <ArrowForwardIosIcon fontSize="small" />,
         children: [
           {
             title: "Example",
@@ -140,7 +145,6 @@ const sections = [
 
 const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
   const { onMobileClose, openMobile } = props;
-  // const location = useLocation();
   const router = useRouter();
 
   const { user } = useAuth();
@@ -161,27 +165,6 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
       }}
     >
       <Scrollbar options={{ suppressScrollX: true }}>
-        <Box
-          sx={{
-            display: {
-              lg: "none",
-              xs: "flex",
-            },
-            justifyContent: "center",
-            p: 2,
-          }}
-        >
-          <Link href="/">
-            <Logo
-              sx={{
-                height: 40,
-                width: 40,
-              }}
-            />
-          </Link>
-        </Box>
-
-        {/* Profile avatar section */}
         <Box sx={{ p: 2 }}>
           <Box
             sx={{
@@ -193,33 +176,30 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
               p: 2,
             }}
           >
-            <Avatar
-              // src={user?.avatar}
+            <Logo
               sx={{
-                cursor: "pointer",
-                height: 48,
-                width: 48,
+                height: 60,
+                width: 60,
               }}
             />
 
             <Box sx={{ ml: 2 }}>
-              <Typography color="textPrimary" variant="subtitle2">
-                {user?.name ? user.name : "Guest"}
+              <Typography color="primary" variant="h5">
+                RAMPVIS
               </Typography>
-              <Typography color="textSecondary" variant="body2">
-                {user?.email}
+              <Typography color="primary" alignItems="center" variant="body2">
+                v.0.9
               </Typography>
             </Box>
           </Box>
         </Box>
-        {/* End of profile avatar section  */}
 
         <Divider />
 
         <Box sx={{ p: 2 }}>
-          {sections.map((section) => (
+          {sections.map((section, sectionIndex) => (
             <NavSection
-              key={section.title}
+              key={sectionIndex}
               pathname={router.asPath}
               sx={{
                 "& + &": {
@@ -242,8 +222,10 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
         PaperProps={{
           sx: {
             backgroundColor: "background.paper",
-            height: "calc(100% - 64px) !important",
-            top: "64px !Important",
+            // height: "calc(100% - 64px) !important",
+            // top: "64px !Important",
+            height: "calc(100% - 0) !important",
+            top: "0px !Important",
             width: 280,
           },
         }}

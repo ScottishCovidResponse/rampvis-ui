@@ -1,1 +1,1 @@
-export { default as LoginJWT } from './LoginJWT';
+export { default as LoginJWT } from "./LoginJWT";

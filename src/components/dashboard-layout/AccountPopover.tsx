@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import type { FC } from "react";
 // import { Link, useNavigate } from "react-router-dom";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import {
   Avatar,
@@ -17,17 +17,14 @@ import {
   Popover,
   Typography,
 } from "@material-ui/core";
-import useAuth from "../../hooks/useAuth";
-import SettingsIcon from "@material-ui/icons/Settings";
-import PersonIcon from "@material-ui/icons/Person";
-
-import ShowHideGuard from "../ShowHideGuard";
+import useAuth from "src/hooks/useAuth";
+import ShowHideGuard from "src/components/auth/guards/ShowHideGuard";
 
 const AccountPopover: FC = () => {
   const anchorRef = useRef<HTMLButtonElement | null>(null);
   const { user, logout } = useAuth();
   // const navigate = useNavigate();
-  const router = useRouter()
+  const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
 
   const handleOpen = (): void => {
@@ -53,7 +50,6 @@ const AccountPopover: FC = () => {
     router.push("/auth/login");
   };
 
-
   return (
     <>
       <Box
@@ -66,6 +62,7 @@ const AccountPopover: FC = () => {
         }}
       >
         <Avatar
+          color="primary"
           // src={user?.avatar}
           sx={{
             height: 32,
@@ -99,7 +96,7 @@ const AccountPopover: FC = () => {
 
           <Box sx={{ mt: 2 }}>
             {/* 
-            <MenuItem component={Link} to="/user/profile">
+            <MenuItem component={Link} to="/xx/xx">
               <ListItemIcon>
                 <PersonIcon fontSize="small" />
               </ListItemIcon>
@@ -110,8 +107,9 @@ const AccountPopover: FC = () => {
                   </Typography>
                 }
               />
-            </MenuItem> */}
-            {/* <MenuItem component={Link} to="/user/settings">
+            </MenuItem> 
+            */}
+            {/* <MenuItem component={Link} to="/xx/xx">
               <ListItemIcon>
                 <SettingsIcon fontSize="small" />
               </ListItemIcon>

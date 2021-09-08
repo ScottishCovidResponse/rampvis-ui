@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import type { FC } from 'react';
-import * as Yup from 'yup';
-import { Formik } from 'formik';
+import type { FC } from "react";
+import * as Yup from "yup";
+import { Formik } from "formik";
 import {
   Alert,
   Box,
   Button,
   FormHelperText,
-  TextField
-} from '@material-ui/core';
-import useAuth from '../../../hooks/useAuth';
-import useMounted from '../../../hooks/useMounted';
+  TextField,
+} from "@material-ui/core";
+import useAuth from "src/hooks/useAuth";
+import useMounted from "src/hooks/useMounted";
 
 const LoginJWT: FC = (props) => {
   const mounted = useMounted();
@@ -20,30 +20,21 @@ const LoginJWT: FC = (props) => {
   return (
     <Formik
       initialValues={{
-        email: '',
-        password: '',
-        submit: null
+        email: "saiful@admin.com",
+        password: "zCEEwRSZGaSG2uL3",
+        submit: null,
       }}
-      validationSchema={
-        Yup
-          .object()
-          .shape({
-            email: Yup
-              .string()
-              .email('Must be a valid email')
-              .max(255)
-              .required('Email is required'),
-            password: Yup
-              .string()
-              .max(255)
-              .required('Password is required')
-          })
-      }
-      onSubmit={async (values, {
-        setErrors,
-        setStatus,
-        setSubmitting
-      }): Promise<void> => {
+      validationSchema={Yup.object().shape({
+        email: Yup.string()
+          .email("Must be a valid email")
+          .max(255)
+          .required("Email is required"),
+        password: Yup.string().max(255).required("Password is required"),
+      })}
+      onSubmit={async (
+        values,
+        { setErrors, setStatus, setSubmitting },
+      ): Promise<void> => {
         try {
           await login(values.email, values.password);
 
@@ -68,13 +59,9 @@ const LoginJWT: FC = (props) => {
         handleSubmit,
         isSubmitting,
         touched,
-        values
+        values,
       }): JSX.Element => (
-        <form
-          noValidate
-          onSubmit={handleSubmit}
-          {...props}
-        >
+        <form noValidate onSubmit={handleSubmit} {...props}>
           <TextField
             autoFocus
             error={Boolean(touched.email && errors.email)}
@@ -104,9 +91,7 @@ const LoginJWT: FC = (props) => {
           />
           {errors.submit && (
             <Box sx={{ mt: 3 }}>
-              <FormHelperText error>
-                {errors.submit}
-              </FormHelperText>
+              <FormHelperText error>{errors.submit}</FormHelperText>
             </Box>
           )}
           <Box sx={{ mt: 2 }}>

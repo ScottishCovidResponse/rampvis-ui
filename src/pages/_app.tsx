@@ -17,10 +17,8 @@ import { createCustomTheme } from "src/theme";
 import useScrollReset from "src/hooks/useScrollReset";
 import useAuth from "src/hooks/useAuth";
 import { HelmetProvider } from "react-helmet-async";
-import RTL from "src/components/RTL";
-import SettingsDrawer from "src/components/SettingsDrawer";
 import { SettingsProvider } from "src/contexts/SettingsContext";
-import { AuthProvider } from "src/contexts/JWTContext";
+import { AuthProviderJWT } from "src/contexts/AuthProviderJWT";
 
 //
 // Import all the css files created for d3 charts
@@ -32,8 +30,6 @@ import "src/lib/vis/css/default-dashboard.css";
 import "src/lib/vis/css/overview-top-level-screen-a.css";
 import "src/lib/vis/css/portal.css";
 import "src/lib/vis/css/pv-legend.css";
-import "src/lib/vis/css/vis-example.css";
-
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -77,17 +73,13 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
           <StyledEngineProvider injectFirst>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <SettingsProvider>
-                <AuthProvider>
+                <AuthProviderJWT>
                   <ThemeProvider theme={theme}>
-                    <RTL direction={settings.direction as "ltr" | "rtl"}>
-                      <CssBaseline />
-                      <Toaster position="top-center" />
-                      <SettingsDrawer />
-
-                      {getLayout(<Component {...pageProps} />)}
-                    </RTL>
+                    <CssBaseline />
+                    <Toaster position="top-center" />
+                    {getLayout(<Component {...pageProps} />)}
                   </ThemeProvider>
-                </AuthProvider>
+                </AuthProviderJWT>
               </SettingsProvider>
             </LocalizationProvider>
           </StyledEngineProvider>

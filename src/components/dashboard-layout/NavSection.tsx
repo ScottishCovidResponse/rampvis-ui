@@ -38,7 +38,8 @@ interface Y {
 
 const renderNavItems = ({ depth = 0, items, pathname }: Y): JSX.Element => (
   <List disablePadding>
-    {items.reduce((acc, item) =>
+    {items.reduce(
+      (acc, item) =>
         // eslint-disable-next-line @typescript-eslint/no-use-before-define
         reduceChildRoutes({
           acc,
@@ -46,7 +47,7 @@ const renderNavItems = ({ depth = 0, items, pathname }: Y): JSX.Element => (
           pathname,
           depth,
         }),
-      []
+      [],
     )}
   </List>
 );
@@ -83,7 +84,7 @@ const reduceChildRoutes = ({
           items: item.children,
           pathname,
         })}
-      </NavItem>
+      </NavItem>,
     );
   } else {
     acc.push(
@@ -95,7 +96,7 @@ const reduceChildRoutes = ({
         key={key}
         path={item.path}
         title={item.title}
-      />
+      />,
     );
   }
 
