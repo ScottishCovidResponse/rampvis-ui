@@ -34,7 +34,12 @@ export const getStaticProps: GetStaticProps = () => {
 
 export const getStaticPaths: GetStaticPaths = () => {
   return {
-    paths: ["/england", "/northern-ireland", "/scotland", "/wales"],
+    paths: [
+      "/country/england",
+      "/country/northern-ireland",
+      "/country/scotland",
+      "/country/wales",
+    ],
     fallback: false,
   };
 };
