@@ -103,7 +103,19 @@ PropagatedPage.getLayout = function getLayout(page: ReactElement) {
   return <DashboardLayout>{page}</DashboardLayout>;
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticProps: GetStaticProps = () => {
+  return { props: {} };
+};
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    paths: ["/page/remove-or-refactor-me/index__"],
+    fallback: false,
+  };
+};
+
+// FIXME: Remove / reuse the code below
+export const getStaticPathsToRefactor: GetStaticPaths = async () => {
   const endpoint = `${process.env.NEXT_PUBLIC_API_JS}/template/pages/example/`;
   const { data } = await axios.get(endpoint);
   console.log("getStaticPaths: pages data = ", data.data);
@@ -117,7 +129,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async ({
+// FIXME: Remove / reuse the code below
+export const getStaticPropsToRefactor: GetStaticProps = async ({
   params: { pageId },
 }) => {
   const endpoint = `${process.env.NEXT_PUBLIC_API_JS}/template/page/${pageId}`;
