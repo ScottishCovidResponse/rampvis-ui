@@ -47,6 +47,22 @@ The URLs may differ from the examples above depending on your server settings.
 Note that you need to restart the server (`yarn dev`) for the changes to take effect.
 See [Next.js docs → Environment Variables](https://nextjs.org/docs/basic-features/environment-variables) for more info.
 
+## Local production build
+
+1.  Build the app
+
+    ```sh
+    yarn build
+    ```
+
+1.  Launch a simple HTTP server for the just-created `out` directory.
+
+    ```sh
+    npx serve out
+    ```
+
+1.  Navigate to http://localhost:5000 in your browser
+
 ## References
 
 - Bootstrapped with [Next.js](https://github.com/vercel/next.js)
