@@ -30,7 +30,6 @@ import "src/lib/vis/css/default-dashboard.css";
 import "src/lib/vis/css/overview-top-level-screen-a.css";
 import "src/lib/vis/css/portal.css";
 import "src/lib/vis/css/pv-legend.css";
-import "src/lib/vis/css/vis-example.css";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
