@@ -70,7 +70,10 @@ const SearchResultView: FC<SearchResultProps> = ({ data = [] }) => {
         {data.map((dataRecord, index) => (
           <React.Fragment key={index}>
             <ListItem alignItems="flex-start">
-              <Link href={`/page/${dataRecord.id}`} passHref={true}>
+              <Link
+                href={{ pathname: "/page", query: { id: dataRecord.id } }}
+                passHref={true}
+              >
                 <ListItemAvatar>
                   {/* <IconButton color="primary" aria-label="" component="a">
                     <ImageIcon />

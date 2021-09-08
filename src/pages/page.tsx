@@ -25,6 +25,7 @@ import useAuth from "src/hooks/useAuth";
 import Bookmark from "src/components/Bookmark";
 import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
+import { GetStaticProps } from "next";
 
 const API = {
   API_PY: process.env.NEXT_PUBLIC_API_PY,
@@ -65,10 +66,14 @@ const PropagatedPage = () => {
   const { settings } = useSettings();
   const classes = useStyles();
   const router = useRouter();
-  const { pageId } = router.query;
+  const pageId =
+    typeof router.query.id === "string" ? router.query.id : undefined;
   const [title, setTitle] = useState<string>("");
 
   const fetchOntoPage = useCallback(async () => {
+    if (!pageId) {
+      return;
+    }
     const page = await apiService.get<any>(`/template/page/${pageId}`);
     console.log("PropagatedPage: page = ", page);
 
@@ -151,6 +156,12 @@ const PropagatedPage = () => {
 
 PropagatedPage.getLayout = function getLayout(page: ReactElement) {
   return <DashboardLayout>{page}</DashboardLayout>;
+};
+
+export const getStaticProps: GetStaticProps = () => {
+  return {
+    props: {},
+  };
 };
 
 export default PropagatedPage;
