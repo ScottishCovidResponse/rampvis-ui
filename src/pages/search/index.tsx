@@ -11,7 +11,7 @@ import SearchResultView from "src/components/search/SearchResultView";
 import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import { mockSearchResults } from "src/components/mock/searchResults";
-import { GetStaticProps, NextPage } from "next";
+import { NextPage } from "next";
 
 const useStyles = makeStyles((theme) => ({}));
 
@@ -89,10 +89,6 @@ const PageSearch: NextPage = () => {
 
 PageSearch.getLayout = function getLayout(page: ReactElement) {
   return <DashboardLayout>{page}</DashboardLayout>;
-};
-
-export const getStaticProps: GetStaticProps = () => {
-  return { props: {} };
 };
 
 export default PageSearch;

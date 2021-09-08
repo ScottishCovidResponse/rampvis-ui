@@ -25,7 +25,6 @@ import useAuth from "src/hooks/useAuth";
 import Bookmark from "src/components/Bookmark";
 import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
-import { GetStaticProps } from "next";
 
 const API = {
   API_PY: process.env.NEXT_PUBLIC_API_PY,
@@ -156,12 +155,6 @@ const PropagatedPage = () => {
 
 PropagatedPage.getLayout = function getLayout(page: ReactElement) {
   return <DashboardLayout>{page}</DashboardLayout>;
-};
-
-export const getStaticProps: GetStaticProps = () => {
-  return {
-    props: {},
-  };
 };
 
 export default PropagatedPage;

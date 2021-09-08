@@ -89,9 +89,4 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   );
 }
 
-MyApp.getInitialProps = async (appContext: AppContext) => {
-  const appProps = await App.getInitialProps(appContext);
-  return { ...appProps };
-};
-
 export default MyApp;
