@@ -65,10 +65,14 @@ const PropagatedPage = () => {
   const { settings } = useSettings();
   const classes = useStyles();
   const router = useRouter();
-  const { pageId } = router.query;
+  const pageId =
+    typeof router.query.id === "string" ? router.query.id : undefined;
   const [title, setTitle] = useState<string>("");
 
   const fetchOntoPage = useCallback(async () => {
+    if (!pageId) {
+      return;
+    }
     const page = await apiService.get<any>(`/template/page/${pageId}`);
     console.log("OntoPage: VIS = ", page.vis);
     console.log("OntoPage: Data = ", page.data);

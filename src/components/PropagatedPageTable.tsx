@@ -117,7 +117,10 @@ const PropagatedPageTable: FC<PropagatedPageTableProps> = ({ data = [] }) => {
                                         : value} */}
 
                         {column.id === "id" ? (
-                          <Link href={`/page/${row.id}`} passHref={true}>
+                          <Link
+                            href={{ pathname: "/page", query: { id: row.id } }}
+                            passHref={true}
+                          >
                             <IconButton
                               color="primary"
                               aria-label=""
