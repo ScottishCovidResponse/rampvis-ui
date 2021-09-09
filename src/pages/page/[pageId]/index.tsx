@@ -70,7 +70,8 @@ const PropagatedPage = () => {
 
   const fetchOntoPage = useCallback(async () => {
     const page = await apiService.get<any>(`/template/page/${pageId}`);
-    console.log("PropagatedPage: page = ", page);
+    console.log("OntoPage: VIS = ", page.vis);
+    console.log("OntoPage: Data = ", page.data);
 
     setTitle(page?.title);
 
@@ -100,7 +101,6 @@ const PropagatedPage = () => {
   // if you want to run only once, just leave array empty []
 
   useEffect(() => {
-    console.log("PropagatedPage: useEffect:");
     fetchOntoPage();
   }, [fetchOntoPage]);
 
