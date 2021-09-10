@@ -1,6 +1,3 @@
-/* eslint-disable no-new */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import React, { ReactElement, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Box, CircularProgress, Container } from "@material-ui/core";
@@ -11,11 +8,10 @@ import SearchResultView from "src/components/search/SearchResultView";
 import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import { mockSearchResults } from "src/components/mock/searchResults";
-import { NextPage } from "next";
 
 const useStyles = makeStyles((theme) => ({}));
 
-const PageSearch: NextPage = () => {
+const PageSearch = () => {
   const { settings } = useSettings();
   const classes = useStyles();
 
