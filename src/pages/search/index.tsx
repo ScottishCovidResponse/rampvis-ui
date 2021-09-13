@@ -11,10 +11,11 @@ import SearchResultView from "src/components/search/SearchResultView";
 import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import { mockSearchResults } from "src/components/mock/searchResults";
+import { NextPage } from "next";
 
 const useStyles = makeStyles((theme) => ({}));
 
-const PageSearch = () => {
+const PageSearch: NextPage = () => {
   const { settings } = useSettings();
   const classes = useStyles();
 

@@ -1,12 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import React, {
-  FC,
-  ReactElement,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useRouter } from "next/router";
 import { Helmet } from "react-helmet-async";
@@ -29,6 +23,7 @@ import useSettings from "src/hooks/useSettings";
 import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import PropagatedPageTable from "src/components/PropagatedPageTable";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 
 const useStyles = makeStyles({
   root: {
@@ -45,14 +40,18 @@ const useStyles = makeStyles({
   },
 });
 
-const PropagatedPageList = () => {
+const PropagatedPageList: NextPage = () => {
   // const mounted = useMounted();
   const { settings } = useSettings();
   const classes = useStyles();
   const router = useRouter();
   const [pages, setPages] = useState<any>([]);
 
-  const { pageType } = router.query;
+  const pageType =
+    typeof router.query.pageType === "string"
+      ? router.query.pageType
+      : undefined;
+
   const url = `/template/pages/${pageType}/`;
   console.log("PageListTemplate: pageType = ", pageType, ", API url = ", url);
 
@@ -78,7 +77,7 @@ const PropagatedPageList = () => {
       // prettier-ignore
       console.error(`PageListTemplate: Fetching API ${url}, error = ${err}`);
     }
-  }, [pageType]);
+  }, [url]);
   // if pageType, pageType changes, useEffect will run again
   // if you want to run only once, just leave array empty []
 
@@ -136,6 +135,23 @@ const PropagatedPageList = () => {
 
 PropagatedPageList.getLayout = function getLayout(page: ReactElement) {
   return <DashboardLayout>{page}</DashboardLayout>;
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [
+      "/development/example",
+      "/development/release",
+      "/development/review",
+    ],
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps = () => {
+  return {
+    props: {},
+  };
 };
 
 export default PropagatedPageList;
