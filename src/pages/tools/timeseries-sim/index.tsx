@@ -26,14 +26,20 @@ import {
   FormGroup,
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import TimelineIcon from '@material-ui/icons/Timeline';
+import TimelineIcon from "@material-ui/icons/Timeline";
 import { makeStyles } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import useSettings from "src/hooks/useSettings";
 import { visFactory } from "src/lib/vis/vis-factory";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
-import { ConfirmationNumberTwoTone, SignalWifiConnectedNoInternet4Sharp } from "@material-ui/icons";
+import {
+  ConfirmationNumberTwoTone,
+  EventNote,
+  SignalWifiConnectedNoInternet4Sharp,
+} from "@material-ui/icons";
+import axios from "axios";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
@@ -60,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
   },
   firstRunForm: {
     marginBottom: theme.spacing(2),
-  }
+  },
 }));
 
 function Item(props) {
@@ -71,9 +77,9 @@ function Item(props) {
         bgcolor: "background.default",
         p: 1,
         borderRadius: 1,
-        textAlign: 'left',
+        textAlign: "left",
         fontSize: 19,
-        fontWeight: '700',
+        fontWeight: "700",
         width: "auto",
         ...sx,
       }}
@@ -85,41 +91,99 @@ Item.propTypes = {
   sx: PropTypes.object,
 };
 
-
 const covidIndicators = [
   {
+    label: "Daily Deaths",
+    value: "new_deaths",
+  },
+  {
+    label: "Daily Cases",
+    value: "new_cases",
+  },
+  {
     label: "Daily Deaths per million",
-    value: "DD",
+    value: "new_deaths_per_million",
   },
   {
     label: "Daily Cases per million",
-    value: "DC"
+    value: "new_cases_per_million",
+  },
+
+  {
+    label: "Cumulative Deaths",
+    value: "total_deaths",
   },
   {
+    label: "Cumulative Cases",
+    value: "total_cases",
+  },
+
+  {
     label: "Cumulative Deaths per million",
-    value: "CD",
+    value: "total_deaths_per_million",
   },
   {
     label: "Cumulative Cases per million",
-    value: "CC"
+    value: "total_cases_per_million",
   },
   {
     label: "Biweekly Cases per million",
-    value: "BWC",
+    value: "biweekly_cases_per_million",
   },
   {
     label: "Biweekly Deaths per million",
-    value: "BWD"
+    value: "biweekly_deaths_per_million",
   },
-]
+
+  {
+    label: "Biweekly Cases",
+    value: "biweekly_cases",
+  },
+  {
+    label: "Biweekly Deaths",
+    value: "biweekly_deaths",
+  },
+  {
+    label: "Weekly Cases per million",
+    value: "weekly_cases_per_million",
+  },
+  {
+    label: "Weekly Deaths per million",
+    value: "weekly_deaths_per_million",
+  },
+  {
+    label: "Weekly Cases",
+    value: "weekly_cases",
+  },
+  {
+    label: "Weekly Deaths",
+    value: "weekly_deaths",
+  },
+  {
+    label: "Weekly Cases Rate",
+    value: "weekly_cases_rate",
+  },
+  {
+    label: "Weekly Deaths Rate",
+    value: "weekly_deaths_rate",
+  },
+  {
+    label: "Biweekly Cases Rate",
+    value: "biweekly_cases_rate",
+  },
+  {
+    label: "Biweekly Deaths Rate",
+    value: "biweekly_deaths_rate",
+  },
+];
 const similarityMeasures = [
   {
     label: "Euclidean Distance",
-    value: "euclidean"
+    value: "euclidean",
   },
   {
     label: "Manhattan Distance",
-    value: "manhattan"
+    value: "manhattan",
   },
   {
     label: "Chebyshev Distance",
@@ -127,13 +191,13 @@ const similarityMeasures = [
   },
   {
     label: "Dynamic Time Warping Distance",
-    value: "dtw"
+    value: "dtw",
   },
   {
     label: "Longest Common Subsequence Distance",
-    value: "lcs"
+    value: "lcs",
   },
-]
+];
 const continents = [
   {
     value: "Africa",
@@ -152,50 +216,28 @@ const continents = [
   },
   {
     value: "South America",
-  }
-]
+  },
+];
 
-const initialFirstRunState = {
+const initialFirstRunState2 = {
   targetCountry: "",
   firstDate: "",
   lastDate: "",
-  indicator: "DC",
+  indicator: "new_cases",
   method: "euclidean",
   numberOfResults: 10,
   minPopulation: 600000,
   startDate: "",
   endDate: "",
-  continentCheck: [
-    {
-      value: "Africa",
-      isChecked: false
-    },
-    {
-      value: "Asia",
-      isChecked: false
-    },
-    {
-      value: "Australia",
-      isChecked: false
-    },
-    {
-      value: "Europe",
-      isChecked: false
-    },
-    {
-      value: "North America",
-      isChecked: false
-    },
-    {
-      value: "South America",
-      isChecked: false
-    }
-
-  ],
-
-}
-
-
+  continentCheck: {
+    Africa: false,
+    Asia: false,
+    Australia: false,
+    Europe: false,
+    "North America": false,
+    "South America": false,
+  },
+};
 
 const TimeseriesSim = () => {
   const { settings } = useSettings();
@@ -210,52 +252,34 @@ const TimeseriesSim = () => {
     setAdvancedFilterPopup(false);
   };
 
-
-
-  const [firstRunForm, setFirstRunForm] = useState(initialFirstRunState);
+  const [firstRunForm, setFirstRunForm] = useState(initialFirstRunState2);
 
   const multipleHandleChange = (event) => {
-
     if (event.target.type == "checkbox") {
-
-      let temp_obj = { ...firstRunForm }
-      let temp_state = temp_obj.continentCheck
-
-      for (let i = 0; i < temp_state.length; i++) {
-
-        if (event.target.value == temp_state[i].value) {
-
-          let temp_element = { ...temp_state[i] }
-          temp_element.isChecked = event.target.checked;
-          temp_state[i] = temp_element;
-          temp_obj.continentCheck = temp_state;
-          setFirstRunForm(temp_obj)
-        }
-      }
-
-    }
-    else {
+      let temp_obj = { ...firstRunForm };
+      let temp_state = temp_obj.continentCheck;
+      temp_state[event.target.value] = event.target.checked;
+      temp_obj.continentCheck = temp_state;
+      setFirstRunForm(temp_obj);
+    } else {
       const { name, value } = event.target;
       setFirstRunForm({
         ...firstRunForm,
         [name]: value,
       });
     }
+  };
 
-  }
-
-  console.log(firstRunForm)
+  console.log(firstRunForm);
 
   const fetchAPI = useCallback(async () => {
-    // const apiUrl = `${API.API_PY}/...}`;
-    // const res = await axios.get(apiUrl);
-    // console.log("TimeseriesSim: res = ", res);
-    const res = ['tunas', 'fake', 'data'];
-  
+    //const apiUrl = "http://127.0.0.1:4000/stat/v1/timeseries-sim-search/firstRunForm";
+    //const res = await axios.post(apiUrl,initialFirstRunState);
+    //console.log("TimeseriesSim: res = ", res);
   }, []);
   // if xx changes, useEffect will run again
   // if you want to run only once, just leave array empty []
-  
+
   useEffect(() => {
     console.log("TimeseriesSim: useEffect:");
     fetchAPI();
@@ -263,7 +287,6 @@ const TimeseriesSim = () => {
 
   //console.log(`${firstDate}-${lastDate}`)
 
- 
   return (
     <>
       <Helmet>
@@ -274,9 +297,9 @@ const TimeseriesSim = () => {
           backgroundColor: "background.default",
           minHeight: "100%",
           py: 8,
-          display: 'grid',
+          display: "grid",
           gap: 1,
-          gridTemplateColumns: 'repeat(2, 1fr)',
+          gridTemplateColumns: "repeat(2, 1fr)",
         }}
       >
         <Item>
@@ -297,7 +320,6 @@ const TimeseriesSim = () => {
                       shrink: true,
                     }}
                   />
-
                 </div>
               </form>
               <form>
@@ -339,7 +361,6 @@ const TimeseriesSim = () => {
                     variant="standard"
                     name="indicator"
                     onChange={multipleHandleChange}
-
                   >
                     {covidIndicators.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
@@ -381,7 +402,11 @@ const TimeseriesSim = () => {
                   />
                 </div>
                 <div className={classes.firstRunForm}>
-                  <Button variant="outlined" color="primary" onClick={advancedFilterClickOpen}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={advancedFilterClickOpen}
+                  >
                     Advanced Filters
                   </Button>
                 </div>
@@ -390,8 +415,14 @@ const TimeseriesSim = () => {
                     Submit
                   </Button>
                 </div>
-                <Dialog open={advancedFilterPopup} onClose={advancedFilterClickClose} aria-labelledby="form-dialog-title">
-                  <DialogTitle id="form-dialog-title">Advanced Filters</DialogTitle>
+                <Dialog
+                  open={advancedFilterPopup}
+                  onClose={advancedFilterClickClose}
+                  aria-labelledby="form-dialog-title"
+                >
+                  <DialogTitle id="form-dialog-title">
+                    Advanced Filters
+                  </DialogTitle>
                   <DialogTitle>Continents to include:</DialogTitle>
                   <DialogContent>
                     <DialogContentText>
@@ -403,7 +434,6 @@ const TimeseriesSim = () => {
                               type="checkbox"
                               value={continent.value}
                               onChange={multipleHandleChange}
-
                             />
                           </label>
                         ))}
@@ -426,7 +456,9 @@ const TimeseriesSim = () => {
                             InputLabelProps={{
                               shrink: true,
                             }}
-                            InputProps={{ inputProps: { min: 500000, step: 50000 } }}
+                            InputProps={{
+                              inputProps: { min: 500000, step: 50000 },
+                            }}
                           />
                         </div>
                         <div className={classes.firstRunForm}>
@@ -442,7 +474,6 @@ const TimeseriesSim = () => {
                             InputLabelProps={{
                               shrink: true,
                             }}
-
                           />
                         </div>
                         <div className={classes.firstRunForm}>
@@ -469,7 +500,6 @@ const TimeseriesSim = () => {
                     </Button>
                   </DialogActions>
                 </Dialog>
-
               </form>
             </CardContent>
           </Card>
