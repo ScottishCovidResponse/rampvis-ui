@@ -234,8 +234,8 @@ const initialFirstRunState2 = {
     Asia: false,
     Australia: false,
     Europe: false,
-    "North America": false,
-    "South America": false,
+    //"North America": false,
+    //"South America": false,
   },
 };
 
@@ -272,18 +272,12 @@ const TimeseriesSim = () => {
 
   console.log(firstRunForm);
 
-  const fetchAPI = useCallback(async () => {
-    //const apiUrl = "http://127.0.0.1:4000/stat/v1/timeseries-sim-search/firstRunForm";
-    //const res = await axios.post(apiUrl,initialFirstRunState);
-    //console.log("TimeseriesSim: res = ", res);
-  }, []);
+  const fetchAPI = () => {
+    const apiUrl = "http://127.0.0.1:4010/stat/v1/timeseries-sim-search/";
+    axios.post(apiUrl, firstRunForm).then((response) => console.log(response));
+  };
   // if xx changes, useEffect will run again
   // if you want to run only once, just leave array empty []
-
-  useEffect(() => {
-    console.log("TimeseriesSim: useEffect:");
-    fetchAPI();
-  }, [fetchAPI]);
 
   //console.log(`${firstDate}-${lastDate}`)
 
@@ -411,7 +405,7 @@ const TimeseriesSim = () => {
                   </Button>
                 </div>
                 <div className={classes.firstRunForm}>
-                  <Button variant="outlined" color="primary">
+                  <Button variant="outlined" color="primary" onClick={fetchAPI}>
                     Submit
                   </Button>
                 </div>
