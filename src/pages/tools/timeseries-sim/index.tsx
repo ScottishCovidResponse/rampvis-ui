@@ -39,6 +39,7 @@ import {
   SignalWifiConnectedNoInternet4Sharp,
 } from "@material-ui/icons";
 import axios from "axios";
+import * as d3 from "d3";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -234,8 +235,8 @@ const initialFirstRunState2 = {
     Asia: false,
     Australia: false,
     Europe: false,
-    //"North America": false,
-    //"South America": false,
+    "North America": false,
+    "South America": false,
   },
 };
 
@@ -243,8 +244,8 @@ const TimeseriesSim = () => {
   const { settings } = useSettings();
   const classes = useStyles();
   const ref = useRef();
-  const [advancedFilterPopup, setAdvancedFilterPopup] = useState(false);
 
+  const [advancedFilterPopup, setAdvancedFilterPopup] = useState(false);
   const advancedFilterClickOpen = () => {
     setAdvancedFilterPopup(true);
   };
@@ -270,16 +271,17 @@ const TimeseriesSim = () => {
     }
   };
 
+  const VizTrial = (response) => {
+    d3.select("#charts").text(response);
+  };
+
   console.log(firstRunForm);
 
   const fetchAPI = () => {
     const apiUrl = "http://127.0.0.1:4010/stat/v1/timeseries-sim-search/";
     axios.post(apiUrl, firstRunForm).then((response) => console.log(response));
+    //VizTrial(response));
   };
-  // if xx changes, useEffect will run again
-  // if you want to run only once, just leave array empty []
-
-  //console.log(`${firstDate}-${lastDate}`)
 
   return (
     <>
