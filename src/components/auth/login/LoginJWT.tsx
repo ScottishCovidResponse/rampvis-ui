@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import type { FC } from "react";
 import * as Yup from "yup";
 import { Formik } from "formik";
@@ -20,8 +18,8 @@ const LoginJWT: FC = (props) => {
   return (
     <Formik
       initialValues={{
-        email: "saiful@admin.com",
-        password: "zCEEwRSZGaSG2uL3",
+        email: "",
+        password: "",
         submit: null,
       }}
       validationSchema={Yup.object().shape({
