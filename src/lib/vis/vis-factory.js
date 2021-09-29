@@ -10,6 +10,12 @@ import { StackedBarChartWith6Places } from './stacked-bar-chart-6-places';
 import { StackedAreaChart } from './stacked-area-chart';
 import { StackedBarChart } from './stacked-bar-chart';
 
+import {ParallelJunk} from './parallel-junk'
+import {ScatterJunk} from './scatter-junk'
+import {MatrixJunk} from './matrix-junk'
+import {TableJunk} from './table-junk'
+import {LineJunk} from './line-junk'
+
 export const visFactory = (type, args) => {
     if (type === "SimpleBarChart")
         return new SimpleBarChart(args);
@@ -33,6 +39,17 @@ export const visFactory = (type, args) => {
         return new StackedAreaChart(args);
     if (type === "StackedBarChart")
         return new StackedBarChart(args);
+
+    if (type == "ParallelJunk")
+        return new ParallelJunk(args);
+    if (type == "ScatterJunk")
+        return new ScatterJunk(args);
+    if (type == "MatrixJunk")
+        return new MatrixJunk(args);
+    if (type == "TableJunk")
+        return new TableJunk(args);
+    if (type == "LineJunk")
+        return new LineJunk(args);
         
     return null;
 }
