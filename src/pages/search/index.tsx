@@ -15,7 +15,7 @@ import { NextPage } from "next";
 
 const useStyles = makeStyles((theme) => ({}));
 
-const PageSearch: NextPage = () => {
+const PageSearch = () => {
   const { settings } = useSettings();
   const classes = useStyles();
 

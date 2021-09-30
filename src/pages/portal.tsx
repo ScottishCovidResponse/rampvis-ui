@@ -61,10 +61,10 @@ const MyPortal = () => {
   const fetchPortalPages = useCallback(async () => {
     try {
       // TODO: Set correct URL once available
-      const url = `/template/pages/example/plot/`;
-      const res = (await apiService.get<any>(url))?.data;
-      console.log("MyPortal: fetched data = ", res);
-      setPortalData(res);
+      // const url = `/template/pages/example/plot/`;
+      // const res = (await apiService.get<any>(url))?.data;
+      // console.log("MyPortal: fetched data = ", res);
+      // setPortalData(res);
     } catch (err) {
       // prettier-ignore
       console.error(`PageListTemplate: Fetching API, error = ${err}`);
@@ -111,9 +111,9 @@ const MyPortal = () => {
 
 MyPortal.getLayout = function getLayout(page: ReactElement) {
   return (
-    <AuthGuard>
-      <DashboardLayout>{page}</DashboardLayout>
-    </AuthGuard>
+    // <AuthGuard>
+    <DashboardLayout>{page}</DashboardLayout>
+    // </AuthGuard>
   );
 };
 

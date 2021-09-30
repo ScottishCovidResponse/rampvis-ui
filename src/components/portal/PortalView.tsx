@@ -54,22 +54,9 @@ const PortalView: FC<PortalViewProps> = ({ data = [] }) => {
   const classes = useStyles();
   console.log("PortalView: data = ", data);
 
-  // TODO: Use real images from backend
-  const list = [
-    "605e64ccdfb1d977d34aa3cc.png",
-    "609728d27d47ae21406735bd.png",
-    "60ecc0f3beb7791f01bebe49.png",
-    "61006ed44fef9b1f276003de.png",
-    "61031507be36153857a3de37.png",
-    "608dd7dbd651fc539ce11801.png",
-    "60ad693df52d2d641f4e45b9.png",
-    "61006c9842248f1ef21219b1.png",
-    "610314efc50719383382a6a2.png",
-  ];
-
   data = data.map((d) => ({
     ...d,
-    img: `/static/mock-images/${list[Math.floor(Math.random() * list.length)]}`,
+    img: `/static/mock-images/${d.id}.jpeg`,
   }));
 
   return (

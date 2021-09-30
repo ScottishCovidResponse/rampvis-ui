@@ -40,19 +40,6 @@ interface SearchResultProps {
 const SearchResultView: FC<SearchResultProps> = ({ data = [] }) => {
   const classes = useStyles();
 
-  // TODO: Use real images from backend
-  const list = [
-    "605e64ccdfb1d977d34aa3cc.png",
-    "609728d27d47ae21406735bd.png",
-    "60ecc0f3beb7791f01bebe49.png",
-    "61006ed44fef9b1f276003de.png",
-    "61031507be36153857a3de37.png",
-    "608dd7dbd651fc539ce11801.png",
-    "60ad693df52d2d641f4e45b9.png",
-    "61006c9842248f1ef21219b1.png",
-    "610314efc50719383382a6a2.png",
-  ];
-
   // FIXME: Remove (useEffect makes sure that data is not logged during SSR)
   React.useEffect(() => {
     console.log("SearchResultView: data =", data);
@@ -81,9 +68,7 @@ const SearchResultView: FC<SearchResultProps> = ({ data = [] }) => {
                   <Avatar
                     variant="square"
                     className={classes.large}
-                    src={`/static/mock-images/${
-                      list[Math.floor(Math.random() * list.length)]
-                    }`}
+                    src={`/static/mock-images/${dataRecord.id}.jpeg`}
                   />
                 </ListItemAvatar>
               </Link>
