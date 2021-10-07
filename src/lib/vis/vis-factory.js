@@ -3,6 +3,7 @@ import { SimpleLineChart } from "./simple-line-chart";
 import { HealthBoardOverview } from "./health-board-overview";
 import { CouncilOverview } from "./council-overview";
 import { CountryOverview } from "./country-overview";
+import { CountryOverviewNew } from "./country-overview-new";
 import { ChordDiagram } from "./chord-diagram";
 import { Matrix } from "./matrix";
 import { SuperimposedPercentiles } from "./superimposed-percentiles";
@@ -16,6 +17,7 @@ export const visFactory = (type, args) => {
   if (type === "HealthBoardOverview") return new HealthBoardOverview(args);
   if (type === "CouncilOverview") return new CouncilOverview(args);
   if (type === "CountryOverview") return new CountryOverview(args);
+  if (type === "CountryOverviewNew") return new CountryOverviewNew(args);
   if (type === "ChordDiagram") return new ChordDiagram(args);
   if (type === "Matrix") return new Matrix(args);
   if (type === "SuperimposedPercentiles")
