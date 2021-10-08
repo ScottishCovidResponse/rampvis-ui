@@ -9,8 +9,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import TimelineIcon from "@material-ui/icons/Timeline";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
-import SettingsIcon from "@material-ui/icons/Settings";
-import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import PlaceIcon from "@material-ui/icons/Place";
 import AssessmentIcon from "@material-ui/icons/Assessment";
 import DonutSmallIcon from "@material-ui/icons/DonutSmall";
@@ -118,24 +117,24 @@ const sections = [
     title: "",
     items: [
       {
-        title: "Development",
-        path: "/development/release",
-        icon: <ArrowForwardIosIcon fontSize="small" />,
+        title: "Propagated Pages",
+        path: "/propagated/release",
+        icon: <KeyboardArrowRightIcon fontSize="small" />,
         children: [
           {
             title: "Example",
-            path: "/development/example",
-            icon: <ArrowForwardIosIcon fontSize="small" />,
+            path: "/propagated/example",
+            icon: <KeyboardArrowRightIcon fontSize="small" />,
           },
           {
             title: "Review",
-            path: "/development/review",
-            icon: <ArrowForwardIosIcon fontSize="small" />,
+            path: "/propagated/review",
+            icon: <KeyboardArrowRightIcon fontSize="small" />,
           },
           {
             title: "Released",
-            path: "/development/release",
-            icon: <ArrowForwardIosIcon fontSize="small" />,
+            path: "/propagated/release",
+            icon: <KeyboardArrowRightIcon fontSize="small" />,
           },
         ],
       },

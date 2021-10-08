@@ -1,10 +1,6 @@
-/* eslint-disable arrow-body-style */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useTheme, makeStyles } from "@material-ui/core/styles";
+import { useTheme, makeStyles } from "@mui/styles";
 import {
   Avatar,
   Box,
@@ -13,10 +9,11 @@ import {
   Container,
   Grid,
   Card,
-} from "@material-ui/core";
-import { blue } from "@material-ui/core/colors";
-import BookmarksIcon from "@material-ui/icons/Bookmarks";
-
+  IconButton,
+} from "@mui/material";
+import { blue } from "@mui/material/colors";
+import BookmarksIcon from "@mui/icons-material/Bookmarks";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import useSettings from "src/hooks/useSettings";
 import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
@@ -31,16 +28,6 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 0,
     paddingTop: "56.25%", // 16:9
-  },
-  expand: {
-    transform: "rotate(0deg)",
-    marginLeft: "auto",
-    transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: "rotate(180deg)",
   },
   avatar: {
     backgroundColor: blue[500],
@@ -92,9 +79,18 @@ const MyPortal = () => {
             <Grid item xs={12}>
               <Card>
                 <CardHeader
-                  avatar={<BookmarksIcon />}
-                  title="My Bookmarks"
-                  subheader=""
+                  action={
+                    <IconButton aria-label="settings">
+                      <MoreVertIcon />
+                    </IconButton>
+                  }
+                  avatar={
+                    <Avatar className={classes.avatar}>
+                      <BookmarksIcon />
+                    </Avatar>
+                  }
+                  title="Portal"
+                  subheader="List of my bookmarked pages"
                 />
 
                 <CardContent sx={{ pt: "8px" }}>

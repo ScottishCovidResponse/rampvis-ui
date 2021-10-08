@@ -1,25 +1,32 @@
 import { Card, CardContent, Typography } from "@material-ui/core";
 import React, { ReactElement } from "react";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
-import Link from "next/link";
 
 const Home = () => {
   return (
     <Card sx={{ minWidth: 275 }}>
       <CardContent>
-        <Typography variant="h4">Welcome to RAMP VIS</Typography>
+        <Typography variant="h4">Welcome to RAMPVIS</Typography>
         <br />
         <Typography variant="body2">
           RAMP VIS is a visualization application that has been created by a
           group of{" "}
-          <Link href="https://sites.google.com/view/rampvis/volunteers">
-            <a>volunteers</a>
-          </Link>{" "}
+          <a
+            href="https://sites.google.com/view/rampvis/volunteers"
+            target="_blank"
+            rel="noreferrer"
+          >
+            volunteers
+          </a>{" "}
           specialised in Data Visualization and Visual Analytics, who answered a
           call to support the modelling scientists and epidemiologists in the{" "}
-          <Link href="https://github.com/ScottishCovidResponse">
+          <a
+            href="https://github.com/ScottishCovidResponse"
+            target="_blank"
+            rel="noreferrer"
+          >
             <a>Scottish COVID-19 Response Consortium (SCRC)</a>
-          </Link>
+          </a>
           .
         </Typography>
         <br />

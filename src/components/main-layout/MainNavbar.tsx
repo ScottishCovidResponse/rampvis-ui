@@ -39,7 +39,7 @@ const MainNavbar: FC<MainNavbarProps> = (props) => {
         >
           <MenuIcon fontSize="small" />
         </IconButton>
-        <Link href="/search">
+        <Link href="/home" passHref>
           <Logo
             sx={{
               display: {
@@ -61,15 +61,6 @@ const MainNavbar: FC<MainNavbarProps> = (props) => {
             },
           }}
         >
-          {/* <Link
-            color="textSecondary"
-            component={RouterLink}
-            to="/dashboard/overview"
-            underline="none"
-            variant="body1"
-          >
-            Dashboard
-          </Link> */}
           <Divider
             orientation="vertical"
             sx={{
@@ -80,9 +71,8 @@ const MainNavbar: FC<MainNavbarProps> = (props) => {
           <Button
             color="primary"
             component="a"
-            href="/search"
+            href="/home"
             size="small"
-            target="_blank"
             variant="contained"
           >
             Home

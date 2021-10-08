@@ -40,7 +40,7 @@ const Bookmark: FC<any> = ({ pageId }) => {
     //   setBookmark(true);
     // }
     // TODO update user
-    console.log(res);
+    console.log("Bookmark: res = ", res);
   };
 
   return (
