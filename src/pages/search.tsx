@@ -1,33 +1,27 @@
-/* eslint-disable no-new */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useState, KeyboardEvent } from "react";
 import { Helmet } from "react-helmet-async";
-import { Box, CircularProgress, Container } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Box, CircularProgress, Container } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import useSettings from "src/hooks/useSettings";
 import SearchBar from "src/components/search/SearchBar";
 import SearchResultView from "src/components/search/SearchResultView";
 import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import { mockSearchResults } from "src/components/mock/searchResults";
-import { NextPage } from "next";
 
 const useStyles = makeStyles((theme) => ({}));
 
 const PageSearch = () => {
   const { settings } = useSettings();
   const classes = useStyles();
-
-  const [input, setInput] = useState("");
-  const [result, setPageList] = useState(mockSearchResults);
+  const [result, setPageList] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const searchPage = async () => {
+  const searchPage = async (_input) => {
     try {
       setIsLoading(true);
       const res = await apiService.get<any>(
-        `/template/pages/search/?query=${input}`,
+        `/template/pages/search/?query=${_input}`,
       );
       console.log("searchPage: res = ", res);
       setPageList(res);
@@ -38,14 +32,9 @@ const PageSearch = () => {
     }
   };
 
-  const handleChange = async (_input: string) => {
-    console.log("handleChange: _input = ", _input);
-    setInput(_input);
-  };
-
-  const handleClick = async () => {
-    console.log("handleClick: input = ", input);
-    searchPage();
+  const handleClick = async (input) => {
+    console.log("PageSearch:handleClick: input = ", input);
+    searchPage(input);
   };
 
   return (
@@ -63,11 +52,8 @@ const PageSearch = () => {
       >
         <Container maxWidth={settings.compact ? "xl" : false}>
           <>
-            <SearchBar
-              input={input}
-              onChange={handleChange}
-              onClick={handleClick}
-            />
+            <SearchBar onClick={handleClick} />
+
             {isLoading ? (
               <Box
                 sx={{

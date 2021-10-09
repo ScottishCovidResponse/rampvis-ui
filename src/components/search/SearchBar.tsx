@@ -1,17 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react/prop-types */
+import { FC, KeyboardEvent, useState } from "react";
+import { makeStyles } from "@mui/styles";
+import SearchIcon from "@mui/icons-material/Search";
+import { Box, Button, TextField, InputAdornment } from "@mui/material";
 
-import { FC, KeyboardEvent } from "react";
-import { makeStyles, Theme } from "@material-ui/core/styles";
-import SearchIcon from "@material-ui/icons/Search";
-import { Box, Button, TextField, InputAdornment } from "@material-ui/core";
-
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   input: {
-    marginLeft: theme.spacing(1),
+    // marginLeft: theme.spacing(1),
     flex: 1,
     flexDirection: "row",
-    backgroundColor: theme.palette.background.paper,
+    // backgroundColor: theme.palette.background.paper,
   },
   button: {
     flexDirection: "row",
@@ -19,22 +16,22 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface SearchBarProps {
-  input: string;
-  onChange: (string) => void;
-  onClick: () => void;
+  onClick: (string) => void;
 }
 
-const SearchBar: FC<SearchBarProps> = ({
-  input: keyword,
-  onChange: handleChange,
-  onClick: handleClick,
-}) => {
+const SearchBar: FC<SearchBarProps> = (props) => {
   const classes = useStyles();
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleChange = async (term: string) => {
+    // console.log("handleChange: term = ", term);
+    setSearchTerm(term);
+  };
 
   const handleKeyUp = (event: KeyboardEvent<HTMLInputElement>): void => {
-    console.log(event.code);
+    // console.log(event.code);
     if (event.code === "Enter") {
-      handleClick();
+      props.onClick(searchTerm);
     }
   };
 
@@ -57,13 +54,15 @@ const SearchBar: FC<SearchBarProps> = ({
           }}
           onKeyUp={handleKeyUp}
           placeholder="Search..."
-          value={keyword}
+          defaultValue={searchTerm}
           onChange={(e: any) => handleChange(e.target.value)}
           className={classes.input}
         />
         <Button
           color="primary"
-          onClick={handleClick}
+          onClick={() => {
+            props.onClick(searchTerm);
+          }}
           size="large"
           sx={{ ml: 2 }}
           variant="contained"
