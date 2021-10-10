@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, KeyboardEvent } from "react";
+import React, { ReactElement, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Box, CircularProgress, Container } from "@mui/material";
 import { makeStyles } from "@mui/styles";
@@ -7,7 +7,6 @@ import SearchBar from "src/components/search/SearchBar";
 import SearchResultView from "src/components/search/SearchResultView";
 import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
-import { mockSearchResults } from "src/components/mock/searchResults";
 
 const useStyles = makeStyles((theme) => ({}));
 

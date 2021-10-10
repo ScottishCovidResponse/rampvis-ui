@@ -56,7 +56,8 @@ const PropagatedPage = () => {
       return;
     }
     const page = await apiService.get<any>(`/template/page/${pageId}`);
-    console.log("PropagatedPage: page = ", page);
+    console.log("OntoPage: VIS = ", page.vis);
+    console.log("OntoPage: Data = ", page.data);
 
     setTitle(page?.title);
 
@@ -84,7 +85,6 @@ const PropagatedPage = () => {
   }, [pageId]);
 
   useEffect(() => {
-    console.log("PropagatedPage: useEffect:");
     fetchOntoPage();
   }, [fetchOntoPage]);
 

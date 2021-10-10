@@ -1,34 +1,33 @@
-/* eslint-disable react/jsx-fragments */
-/* eslint-disable react/prop-types */
-/* eslint-disable arrow-body-style */
-
 import React, { FC } from "react";
-import { Theme, makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import Divider from "@material-ui/core/Divider";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
-import { Chip, Box } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
+import {
+  Box,
+  Typography,
+  Avatar,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+} from "@mui/material";
+import ImageIcon from "@mui/icons-material/Image";
 import Link from "next/link";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     width: "100%",
     maxWidth: "100%",
-    backgroundColor: theme.palette.background.paper,
+    // backgroundColor: theme.palette.background.paper,
   },
   inline: {
     display: "inline",
   },
   chip: {
-    margin: theme.spacing(0.5),
+    // margin: theme.spacing(0.5),
   },
   large: {
-    width: theme.spacing(5),
-    height: theme.spacing(5),
+    // width: theme.spacing(5),
+    // height: theme.spacing(5),
     margin: "5px 10px",
   },
 }));
@@ -57,21 +56,21 @@ const SearchResultView: FC<SearchResultProps> = ({ data = [] }) => {
         {data.map((dataRecord, index) => (
           <React.Fragment key={index}>
             <ListItem alignItems="flex-start">
-              <Link
-                href={{ pathname: "/page", query: { id: dataRecord.id } }}
-                passHref={true}
+              <a
+                href={`/page?id=${dataRecord.id}`}
+                target="_blank"
+                rel="noreferrer"
               >
                 <ListItemAvatar>
-                  {/* <IconButton color="primary" aria-label="" component="a">
-                    <ImageIcon />
-                  </IconButton> */}
                   <Avatar
                     variant="square"
                     className={classes.large}
                     src={`/static/mock-images/${dataRecord.id}.jpeg`}
-                  />
+                  >
+                    <ImageIcon />
+                  </Avatar>
                 </ListItemAvatar>
-              </Link>
+              </a>
 
               <ListItemText
                 primary={dataRecord?.title}
@@ -83,7 +82,7 @@ const SearchResultView: FC<SearchResultProps> = ({ data = [] }) => {
                       className={classes.inline}
                       color="textPrimary"
                     >
-                      {dataRecord.title}
+                      {/* {dataRecord.title} */}
                       <Divider orientation="vertical" />
                     </Typography>
                     {dataRecord.visDescription}

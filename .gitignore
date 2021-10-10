@@ -60,3 +60,4 @@ error.log
 out
 
 public/static/mock-images
+public/static/mock-images/thumbnails

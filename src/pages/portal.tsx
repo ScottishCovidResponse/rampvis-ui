@@ -9,11 +9,9 @@ import {
   Container,
   Grid,
   Card,
-  IconButton,
 } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import useSettings from "src/hooks/useSettings";
 import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
@@ -44,17 +42,16 @@ const MyPortal = () => {
   const { settings } = useSettings();
 
   const [portalData, setPortalData] = useState<any[]>(mockPortalData);
+  const url = `/template/pages/example`; // TODO: Set correct URL once available
 
   const fetchPortalPages = useCallback(async () => {
     try {
-      // TODO: Set correct URL once available
-      // const url = `/template/pages/example/plot/`;
-      // const res = (await apiService.get<any>(url))?.data;
-      // console.log("MyPortal: fetched data = ", res);
-      // setPortalData(res);
+      const res = (await apiService.get<any>(url))?.data;
+      console.log("MyPortal: data = ", res);
+      setPortalData(res);
     } catch (err) {
       // prettier-ignore
-      console.error(`PageListTemplate: Fetching API, error = ${err}`);
+      console.error(`MyPortal: Fetching ${url}, error = ${err}`);
     }
   }, []);
 
@@ -79,11 +76,6 @@ const MyPortal = () => {
             <Grid item xs={12}>
               <Card>
                 <CardHeader
-                  action={
-                    <IconButton aria-label="settings">
-                      <MoreVertIcon />
-                    </IconButton>
-                  }
                   avatar={
                     <Avatar className={classes.avatar}>
                       <BookmarksIcon />
@@ -107,9 +99,9 @@ const MyPortal = () => {
 
 MyPortal.getLayout = function getLayout(page: ReactElement) {
   return (
-    // <AuthGuard>
-    <DashboardLayout>{page}</DashboardLayout>
-    // </AuthGuard>
+    <AuthGuard>
+      <DashboardLayout>{page}</DashboardLayout>
+    </AuthGuard>
   );
 };
 
