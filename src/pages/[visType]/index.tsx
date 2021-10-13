@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { useRouter } from "next/router";
 import { Helmet } from "react-helmet-async";
+import { makeStyles } from "@mui/styles";
 import {
   Avatar,
   Box,
@@ -13,17 +11,17 @@ import {
   Container,
   Grid,
   IconButton,
-} from "@material-ui/core";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import StorageIcon from "@material-ui/icons/Storage";
-import { blue } from "@material-ui/core/colors";
+} from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import TableViewIcon from "@mui/icons-material/TableView";
+import { blue } from "@mui/material/colors";
 import moment from "moment";
 import _ from "lodash";
+import { GetStaticPaths, GetStaticProps } from "next";
 import useSettings from "src/hooks/useSettings";
 import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import PropagatedPageTable from "src/components/PropagatedPageTable";
-import { GetStaticPaths, GetStaticProps } from "next";
 
 const useStyles = makeStyles({
   root: {
@@ -48,16 +46,18 @@ const PropagatedPageList = () => {
   const visType =
     typeof router.query.visType === "string" ? router.query.visType : undefined;
   const [pages, setPages] = useState<any>([]);
+  const [loading, setLoading] = useState(false);
 
-  const pageType = "release";
-  const url = `${process.env.NEXT_PUBLIC_API_JS}/template/pages/example/${visType}/`;
+  const pageType = "example";
+  const url = `${process.env.NEXT_PUBLIC_API_JS}/template/pages/${pageType}/${visType}`;
   console.log("PageListTemplate: visType = ", visType, ", API url = ", url);
 
   const fetchOntoPages = useCallback(async () => {
     try {
+      setLoading(true);
       const res = await apiService.get<any>(url);
       console.log("PageListTemplate: fetched data = ", res);
-      // eslint-disable-next-line @typescript-eslint/no-shadow
+
       const pages = res.data.map((d) => {
         const { id, date } = d;
         return {
@@ -72,13 +72,13 @@ const PropagatedPageList = () => {
 
       console.log("rows = ", pages);
       setPages(pages);
+      setLoading(false);
     } catch (err) {
       // prettier-ignore
       console.error(`PageListTemplate: Fetching API ${url}, error = ${err}`);
+      setLoading(false);
     }
   }, [url]);
-  // if pageType, visType changes, useEffect will run again
-  // if you want to run only once, just leave array empty []
 
   useEffect(() => {
     console.log("PageListTemplate: useEffect:");
@@ -110,15 +110,15 @@ const PropagatedPageList = () => {
                   }
                   avatar={
                     <Avatar className={classes.avatar}>
-                      <StorageIcon />
+                      <TableViewIcon />
                     </Avatar>
                   }
                   title={visType ? _.startCase(visType) : _.startCase(pageType)}
-                  subheader={`List of ${_.camelCase(pageType)} visualizations`}
+                  subheader={`List of propagated ${visType} visualizations`}
                 />
 
                 <CardContent sx={{ pt: "8px" }}>
-                  <PropagatedPageTable data={pages} />
+                  <PropagatedPageTable loading={loading} data={pages} />
                 </CardContent>
               </Card>
             </Grid>

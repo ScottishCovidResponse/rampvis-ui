@@ -1,22 +1,20 @@
 import { useEffect } from "react";
 import type { FC } from "react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
-import { Avatar, Box, Divider, Drawer, Typography } from "@material-ui/core";
-import type { Theme } from "@material-ui/core";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import TimelineIcon from "@material-ui/icons/Timeline";
-import BookmarksIcon from "@material-ui/icons/Bookmarks";
-import SettingsIcon from "@material-ui/icons/Settings";
-import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
-import PlaceIcon from "@material-ui/icons/Place";
-import AssessmentIcon from "@material-ui/icons/Assessment";
-import DonutSmallIcon from "@material-ui/icons/DonutSmall";
-import SearchIcon from "@material-ui/icons/Search";
-import AllInboxIcon from "@material-ui/icons/AllInbox";
-import Filter1Icon from "@material-ui/icons/Filter1";
+import { Box, Divider, Drawer, Typography } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import TimelineIcon from "@mui/icons-material/Timeline";
+import BookmarksIcon from "@mui/icons-material/Bookmarks";
+import PlaceIcon from "@mui/icons-material/Place";
+import AssessmentIcon from "@mui/icons-material/Assessment";
+import DonutSmallIcon from "@mui/icons-material/DonutSmall";
+import SearchIcon from "@mui/icons-material/Search";
+import AllInboxIcon from "@mui/icons-material/AllInbox";
+import Filter1Icon from "@mui/icons-material/Filter1";
 import useAuth from "src/hooks/useAuth";
 import Logo from "src/components/Logo";
 import NavSection from "src/components/dashboard-layout/NavSection";
@@ -118,24 +116,24 @@ const sections = [
     title: "",
     items: [
       {
-        title: "Development",
-        path: "/development/release",
-        icon: <ArrowForwardIosIcon fontSize="small" />,
+        title: "Propagated Pages",
+        path: "/propagated/release",
+        icon: <KeyboardArrowRightIcon fontSize="small" />,
         children: [
           {
             title: "Example",
-            path: "/development/example",
-            icon: <ArrowForwardIosIcon fontSize="small" />,
+            path: "/propagated/example",
+            icon: <KeyboardArrowRightIcon fontSize="small" />,
           },
           {
             title: "Review",
-            path: "/development/review",
-            icon: <ArrowForwardIosIcon fontSize="small" />,
+            path: "/propagated/review",
+            icon: <KeyboardArrowRightIcon fontSize="small" />,
           },
           {
             title: "Released",
-            path: "/development/release",
-            icon: <ArrowForwardIosIcon fontSize="small" />,
+            path: "/propagated/release",
+            icon: <KeyboardArrowRightIcon fontSize="small" />,
           },
         ],
       },
@@ -146,9 +144,9 @@ const sections = [
 const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
   const { onMobileClose, openMobile } = props;
   const router = useRouter();
-
   const { user } = useAuth();
-  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up("lg"));
+  const theme = useTheme();
+  const lgUp = useMediaQuery(theme.breakpoints.up("sm"));
 
   useEffect(() => {
     if (openMobile && onMobileClose) {

@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import { orange, grey } from "@material-ui/core/colors";
 import ShowHideGuard from "src/components/auth/guards/ShowHideGuard";
 import { apiService } from "src/utils/apiService";
-import useAuth from "src/hooks/useAuth";
+// import useAuth from "src/hooks/useAuth";
 
 const useStyles = makeStyles((theme) => ({
   bookmarkedStyle: {
@@ -23,12 +23,12 @@ const useStyles = makeStyles((theme) => ({
 const Bookmark: FC<any> = ({ pageId }) => {
   const classes = useStyles();
   const [isBookmarked, setBookmark] = useState<boolean>(false);
-  const { user } = useAuth();
+  // const { user } = useAuth();
 
-  if (user?.bookmarks?.includes(pageId)) {
-    setBookmark(true);
-  }
-  console.log("Bookmark: isBookmarked = ", isBookmarked);
+  // if (user?.bookmarks?.includes(pageId)) {
+  //   setBookmark(true);
+  // }
+  // console.log("Bookmark: isBookmarked = ", isBookmarked);
 
   const onClickBookmark = async () => {
     console.log("Bookmark: !isBookmarked = ", !isBookmarked);
@@ -40,7 +40,7 @@ const Bookmark: FC<any> = ({ pageId }) => {
     //   setBookmark(true);
     // }
     // TODO update user
-    console.log(res);
+    console.log("Bookmark: res = ", res);
   };
 
   return (

@@ -13,13 +13,17 @@ class MyDocument extends Document {
           <link rel="apple-touch-icon" sizes="76x76" href="/Favicon64x64.png" />
           {/* Fonts and icons */}
           <link
-            rel="stylesheet"
-            type="text/css"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"
-          />
-          <link
             href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
             rel="stylesheet"
+          />
+
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+          />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
           />
 
           <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2" />

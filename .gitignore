@@ -58,3 +58,6 @@ error.log
 
 .next
 out
+
+public/static/mock-images
+public/static/mock-images/thumbnails

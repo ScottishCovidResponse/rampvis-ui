@@ -171,7 +171,7 @@ export const AuthProviderJWT: FC<AuthProviderProps> = (props) => {
         },
       });
 
-      router.push(`/search`);
+      router.push(`/home`);
     } catch (err) {
       console.error("AuthProviderJWT:login: error =", err);
     }

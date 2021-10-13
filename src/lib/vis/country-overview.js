@@ -126,7 +126,7 @@ export class CountryOverview {
           color: COLOR_CASES,
           data: Data.from(options.data, Data.Fields.COUNTRY_NEW_CASES),
           mode: dashboard.MODE_DAILY,
-          link: links[0],
+          link: links && links[0],
         },
         {
           id: "vaccinated1",

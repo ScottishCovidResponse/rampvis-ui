@@ -15,7 +15,7 @@ import {
   IconButton,
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import StorageIcon from "@material-ui/icons/Storage";
+import TableViewIcon from "@mui/icons-material/TableView";
 import { blue } from "@material-ui/core/colors";
 import moment from "moment";
 import _ from "lodash";
@@ -40,12 +40,13 @@ const useStyles = makeStyles({
   },
 });
 
-const PropagatedPageList: NextPage = () => {
+const PropagatedPageList = () => {
   // const mounted = useMounted();
   const { settings } = useSettings();
   const classes = useStyles();
   const router = useRouter();
   const [pages, setPages] = useState<any>([]);
+  const [loading, setLoading] = useState(false);
 
   const pageType =
     typeof router.query.pageType === "string"
@@ -57,6 +58,7 @@ const PropagatedPageList: NextPage = () => {
 
   const fetchOntoPages = useCallback(async () => {
     try {
+      setLoading(true);
       const res = await apiService.get<any>(url);
       console.log("PageListTemplate: fetched data = ", res);
       const pages = res.data.map((d) => {
@@ -73,13 +75,13 @@ const PropagatedPageList: NextPage = () => {
 
       console.log("rows = ", pages);
       setPages(pages);
+      setLoading(false);
     } catch (err) {
       // prettier-ignore
       console.error(`PageListTemplate: Fetching API ${url}, error = ${err}`);
+      setLoading(false);
     }
   }, [url]);
-  // if pageType, pageType changes, useEffect will run again
-  // if you want to run only once, just leave array empty []
 
   useEffect(() => {
     console.log("PageListTemplate: useEffect:");
@@ -111,18 +113,18 @@ const PropagatedPageList: NextPage = () => {
                   }
                   avatar={
                     <Avatar className={classes.avatar}>
-                      <StorageIcon />
+                      <TableViewIcon />
                     </Avatar>
                   }
                   title={
                     (_.startCase(pageType) && _.startCase(pageType)) ||
                     _.startCase(pageType)
                   }
-                  subheader={`List of ${_.camelCase(pageType)} visualizations`}
+                  subheader={`List of ${_.camelCase(pageType)} pages`}
                 />
 
                 <CardContent sx={{ pt: "8px" }}>
-                  <PropagatedPageTable data={pages} />
+                  <PropagatedPageTable loading={loading} data={pages} />
                 </CardContent>
               </Card>
             </Grid>
@@ -139,11 +141,7 @@ PropagatedPageList.getLayout = function getLayout(page: ReactElement) {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
-    paths: [
-      "/development/example",
-      "/development/release",
-      "/development/review",
-    ],
+    paths: ["/propagated/example", "/propagated/release", "/propagated/review"],
     fallback: false,
   };
 };
