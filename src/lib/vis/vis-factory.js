@@ -10,6 +10,8 @@ import { SuperimposedPercentiles } from "./superimposed-percentiles";
 import { StackedBarChartWith6Places } from "./stacked-bar-chart-6-places";
 import { StackedAreaChart } from "./stacked-area-chart";
 import { StackedBarChart } from "./stacked-bar-chart";
+import { MirroredStackedAreaChart } from "./mirrored-stacked-area-chart";
+import { MirroredStackedBarChart } from "./mirrored-stacked-bar-chart";
 
 export const visFactory = (type, args) => {
   if (type === "SimpleBarChart") return new SimpleBarChart(args);
@@ -26,6 +28,10 @@ export const visFactory = (type, args) => {
     return new StackedBarChartWith6Places(args);
   if (type === "StackedAreaChart") return new StackedAreaChart(args);
   if (type === "StackedBarChart") return new StackedBarChart(args);
+  if (type === "MirroredStackedAreaChart")
+    return new MirroredStackedAreaChart(args);
+  if (type === "MirroredStackedBarChart")
+    return new MirroredStackedBarChart(args);
 
   return null;
 };
