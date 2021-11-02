@@ -1,13 +1,18 @@
 import type { FC } from "react";
-import { Link as RouterLink } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Box, Button, Container, Typography } from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
+import { useRouter } from "next/router";
 
 const AuthorizationRequired: FC = () => {
   const theme = useTheme();
   const mobileDevice = useMediaQuery(theme.breakpoints.down("sm"));
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push("/home");
+  };
 
   return (
     <>
@@ -68,9 +73,8 @@ const AuthorizationRequired: FC = () => {
           >
             <Button
               color="primary"
-              component={RouterLink}
-              to="/"
               variant="outlined"
+              onClick={() => handleClick}
             >
               Back to Home
             </Button>

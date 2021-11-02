@@ -1,6 +1,3 @@
-/* eslint-disable arrow-body-style */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { ReactElement } from "react";
 import { Helmet } from "react-helmet-async";
 import { useRouter } from "next/router";
@@ -9,7 +6,7 @@ import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import UnderConstruction from "src/components/errors/UnderConstruction";
 import { GetStaticProps, GetStaticPaths, NextPage } from "next";
 
-const MyPortal: NextPage = () => {
+const MyPortal = () => {
   const router = useRouter();
   const country = `${router.query.country}`;
 

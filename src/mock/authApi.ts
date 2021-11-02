@@ -10,6 +10,7 @@ const users = [
     name: "Administrator",
     password: "Password123!",
     role: "Admin",
+    bookmarks: undefined,
   },
 ];
 
@@ -60,6 +61,7 @@ class AuthApi {
           email: user.email,
           name: user.name,
           role: user.role,
+          bookmarks: user.bookmarks,
         });
       } catch (err) {
         console.error("[Auth Api]: ", err);
