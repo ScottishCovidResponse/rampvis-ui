@@ -25,6 +25,7 @@ import {
   FormControlLabel,
   FormGroup,
   listSubheaderClasses,
+  Checkbox,
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import TimelineIcon from "@material-ui/icons/Timeline";
@@ -43,6 +44,8 @@ import axios from "axios";
 import * as d3 from "d3";
 import { DateSchema } from "yup";
 
+//react style function for creating css classes and assigning attributes
+//https://casbin.org/CssToAndFromReact/ good website for conversions
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
@@ -85,6 +88,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+//A high level container to separate forms and plots
 function Item(props) {
   const { sx, ...other } = props;
   return (
@@ -96,7 +100,6 @@ function Item(props) {
         textAlign: "left",
         fontSize: 19,
         fontWeight: "700",
-        width: "auto",
         ...sx,
       }}
       {...other}
@@ -107,6 +110,7 @@ Item.propTypes = {
   sx: PropTypes.object,
 };
 
+//list of covid data streams
 const covidIndicators = [
   {
     label: "Daily Deaths",
@@ -192,6 +196,7 @@ const covidIndicators = [
     value: "biweekly_deaths_rate",
   },
 ];
+//list of similarity measures
 const similarityMeasures = [
   {
     label: "Euclidean Distance",
@@ -214,6 +219,7 @@ const similarityMeasures = [
     value: "lcs",
   },
 ];
+//list of continents
 const continents = [
   {
     value: "Africa",
@@ -235,30 +241,57 @@ const continents = [
   },
 ];
 
-const initialFirstRunState2 = {
-  targetCountry: "",
-  firstDate: "",
-  lastDate: "",
+//first run object initalization
+const initialFirstRunState = {
+  targetCountry: "United Kingdom",
+  firstDate: "2021-08-02",
+  lastDate: "2021-08-16",
   indicator: "new_cases",
   method: "euclidean",
   numberOfResults: 10,
   minPopulation: 600000,
-  startDate: "",
-  endDate: "",
+  startDate: "2021-01-01",
+  endDate: "2021-10-01",
   continentCheck: {
     Africa: false,
     Asia: false,
     Australia: false,
-    Europe: false,
+    Europe: true,
     "North America": false,
     "South America": false,
   },
 };
 
+//---D3 FUNCTIONS---
+
+function findMaxValue(obj) {
+  let max = 0;
+  for (const res in obj) {
+    for (const dat in obj[res]) {
+      if (obj[res][dat]["measurement"] > max) {
+        max = obj[res][dat]["measurement"];
+      }
+    }
+  }
+  return max;
+}
+
+function findMinValue(obj) {
+  let min = Infinity;
+  for (const res in obj) {
+    for (const dat in obj[res]) {
+      if (obj[res][dat]["measurement"] < min) {
+        min = obj[res][dat]["measurement"];
+      }
+    }
+  }
+  return min;
+}
+
 const TimeseriesSim = () => {
-  const { settings } = useSettings();
+  //const { settings } = useSettings();
   const classes = useStyles();
-  const ref = useRef();
+  //const ref = useRef();
 
   const [advancedFilterPopup, setAdvancedFilterPopup] = useState(false);
   const advancedFilterClickOpen = () => {
@@ -268,7 +301,7 @@ const TimeseriesSim = () => {
     setAdvancedFilterPopup(false);
   };
 
-  const [firstRunForm, setFirstRunForm] = useState(initialFirstRunState2);
+  const [firstRunForm, setFirstRunForm] = useState(initialFirstRunState);
 
   const multipleHandleChange = (event) => {
     if (event.target.type == "checkbox") {
@@ -285,30 +318,6 @@ const TimeseriesSim = () => {
       });
     }
   };
-
-  function findMaxValue(obj) {
-    let max = 0;
-    for (const res in obj) {
-      for (const dat in obj[res]) {
-        if (obj[res][dat]["measurement"] > max) {
-          max = obj[res][dat]["measurement"];
-        }
-      }
-    }
-    return max;
-  }
-
-  function findMinValue(obj) {
-    let min = Infinity;
-    for (const res in obj) {
-      for (const dat in obj[res]) {
-        if (obj[res][dat]["measurement"] < min) {
-          min = obj[res][dat]["measurement"];
-        }
-      }
-    }
-    return min;
-  }
 
   const VizTrial = (response) => {
     const data = response.data;
@@ -371,7 +380,7 @@ const TimeseriesSim = () => {
       .attr("transform", "translate(0," + height + ")")
       .call(xaxis)
       .selectAll("text")
-      .attr("transform", "translate(0,50) rotate(-45)")
+      .attr("transform", "translate(0,60) rotate(-45)")
       .style("font-size", "20px");
 
     svg
@@ -436,7 +445,7 @@ const TimeseriesSim = () => {
       count += 1;
     }
 
-    console.log(data);
+    console.log(response);
   };
 
   console.log(firstRunForm);
@@ -457,10 +466,10 @@ const TimeseriesSim = () => {
           py: 8,
           display: "grid",
           gap: 1,
-          gridTemplateColumns: "repeat(2, 1fr)",
+          gridTemplateColumns: "0.2fr 1fr",
         }}
       >
-        <Item>
+        <Item width="300px">
           <Card>
             <CardContent>
               <form>
@@ -588,10 +597,12 @@ const TimeseriesSim = () => {
                         {continents.map((continent) => (
                           <label>
                             {continent.value}
-                            <input
-                              type="checkbox"
+                            <Checkbox
                               value={continent.value}
                               onChange={multipleHandleChange}
+                              checked={
+                                firstRunForm.continentCheck[continent.value]
+                              }
                             />
                           </label>
                         ))}
