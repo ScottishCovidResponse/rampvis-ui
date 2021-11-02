@@ -26,9 +26,9 @@ export class SensitivityStackedBarChart {
   CHART_HEIGHT = window.innerHeight - Common.MAIN_CONTENT_GAP;
 
   constructor(options) {
-    console.log(options);
+    console.log("Data", options.data);
 
     const container = d3.select("#" + options.chartElement);
-    container.text("Sensi");
+    container.text("Sensitivity analysis here");
   }
 }
