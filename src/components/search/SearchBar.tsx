@@ -1,14 +1,14 @@
 import { FC, KeyboardEvent, useState } from "react";
-import { makeStyles } from "@mui/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import { Box, Button, TextField, InputAdornment } from "@mui/material";
+import { Theme, makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   input: {
-    // marginLeft: theme.spacing(1),
+    marginLeft: theme.spacing(1),
     flex: 1,
     flexDirection: "row",
-    // backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.paper,
   },
   button: {
     flexDirection: "row",

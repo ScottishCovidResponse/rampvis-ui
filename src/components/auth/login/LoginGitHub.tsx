@@ -16,6 +16,7 @@ const LoginGitHub: FC = (props) => {
 
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const url = `${process.env.NEXT_PUBLIC_API_JS}/auth/github-login`;
 
   useEffect(() => {
     const initialize = async (): Promise<void> => {
@@ -61,7 +62,7 @@ const LoginGitHub: FC = (props) => {
           mb: 0,
         }}
       >
-        <Link href="http://localhost:4000/api/v1/auth/github-login" passHref>
+        <Link href={url} passHref>
           <LoadingButton
             style={{ width: "100%" }}
             variant="contained"

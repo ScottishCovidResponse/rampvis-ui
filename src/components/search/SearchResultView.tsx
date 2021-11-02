@@ -13,7 +13,7 @@ import {
 import ImageIcon from "@mui/icons-material/Image";
 import Link from "next/link";
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
     maxWidth: "100%",

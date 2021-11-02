@@ -1,20 +1,18 @@
 import React, { FC } from "react";
-import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
+import { Theme, makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import PortalItem from "./PortalItem";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: "flex",
-      flexWrap: "wrap",
-      justifyContent: "space-around",
-      overflow: "hidden",
-      backgroundColor: theme.palette.background.paper,
-      padding: "10px 10px 10px 0px",
-    },
-  }),
-);
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    overflow: "hidden",
+    backgroundColor: theme.palette.background.paper,
+    padding: "10px 10px 10px 0px",
+  },
+}));
 
 interface PortalViewProps {
   data: any[];
