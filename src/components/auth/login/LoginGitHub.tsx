@@ -35,7 +35,7 @@ const LoginGitHub: FC = (props) => {
           console.log("LoginGitHub: user =", user);
           setLoading(false);
 
-          router.push(`/home`);
+          router.push(`/`);
         }
       }
     };
