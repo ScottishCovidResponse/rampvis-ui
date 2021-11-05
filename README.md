@@ -61,7 +61,7 @@ See [Next.js docs → Environment Variables](https://nextjs.org/docs/basic-featu
     npx serve out
     ```
 
-1.  Navigate to http://localhost:5000 in your browser
+1.  Navigate to http://localhost:3000 in your browser
 
 ## References
 
