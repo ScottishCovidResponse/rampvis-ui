@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+      - nextjs-migrate
+  pull_request:
+    branches:
+      - main
+      - nextjs-migrate
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run yarn build
+        run: yarn build
+
+      - name: Upload ‘out’ as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: out
+          path: out
+
+  deploy:
+    name: Deploy (incomplete)
+    needs: build
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Download ‘out’ artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: out
+          path: out
+
+      - name: List files (temp step)
+        run: |
+          echo ""
+          echo "This pipeline is incomplete. TODO: replace listing files with deploying"
+          echo "https://github.com/sdras/awesome-actions#deployment"
+          echo ""
+          ls -R out
