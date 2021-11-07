@@ -16,17 +16,28 @@ const PageSearch = () => {
   const [result, setPageList] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const searchPage = async (_input) => {
+  const searchPage = async (keywords) => {
     try {
       setIsLoading(true);
-      const res = await apiService.get<any>(
-        `/template/pages/search/?query=${_input}`,
+      const result = await apiService.get<any>(
+        `/template/pages/search/?query=${keywords}`,
       );
-      console.log("searchPage: res = ", res);
-      setPageList(res);
+
+      const resultWithThumbnail = await Promise.all(
+        result.map(async (d) => {
+          const image = await apiService.get<any>(
+            `/template/thumbnail/${d.id}`,
+          );
+          return { thumbnail: image, ...d };
+        }),
+      );
+
+      console.log("searchPage: resultWithThumbnail = ", resultWithThumbnail);
+
+      setPageList(resultWithThumbnail);
       setIsLoading(false);
     } catch (err) {
-      console.error("PageSearch: searhPage: error = ", err);
+      console.error("PageSearch:searchPage: error = ", err);
       setIsLoading(false);
     }
   };
