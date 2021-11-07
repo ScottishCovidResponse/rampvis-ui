@@ -55,13 +55,37 @@ See [Next.js docs → Environment Variables](https://nextjs.org/docs/basic-featu
     yarn build
     ```
 
-1.  Launch a simple HTTP server for the just-created `out` directory.
+1.  Make sure that port 3000 is not used and launch a simple HTTP server for the just-created `out` directory.
 
     ```sh
     npx serve out
     ```
 
-1.  Navigate to http://localhost:3000 in your browser
+1.  Navigate to http://localhost:3000 in your browser.
+
+## Deployment
+
+Running `yarn build` produces a [static HTML export](https://nextjs.org/docs/advanced-features/static-html-export), which means that the app can be served without Node.js.
+One of the options is to use [nginx](https://www.nginx.com) with the following example config: [`nginx.conf`](nginx.conf).
+It maps URLs like `/my/page` to files like `/my/page.html`, removes trailing slashes and applies several output-specific optimisations.
+As a result, production URLs match the ones we see during `yarn dev` and `npx serve out`.
+
+It is possible to locally test `nginx.conf` after running `yarn build`.
+This requires [Docker](https://www.docker.com/products/docker-desktop).
+
+1.  Build the container (see [Dockerfile](./Dockerfile)):
+
+    ```sh
+    docker build . --tag=rampvis-ui:local
+    ```
+
+1.  Make sure that port 3000 is not used and start the container:
+
+    ```sh
+    docker run -p 3000:80 rampvis-ui:local
+    ```
+
+1.  Navigate to http://localhost:3000 in your browser.
 
 ## References
 
