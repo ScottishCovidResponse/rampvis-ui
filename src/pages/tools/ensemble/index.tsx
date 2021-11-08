@@ -1,50 +1,162 @@
-/* eslint-disable arrow-body-style */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useTheme } from "@material-ui/core/styles";
 import { Box, Container } from "@material-ui/core";
-import { blue } from "@material-ui/core/colors";
 import { makeStyles } from "@material-ui/core/styles";
 
 import useSettings from "src/hooks/useSettings";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import AuthGuard from "src/components/auth/guards/AuthGuard";
 
+import { visFactory } from "src/pages/tools/ensemble/vis-factory";
 import axios from "axios";
+import { Controller } from "src/pages/tools/ensemble/controller";
+import CustomTable from "src/pages/tools/ensemble/table-plot";
+import ReactDOM from "react-dom";
 
 const useStyles = makeStyles((theme) => ({}));
 
 const Ensemble = () => {
-  console.log("Ensemble:");
+  console.clear();
   const theme = useTheme();
   const classes = useStyles();
   const { settings } = useSettings();
 
-  const fetchMeta = useCallback(async () => {
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/meta`;
-    const res = await axios.get(apiUrl);
-    console.log("ensemble: meta = ", res.data);
+  var controller = new Controller();
+
+  const lineChart = useCallback(async () => {
+    var allAgeData = await controller.getSimulationData(0);
+
+    var line = visFactory("LineChart", {
+      chartElement: "line_chart",
+      data: allAgeData,
+      currentSelection: 0,
+      controller: controller,
+    });
+
+    controller.line = line;
   }, []);
 
-  const fetchData = useCallback(async () => {
-    // path is the path to a specific csv file or folder
-    // If a folder is given, such as `?path=data/output/simu_0/`, return an object with keys as filenames
-    // const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data?path=data/output/simu_0/age_0.csv`;
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data?path=data/output/simu_0`;
-    const res = await axios.get(apiUrl);
-    console.log("ensemble: data = ", res.data);
+  const parallelVerticalChart = useCallback(async () => {
+    const metadata = await controller.getMetaData();
+    const parameters = metadata.posterior_parameters;
+
+    var parallel1 = visFactory("ParallelVerticalChart", {
+      chartElement: "parallel_vertical_chart",
+      data: [
+        {
+          values: parameters,
+          removedDimensions: ["Index"],
+          controller: controller,
+        },
+      ],
+      controller: controller,
+    });
+
+    controller.parallel1 = parallel1;
+  }, []);
+
+  const parallelAdditionalChart = useCallback(async () => {
+    const visualizationData = await controller.getSimulationAgeData();
+    const polylineData = await controller.getPolylineData();
+
+    var parallel2 = visFactory("ParallelChart", {
+      chartElement: "parallel_chart",
+      data: [
+        {
+          values: visualizationData,
+          displayedDimensions: [
+            "age_group",
+            "day",
+            "S_mean",
+            "E_mean",
+            "H_mean",
+            "R_mean",
+            "D_mean",
+            "I_mean",
+            "IS_mean",
+          ],
+          additionalData: polylineData,
+        },
+      ],
+      controller: controller,
+    });
+
+    controller.parallel2 = parallel2;
+  }, []);
+
+  const scatterPlot = useCallback(async () => {
+    const pcaData = await controller.getMeanData();
+
+    var scatter = visFactory("ScatterPlot", {
+      chartElement: "scatter_plot",
+      data: [
+        {
+          values: pcaData,
+        },
+      ],
+      controller: controller,
+    });
+
+    controller.scatter = scatter;
+  }, []);
+
+  // const matrixPlot = useCallback(async () => {
+  //   const metadata = await controller.getMetaData();
+  //   const parameters = metadata.posterior_parameters;
+
+  //   var matrix = visFactory("MatrixJunk", {
+  //     chartElement: "matrix_junk",
+  //     data: [{
+  //       values: parameters,
+  //       displayedDimensions: ["p_inf", "p_hcw", "c_hcw", "d", "q"]
+  //     }],
+  //     controller: controller
+  //   });
+
+  //   controller.matrix = matrix;
+
+  // }, []);
+
+  const tablePlot = useCallback(async () => {
+    const metadata = await controller.getMetaData();
+    const table_data = metadata.posterior_parameters;
+
+    const table_keys = Object.keys(table_data[0]);
+    const columns = table_keys.map((key) => ({ accessor: key, Header: key }));
+    const table_metadata = metadata.posterior_parameters_meta;
+
+    const options = {
+      data: table_data,
+      metadata: table_metadata[2],
+      meandata: table_metadata[1],
+      columns: columns,
+      retainedDimensions: ["Index"],
+      controller: controller,
+    };
+
+    var table = <CustomTable options={options} />;
+
+    ReactDOM.render(table, document.getElementById("table_plot"));
+    controller.table = table;
   }, []);
 
   useEffect(() => {
-    console.log("ensemble: useEffect:");
-    fetchMeta();
-    fetchData()
-  }, [fetchMeta, fetchData]);
+    lineChart();
+    parallelVerticalChart();
+    parallelAdditionalChart();
+    scatterPlot();
+    tablePlot();
+  }, [
+    lineChart,
+    parallelVerticalChart,
+    parallelAdditionalChart,
+    scatterPlot,
+    tablePlot,
+  ]);
 
   return (
-    <>
+    <div>
       <Helmet>
         <title>Ensemble</title>
       </Helmet>
@@ -56,18 +168,19 @@ const Ensemble = () => {
         }}
       >
         <Container maxWidth={settings.compact ? "xl" : false}></Container>
-        <div>HELLO</div>
+
+        <div id="line_chart" />
+        <div id="scatter_plot" />
+        <div id="parallel_chart" />
+        <div id="parallel_vertical_chart" />
+        <div id="table_plot" />
       </Box>
-    </>
+    </div>
   );
 };
 
 Ensemble.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <AuthGuard>
-      <DashboardLayout>{page}</DashboardLayout>
-    </AuthGuard>
-  );
+  return <DashboardLayout>{page}</DashboardLayout>;
 };
 
 export default Ensemble;

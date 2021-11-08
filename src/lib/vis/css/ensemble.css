@@ -1,0 +1,35 @@
+.scatterselected {
+  opacity: 1 !important;
+  stroke: red;
+  stroke-width: 2px;
+}
+
+#container {
+  width: 1800px;
+}
+
+#first {
+  float: left;
+}
+#second {
+  float: left;
+}
+
+#middle {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 200px;
+}
+
+#container2 {
+  width: 1800px;
+}
+
+#third {
+  float: left;
+}
+#fourth {
+  float: left;
+  padding-top: 30px;
+}
