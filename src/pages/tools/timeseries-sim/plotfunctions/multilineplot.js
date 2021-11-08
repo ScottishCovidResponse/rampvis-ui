@@ -1,5 +1,4 @@
 import * as d3 from "d3";
-import { sliderBottom } from "d3-simple-slider";
 import { findMaxValue, findMinValue } from "./miscfuncs";
 
 export function MultiLinePlot(response, firstRunForm) {
@@ -11,6 +10,7 @@ export function MultiLinePlot(response, firstRunForm) {
   const adj = 100;
   d3.select("#charts").html("");
   d3.select("#legend").html("");
+  d3.select("#slider-range").html("");
   const svg = d3
     .select("#charts")
     .append("svg")
@@ -125,25 +125,4 @@ export function MultiLinePlot(response, firstRunForm) {
       .text(legends[count].split(" ")[0]);
     count += 1;
   }
-
-  const sliderRange = sliderBottom()
-    .min(d3.min(dateRange))
-    .max(d3.max(dateRange))
-    .width(300)
-    .tickFormat(formatTime)
-    .tickValues(dateRange)
-    .default([d3.min(dateRange), d3.max(dateRange)])
-    .fill("#2196f3")
-    .on("onchange", (val) => {
-      console.log(val);
-    });
-  const gRange = d3
-    .select("#slider-range")
-    .append("svg")
-    .attr("width", 500)
-    .attr("height", 100)
-    .append("g")
-    .attr("transform", "translate(30,30)");
-
-  gRange.call(sliderRange);
 }

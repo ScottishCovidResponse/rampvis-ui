@@ -1,8 +1,8 @@
 /* eslint-disable no-new */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState, ReactElement } from "react";
+import { useRef, useState, ReactElement } from "react";
 import { Helmet } from "react-helmet-async";
-import { Box, Card, CardContent } from "@material-ui/core";
+import { Grid, Box, Card, CardContent } from "@material-ui/core";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import axios from "axios";
 import FirstForm from "./components/FirstForm";
@@ -16,6 +16,7 @@ import {
   continents,
 } from "./variables/variables";
 import { useStyles } from "./style/style";
+import GraphArea from "./components/GraphArea";
 
 //react style function for creating css classes and assigning attributes
 //https://casbin.org/CssToAndFromReact/ good website for conversions
@@ -43,7 +44,7 @@ const initialFirstRunState = {
 const TimeseriesSim = () => {
   //const { settings } = useSettings();
   const classes = useStyles();
-  //const ref = useRef();
+  const ref = useRef();
 
   const [advancedFilterPopup, setAdvancedFilterPopup] = useState(false);
   const advancedFilterClickOpen = () => {
@@ -119,19 +120,16 @@ const TimeseriesSim = () => {
             </CardContent>
           </Card>
         </GridItem>
+
         <GridItem>
           <Card>
             <CardContent>
-              <div className={classes.container} id="container">
-                <div className={classes.legend} id="legend"></div>
-                <div className={classes.charts} id="charts"></div>
-              </div>
-              <div>
-                <p id="value-range"></p>
-              </div>
-              <div>
-                <div id="slider-range"></div>
-              </div>
+              <GraphArea
+                containerClass={classes.container}
+                legendClass={classes.legend}
+                chartsClass={classes.charts}
+              />
+              <Grid id="slider-range"></Grid>
             </CardContent>
           </Card>
         </GridItem>
