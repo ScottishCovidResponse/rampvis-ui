@@ -4,7 +4,6 @@
 import axios from "axios";
 
 const API_JS = process.env.NEXT_PUBLIC_API_JS;
-const API_TS = process.env.NEXT_PUBLIC_API_TS;
 
 export class ApiService {
   private endpoint: string = API_JS;

@@ -13,7 +13,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import * as d3 from "d3";
-import { Data } from "./data";
+import { Data } from "../data.js";
 import {
   dashboard,
   COLOR_VACCINATON,
@@ -121,10 +121,10 @@ export class CountryOverview {
         {
           id: "cases",
           title: "New Cases",
+          data: Data.from(options.data, Data.Fields.COUNTRY_NEW_CASES),
           dataField: "Testing - New cases reported",
           visualization: "linechart",
           color: COLOR_CASES,
-          data: Data.from(options.data, Data.Fields.COUNTRY_NEW_CASES),
           mode: dashboard.MODE_DAILY,
           link: links && links[0],
         },

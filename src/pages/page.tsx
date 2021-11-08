@@ -64,6 +64,8 @@ const PropagatedPage = () => {
     const dataForVisFunction = await Promise.all(
       page?.data?.map(async (d: any) => {
         const endpoint = `${API[d.urlCode]}${d.endpoint}`;
+        console.log("PropagatedPage: data endpoint = ", endpoint);
+
         const values = (await axios.get(endpoint)).data;
         const { description } = d;
         return { endpoint, values, description };
@@ -72,7 +74,7 @@ const PropagatedPage = () => {
 
     const links = page?.pageIds?.map((d: any) => {
       console.log(d);
-      return `page/${d}`;
+      return `page?id=${d}`;
     });
 
     console.log("PropagatedPage: dataForVisFunction = ", dataForVisFunction);

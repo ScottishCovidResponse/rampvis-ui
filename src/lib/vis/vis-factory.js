@@ -1,9 +1,5 @@
 import { SimpleBarChart } from "./simple-bar-chart";
 import { SimpleLineChart } from "./simple-line-chart";
-import { HealthBoardOverview } from "./health-board-overview";
-import { CouncilOverview } from "./council-overview";
-import { CountryOverview } from "./country-overview";
-import { CountryOverviewNew } from "./country-overview-new";
 import { ChordDiagram } from "./chord-diagram";
 import { Matrix } from "./matrix";
 import { SuperimposedPercentiles } from "./superimposed-percentiles";
@@ -12,14 +8,17 @@ import { StackedAreaChart } from "./stacked-area-chart";
 import { StackedBarChart } from "./stacked-bar-chart";
 import { MirroredStackedAreaChart } from "./mirrored-stacked-area-chart";
 import { MirroredStackedBarChart } from "./mirrored-stacked-bar-chart";
+import { RiskMonitoring } from "./risk-monitoring";
+
+// Dashboards
+import { CouncilOverview } from "./dashboards/council-overview";
+import { CountryOverview } from "./dashboards/country-overview";
+import { HealthBoardOverview } from "./dashboards/health-board-overview";
+import { CountryOverviewNew } from "./dashboards/country-overview-new";
 
 export const visFactory = (type, args) => {
   if (type === "SimpleBarChart") return new SimpleBarChart(args);
   if (type === "SimpleLineChart") return new SimpleLineChart(args);
-  if (type === "HealthBoardOverview") return new HealthBoardOverview(args);
-  if (type === "CouncilOverview") return new CouncilOverview(args);
-  if (type === "CountryOverview") return new CountryOverview(args);
-  if (type === "CountryOverviewNew") return new CountryOverviewNew(args);
   if (type === "ChordDiagram") return new ChordDiagram(args);
   if (type === "Matrix") return new Matrix(args);
   if (type === "SuperimposedPercentiles")
@@ -32,6 +31,12 @@ export const visFactory = (type, args) => {
     return new MirroredStackedAreaChart(args);
   if (type === "MirroredStackedBarChart")
     return new MirroredStackedBarChart(args);
+  if (type === "RiskMonitoring") return new RiskMonitoring(args);
 
+  // Dashboards
+  if (type === "CouncilOverview") return new CouncilOverview(args);
+  if (type === "HealthBoardOverview") return new HealthBoardOverview(args);
+  if (type === "CountryOverview") return new CountryOverview(args);
+  if (type === "CountryOverviewNew") return new CountryOverviewNew(args);
   return null;
 };
