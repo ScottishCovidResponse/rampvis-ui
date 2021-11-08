@@ -10,20 +10,20 @@ class MyDocument extends Document {
           <meta charSet="utf-8" />
           <meta name="theme-color" content="#000000" />
           <link rel="shortcut icon" href="/Favicon32x32.png" />
-          <link
-            rel="apple-touch-icon"
-            sizes="76x76"
-            href="/Favicon64x64.png"
-          />
+          <link rel="apple-touch-icon" sizes="76x76" href="/Favicon64x64.png" />
           {/* Fonts and icons */}
-          <link
-            rel="stylesheet"
-            type="text/css"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"
-          />
           <link
             href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
             rel="stylesheet"
+          />
+
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+          />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
           />
 
           <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2" />
@@ -69,6 +69,7 @@ MyDocument.getInitialProps = async (ctx) => {
 
   ctx.renderPage = () =>
     originalRenderPage({
+      // eslint-disable-next-line react/display-name -- code borrowed from as is from https://github.com/mui-org/material-ui/blob/e544918cf772b4b4f715a671b4d171ad98af3663/examples/nextjs/pages/_document.js#L58
       enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
     });
 

@@ -16,10 +16,15 @@ const AuthGuard: FC<AuthGuardProps> = (props) => {
   // const location = useLocation();
   const router = useRouter();
   const [requestedLocation, setRequestedLocation] = useState<string>(
-    null as any
+    null as any,
   );
 
-  console.log('AuthGuard: requestedLocation =', requestedLocation, 'router.asPath =', router.asPath)
+  console.log(
+    "AuthGuard: requestedLocation =",
+    requestedLocation,
+    "router.asPath =",
+    router.asPath,
+  );
   if (!auth.isAuthenticated) {
     if (router.asPath !== requestedLocation) {
       setRequestedLocation(router.asPath);

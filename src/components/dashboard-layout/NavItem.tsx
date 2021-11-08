@@ -1,12 +1,11 @@
 import { useState } from "react";
 import type { FC, ReactNode } from "react";
-// import { NavLink } from "react-router-dom";
-import { NavLink } from "src/components/dashboard-layout/NavLink";
 import PropTypes from "prop-types";
 import { Box, Button, Collapse, ListItem } from "@material-ui/core";
 import type { ListItemProps } from "@material-ui/core";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import { NavLink } from "src/components/dashboard-layout/NavLink";
 
 interface NavItemProps extends ListItemProps {
   active?: boolean;

@@ -1,123 +1,113 @@
 .vis-example-container {
-    background-color: white;
-    padding: 5px;
+  background-color: white;
+  padding: 5px;
 }
 
-
-div#main{ 
-    font-family:"Poppins";
-    /* margin:20px; */
-    width: 1060px;
+div#main {
+  font-family: "Poppins";
+  /* margin:20px; */
+  width: 1060px;
 }
-
-
 
 /* DASHBOARD TABLE AND LAYOUT */
-table.dashboardLayout td, table.dashboardLayout td * {
-    vertical-align: top;
-    text-align: left;
+table.dashboardLayout td,
+table.dashboardLayout td * {
+  vertical-align: top;
+  text-align: left;
 }
 
-table.dashboardLayout td{
-    padding-right: 50px;
-    width: 0px;
+table.dashboardLayout td {
+  padding-right: 50px;
+  width: 0px;
 }
 
-table.dashboardLayout svg{
-    margin-right: 20px;
-    margin-bottom: 20px;
-    
+table.dashboardLayout svg {
+  margin-right: 20px;
+  margin-bottom: 20px;
 }
 
-.separator{
-    stroke: #ddd;
-
+.separator {
+  stroke: #ddd;
 }
-
-
 
 /* FONTS */
-h3.dashboard{
-    font-weight: bold;
-    line-height: 100%;
-    background-color: #f3f3f3;/*#e8f082;  #f3f3f3  */
-    padding: 4px;
-    margin-left: -4px;
-    border-radius: 3px;
+h3.dashboard {
+  font-weight: bold;
+  line-height: 100%;
+  background-color: #f3f3f3; /*#e8f082;  #f3f3f3  */
+  padding: 4px;
+  margin-left: -4px;
+  border-radius: 3px;
 }
-.description{
-    margin-top:-20px;
-    font-weight: 300;
+.description {
+  margin-top: -20px;
+  font-weight: 300;
 }
-.date{
-    font-weight: 200;
-    color: #777;
-    float: right;
+.date {
+  font-weight: 200;
+  color: #777;
+  float: right;
 }
-.thin{
-    margin-top: 0px;
-    font-weight: 200;
-}
-
-text.bigNumber{
-    font-size: 35pt;
-    font-weight: bold;
-}
-text.smallNumber{
-    font-size: 18pt;
-    font-weight: bold;
+.thin {
+  margin-top: 0px;
+  font-weight: 200;
 }
 
-.arrow{
-    stroke-width: 7;
-    stroke-linecap: round;
+text.bigNumber {
+  font-size: 35pt;
+  font-weight: bold;
+}
+text.smallNumber {
+  font-size: 18pt;
+  font-weight: bold;
 }
 
-.label{
-    font-weight: 200;
-    font-size: 10pt;
+.arrow {
+  stroke-width: 7;
+  stroke-linecap: round;
 }
 
-.datastream-title{
-    font-weight: bold;
-    font-size:12pt;
-}
-.datastream-title.hasLink{
-    text-decoration: underline;
-    cursor:pointer;
-}
-.datastream-title.hasLink.hover{
-    color: #777;
-}
-.datastream-date{
-    font-weight: 300;
-    font-size: 6pt;
+.label {
+  font-weight: 200;
+  font-size: 10pt;
 }
 
-text.cartogramLabel{
-    font-weight: 800;
-    font-size: 1.2em;
+.datastream-title {
+  font-weight: bold;
+  font-size: 12pt;
 }
-text.cartogramLabel-nonextremes{
-    font-weight: 100;
-    opacity: .4;
+.datastream-title.hasLink {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.datastream-title.hasLink.hover {
+  color: #777;
+}
+.datastream-date {
+  font-weight: 300;
+  font-size: 6pt;
 }
 
-
+text.cartogramLabel {
+  font-weight: 800;
+  font-size: 1.2em;
+}
+text.cartogramLabel-nonextremes {
+  font-weight: 100;
+  opacity: 0.4;
+}
 
 /* VISUALISATION ENCODINGS */
 
-.weekBar{
-    stroke: #ccc;
-    stroke-width: 3;
-
+.weekBar {
+  stroke: #ccc;
+  stroke-width: 3;
 }
 
-.chartTopLine{
-    stroke: #aaa;
-    stroke-width: 1px;
+.chartTopLine {
+  stroke: #aaa;
+  stroke-width: 1px;
 }
-.chartTopRect{
-    fill: #eee;
+.chartTopRect {
+  fill: #eee;
 }
-  

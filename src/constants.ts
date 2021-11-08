@@ -1,5 +1,5 @@
 export const THEMES = {
-  LIGHT: 'LIGHT',
-  DARK: 'DARK',
-  NATURE: 'NATURE'
+  LIGHT: "LIGHT",
+  DARK: "DARK",
+  NATURE: "NATURE",
 };

@@ -107,7 +107,7 @@ const AuthContext = createContext<AuthContextValue>({
 export const AuthProviderJWT: FC<AuthProviderProps> = (props) => {
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     const initialize = async (): Promise<void> => {
@@ -156,7 +156,7 @@ export const AuthProviderJWT: FC<AuthProviderProps> = (props) => {
         password,
       });
 
-      const accessToken =res.token;
+      const accessToken = res.token;
       const decoded: IDataStoredInToken = await jwt_decode(res.token);
       let user = null;
       if (decoded && decoded.id) {
@@ -171,7 +171,7 @@ export const AuthProviderJWT: FC<AuthProviderProps> = (props) => {
         },
       });
 
-      router.push(`/search`)
+      router.push(`/`);
     } catch (err) {
       console.error("AuthProviderJWT:login: error =", err);
     }
@@ -180,12 +180,12 @@ export const AuthProviderJWT: FC<AuthProviderProps> = (props) => {
   const logout = async (): Promise<void> => {
     localStorage.removeItem("accessToken");
     dispatch({ type: "LOGOUT" });
-    router.push(`/auth/login`)
+    router.push(`/auth/login`);
   };
 
   const me = async (): Promise<User> => {
     try {
-      return await apiService.get<any>(`/me`); 
+      return await apiService.get<any>(`/me`);
     } catch (err) {
       console.log("AuthProviderJWT:me: error = ", err);
       return err;

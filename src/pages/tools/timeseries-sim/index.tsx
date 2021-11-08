@@ -25,15 +25,14 @@ import {
   DialogActions,
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import TimelineIcon from '@material-ui/icons/Timeline';
+import TimelineIcon from "@material-ui/icons/Timeline";
 import { makeStyles } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 import useSettings from "src/hooks/useSettings";
 import { visFactory } from "src/lib/vis/vis-factory";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
-  
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,12 +59,8 @@ const useStyles = makeStyles((theme) => ({
     fill: blue[500],
   },
   firstRunForm: {
-
     marginBottom: theme.spacing(2),
-
-
-  }
-
+  },
 }));
 
 function Item(props) {
@@ -73,13 +68,13 @@ function Item(props) {
   return (
     <Box
       sx={{
-        bgcolor: 'black',
-        color: 'white',
+        bgcolor: "black",
+        color: "white",
         p: 1,
         borderRadius: 1,
-        textAlign: 'left',
+        textAlign: "left",
         fontSize: 19,
-        fontWeight: '700',
+        fontWeight: "700",
         ...sx,
       }}
       {...other}
@@ -91,28 +86,22 @@ Item.propTypes = {
   sx: PropTypes.object,
 };
 
-
-
 const covidIndicators = [
   {
     label: "Daily Deaths per million",
     value: "DD",
-
   },
   {
     label: "Daily Cases per million",
-    value: "DC"
-
+    value: "DC",
   },
   {
     label: "Cumulative Deaths per million",
     value: "CD",
-
   },
   {
     label: "Cumulative Cases per million",
-    value: "CC"
-
+    value: "CC",
   },
   {
     label: "Biweekly Cases per million",
@@ -120,41 +109,38 @@ const covidIndicators = [
   },
   {
     label: "Biweekly Deaths per million",
-    value: "BWD"
+    value: "BWD",
   },
-]
+];
 
 const similarityMeasures = [
   {
     label: "Euclidean Distance",
-    value: "euclidean"
+    value: "euclidean",
   },
   {
     label: "Manhattan Distance",
-    value: "manhattan"
+    value: "manhattan",
   },
   {
     label: "Chebyshev Distance",
     value: "chebyshev",
-
   },
   {
     label: "Dynamic Time Warping Distance",
-    value: "dtw"
+    value: "dtw",
   },
   {
     label: "Longest Common Subsequence Distance",
-    value: "lcs"
+    value: "lcs",
   },
-
-]
-
+];
 
 const TimeseriesSim = () => {
   const { settings } = useSettings();
   const classes = useStyles();
 
-  const [indicator, setIndicator] = useState('DC');
+  const [indicator, setIndicator] = useState("DC");
   const [method, setMethod] = useState("euclidean");
 
   const ref = useRef();
@@ -169,27 +155,24 @@ const TimeseriesSim = () => {
     setAdvancedFilterPopup(false);
   };
 
-
   const indicatorChange = (event) => {
     setIndicator(event.target.value);
-
   };
 
   const methodChange = (event) => {
     setMethod(event.target.value);
-  }
+  };
 
   const fetchAPI = useCallback(async () => {
     // const apiUrl = `${API.API_PY}/...}`;
     // const res = await axios.get(apiUrl);
     // console.log("TimeseriesSim: res = ", res);
-    const res = ['tunas', 'fake', 'data'];
+    const res = ["tunas", "fake", "data"];
 
-    visFactory('TimeseriesSim', {
+    visFactory("TimeseriesSim", {
       chartElement: "charts", // ref.current,
       data: res,
     });
-
   }, []);
   // if xx changes, useEffect will run again
   // if you want to run only once, just leave array empty []
@@ -210,16 +193,13 @@ const TimeseriesSim = () => {
           backgroundColor: "background.default",
           minHeight: "100%",
           py: 8,
-          display: 'grid',
+          display: "grid",
           gap: 1,
-          gridTemplateColumns: 'repeat(2, 1fr)',
+          gridTemplateColumns: "repeat(2, 1fr)",
         }}
       >
-
         <Item>
-
           <form>
-
             <div className={classes.firstRunForm}>
               <TextField
                 id="first_run"
@@ -231,8 +211,6 @@ const TimeseriesSim = () => {
                 }}
               />
             </div>
-
-
 
             <div className={classes.firstRunForm}>
               <TextField
@@ -246,8 +224,6 @@ const TimeseriesSim = () => {
                 }}
               />
             </div>
-
-
 
             <div className={classes.firstRunForm}>
               <TextField
@@ -300,23 +276,27 @@ const TimeseriesSim = () => {
                 color="primary"
                 InputLabelProps={{
                   shrink: true,
-
                 }}
                 InputProps={{ inputProps: { min: 0, max: 10 } }}
               />
             </div>
 
             <div className={classes.firstRunForm}>
-
-              <Button variant="outlined" color="primary" onClick={advancedFilterClickOpen}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={advancedFilterClickOpen}
+              >
                 Advanced Filters
               </Button>
-              <Dialog open={advancedFilterPopup} onClose={advancedFilterClickClose} aria-labelledby="form-dialog-title">
+              <Dialog
+                open={advancedFilterPopup}
+                onClose={advancedFilterClickClose}
+                aria-labelledby="form-dialog-title"
+              >
                 <DialogTitle id="form-dialog-title">Title</DialogTitle>
                 <DialogContent>
-                  <DialogContentText>
-                
-                  </DialogContentText>
+                  <DialogContentText />
                   <TextField
                     autoFocus
                     margin="dense"
@@ -335,13 +315,8 @@ const TimeseriesSim = () => {
                   </Button>
                 </DialogActions>
               </Dialog>
-
             </div>
-
-
           </form>
-
-
         </Item>
 
         <Item>
@@ -380,9 +355,8 @@ const TimeseriesSim = () => {
   );
 };
 
-
 TimeseriesSim.getLayout = function getLayout(page: ReactElement) {
-    return <DashboardLayout>{page}</DashboardLayout>;
-  };
-  
+  return <DashboardLayout>{page}</DashboardLayout>;
+};
+
 export default TimeseriesSim;
