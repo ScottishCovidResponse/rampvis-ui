@@ -2,9 +2,9 @@ import * as d3 from "d3";
 
 export class ScatterPlot {
   constructor(options) {
-    const margin = { top: 80, right: 30, bottom: 30, left: 100 };
-    const width = 400;
-    const height = 400;
+    const margin = { top: 40, right: 30, bottom: 30, left: 250 };
+    const width = 300;
+    const height = 300;
 
     const container = d3.select("#" + options.chartElement);
     const svg = container

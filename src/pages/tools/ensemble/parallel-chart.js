@@ -9,8 +9,8 @@ export class ParallelChart {
   constructor(options) {
     // set the dimensions and margins of the graph
     const margin = { top: 30, right: 10, bottom: 10, left: 20 },
-      width = 1200 - margin.left - margin.right,
-      height = 300 - margin.top - margin.bottom;
+      width = 800 - margin.left - margin.right,
+      height = 250 - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
     const container = d3.select("#" + options.chartElement);

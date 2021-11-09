@@ -9,21 +9,21 @@ export class ParallelVerticalChart {
   constructor(options) {
     // set the dimensions and margins of the graph
     const margin = { top: 30, right: 10, bottom: 10, left: 20 },
-      width = 700 - margin.left - margin.right,
-      height = 700 - margin.top - margin.bottom;
+      width = 900 - margin.left - margin.right,
+      height = 250 - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
     const container = d3.select("#" + options.chartElement);
     const svg = container
       .append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
+      .attr("width", 400)
+      .attr("height", 1000)
       .append("g")
       .attr(
         "transform",
-        `translate(${margin.left},${margin.top}) rotate(270, ${width / 2}, ${
-          height / 2
-        })`,
+        `translate(-200, 280) rotate(270, ${
+          (width + margin.left + margin.right) / 2
+        }, ${(height + margin.top + margin.bottom) / 2})`,
       );
 
     var controller = options.controller;
@@ -31,7 +31,6 @@ export class ParallelVerticalChart {
     var displayedDimensions = options.data[0].displayedDimensions;
     var removedDimensions = options.data[0].removedDimensions;
     var additionalData = options.data[0].additionalData;
-    let hasAdditionalData = additionalData !== undefined;
     let hasRemovedDimensions = removedDimensions !== undefined;
     let hasDisplayedDimensions = displayedDimensions !== undefined;
     let dimensions;
@@ -62,25 +61,15 @@ export class ParallelVerticalChart {
     const y = {};
     for (var i in dimensions) {
       var name = dimensions[i];
-      if (hasAdditionalData) {
-        y[name] = d3
-          .scaleLinear()
-          .domain(
-            d3.extent(data.concat(additionalData), function (d) {
-              return +d[name];
-            }),
-          )
-          .range([height, 0]);
-      } else {
-        y[name] = d3
-          .scaleLinear()
-          .domain(
-            d3.extent(data, function (d) {
-              return +d[name];
-            }),
-          )
-          .range([height, 0]);
-      }
+
+      y[name] = d3
+        .scaleLinear()
+        .domain(
+          d3.extent(data, function (d) {
+            return +d[name];
+          }),
+        )
+        .range([height, 0]);
     }
 
     // Build the X scale -> it find the best position for each Y axis
@@ -169,9 +158,7 @@ export class ParallelVerticalChart {
     function endbrush() {
       var display_indices = brushed();
 
-      if (!hasAdditionalData) {
-        controller.setParallelPoints(display_indices);
-      }
+      controller.setParallelPoints(display_indices);
     }
 
     // Draw the axis:
@@ -224,33 +211,6 @@ export class ParallelVerticalChart {
       .selectAll("rect")
       .attr("x", -8)
       .attr("width", 16);
-
-    if (hasAdditionalData) {
-      additionalData = additionalData.filter((d) => d.type === "average");
-
-      const legendData = additionalData.map((d) => d.age_group);
-      const colors = d3.schemeDark2;
-
-      // Legend
-      const legendContainer = container.append("div");
-      const legend = pv
-        .legend()
-        .margin({ top: 3, right: 0, bottom: 3, left: 0 })
-        .colorScale(d3.scaleOrdinal().domain(legendData).range(colors));
-      legendContainer.datum(legendData).call(legend);
-
-      svg
-        .selectAll("additionalData")
-        .data(additionalData)
-        .join("path")
-        .attr("d", this.path)
-        .style("fill", "none")
-        .style("stroke", function (d, i) {
-          return colors[i];
-        })
-        .style("opacity", 0.8)
-        .style("stroke-width", "2px");
-    }
 
     this.scatterFilter = function (scatteredPoints) {
       if (controller.hasScatterPoints()) {

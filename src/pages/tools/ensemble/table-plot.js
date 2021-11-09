@@ -7,7 +7,7 @@ var table_controller;
 const Styles = styled.div`
   width: 100%;
   height: 70%;
-  max-height: 700px;
+  max-height: 820px;
   max-width: 1500px;
   overflow-y: auto;
 

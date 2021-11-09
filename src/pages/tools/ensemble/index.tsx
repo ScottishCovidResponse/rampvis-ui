@@ -169,11 +169,27 @@ const Ensemble = () => {
       >
         <Container maxWidth={settings.compact ? "xl" : false}></Container>
 
-        <div id="line_chart" />
-        <div id="scatter_plot" />
-        <div id="parallel_chart" />
-        <div id="parallel_vertical_chart" />
-        <div id="table_plot" />
+        <div id="container">
+          <div id="line-chart">
+            <div id="line_chart" />
+          </div>
+          <div id="parallel-chart">
+            <div id="parallel_chart" />
+          </div>
+          <div id="scatter-plot">
+            <div id="scatter_plot" />
+          </div>
+          <div id="table"></div>
+        </div>
+
+        <div id="container2">
+          <div id="vertical-chart">
+            <div id="parallel_vertical_chart" />
+          </div>
+          <div id="table-plot">
+            <div id="table_plot" />
+          </div>
+        </div>
       </Box>
     </div>
   );

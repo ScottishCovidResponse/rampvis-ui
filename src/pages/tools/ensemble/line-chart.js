@@ -7,8 +7,8 @@ export class LineChart {
   constructor(options) {
     // set the dimensions and margins of the graph
     const margin = { top: 15, right: 15, bottom: 30, left: 100 },
-      width = 900 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom;
+      width = 700 - margin.left - margin.right,
+      height = 600 - margin.top - margin.bottom;
 
     var lineColors = d3.schemeDark2;
 
