@@ -18,8 +18,6 @@ import {
 import { useStyles } from "./style/style";
 import GraphArea from "./components/GraphArea";
 
-//react style function for creating css classes and assigning attributes
-//https://casbin.org/CssToAndFromReact/ good website for conversions
 //first run object initalization
 const initialFirstRunState = {
   targetCountry: "United Kingdom",
@@ -58,8 +56,8 @@ const TimeseriesSim = () => {
 
   const multipleHandleChange = (event) => {
     if (event.target.type == "checkbox") {
-      let temp_obj = { ...firstRunForm };
-      let temp_state = temp_obj.continentCheck;
+      const temp_obj = { ...firstRunForm };
+      const temp_state = temp_obj.continentCheck;
       temp_state[event.target.value] = event.target.checked;
       temp_obj.continentCheck = temp_state;
       setFirstRunForm(temp_obj);

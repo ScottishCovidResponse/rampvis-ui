@@ -28,7 +28,7 @@ function AdvancedFilter(props) {
           <DialogContentText>
             <FormGroup>
               {props.continents.map((continent) => (
-                <label>
+                <label key={continent.value}>
                   {continent.value}
                   <Checkbox
                     value={continent.value}

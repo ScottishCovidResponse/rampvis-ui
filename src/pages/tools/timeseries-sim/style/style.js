@@ -1,6 +1,9 @@
 import { makeStyles } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
 
+//react style function for creating css classes and assigning attributes
+//https://casbin.org/CssToAndFromReact/ good website for conversions
+
 export const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
