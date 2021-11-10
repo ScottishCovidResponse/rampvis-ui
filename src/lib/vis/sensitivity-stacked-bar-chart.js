@@ -100,7 +100,6 @@ export class SensitivityStackedBarChart {
 
     // Three function that change the tooltip when user hover / move / leave a cell
     const mouseover = function (d) {
-      console.log("OVER!");
       var subgroupName = d3.select(this.parentNode).datum().key;
       var subgroupValue = d.data[subgroupName];
       tooltip
