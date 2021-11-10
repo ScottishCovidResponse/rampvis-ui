@@ -48,7 +48,7 @@ const PropagatedPageList = () => {
   const [pages, setPages] = useState<any>([]);
   const [loading, setLoading] = useState(false);
 
-  const pageType = "example";
+  const pageType = "release";
   const url = `${process.env.NEXT_PUBLIC_API_JS}/template/pages/${pageType}/${visType}`;
   console.log("PageListTemplate: visType = ", visType, ", API url = ", url);
 
