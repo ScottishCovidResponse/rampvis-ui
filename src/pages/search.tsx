@@ -19,16 +19,18 @@ const PageSearch = () => {
   const searchPage = async (keywords) => {
     try {
       setIsLoading(true);
-      const result = await apiService.get<any>(
+      const result = await apiService.get(
         `/template/pages/search/?query=${keywords}`,
       );
 
       const resultWithThumbnail = await Promise.all(
         result.map(async (d) => {
-          const image = await apiService.get<any>(
-            `/template/thumbnail/${d.id}`,
-          );
-          return { thumbnail: image, ...d };
+          try {
+            const image = await apiService.get(`/template/thumbnail/${d.id}`);
+            return { thumbnail: image, ...d };
+          } catch (e) {
+            return { thumbnail: null, ...d };
+          }
         }),
       );
 
