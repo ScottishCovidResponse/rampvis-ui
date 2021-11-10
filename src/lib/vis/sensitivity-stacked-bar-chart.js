@@ -39,7 +39,7 @@ export class SensitivityStackedBarChart {
     let canvas = document.getElementById("vis-example-container");
 
     // set the dimensions and margins of the graph
-    let margin = { top: 20, right: 150, bottom: 80, left: 90 },
+    let margin = { top: 20, right: 250, bottom: 80, left: 90 },
       width = this.CHART_WIDTH - margin.left - margin.right,
       height = this.CHART_HEIGHT - margin.top - margin.bottom;
     let svg = d3
@@ -53,7 +53,6 @@ export class SensitivityStackedBarChart {
       .attr("fill", "#ffffff")
       .attr("width", this.CHART_WIDTH)
       .attr("height", this.CHART_HEIGHT - this.GAP);
-
     let g = svg
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -71,6 +70,11 @@ export class SensitivityStackedBarChart {
       })
       .keys();
 
+    //Color scheme
+    const colors = ["#0587AC", "#035870"];
+    const baseColour = ["#4f4f4f"];
+    const textColour = ["#4f4f4f"];
+    const textWeight = 700;
     // Add X axis
     const y = d3.scaleBand().domain(groups).range([0, height]).padding([0.2]);
 
@@ -82,7 +86,7 @@ export class SensitivityStackedBarChart {
       .range([0, width]);
 
     const xAxis = d3.axisBottom(x);
-    var color = d3.scaleOrdinal().domain(subgroups).range(["blue", "red"]);
+    var color = d3.scaleOrdinal().domain(subgroups).range(colors);
 
     // ----------------
     // Create a tooltip
@@ -100,6 +104,7 @@ export class SensitivityStackedBarChart {
 
     // Three function that change the tooltip when user hover / move / leave a cell
     const mouseover = function (d) {
+      console.log("OVER!");
       var subgroupName = d3.select(this.parentNode).datum().key;
       var subgroupValue = d.data[subgroupName];
       tooltip
@@ -132,7 +137,7 @@ export class SensitivityStackedBarChart {
       .attr("fill", function (d) {
         return color(d.key);
       })
-      .attr("stroke", "black")
+      .attr("stroke", baseColour)
       .selectAll("rect")
       // enter a second time = loop subgroup per subgroup to add all rectangles
       .data(function (d) {
@@ -148,13 +153,50 @@ export class SensitivityStackedBarChart {
       .on("mousemove", mousemove)
       .on("mouseleave", mouseleave);
 
+    //Add legend
+    var keys = ["Main Effect", "Interaction"];
+    //var legendcolor = d3.scaleOrdinal().domain(keys).range(colors);
+    let legendX = (x) => x - 100;
+
+    //Function to place the labels and dots vertically
+    const yPlacement = (d, i) => i * 25;
+    // Add one dot in the legend for each name.
+    let legendDot = g
+      .selectAll("mydots")
+      .data(keys)
+      .enter()
+      .append("circle")
+      .attr("cx", legendX(width))
+      .attr("cy", yPlacement) // 100 is where the first dot appears. 25 is the distance between dots
+      .attr("r", 7)
+      .style("fill", (d) => color(d))
+      .attr("stroke", baseColour);
+
+    // Add one dot in the legend for each name.
+    let legendText = g
+      .selectAll("mylabels")
+      .data(keys)
+      .enter()
+      .append("text")
+      .attr("x", legendX(width) + 20)
+      .attr("y", yPlacement) // 100 is where the first dot appears. 25 is the distance between dots
+      .style("fill", textColour)
+      .attr("font-weight", textWeight)
+      .attr("font-size", "15")
+      .text((d) => d)
+      .attr("text-anchor", "left")
+      .style("alignment-baseline", "middle");
+
     //declare xAxis element variable to be used in resize function
     let yAxisEL = g.append("g").call(yAxis);
     yAxisEL
       .attr("class", "axis axis--y")
       .selectAll("text")
       .attr("class", "axis-title")
-      .attr("font-size", "15");
+      .attr("dx", "-0.2em")
+      .attr("font-weight", textWeight)
+      .attr("font-size", "15")
+      .style("fill", textColour);
 
     //declare yAxis element variable to be used in resize function
     let xAxisEL = g.append("g").call(xAxis);
@@ -162,11 +204,11 @@ export class SensitivityStackedBarChart {
       .attr("class", "axis axis--x")
       .attr("transform", "translate(0," + height + ")")
       .selectAll("text")
-      .style("text-anchor", "end")
-      .attr("dx", "-.8em")
-      .attr("dy", ".15em")
-      .attr("transform", "rotate(-65)")
-      .attr("font-size", "15");
+      .style("text-anchor", "middle")
+      .attr("dy", "1.25em")
+      .attr("font-weight", textWeight)
+      .attr("font-size", "15")
+      .style("fill", textColour);
 
     let gap = this.GAP;
 
@@ -210,6 +252,14 @@ export class SensitivityStackedBarChart {
         .attr("x", (d) => x(d[0]))
         .attr("width", (d) => d3.max([0, -x(d[0]) + x(d[1])]))
         .attr("height", y.bandwidth());
+
+      //update legend
+      legendDot
+        .attr("cx", legendX(w - margin.left - margin.right))
+        .attr("cy", yPlacement); // 100 is where the first dot appears. 25 is the distance between dots
+      legendText
+        .attr("x", legendX(w - margin.left - margin.right) + 20)
+        .attr("y", yPlacement); // 100 is where the first dot appears. 25 is the distance between dots
     }
 
     // resize when window size changes
