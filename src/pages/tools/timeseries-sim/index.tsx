@@ -18,6 +18,8 @@ import {
 import { useStyles } from "src/components/timeseries-sim/style/style";
 import GraphArea from "src/components/timeseries-sim/GraphArea";
 
+const API = process.env.NEXT_PUBLIC_API_PY;
+
 //first run object initalization
 const initialFirstRunState = {
   targetCountry: "United Kingdom",
@@ -71,7 +73,7 @@ const TimeseriesSim = () => {
   };
 
   const fetchAPI = () => {
-    const apiUrl = "http://127.0.0.1:4010/stat/v1/timeseries-sim-search/";
+    const apiUrl = `${API}/timeseries-sim-search/`;
     axios
       .post(apiUrl, firstRunForm)
       .then((response) => MultiLinePlot(response, firstRunForm));
