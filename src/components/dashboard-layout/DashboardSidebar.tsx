@@ -14,6 +14,7 @@ import AssessmentIcon from "@mui/icons-material/Assessment";
 import DonutSmallIcon from "@mui/icons-material/DonutSmall";
 import SearchIcon from "@mui/icons-material/Search";
 import AllInboxIcon from "@mui/icons-material/AllInbox";
+import Filter2Icon from "@mui/icons-material/Filter2";
 import Filter1Icon from "@mui/icons-material/Filter1";
 import useAuth from "src/hooks/useAuth";
 import Logo from "src/components/Logo";
@@ -106,7 +107,7 @@ const sections = [
           {
             title: "Ensemble",
             path: "/tools/ensemble",
-            icon: <Filter1Icon fontSize="small" />,
+            icon: <Filter2Icon fontSize="small" />,
           },
         ],
       },
