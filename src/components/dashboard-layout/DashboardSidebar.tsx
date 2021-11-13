@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import { Box, Divider, Drawer, Typography } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import TimelineIcon from "@mui/icons-material/Timeline";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
@@ -113,7 +112,7 @@ const sections = [
       },
     ],
   },
-  {
+  /*{
     title: "",
     items: [
       {
@@ -139,7 +138,7 @@ const sections = [
         ],
       },
     ],
-  },
+  },*/
 ];
 
 const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
