@@ -5,18 +5,18 @@ import { Helmet } from "react-helmet-async";
 import { Grid, Box, Card, CardContent } from "@material-ui/core";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import axios from "axios";
-import FirstForm from "./components/FirstForm";
-import AdvancedFilter from "./components/AdvancedFilter";
-import SubmitButton from "./components/SubmitButton";
-import GridItem from "./components/GridItem";
-import { MultiLinePlot } from "./plotfunctions/multilineplot.js";
+import FirstForm from "src/components/timeseries-sim/FirstForm";
+import AdvancedFilter from "src/components/timeseries-sim/AdvancedFilter";
+import SubmitButton from "src/components/timeseries-sim/SubmitButton";
+import GridItem from "src/components/timeseries-sim/GridItem";
+import { MultiLinePlot } from "src/components/timeseries-sim/plotfunctions/multilineplot.js";
 import {
   covidIndicators,
   similarityMeasures,
   continents,
-} from "./variables/variables";
-import { useStyles } from "./style/style";
-import GraphArea from "./components/GraphArea";
+} from "src/components/timeseries-sim/variables/variables";
+import { useStyles } from "src/components/timeseries-sim/style/style";
+import GraphArea from "src/components/timeseries-sim/GraphArea";
 
 //first run object initalization
 const initialFirstRunState = {
