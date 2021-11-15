@@ -39,7 +39,7 @@ export class SensitivityStackedBarChart {
     let canvas = document.getElementById("vis-example-container");
 
     // set the dimensions and margins of the graph
-    let margin = { top: 20, right: 250, bottom: 80, left: 90 },
+    let margin = { top: 20, right: 250, bottom: 80, left: 110 },
       width = this.CHART_WIDTH - margin.left - margin.right,
       height = this.CHART_HEIGHT - margin.top - margin.bottom;
     let svg = d3
@@ -152,7 +152,24 @@ export class SensitivityStackedBarChart {
       .on("mouseover", mouseover)
       .on("mousemove", mousemove)
       .on("mouseleave", mouseleave);
+    //Axiis Labels
+    let yLabelContainer = g
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", -margin.left)
+      .attr("x", 0 - height / 2)
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Parameters") //MAKE INPUT
+      .attr("font-size", "25");
 
+    let xLabelContainer = g
+      .append("text")
+      .attr("x", width / 2)
+      .attr("y", height + margin.top + 40)
+      .style("text-anchor", "middle")
+      .text("Magnitude of Sobol Sensitivity Index")
+      .attr("font-size", "25");
     //Add legend
     var keys = ["Main Effect", "Interaction"];
     //var legendcolor = d3.scaleOrdinal().domain(keys).range(colors);
@@ -161,6 +178,7 @@ export class SensitivityStackedBarChart {
     //Function to place the labels and dots vertically
     const yPlacement = (d, i) => i * 25;
     // Add one dot in the legend for each name.
+
     let legendDot = g
       .selectAll("mydots")
       .data(keys)
@@ -260,6 +278,13 @@ export class SensitivityStackedBarChart {
       legendText
         .attr("x", legendX(w - margin.left - margin.right) + 20)
         .attr("y", yPlacement); // 100 is where the first dot appears. 25 is the distance between dots
+
+      xLabelContainer
+        .attr("x", (w - margin.left - margin.right) / 2)
+        .attr("y", h - margin.top - margin.bottom + margin.top + 40);
+      yLabelContainer
+        .attr("y", -margin.left)
+        .attr("x", 0 - (h - margin.top - margin.bottom) / 2);
     }
 
     // resize when window size changes
