@@ -57,7 +57,7 @@ export class SensitivityStackedBarChart {
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    const parameterName = ["Parameter"]; //Of columns ith parameter names
+    const parameterName = ["index"]; //name of columns with parameter names
 
     data.forEach((d) => (d["SI"] = d["ST"] - d["S1"])); //Compute interaction
 
@@ -104,7 +104,6 @@ export class SensitivityStackedBarChart {
 
     // Three function that change the tooltip when user hover / move / leave a cell
     const mouseover = function (d) {
-      console.log("OVER!");
       var subgroupName = d3.select(this.parentNode).datum().key;
       var subgroupValue = d.data[subgroupName];
       tooltip
