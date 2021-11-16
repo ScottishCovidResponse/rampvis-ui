@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from "react";
 import styled from "styled-components";
-import ProgressJunk from "src/pages/tools/ensemble/progress-plot";
+import ProgressJunk from "src/components/ensemble/progress-plot";
 
 var table_controller;
 

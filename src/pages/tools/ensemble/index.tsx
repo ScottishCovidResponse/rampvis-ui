@@ -6,11 +6,10 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import useSettings from "src/hooks/useSettings";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
-import AuthGuard from "src/components/auth/guards/AuthGuard";
 
-import { visFactory } from "src/pages/tools/ensemble/vis-factory";
-import { Controller } from "src/pages/tools/ensemble/controller";
-import CustomTable from "src/pages/tools/ensemble/table-plot";
+import { visFactory } from "src/components/ensemble/vis-factory";
+import { Controller } from "src/components/ensemble/controller";
+import CustomTable from "src/components/ensemble/table-plot";
 import ReactDOM from "react-dom";
 
 const useStyles = makeStyles((theme) => ({}));
@@ -21,12 +20,12 @@ const Ensemble = () => {
   const classes = useStyles();
   const { settings } = useSettings();
 
-  var controller = new Controller();
+  const controller = new Controller();
 
   const lineChart = useCallback(async () => {
-    var allAgeData = await controller.getSimulationData(0);
+    const allAgeData = await controller.getSimulationData(0);
 
-    var line = visFactory("LineChart", {
+    const line = visFactory("LineChart", {
       chartElement: "line_chart",
       data: allAgeData,
       currentSelection: 0,
@@ -40,7 +39,7 @@ const Ensemble = () => {
     const metadata = await controller.getMetaData();
     const parameters = metadata.posterior_parameters;
 
-    var parallel1 = visFactory("ParallelVerticalChart", {
+    const parallel1 = visFactory("ParallelVerticalChart", {
       chartElement: "parallel_vertical_chart",
       data: [
         {
@@ -58,7 +57,7 @@ const Ensemble = () => {
     const visualizationData = await controller.getSimulationAgeData();
     const polylineData = await controller.getPolylineData();
 
-    var parallel2 = visFactory("ParallelChart", {
+    const parallel2 = visFactory("ParallelChart", {
       chartElement: "parallel_chart",
       data: [
         {
@@ -86,7 +85,7 @@ const Ensemble = () => {
   const scatterPlot = useCallback(async () => {
     const pcaData = await controller.getMeanData();
 
-    var scatter = visFactory("ScatterPlot", {
+    const scatter = visFactory("ScatterPlot", {
       chartElement: "scatter_plot",
       data: [
         {
@@ -103,7 +102,7 @@ const Ensemble = () => {
   //   const metadata = await controller.getMetaData();
   //   const parameters = metadata.posterior_parameters;
 
-  //   var matrix = visFactory("MatrixJunk", {
+  //   const matrix = visFactory("MatrixJunk", {
   //     chartElement: "matrix_junk",
   //     data: [{
   //       values: parameters,
@@ -133,7 +132,7 @@ const Ensemble = () => {
       controller: controller,
     };
 
-    var table = <CustomTable options={options} />;
+    const table = <CustomTable options={options} />;
 
     ReactDOM.render(table, document.getElementById("table_plot"));
     controller.table = table;
@@ -154,7 +153,7 @@ const Ensemble = () => {
   ]);
 
   const setDatasetIndex = useCallback(async (event) => {
-    var datasetIndex = event.target.value;
+    const datasetIndex = event.target.value;
     controller.setDatasetIndex(datasetIndex);
   }, []);
 
