@@ -267,8 +267,13 @@ export class ParallelChart {
       }
     };
 
-    this.removeContainer = function () {
-      //container.selectAll("*").remove();
+    this.removeContainer = async function () {
+      container.selectAll("*").remove();
+      return this.getController();
+    };
+
+    this.getController = function () {
+      return controller;
     };
   }
 }

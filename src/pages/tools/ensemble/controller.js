@@ -1,4 +1,5 @@
 import axios from "axios";
+import { visFactory } from "src/pages/tools/ensemble/vis-factory";
 
 export class Controller {
   constructor() {
@@ -17,6 +18,8 @@ export class Controller {
     this.metadata = null;
     this.simulationData = null;
     this.ageIndex = 0;
+
+    this.datasetIndex = 1;
   }
 
   getIntersectionPoints() {
@@ -58,6 +61,7 @@ export class Controller {
 
   setAgeIndex(ageIndex) {
     this.ageIndex = ageIndex;
+    this.changeParallelChart();
   }
 
   setParallelPoints(parallelPoints) {
@@ -95,14 +99,9 @@ export class Controller {
     this.getSimulationData(simulationIndex).then(function (ageData) {
       _this.line.removeContainer();
       _this.line.displayData(ageData);
-
-      // make changes to the second parallel guy here
     });
 
-    // in an ideal world, the parallel2 chart should be populated with new data
-    this.getSimulationAgeData().then(function (data) {
-      _this.parallel2.removeContainer();
-    });
+    this.changeParallelChart();
   }
 
   toggleRows(points) {
@@ -119,6 +118,30 @@ export class Controller {
     }
 
     this.tableToggled(points);
+  }
+
+  randomIntFromInterval(min, max) {
+    // min and max included
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  async setDatasetIndex(datasetIndex) {
+    this.datasetIndex = datasetIndex;
+
+    if (this.datasetIndex == 2) {
+      // Adhitya: this is only for testing purposes
+      var simulationIndex = this.randomIntFromInterval(0, 159);
+      console.log("Random Simulation Index: " + simulationIndex);
+
+      var _this = this;
+
+      this.getSimulationData(simulationIndex).then(function (ageData) {
+        _this.line.removeContainer();
+        _this.line.displayData(ageData);
+      });
+
+      this.changeParallelChart();
+    }
   }
 
   makeDataforLineVis(ageData, simulation, age) {
@@ -220,5 +243,38 @@ export class Controller {
     const res = await axios.get(apiUrl);
     const ageData = res.data;
     return this.makeDataforParallelVis(ageData, this.ageIndex);
+  }
+
+  async changeParallelChart() {
+    var _this = this;
+    this.getSimulationAgeData().then(function (visualizationData) {
+      _this.getPolylineData().then(function (polylineData) {
+        _this.parallel2.removeContainer().then(function (controller) {
+          var parallel2 = visFactory("ParallelChart", {
+            chartElement: "parallel_chart",
+            data: [
+              {
+                values: visualizationData,
+                displayedDimensions: [
+                  "age_group",
+                  "day",
+                  "S_mean",
+                  "E_mean",
+                  "H_mean",
+                  "R_mean",
+                  "D_mean",
+                  "I_mean",
+                  "IS_mean",
+                ],
+                additionalData: polylineData,
+              },
+            ],
+            controller: controller,
+          });
+
+          _this.parallel2 = parallel2;
+        });
+      });
+    });
   }
 }
