@@ -1,5 +1,4 @@
 import * as d3 from "d3";
-import { pv } from "../../../lib/vis/pv";
 import { Controller } from "./controller";
 
 // mercilessly copied from https://www.d3-graph-gallery.com/graph/parallel_basic.html

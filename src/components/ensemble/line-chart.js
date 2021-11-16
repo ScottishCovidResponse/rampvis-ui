@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { pv } from "../../../lib/vis/pv";
+import { pv } from "src/lib/vis/pv";
 
 // mercilessly copied from https://www.d3-graph-gallery.com/graph/line_several_group.html
 
