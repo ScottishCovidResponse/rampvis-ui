@@ -11,7 +11,7 @@ const AuthorizationRequired: FC = () => {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push("/home");
+    router.push("/");
   };
 
   return (

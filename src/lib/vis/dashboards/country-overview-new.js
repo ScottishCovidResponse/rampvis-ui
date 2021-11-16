@@ -13,7 +13,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import * as d3 from "d3";
-import { Data } from "./data";
+import { Data } from "../data";
 
 export class CountryOverviewNew {
   CHART_WIDTH = 1000;

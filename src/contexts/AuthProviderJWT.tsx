@@ -151,7 +151,7 @@ export const AuthProviderJWT: FC<AuthProviderProps> = (props) => {
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
-      const res: ITokenData = await apiService.post<any>(`/auth/login`, {
+      const res: ITokenData = await apiService.post(`/auth/login`, {
         email,
         password,
       });
@@ -171,7 +171,7 @@ export const AuthProviderJWT: FC<AuthProviderProps> = (props) => {
         },
       });
 
-      router.push(`/home`);
+      router.push(`/`);
     } catch (err) {
       console.error("AuthProviderJWT:login: error =", err);
     }
@@ -185,7 +185,7 @@ export const AuthProviderJWT: FC<AuthProviderProps> = (props) => {
 
   const me = async (): Promise<User> => {
     try {
-      return await apiService.get<any>(`/me`);
+      return await apiService.get(`/me`);
     } catch (err) {
       console.log("AuthProviderJWT:me: error = ", err);
       return err;

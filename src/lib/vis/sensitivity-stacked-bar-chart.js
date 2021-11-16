@@ -25,7 +25,6 @@ export class SensitivityStackedBarChart {
   GAP = 10;
   CHART_WIDTH = document.getElementById("charts").offsetWidth;
   CHART_HEIGHT = window.innerHeight - Common.MAIN_CONTENT_GAP;
-
   constructor(options) {
     //To avoid loading multiple times
     d3.select("#" + options.chartElement).html("");
@@ -35,9 +34,12 @@ export class SensitivityStackedBarChart {
       .attr("id", "vis-example-container")
       .style("width", this.CHART_WIDTH + "px")
       .style("height", this.CHART_HEIGHT + "px");
-    let data = options.data;
-    let canvas = document.getElementById("vis-example-container");
 
+    //loading data from stream
+    let data = options.data[0].values;
+    data.forEach((d) => (d["SI"] = d["ST"] - d["S1"])); //Compute interaction
+    //data.columns = Object.keys(data[0])
+    let canvas = document.getElementById("vis-example-container");
     // set the dimensions and margins of the graph
     let margin = { top: 20, right: 250, bottom: 80, left: 110 },
       width = this.CHART_WIDTH - margin.left - margin.right,
@@ -57,9 +59,7 @@ export class SensitivityStackedBarChart {
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    const parameterName = ["index"]; //name of columns with parameter names
-
-    data.forEach((d) => (d["SI"] = d["ST"] - d["S1"])); //Compute interaction
+    const parameterName = ["index"]; //name of columns with parameter name
 
     var subgroups = ["S1", "SI"];
 
@@ -87,7 +87,6 @@ export class SensitivityStackedBarChart {
 
     const xAxis = d3.axisBottom(x);
     var color = d3.scaleOrdinal().domain(subgroups).range(colors);
-
     // ----------------
     // Create a tooltip
     // ----------------
@@ -104,16 +103,8 @@ export class SensitivityStackedBarChart {
 
     // Three function that change the tooltip when user hover / move / leave a cell
     const mouseover = function (d) {
-      var subgroupName = d3.select(this.parentNode).datum().key;
-      var subgroupValue = d.data[subgroupName];
       tooltip
-        .html(
-          "Sensitivity index: " +
-            subgroupName +
-            "<br>" +
-            "Value: " +
-            subgroupValue,
-        )
+        .html("S1: " + d.data.S1 + "<br>" + "SI: " + d.data.SI)
         .style("opacity", 1);
     };
     const mousemove = function (d) {

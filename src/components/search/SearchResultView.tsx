@@ -13,6 +13,8 @@ import {
 import ImageIcon from "@mui/icons-material/Image";
 import Link from "next/link";
 
+const API_JS = process.env.NEXT_PUBLIC_API_JS;
+
 const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
@@ -65,7 +67,7 @@ const SearchResultView: FC<SearchResultProps> = ({ data = [] }) => {
                   <Avatar
                     variant="square"
                     className={classes.large}
-                    src={`/static/mock-images/${dataRecord.id}.jpeg`}
+                    src={`data:image/jpeg;base64,${dataRecord.thumbnail}`}
                   >
                     <ImageIcon />
                   </Avatar>

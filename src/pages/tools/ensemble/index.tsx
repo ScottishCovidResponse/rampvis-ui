@@ -38,11 +38,7 @@ const Ensemble = () => {
 };
 
 Ensemble.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <AuthGuard>
-      <DashboardLayout>{page}</DashboardLayout>
-    </AuthGuard>
-  );
+  return <DashboardLayout>{page}</DashboardLayout>;
 };
 
 export default Ensemble;
