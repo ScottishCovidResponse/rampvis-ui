@@ -12,6 +12,23 @@ import * as d3 from "d3";
 
 export const colors = {};
 
+colors.get = function (dataType, value) {
+  switch (dataType) {
+    case "cases":
+      return this.getCaseColor();
+    case "deaths":
+      return this.getCaseColor();
+    case "hospitalized":
+      return this.getCaseColor();
+    case "tests":
+      return this.getCaseColor();
+    case "vaccination":
+      return this.getCaseColor();
+    case "cases":
+      return this.getCaseColor();
+  }
+};
+
 colors.getCaseColor = function () {
   return CASES;
 };
@@ -28,8 +45,8 @@ colors.getHospitalizedColor = function () {
   return HOSPITALIZED;
 };
 
-colors.getVaccinationColor = function (number) {
-  switch (number) {
+colors.getVaccinationColor = function (numberOfDose) {
+  switch (numberOfDose) {
     case 2:
       return d3.color(VACCINATIONS).darker(0.3);
     case 3:

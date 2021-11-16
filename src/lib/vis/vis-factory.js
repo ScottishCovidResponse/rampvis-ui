@@ -15,6 +15,7 @@ import { CouncilOverview } from "./dashboards/council-overview";
 import { CountryOverview } from "./dashboards/country-overview";
 import { HealthBoardOverview } from "./dashboards/health-board-overview";
 import { CountryOverviewNew } from "./dashboards/country-overview-new";
+import { VaccineOverview } from "./dashboards/vaccineOverview";
 
 export const visFactory = (type, args) => {
   if (type === "SimpleBarChart") return new SimpleBarChart(args);
@@ -38,5 +39,7 @@ export const visFactory = (type, args) => {
   if (type === "HealthBoardOverview") return new HealthBoardOverview(args);
   if (type === "CountryOverview") return new CountryOverview(args);
   if (type === "CountryOverviewNew") return new CountryOverviewNew(args);
+  if (type === "VaccineOverview") return new VaccineOverview(args);
+
   return null;
 };

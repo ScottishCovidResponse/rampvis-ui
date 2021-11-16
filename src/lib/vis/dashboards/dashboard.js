@@ -64,21 +64,37 @@ var TILE_WIDTH = 40;
 var TILE_HEIGHT = 40;
 var TILE_GAP = 4;
 
+// var TILEMAP_LAYOUT_SCOTLAND = {
+//   "Ayrshire and Arran": [5, 1],
+//   Borders: [6, 3],
+//   "Dumfries and Galloway": [6, 1],
+//   Fife: [4, 2],
+//   "Forth Valley": [4, 1],
+//   Grampian: [3, 2],
+//   "Greater Glasgow and Clyde": [5, 2],
+//   Highland: [2, 1],
+//   Lanarkshire: [6, 2],
+//   Lothian: [5, 3],
+//   Orkney: [1, 2],
+//   Shetland: [0, 2],
+//   Tayside: [3, 1],
+//   "Western Isles": [2, 0],
+// };
 var TILEMAP_LAYOUT_SCOTLAND = {
-  "Ayrshire and Arran": [5, 1],
-  Borders: [6, 3],
+  "Ayrshire and Arran": [6, 0],
+  Borders: [6, 2],
   "Dumfries and Galloway": [6, 1],
   Fife: [4, 2],
   "Forth Valley": [4, 1],
-  Grampian: [3, 2],
-  "Greater Glasgow and Clyde": [5, 2],
+  Grampian: [2, 2],
+  "Greater Glasgow and Clyde": [5, 0],
   Highland: [2, 1],
-  Lanarkshire: [6, 2],
-  Lothian: [5, 3],
-  Orkney: [1, 2],
+  Lanarkshire: [5, 1],
+  Lothian: [5, 2],
+  Orkney: [0, 1],
   Shetland: [0, 2],
-  Tayside: [3, 1],
-  "Western Isles": [2, 0],
+  Tayside: [3, 2],
+  "Western Isles": [1, 0],
 };
 
 dashboard.createDashboard = function (div, config) {
