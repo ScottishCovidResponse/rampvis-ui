@@ -36,12 +36,6 @@ author: Benjamin Bach, bbach@ed.ac.uk
 */
 export const dashboard = {};
 
-export const COLOR_CASES = "#e93516"; // orange
-export const COLOR_DEATHS = "#f0852d"; // orange
-export const COLOR_TESTS = "#2a9d8f"; // green
-export const COLOR_HOSPITAL = "#264653"; // blue
-export const COLOR_VACCINATON = "#b642f5"; // purple
-
 var baseline_title = 20;
 var baseline_label = 55;
 
