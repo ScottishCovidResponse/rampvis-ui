@@ -46,7 +46,7 @@ const MyPortal = () => {
 
   const fetchPortalPages = useCallback(async () => {
     try {
-      const res = (await apiService.get<any>(url))?.data;
+      const res = (await apiService.get(url))?.data;
       console.log("MyPortal: data = ", res);
       setPortalData(res);
     } catch (err) {

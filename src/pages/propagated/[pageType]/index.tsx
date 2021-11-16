@@ -59,7 +59,7 @@ const PropagatedPageList = () => {
   const fetchOntoPages = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await apiService.get<any>(url);
+      const res = await apiService.get(url);
       console.log("PageListTemplate: fetched data = ", res);
       const pages = res.data.map((d) => {
         const { id, date } = d;
