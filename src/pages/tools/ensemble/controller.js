@@ -128,20 +128,20 @@ export class Controller {
   async setDatasetIndex(datasetIndex) {
     this.datasetIndex = datasetIndex;
 
-    if (this.datasetIndex == 2) {
-      // Adhitya: this is only for testing purposes
-      var simulationIndex = this.randomIntFromInterval(0, 159);
-      console.log("Random Simulation Index: " + simulationIndex);
+    // if (this.datasetIndex == 2) {
+    //   // Adhitya: this is only for testing purposes
+    //   var simulationIndex = this.randomIntFromInterval(0, 159);
+    //   console.log("Random Simulation Index: " + simulationIndex);
 
-      var _this = this;
+    //   var _this = this;
 
-      this.getSimulationData(simulationIndex).then(function (ageData) {
-        _this.line.removeContainer();
-        _this.line.displayData(ageData);
-      });
+    //   this.getSimulationData(simulationIndex).then(function (ageData) {
+    //     _this.line.removeContainer();
+    //     _this.line.displayData(ageData);
+    //   });
 
-      this.changeParallelChart();
-    }
+    //   this.changeParallelChart();
+    // }
   }
 
   makeDataforLineVis(ageData, simulation, age) {

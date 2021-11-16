@@ -21,12 +21,12 @@ const Ensemble = () => {
   const classes = useStyles();
   const { settings } = useSettings();
 
-  var controller = new Controller();
+  let controller = new Controller();
 
   const lineChart = useCallback(async () => {
-    var allAgeData = await controller.getSimulationData(0);
+    let allAgeData = await controller.getSimulationData(0);
 
-    var line = visFactory("LineChart", {
+    let line = visFactory("LineChart", {
       chartElement: "line_chart",
       data: allAgeData,
       currentSelection: 0,
@@ -40,7 +40,7 @@ const Ensemble = () => {
     const metadata = await controller.getMetaData();
     const parameters = metadata.posterior_parameters;
 
-    var parallel1 = visFactory("ParallelVerticalChart", {
+    let parallel1 = visFactory("ParallelVerticalChart", {
       chartElement: "parallel_vertical_chart",
       data: [
         {
@@ -58,7 +58,7 @@ const Ensemble = () => {
     const visualizationData = await controller.getSimulationAgeData();
     const polylineData = await controller.getPolylineData();
 
-    var parallel2 = visFactory("ParallelChart", {
+    let parallel2 = visFactory("ParallelChart", {
       chartElement: "parallel_chart",
       data: [
         {
@@ -86,7 +86,7 @@ const Ensemble = () => {
   const scatterPlot = useCallback(async () => {
     const pcaData = await controller.getMeanData();
 
-    var scatter = visFactory("ScatterPlot", {
+    let scatter = visFactory("ScatterPlot", {
       chartElement: "scatter_plot",
       data: [
         {
@@ -103,7 +103,7 @@ const Ensemble = () => {
   //   const metadata = await controller.getMetaData();
   //   const parameters = metadata.posterior_parameters;
 
-  //   var matrix = visFactory("MatrixJunk", {
+  //   let matrix = visFactory("MatrixJunk", {
   //     chartElement: "matrix_junk",
   //     data: [{
   //       values: parameters,
@@ -133,7 +133,7 @@ const Ensemble = () => {
       controller: controller,
     };
 
-    var table = <CustomTable options={options} />;
+    let table = <CustomTable options={options} />;
 
     ReactDOM.render(table, document.getElementById("table_plot"));
     controller.table = table;
@@ -154,7 +154,7 @@ const Ensemble = () => {
   ]);
 
   const setDatasetIndex = useCallback(async (event) => {
-    var datasetIndex = event.target.value;
+    let datasetIndex = event.target.value;
     controller.setDatasetIndex(datasetIndex);
   }, []);
 
