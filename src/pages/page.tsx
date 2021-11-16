@@ -55,7 +55,7 @@ const PropagatedPage = () => {
     if (!pageId) {
       return;
     }
-    const page = await apiService.get<any>(`/template/page/${pageId}`);
+    const page = await apiService.get(`/template/page/${pageId}`);
     console.log("OntoPage: VIS = ", page.vis);
     console.log("OntoPage: Data = ", page.data);
 

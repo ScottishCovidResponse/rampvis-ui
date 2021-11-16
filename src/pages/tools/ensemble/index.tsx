@@ -9,7 +9,6 @@ import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import AuthGuard from "src/components/auth/guards/AuthGuard";
 
 import { visFactory } from "src/pages/tools/ensemble/vis-factory";
-import axios from "axios";
 import { Controller } from "src/pages/tools/ensemble/controller";
 import CustomTable from "src/pages/tools/ensemble/table-plot";
 import ReactDOM from "react-dom";
@@ -47,7 +46,6 @@ const Ensemble = () => {
         {
           values: parameters,
           removedDimensions: ["Index"],
-          controller: controller,
         },
       ],
       controller: controller,
@@ -155,6 +153,11 @@ const Ensemble = () => {
     tablePlot,
   ]);
 
+  const setDatasetIndex = useCallback(async (event) => {
+    var datasetIndex = event.target.value;
+    controller.setDatasetIndex(datasetIndex);
+  }, []);
+
   return (
     <div>
       <Helmet>
@@ -168,6 +171,11 @@ const Ensemble = () => {
         }}
       >
         <Container maxWidth={settings.compact ? "xl" : false}></Container>
+
+        {/* <select id="dataset" onChange={setDatasetIndex}>
+          <option value="1">Original</option>
+          <option value="2">Test</option>
+        </select> */}
 
         <div id="container">
           <div id="line-chart">

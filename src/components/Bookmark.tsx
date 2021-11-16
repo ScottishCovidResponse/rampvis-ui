@@ -32,7 +32,7 @@ const Bookmark: FC<any> = ({ pageId }) => {
 
   const onClickBookmark = async () => {
     console.log("Bookmark: !isBookmarked = ", !isBookmarked);
-    const res = await apiService.post<any>(`/me/bookmark`, {
+    const res = await apiService.post(`/me/bookmark`, {
       pageId,
       status: !isBookmarked,
     });

@@ -45,7 +45,7 @@ const LoginGitHub: FC = (props) => {
 
   const me = async (): Promise<User> => {
     try {
-      return await apiService.get<any>(`/me`);
+      return await apiService.get(`/me`);
     } catch (err) {
       console.log("AuthProviderJWT:me: error = ", err);
       return err;
