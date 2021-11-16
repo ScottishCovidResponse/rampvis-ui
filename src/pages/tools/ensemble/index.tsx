@@ -6,11 +6,10 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import useSettings from "src/hooks/useSettings";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
-import AuthGuard from "src/components/auth/guards/AuthGuard";
 
-import { visFactory } from "src/pages/tools/ensemble/vis-factory";
-import { Controller } from "src/pages/tools/ensemble/controller";
-import CustomTable from "src/pages/tools/ensemble/table-plot";
+import { visFactory } from "src/components/ensemble/vis-factory";
+import { Controller } from "src/components/ensemble/controller";
+import CustomTable from "src/components/ensemble/table-plot";
 import ReactDOM from "react-dom";
 
 const useStyles = makeStyles((theme) => ({}));

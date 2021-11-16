@@ -1,5 +1,5 @@
 import axios from "axios";
-import { visFactory } from "src/pages/tools/ensemble/vis-factory";
+import { visFactory } from "src/components/ensemble/vis-factory";
 
 export class Controller {
   constructor() {
@@ -120,10 +120,10 @@ export class Controller {
     this.tableToggled(points);
   }
 
-  randomIntFromInterval(min, max) {
-    // min and max included
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
+  // randomIntFromInterval(min, max) {
+  //   // min and max included
+  //   return Math.floor(Math.random() * (max - min + 1) + min);
+  // }
 
   async setDatasetIndex(datasetIndex) {
     this.datasetIndex = datasetIndex;
