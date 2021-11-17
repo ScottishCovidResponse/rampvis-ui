@@ -8,6 +8,7 @@ import { StackedAreaChart } from "./stacked-area-chart";
 import { StackedBarChart } from "./stacked-bar-chart";
 import { MirroredStackedAreaChart } from "./mirrored-stacked-area-chart";
 import { MirroredStackedBarChart } from "./mirrored-stacked-bar-chart";
+import { SensitivityStackedBarChart } from "./sensitivity-stacked-bar-chart";
 import { RiskMonitoring } from "./risk-monitoring";
 
 // Dashboards
@@ -32,6 +33,8 @@ export const visFactory = (type, args) => {
     return new MirroredStackedAreaChart(args);
   if (type === "MirroredStackedBarChart")
     return new MirroredStackedBarChart(args);
+  if (type === "SensitivityStackedBarChart")
+    return new SensitivityStackedBarChart(args);
   if (type === "RiskMonitoring") return new RiskMonitoring(args);
 
   // Dashboards
