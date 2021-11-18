@@ -74,7 +74,7 @@ const TimeseriesSim = () => {
   };
 
   const fetchAPI = () => {
-    const apiUrl = `http://127.0.0.1:4010/stat/v1/timeseries-sim-search/`;
+    const apiUrl = `${API}/timeseries-sim-search/`;
     axios
       .post(apiUrl, firstRunForm)
       .then((response) => FullMultiLinePlot(response, firstRunForm));
