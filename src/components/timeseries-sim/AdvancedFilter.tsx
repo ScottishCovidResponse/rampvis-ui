@@ -13,7 +13,12 @@ import {
 function AdvancedFilter(props) {
   return (
     <div className={props.className}>
-      <Button variant="outlined" color="primary" onClick={props.open}>
+      <Button
+        size="small"
+        variant="outlined"
+        color="primary"
+        onClick={props.open}
+      >
         Advanced Filters
       </Button>
 

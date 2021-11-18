@@ -30,16 +30,23 @@ export const useStyles = makeStyles((theme) => ({
   },
   firstRunForm: {
     marginBottom: theme.spacing(2),
+    float: "left",
   },
+  searchButton: {
+    marginBottom: theme.spacing(2),
+    float: "right",
+  },
+
   container: {
     display: "grid",
-    gridTemplateColumns: "1.8fr 0.2fr",
-    gridTemplateRows: "1fr",
+    gridTemplateColumns: "1fr",
+    gridTemplateRows: "0.2fr 1.8fr",
     gap: "0px 0px",
-    gridTemplateAreas: '"charts legend"',
+    gridTemplateAreas: "title charts",
   },
-  legend: {
-    gridArea: "legend",
+  title: {
+    gridArea: "title",
+    textAlign: "center",
   },
   charts: {
     gridArea: "charts",

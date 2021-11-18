@@ -21,7 +21,7 @@ function FirstForm(props) {
       <h2>
         <TextField
           id="first_run"
-          label="First Date"
+          label="Match First Date"
           type="date"
           color="primary"
           variant="standard"
@@ -36,7 +36,7 @@ function FirstForm(props) {
       <h2>
         <TextField
           id="first_run"
-          label="Last Date"
+          label="Match Last Date"
           type="date"
           color="primary"
           variant="standard"
@@ -52,7 +52,7 @@ function FirstForm(props) {
       <h2>
         <TextField
           select
-          label="Covid Indicator"
+          label="Covid Data Stream"
           value={props.form.indicator}
           variant="standard"
           name="indicator"

@@ -7,9 +7,10 @@ import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import axios from "axios";
 import FirstForm from "src/components/timeseries-sim/FirstForm";
 import AdvancedFilter from "src/components/timeseries-sim/AdvancedFilter";
-import SubmitButton from "src/components/timeseries-sim/SubmitButton";
+import SearchButton from "src/components/timeseries-sim/SearchButton";
 import GridItem from "src/components/timeseries-sim/GridItem";
-import { MultiLinePlot } from "src/components/timeseries-sim/plotfunctions/multilineplot.js";
+import { SegmentedMultiLinePlot } from "src/components/timeseries-sim/plotfunctions/segmentedmultilineplot";
+import { FullMultiLinePlot } from "src/components/timeseries-sim/plotfunctions/fullmultilineplot.js";
 import {
   covidIndicators,
   similarityMeasures,
@@ -73,10 +74,10 @@ const TimeseriesSim = () => {
   };
 
   const fetchAPI = () => {
-    const apiUrl = `${API}/timeseries-sim-search/`;
+    const apiUrl = `http://127.0.0.1:4010/stat/v1/timeseries-sim-search/`;
     axios
       .post(apiUrl, firstRunForm)
-      .then((response) => MultiLinePlot(response, firstRunForm));
+      .then((response) => FullMultiLinePlot(response, firstRunForm));
   };
 
   return (
@@ -113,8 +114,8 @@ const TimeseriesSim = () => {
                 form={firstRunForm}
                 onChange={multipleHandleChange}
               />
-              <SubmitButton
-                className={classes.firstRunForm}
+              <SearchButton
+                className={classes.searchButton}
                 onClick={fetchAPI}
               />
             </CardContent>
@@ -126,7 +127,7 @@ const TimeseriesSim = () => {
             <CardContent>
               <GraphArea
                 containerClass={classes.container}
-                legendClass={classes.legend}
+                titleClass={classes.title}
                 chartsClass={classes.charts}
               />
               <Grid id="slider-range"></Grid>
