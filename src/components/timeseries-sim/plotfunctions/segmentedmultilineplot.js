@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { date } from "yup/lib/locale";
 
 export function SegmentedMultiLinePlot(response, firstRunForm) {
   // align labels
@@ -8,6 +9,7 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
 
   const parseTime = d3.timeParse("%Y-%m-%d"); // date parser (str to date)
   const formatTime = d3.timeFormat("%b %d"); // date formatter (date to str)
+  const strTime = d3.timeFormat("%Y-%m-%d");
 
   //--- Graph Formatting ---//
 
@@ -198,11 +200,14 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
         );
       })
       .attr("visibility", "visible");
+
+    axisChange(d.key);
   };
 
-  const lineMouseLeave = (d) => {
+  const lineMouseLeave = () => {
     svg.selectAll(".multiline").attr("visibility", "visible");
     svg.selectAll(".myLabels").attr("visibility", "visible");
+    axisChange(targetCountry);
   };
 
   //add interaction to all lines
@@ -211,8 +216,6 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
     .selectAll(".multiline")
     .on("mouseenter", lineMouseEnter)
     .on("mouseleave", lineMouseLeave);
-
-  console.log(svg.selectAll(".xaxis").selectAll(".tick").text());
 
   // add title
 
@@ -225,10 +228,48 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
         " matches for " +
         targetCountry +
         " from " +
-        firstDate +
+        formatTime(parseTime(firstDate)) +
         " to " +
-        lastDate,
+        formatTime(parseTime(lastDate)),
     );
 
   // --- CONSOLE / PROT --- //
+
+  const xticks = d3.select(".xaxis");
+  const dateArray = Array.prototype.slice
+    .call(xticks._groups[0][0].childNodes)
+    .filter((nodes) => nodes.nodeName === "g")
+    .map((nodes) => nodes.__data__); // get dates on the axis smart
+  const dateIndex = dateArray.map(strTime).map((date) =>
+    dataFiltered
+      .filter((streams) => streams.isQuery)[0]
+      .values.map((values) => values.date)
+      .indexOf(date),
+  ); // get index of those date from data
+  const dateObj = dataFiltered.map(function (streams) {
+    // create object to store date labels for all lines for mouse interaction
+    return {
+      key: streams.key,
+      xLabels: dateIndex.map((i) => streams.values[i].date),
+    };
+  });
+
+  const axisChange = (d) => {
+    //mouse interaction to change x-axis dates by manipulating .text() of parsed ticks above
+    const filter = d;
+    const filteredDateObj = dateObj.filter(
+      (streams) => streams.key === filter,
+    )[0];
+    let count = 0;
+    d3.select(".xaxis")
+      .selectAll("g")
+      .selectAll("text")
+      .each(function () {
+        d3.select(this).text(
+          formatTime(parseTime(filteredDateObj.xLabels[count])),
+        );
+        d3.select(this).style("color", color(d));
+        count = count + 1;
+      });
+  };
 }

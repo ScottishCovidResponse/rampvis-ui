@@ -77,7 +77,7 @@ const TimeseriesSim = () => {
     const apiUrl = `${API}/timeseries-sim-search/`;
     axios
       .post(apiUrl, firstRunForm)
-      .then((response) => FullMultiLinePlot(response, firstRunForm));
+      .then((response) => SegmentedMultiLinePlot(response, firstRunForm));
   };
 
   return (
@@ -130,7 +130,6 @@ const TimeseriesSim = () => {
                 titleClass={classes.title}
                 chartsClass={classes.charts}
               />
-              <Grid id="slider-range"></Grid>
             </CardContent>
           </Card>
         </GridItem>
