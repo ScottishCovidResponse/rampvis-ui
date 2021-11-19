@@ -192,6 +192,20 @@ var createWidget = function (parentHtmlElementId, id, config) {
   var widget = widgets[0];
   var data = widget.data;
 
+  // order data by date:
+  var dateVariable = config.date;
+  if (!dateVariable) dateVariable = "index";
+
+  function byDate(a, b) {
+    var ma = moment(a[dateVariable], ["YYYYMMDD", "YYYY-MM-DD"]);
+    var mb = moment(b[dateVariable], ["YYYYMMDD", "YYYY-MM-DD"]);
+    if (ma.isAfter(mb)) {
+      return 1;
+    }
+    return -1;
+  }
+  data.sort(byDate);
+
   // check for conditions on data
   if (widget.conditions && widget.conditions.length > 0) {
     for (var i in widget.conditions) {
@@ -205,9 +219,12 @@ var createWidget = function (parentHtmlElementId, id, config) {
   }
 
   var title = widget.title;
-  if (data[data.length - 1].index) {
+  if (data[data.length - 1][dateVariable]) {
     var lastDate;
-    lastDate = moment(data[data.length - 1].index, ["YYYYMMDD", "YYYY-MM-DD"]);
+    lastDate = moment(data[data.length - 1][dateVariable], [
+      "YYYYMMDD",
+      "YYYY-MM-DD",
+    ]);
   }
 
   var normalized = false || (widget && widget.normalized);
@@ -235,6 +252,7 @@ var createWidget = function (parentHtmlElementId, id, config) {
       widget.unit,
       widget.detail,
       lastDate,
+      widget.abbreviate,
     );
   } else if (widget.visualization == dashboard.VIS_BARCHART) {
     dashboard.visualizeBarChart(
@@ -250,6 +268,7 @@ var createWidget = function (parentHtmlElementId, id, config) {
       widget.detail,
       lastDate,
       widget.bars,
+      widget.abbreviate,
     );
   } else {
     console.error(
@@ -296,9 +315,12 @@ dashboard.visualizeLinechart = function (
   unit,
   detail,
   lastDate,
+  abbreviate,
 ) {
   // console.log('\t\t\tVisualizeDataStream', title, '-->', id)
   if (!detail) detail = dashboard.DETAIL_HIGH;
+  if (!unit) unit = "";
+  if (!abbreviate) abbreviate = false;
 
   var svg = d3.select("#" + id).append("svg");
 
@@ -316,6 +338,7 @@ dashboard.visualizeLinechart = function (
       mode,
       normalized,
       unit,
+      abbreviate,
     );
     visualizeTrendArrow(
       svg,
@@ -409,6 +432,7 @@ var visualizeNumber = function (
   mode,
   normalized,
   unit,
+  abbreviate,
 ) {
   var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
 
@@ -422,7 +446,18 @@ var visualizeNumber = function (
     setVisLabel(g, "Total", 0, baseline_label);
   }
 
-  var val = Math.round(data[data.length - 1][field] * 10) / 10;
+  var val = data[data.length - 1][field];
+
+  // abbreviate if required
+  if (val > 1000000 && abbreviate) {
+    val = val / 1000000;
+    unit = "M " + unit;
+  } else if (val > 1000 && abbreviate) {
+    val = val / 1000;
+    unit = "k " + unit;
+  }
+
+  val = Math.round(val * 10) / 10;
   val = val.toLocaleString(undefined);
 
   if (mode == dashboard.MODE_PERCENT) {
@@ -432,6 +467,7 @@ var visualizeNumber = function (
   }
 
   var bigNumber = {};
+
   var t = g
     .append("text")
     .text(val)
@@ -935,6 +971,7 @@ dashboard.visualizeBarChart = function (
   detail,
   lastDate,
   barField,
+  abbreviate,
 ) {
   var svg = d3
     .select("#" + id)
