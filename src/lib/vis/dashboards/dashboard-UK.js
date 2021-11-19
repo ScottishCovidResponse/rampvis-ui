@@ -60,12 +60,6 @@ export class DashboardUK {
     var newPeopleVaccinatedThirdInjectionByPublishDate =
       "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=newPeopleVaccinatedThirdInjectionByPublishDate&format=csv";
 
-    var load = function (dataName) {
-      d3.csv(dataName).then(function (data) {
-        dataName = data;
-      });
-    };
-
     d3.csv(cumAdmissions).then(function (data) {
       cumAdmissions = data;
     });
@@ -155,7 +149,13 @@ export class DashboardUK {
           {
             id: "vacc",
             title: "Vaccinations",
-            layout: [["vacc1", "vacc2", "vacc3"]],
+            layout: [
+              [
+                ["vacc1", "vacc1d"],
+                ["vacc2", "vacc2d"],
+                ["vacc3", "vacc3d"],
+              ],
+            ],
           },
         ],
         widgets: [
@@ -216,6 +216,14 @@ export class DashboardUK {
             colors.getVaccinationColor(1),
           ),
           timeseriesWidget(
+            "vacc1d",
+            "Daily",
+            "newPeopleVaccinatedFirstDoseByPublishDate",
+            dashboard.MODE_DAILY,
+            newPeopleVaccinatedFirstDoseByPublishDate,
+            colors.getVaccinationColor(1),
+          ),
+          timeseriesWidget(
             "vacc2",
             "Cumulative",
             "cumPeopleVaccinatedSecondDoseByPublishDate",
@@ -224,11 +232,27 @@ export class DashboardUK {
             colors.getVaccinationColor(2),
           ),
           timeseriesWidget(
+            "vacc2d",
+            "Daily",
+            "newPeopleVaccinatedSecondDoseByPublishDate",
+            dashboard.MODE_DAILY,
+            newPeopleVaccinatedSecondDoseByPublishDate,
+            colors.getVaccinationColor(2),
+          ),
+          timeseriesWidget(
             "vacc3",
             "Cumulative",
             "cumPeopleVaccinatedThirdInjectionByPublishDate",
             dashboard.MODE_CUMULATIVE,
             cumPeopleVaccinatedThirdInjectionByPublishDate,
+            colors.getVaccinationColor(3),
+          ),
+          timeseriesWidget(
+            "vacc3d",
+            "Daily",
+            "newPeopleVaccinatedThirdInjectionByPublishDate",
+            dashboard.MODE_DAILY,
+            newPeopleVaccinatedThirdInjectionByPublishDate,
             colors.getVaccinationColor(3),
           ),
         ],
