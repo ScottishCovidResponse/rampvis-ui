@@ -1,0 +1,36 @@
+.scatterselected {
+  opacity: 1 !important;
+  stroke: red;
+  stroke-width: 2px;
+}
+
+#container {
+  display: grid;
+  grid-template-columns: 20% 30% 50%;
+  grid-template-rows: 40% 40%;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "line-chart line-chart parallel-chart"
+    "line-chart line-chart scatter-plot";
+}
+
+#line-chart { grid-area: line-chart; }
+
+#parallel-chart { grid-area: parallel-chart; }
+
+#scatter-plot { grid-area: scatter-plot; }
+
+#container2 {
+  display: grid;
+  grid-template-columns: 25% 70%;
+  grid-template-rows: 90%;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "vertical-chart table-plot";
+}
+
+#vertical-chart { grid-area: vertical-chart; }
+
+#table-plot { grid-area: table-plot; }
