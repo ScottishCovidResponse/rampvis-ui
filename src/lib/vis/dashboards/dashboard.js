@@ -55,6 +55,7 @@ dashboard.DETAIL_COMPACT = "medium";
 dashboard.VIS_LINECHART = "linechart";
 dashboard.VIS_CARTOGRAM = "cartogram";
 dashboard.VIS_BARCHART = "barchart";
+dashboard.VIS_PROGRESS = "progress";
 
 var LINE_1 = 10;
 var LINE_2 = 30;
@@ -177,11 +178,11 @@ var addGroup = function (parentHTMLElementId, id, config) {
   // }
 };
 
-var createWidget = function (parentHtmlElementId, id, config) {
+var createWidget = function (parentHtmlElementId, id, widgetConfig) {
   // console.log('\t\tAttach Panel: ', id, '-->', parentHtmlElementId)
   // get latest date:
 
-  var widgets = config.widgets.filter(function (el) {
+  var widgets = widgetConfig.widgets.filter(function (el) {
     return el.id == id;
   });
 
@@ -193,7 +194,7 @@ var createWidget = function (parentHtmlElementId, id, config) {
   var data = widget.data;
 
   // order data by date:
-  var dateVariable = config.date;
+  var dateVariable = widgetConfig.date;
   if (!dateVariable) dateVariable = "index";
 
   function byDate(a, b) {
@@ -228,6 +229,7 @@ var createWidget = function (parentHtmlElementId, id, config) {
   }
 
   var normalized = false || (widget && widget.normalized);
+
   if (widget.visualization == dashboard.VIS_CARTOGRAM) {
     dashboard.visulizeScotlandNHSBoardCartogram(
       parentHtmlElementId,
@@ -256,6 +258,22 @@ var createWidget = function (parentHtmlElementId, id, config) {
     );
   } else if (widget.visualization == dashboard.VIS_BARCHART) {
     dashboard.visualizeBarChart(
+      parentHtmlElementId,
+      title,
+      widget.dataField,
+      widget.color,
+      data,
+      widget.mode,
+      normalized,
+      widget.link ? widget.link : null,
+      widget.unit,
+      widget.detail,
+      lastDate,
+      widget.bars,
+      widget.abbreviate,
+    );
+  } else if (widget.visualization == dashboard.VIS_PROGRESS) {
+    dashboard.visualizeProgress(
       parentHtmlElementId,
       title,
       widget.dataField,
@@ -1029,4 +1047,29 @@ dashboard.visualizeBarChart = function (
     .attr("id", "vegadiv-" + id + random);
 
   vegaEmbed("#vegadiv-" + id + random, vegaBarchart, { actions: false });
+};
+
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+//  PROGRESS BARS
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+dashboard.visualizeProgress = function (
+  id,
+  title,
+  dataField,
+  color,
+  dataStream,
+  mode,
+  normalized,
+  link,
+  unit,
+  detail,
+  lastDate,
+  barField,
+  abbreviate,
+) {
+  // TIAN
 };
