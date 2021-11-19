@@ -49,8 +49,8 @@ dashboard.MODE_WEEKLY = 3;
 dashboard.MODE_PERCENT = 4;
 
 dashboard.DETAIL_HIGH = "high";
-dashboard.DETAIL_NARROW = "low";
-dashboard.DETAIL_COMPACT = "medium";
+dashboard.DETAIL_LOW = "low";
+dashboard.DETAIL_MEDIUM = "medium";
 
 dashboard.VIS_LINECHART = "linechart";
 dashboard.VIS_CARTOGRAM = "cartogram";
@@ -178,11 +178,11 @@ var addGroup = function (parentHTMLElementId, id, config) {
   // }
 };
 
-var createWidget = function (parentHtmlElementId, id, widgetConfig) {
+var createWidget = function (parentHtmlElementId, id, config) {
   // console.log('\t\tAttach Panel: ', id, '-->', parentHtmlElementId)
   // get latest date:
 
-  var widgets = widgetConfig.widgets.filter(function (el) {
+  var widgets = config.widgets.filter(function (el) {
     return el.id == id;
   });
 
@@ -190,11 +190,11 @@ var createWidget = function (parentHtmlElementId, id, widgetConfig) {
     console.log("NO WIDGET FOUND WITH id:", id);
     return;
   }
-  var widget = widgets[0];
-  var data = widget.data;
+  var widgetConfig = widgets[0];
+  var data = widgetConfig.data;
 
   // order data by date:
-  var dateVariable = widgetConfig.date;
+  var dateVariable = widgetConfig.dateVariable;
   if (!dateVariable) dateVariable = "index";
 
   function byDate(a, b) {
@@ -206,11 +206,12 @@ var createWidget = function (parentHtmlElementId, id, widgetConfig) {
     return -1;
   }
   data.sort(byDate);
+  console.log("first date--->", data[0][dateVariable]);
 
   // check for conditions on data
-  if (widget.conditions && widget.conditions.length > 0) {
-    for (var i in widget.conditions) {
-      data = executeCondition(data, widget.conditions[i]);
+  if (widgetConfig.conditions && widgetConfig.conditions.length > 0) {
+    for (var i in widgetConfig.conditions) {
+      data = executeCondition(data, widgetConfig.conditions[i]);
     }
   }
 
@@ -219,7 +220,7 @@ var createWidget = function (parentHtmlElementId, id, widgetConfig) {
     return;
   }
 
-  var title = widget.title;
+  var title = widgetConfig.title;
   if (data[data.length - 1][dateVariable]) {
     var lastDate;
     lastDate = moment(data[data.length - 1][dateVariable], [
@@ -228,70 +229,70 @@ var createWidget = function (parentHtmlElementId, id, widgetConfig) {
     ]);
   }
 
-  var normalized = false || (widget && widget.normalized);
+  var normalized = false || (widgetConfig && widgetConfig.normalized);
 
-  if (widget.visualization == dashboard.VIS_CARTOGRAM) {
+  if (widgetConfig.visualization == dashboard.VIS_CARTOGRAM) {
     dashboard.visulizeScotlandNHSBoardCartogram(
       parentHtmlElementId,
       title,
-      widget.color,
+      widgetConfig.color,
       data,
-      widget.normalized ? widget.normalized : false,
-      widget.unit,
-      widget.detail,
+      widgetConfig.normalized ? widgetConfig.normalized : false,
+      widgetConfig.unit,
+      widgetConfig.detail,
       lastDate,
     );
-  } else if (widget.visualization == dashboard.VIS_LINECHART) {
+  } else if (widgetConfig.visualization == dashboard.VIS_LINECHART) {
     dashboard.visualizeLinechart(
       parentHtmlElementId,
       title,
-      widget.dataField,
-      widget.color,
+      widgetConfig.dataField,
+      widgetConfig.color,
       data,
-      widget.mode,
+      widgetConfig.mode,
       normalized,
-      widget.link ? widget.link : null,
-      widget.unit,
-      widget.detail,
+      widgetConfig.link ? widgetConfig.link : null,
+      widgetConfig.unit,
+      widgetConfig.detail,
       lastDate,
-      widget.abbreviate,
+      widgetConfig.abbreviate,
     );
-  } else if (widget.visualization == dashboard.VIS_BARCHART) {
+  } else if (widgetConfig.visualization == dashboard.VIS_BARCHART) {
     dashboard.visualizeBarChart(
       parentHtmlElementId,
       title,
-      widget.dataField,
-      widget.color,
+      widgetConfig.dataField,
+      widgetConfig.color,
       data,
-      widget.mode,
+      widgetConfig.mode,
       normalized,
-      widget.link ? widget.link : null,
-      widget.unit,
-      widget.detail,
+      widgetConfig.link ? widgetConfig.link : null,
+      widgetConfig.unit,
+      widgetConfig.detail,
       lastDate,
-      widget.bars,
-      widget.abbreviate,
+      widgetConfig.bars,
+      widgetConfig.abbreviate,
     );
-  } else if (widget.visualization == dashboard.VIS_PROGRESS) {
+  } else if (widgetConfig.visualization == dashboard.VIS_PROGRESS) {
     dashboard.visualizeProgress(
       parentHtmlElementId,
       title,
-      widget.dataField,
-      widget.color,
+      widgetConfig.dataField,
+      widgetConfig.color,
       data,
-      widget.mode,
+      widgetConfig.mode,
       normalized,
-      widget.link ? widget.link : null,
-      widget.unit,
-      widget.detail,
+      widgetConfig.link ? widgetConfig.link : null,
+      widgetConfig.unit,
+      widgetConfig.detail,
       lastDate,
-      widget.bars,
-      widget.abbreviate,
+      widgetConfig.bars,
+      widgetConfig.abbreviate,
     );
   } else {
     console.error(
       'Chart type "' +
-        widget.visualization +
+        widgetConfig.visualization +
         '" not defined. Please check https://github.com/rampvis/rampvis.github.io/wiki/widgets.',
     );
   }
@@ -379,7 +380,7 @@ dashboard.visualizeLinechart = function (
       color,
       mode,
     );
-  } else if (detail == dashboard.DETAIL_NARROW) {
+  } else if (detail == dashboard.DETAIL_LOW) {
     svg.attr("width", 180).attr("height", 70);
 
     visualizeNumberSmall(
@@ -405,7 +406,7 @@ dashboard.visualizeLinechart = function (
       mode,
       true,
     );
-  } else if (detail == dashboard.DETAIL_COMPACT) {
+  } else if (detail == dashboard.DETAIL_MEDIUM) {
     var w = 100,
       h = 100;
     svg.attr("width", w).attr("height", h);
@@ -796,7 +797,7 @@ var setVisTitle = function (g, text, link, detail, lastDate) {
     .attr("class", "datastream-title")
     .attr("y", baseline_title);
 
-  if (detail == dashboard.DETAIL_NARROW || dashboard.DETAIL_COMPACT) {
+  if (detail == dashboard.DETAIL_LOW || dashboard.DETAIL_MEDIUM) {
     text.style("font-size", "9pt");
   }
 
@@ -991,13 +992,20 @@ dashboard.visualizeBarChart = function (
   barField,
   abbreviate,
 ) {
-  var svg = d3
+  var random = Math.floor(Math.random() * 1000);
+  var wrapperDiv = d3
     .select("#" + id)
+    .append("div")
+    .attr("id", "wrapperDiv" + random);
+
+  var svg = wrapperDiv
     .append("svg")
     .attr("height", 40)
     .style("margin-bottom", 0);
 
   setVisTitle(svg, title, link, detail, lastDate);
+
+  wrapperDiv.append("br");
 
   // display only last data
   lastDate = dataStream[dataStream.length - 1].index;
@@ -1005,18 +1013,18 @@ dashboard.visualizeBarChart = function (
     return e.index == lastDate;
   });
 
-  if (!detail) detail = dashboard.DETAIL_HIGH;
-
   // dashboard.DETAILED
+  if (!detail) detail = dashboard.DETAIL_HIGH;
   let width = 150;
   let barWidth = 20;
-  if (detail == dashboard.DETAIL_NARROW) {
+  if (detail == dashboard.DETAIL_LOW) {
     width = 70;
     barWidth = 10;
-  } else if (detail == dashboard.DETAIL_COMPACT) {
+  } else if (detail == dashboard.DETAIL_MEDIUM) {
     width = 100;
     barWidth = 15;
   }
+
   svg.attr("width", width);
   console.log("data", dataStream);
   var vegaBarchart = {
@@ -1041,10 +1049,8 @@ dashboard.visualizeBarChart = function (
       color: { value: color },
     },
   };
-  var random = Math.floor(Math.random() * 1000);
-  d3.select("#" + id)
-    .append("div")
-    .attr("id", "vegadiv-" + id + random);
+
+  wrapperDiv.append("div").attr("id", "vegadiv-" + id + random);
 
   vegaEmbed("#vegadiv-" + id + random, vegaBarchart, { actions: false });
 };

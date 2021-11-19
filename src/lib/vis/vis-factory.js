@@ -19,6 +19,7 @@ import { CountryOverviewNew } from "./dashboards/country-overview-new";
 import { VaccineOverview } from "./dashboards/vaccineOverview";
 import { DashboardUK } from "./dashboards/dashboard-UK";
 import { DashboardTian } from "./dashboards/dashboard-tian";
+import { DashboardLowerTierLocalAuthority } from "./dashboards/dashboard-lowerTierLocalAuthority";
 
 export const visFactory = (type, args) => {
   if (type === "SimpleBarChart") return new SimpleBarChart(args);
@@ -46,7 +47,9 @@ export const visFactory = (type, args) => {
   // if (type === "CountryOverviewNew") return new CountryOverviewNew(args);
   if (type === "CountryOverviewNew") return new DashboardTian(args);
   // if (type === "VaccineOverview") return new VaccineOverview(args);
-  if (type === "VaccineOverview") return new DashboardUK(args);
+  // if (type === "VaccineOverview") return new DashboardUK(args);
+  if (type === "VaccineOverview")
+    return new DashboardLowerTierLocalAuthority(args);
 
   return null;
 };
