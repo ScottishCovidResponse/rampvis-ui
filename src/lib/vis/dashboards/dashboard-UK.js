@@ -60,6 +60,47 @@ export class DashboardUK {
     var newPeopleVaccinatedThirdInjectionByPublishDate =
       "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=newPeopleVaccinatedThirdInjectionByPublishDate&format=csv";
 
+    // var england_newCasesRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumCasesByPublishDateRate&format=csv"
+    // var england_newDeathsRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumDeaths28DaysByDeathDateRate&format=csv"
+    // var england_newAdmissionsRollingRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=newAdmissionsRollingRate&format=csv"
+    // var ni_newCasesRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=N92000002&metric=newCasesBySpecimenDateRollingRate&format=csv"
+    // var ni_newDeathsRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=N92000002&metric=newDeaths28DaysByDeathDateRate&format=csv"
+    // var ni_newAdmissionsRollingRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=N92000002&metric=newAdmissionsRollingRate&format=csv"
+    // var scotland_newCasesRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=S92000003&metric=newCasesBySpecimenDateRollingRate&format=csv"
+    // var scotland_newDeathsRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=S92000003&metric=newDeaths28DaysByDeathDateRollingRate&format=csv"
+    // var scotland_newAdmissionsRollingRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=S92000003&metric=newAdmissionsRollingRate&format=csv"
+
+    // // Load data
+    // d3.csv(england_newCasesRate).then(function (data) {
+    //   england_newCasesRate = data;
+    // });
+    // d3.csv(england_newDeathsRate).then(function (data) {
+    //   england_newDeathsRate = data;
+    // });
+    // d3.csv(england_newAdmissionsRollingRate).then(function (data) {
+    //   england_newAdmissionsRollingRate = data;
+    // });
+
+    // d3.csv(ni_newCasesRate).then(function (data) {
+    //   ni_newCasesRate = data;
+    // });
+    // d3.csv(ni_newDeathsRate).then(function (data) {
+    //   ni_newDeathsRate = data;
+    // });
+    // d3.csv(ni_newAdmissionsRollingRate).then(function (data) {
+    //   ni_newAdmissionsRollingRate = data;
+    // });
+
+    // d3.csv(scotland_newCasesRate).then(function (data) {
+    //   scotland_newCasesRate = data;
+    // });
+    // d3.csv(scotland_newDeathsRate).then(function (data) {
+    //   scotland_newDeathsRate = data;
+    // });
+    // d3.csv(scotland_newAdmissionsRollingRate).then(function (data) {
+    //   scotland_newAdmissionsRollingRate = data;
+    // });
+
     d3.csv(cumAdmissions).then(function (data) {
       cumAdmissions = data;
     });
@@ -126,7 +167,7 @@ export class DashboardUK {
     setTimeout(function () {
       // 2. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
       var config = {
-        layout: [["admissions", "cases", "deaths", "vacc"]],
+        layout: [["cases", "admissions", "deaths", "vacc"]],
         groups: [
           {
             id: "admissions",
@@ -209,7 +250,7 @@ export class DashboardUK {
           ),
           timeseriesWidget(
             "vacc1",
-            "Cumulative",
+            "1st Dose Cumulative",
             "cumPeopleVaccinatedFirstDoseByPublishDate",
             dashboard.MODE_CUMULATIVE,
             cumPeopleVaccinatedFirstDoseByPublishDate,
@@ -217,7 +258,7 @@ export class DashboardUK {
           ),
           timeseriesWidget(
             "vacc1d",
-            "Daily",
+            "1st Dose Daily",
             "newPeopleVaccinatedFirstDoseByPublishDate",
             dashboard.MODE_DAILY,
             newPeopleVaccinatedFirstDoseByPublishDate,
@@ -225,7 +266,7 @@ export class DashboardUK {
           ),
           timeseriesWidget(
             "vacc2",
-            "Cumulative",
+            "2nd Dose Cumulative",
             "cumPeopleVaccinatedSecondDoseByPublishDate",
             dashboard.MODE_CUMULATIVE,
             cumPeopleVaccinatedSecondDoseByPublishDate,
@@ -233,7 +274,7 @@ export class DashboardUK {
           ),
           timeseriesWidget(
             "vacc2d",
-            "Daily",
+            "2nd Dose Daily",
             "newPeopleVaccinatedSecondDoseByPublishDate",
             dashboard.MODE_DAILY,
             newPeopleVaccinatedSecondDoseByPublishDate,
@@ -241,7 +282,7 @@ export class DashboardUK {
           ),
           timeseriesWidget(
             "vacc3",
-            "Cumulative",
+            "3rd Dose Cumulative",
             "cumPeopleVaccinatedThirdInjectionByPublishDate",
             dashboard.MODE_CUMULATIVE,
             cumPeopleVaccinatedThirdInjectionByPublishDate,
@@ -249,7 +290,7 @@ export class DashboardUK {
           ),
           timeseriesWidget(
             "vacc3d",
-            "Daily",
+            "3rd Dose Daily",
             "newPeopleVaccinatedThirdInjectionByPublishDate",
             dashboard.MODE_DAILY,
             newPeopleVaccinatedThirdInjectionByPublishDate,
