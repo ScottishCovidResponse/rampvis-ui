@@ -1,15 +1,13 @@
 import React, { ReactElement, useCallback, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { Box, Container, useTheme } from "@mui/material";
+import { Box, Container, useTheme, Card, CardContent } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-
+import ReactDOM from "react-dom";
 import useSettings from "src/hooks/useSettings";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
-
 import { visFactory } from "src/components/ensemble/vis-factory";
 import { Controller } from "src/components/ensemble/controller";
 import CustomTable from "src/components/ensemble/table-plot";
-import ReactDOM from "react-dom";
 
 const useStyles = makeStyles((theme) => ({}));
 
@@ -97,23 +95,6 @@ const Ensemble = () => {
     controller.scatter = scatter;
   }, []);
 
-  // const matrixPlot = useCallback(async () => {
-  //   const metadata = await controller.getMetaData();
-  //   const parameters = metadata.posterior_parameters;
-
-  //   const matrix = visFactory("MatrixJunk", {
-  //     chartElement: "matrix_junk",
-  //     data: [{
-  //       values: parameters,
-  //       displayedDimensions: ["p_inf", "p_hcw", "c_hcw", "d", "q"]
-  //     }],
-  //     controller: controller
-  //   });
-
-  //   controller.matrix = matrix;
-
-  // }, []);
-
   const tablePlot = useCallback(async () => {
     const metadata = await controller.getMetaData();
     const table_data = metadata.posterior_parameters;
@@ -168,34 +149,33 @@ const Ensemble = () => {
           py: 8,
         }}
       >
-        <Container maxWidth={settings.compact ? "xl" : false}></Container>
+        <Container maxWidth={settings.compact ? "xl" : false}>
+          <Card sx={{ minWidth: 275 }}>
+            <CardContent>
+              <div id="container">
+                <div id="line-chart">
+                  <div id="line_chart" />
+                </div>
+                <div id="parallel-chart">
+                  <div id="parallel_chart" />
+                </div>
+                <div id="scatter-plot">
+                  <div id="scatter_plot" />
+                </div>
+                <div id="table"></div>
+              </div>
 
-        {/* <select id="dataset" onChange={setDatasetIndex}>
-          <option value="1">Original</option>
-          <option value="2">Test</option>
-        </select> */}
-
-        <div id="container">
-          <div id="line-chart">
-            <div id="line_chart" />
-          </div>
-          <div id="parallel-chart">
-            <div id="parallel_chart" />
-          </div>
-          <div id="scatter-plot">
-            <div id="scatter_plot" />
-          </div>
-          <div id="table"></div>
-        </div>
-
-        <div id="container2">
-          <div id="vertical-chart">
-            <div id="parallel_vertical_chart" />
-          </div>
-          <div id="table-plot">
-            <div id="table_plot" />
-          </div>
-        </div>
+              <div id="container2">
+                <div id="vertical-chart">
+                  <div id="parallel_vertical_chart" />
+                </div>
+                <div id="table-plot">
+                  <div id="table_plot" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </Container>
       </Box>
     </div>
   );
