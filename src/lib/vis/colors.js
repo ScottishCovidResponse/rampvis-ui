@@ -1,10 +1,10 @@
-const CASES = "#EEB154";
-const DEATHS = "#666";
+const CASES = "#FFC369";
+const DEATHS = "#AAA";
 const TESTS = "#6FB4D0";
-const HOSPITALIZED = "#FA8383";
+const HOSPITALIZED = "#E17A76";
 const ICU = "#D91D82";
 const DISCARGED = "#EFCCFF";
-const VACCINATIONS = "#94D467";
+const VACCINATIONS = "#85A346";
 
 import * as d3 from "d3";
 
@@ -44,14 +44,12 @@ colors.getHospitalizedColor = function () {
 };
 
 colors.getVaccinationColor = function (numberOfDose) {
-  switch (numberOfDose) {
-    case 2:
-      return d3.color(VACCINATIONS).darker(0.3);
-    case 3:
-      return d3.color(VACCINATIONS).darker(0.6);
-    default:
-      return VACCINATIONS;
-  }
+  if (numberOfDose && numberOfDose > 1)
+    return d3
+      .color(VACCINATIONS)
+      .darker(numberOfDose * 0.5)
+      .formatHex();
+  return VACCINATIONS;
 };
 
 colors.getICUColor = function () {

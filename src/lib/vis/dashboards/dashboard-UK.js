@@ -148,7 +148,15 @@ export class DashboardUK {
     });
 
     // test all data are loaded, once every second
-    var timeseriesWidget = function (id, title, dataField, mode, data, color) {
+    var timeseriesWidget = function (
+      id,
+      title,
+      dataField,
+      mode,
+      data,
+      color,
+      detail,
+    ) {
       var w = {
         id: id,
         title: title,
@@ -157,7 +165,7 @@ export class DashboardUK {
         color: color,
         data: data,
         mode: mode,
-        detail: dashboard.DETAIL_HIGH,
+        detail: detail,
         dateVariable: "date",
         abbreviate: true,
       };
@@ -167,7 +175,7 @@ export class DashboardUK {
     setTimeout(function () {
       // 2. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
       var config = {
-        layout: [["cases", "admissions", "deaths", "vacc"]],
+        layout: [["cases", "admissions", "deaths"], "vacc"],
         groups: [
           {
             id: "admissions",
@@ -202,100 +210,112 @@ export class DashboardUK {
         widgets: [
           timeseriesWidget(
             "cumAdmissions",
-            "Cumulative",
+            "Cumulative Admissions",
             "cumAdmissions",
             dashboard.MODE_CUMULATIVE,
             cumAdmissions,
             colors.getHospitalizedColor(),
+            dashboard.DETAIL_HIGH,
           ),
           timeseriesWidget(
             "newAdmissions",
-            "New",
+            "New Daily Admissions",
             "newAdmissions",
             dashboard.MODE_DAILY,
             newAdmissions,
             colors.getHospitalizedColor(),
+            dashboard.DETAIL_HIGH,
           ),
           timeseriesWidget(
             "cumCasesBySpecimenDate",
-            "Cumulative",
+            "Cumulative Cases",
             "cumCasesBySpecimenDate",
             dashboard.MODE_CUMULATIVE,
             cumCasesBySpecimenDate,
             colors.getCaseColor(),
+            dashboard.DETAIL_HIGH,
           ),
           timeseriesWidget(
             "newCasesBySpecimenDate",
-            "New",
+            "New Daily Cases",
             "newCasesBySpecimenDate",
             dashboard.MODE_DAILY,
             newCasesBySpecimenDate,
             colors.getCaseColor(),
+            dashboard.DETAIL_HIGH,
           ),
           timeseriesWidget(
             "cumDeaths28DaysByDeathDate",
-            "Cumulative",
+            "Cumulative Deaths",
             "cumDeaths28DaysByDeathDate",
             dashboard.MODE_CUMULATIVE,
             cumDeaths28DaysByDeathDate,
             colors.getDeathColor(),
+            dashboard.DETAIL_HIGH,
           ),
           timeseriesWidget(
             "newDeaths28DaysByDeathDate",
-            "New",
+            "New Weekly Deaths ",
             "newDeaths28DaysByDeathDate",
-            dashboard.MODE_DAILY,
+            dashboard.MODE_WEEKLY,
             newDeaths28DaysByDeathDate,
             colors.getDeathColor(),
+            dashboard.DETAIL_HIGH,
           ),
           timeseriesWidget(
             "vacc1",
-            "1st Dose Cumulative",
+            "Total 1st Dose Update",
             "cumPeopleVaccinatedFirstDoseByPublishDate",
             dashboard.MODE_CUMULATIVE,
             cumPeopleVaccinatedFirstDoseByPublishDate,
             colors.getVaccinationColor(1),
+            dashboard.DETAIL_MEDIUM,
           ),
-          timeseriesWidget(
-            "vacc1d",
-            "1st Dose Daily",
-            "newPeopleVaccinatedFirstDoseByPublishDate",
-            dashboard.MODE_DAILY,
-            newPeopleVaccinatedFirstDoseByPublishDate,
-            colors.getVaccinationColor(1),
-          ),
+          // timeseriesWidget(
+          //   "vacc1d",
+          //   "Daily 1st Dose Vaccinations",
+          //   "newPeopleVaccinatedFirstDoseByPublishDate",
+          //   dashboard.MODE_DAILY,
+          //   newPeopleVaccinatedFirstDoseByPublishDate,
+          //   colors.getVaccinationColor(1),
+          //   dashboard.DETAIL_MEDIUM
+          // ),
           timeseriesWidget(
             "vacc2",
-            "2nd Dose Cumulative",
+            "Total 2nd Dose Update",
             "cumPeopleVaccinatedSecondDoseByPublishDate",
             dashboard.MODE_CUMULATIVE,
             cumPeopleVaccinatedSecondDoseByPublishDate,
             colors.getVaccinationColor(2),
+            dashboard.DETAIL_MEDIUM,
           ),
-          timeseriesWidget(
-            "vacc2d",
-            "2nd Dose Daily",
-            "newPeopleVaccinatedSecondDoseByPublishDate",
-            dashboard.MODE_DAILY,
-            newPeopleVaccinatedSecondDoseByPublishDate,
-            colors.getVaccinationColor(2),
-          ),
+          // timeseriesWidget(
+          //   "vacc2d",
+          //   "2nd Dose Daily",
+          //   "newPeopleVaccinatedSecondDoseByPublishDate",
+          //   dashboard.MODE_DAILY,
+          //   newPeopleVaccinatedSecondDoseByPublishDate,
+          //   colors.getVaccinationColor(2),
+          //   dashboard.DETAIL_MEDIUM
+          // ),
           timeseriesWidget(
             "vacc3",
-            "3rd Dose Cumulative",
+            "Total 3rd Dose Uptake",
             "cumPeopleVaccinatedThirdInjectionByPublishDate",
             dashboard.MODE_CUMULATIVE,
             cumPeopleVaccinatedThirdInjectionByPublishDate,
             colors.getVaccinationColor(3),
+            dashboard.DETAIL_MEDIUM,
           ),
-          timeseriesWidget(
-            "vacc3d",
-            "3rd Dose Daily",
-            "newPeopleVaccinatedThirdInjectionByPublishDate",
-            dashboard.MODE_DAILY,
-            newPeopleVaccinatedThirdInjectionByPublishDate,
-            colors.getVaccinationColor(3),
-          ),
+          // timeseriesWidget(
+          //   "vacc3d",
+          //   "3rd Dose Daily",
+          //   "newPeopleVaccinatedThirdInjectionByPublishDate",
+          //   dashboard.MODE_DAILY,
+          //   newPeopleVaccinatedThirdInjectionByPublishDate,
+          //   colors.getVaccinationColor(3),
+          //   dashboard.DETAIL_MEDIUM
+          // ),
         ],
       };
 
