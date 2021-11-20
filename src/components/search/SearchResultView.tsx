@@ -78,18 +78,7 @@ const SearchResultView: FC<SearchResultProps> = ({ data = [] }) => {
                 primary={dataRecord?.title}
                 secondary={
                   <React.Fragment>
-                    <Typography
-                      component="span"
-                      variant="body2"
-                      className={classes.inline}
-                      color="textPrimary"
-                    >
-                      {/* {dataRecord.title} */}
-                      <Divider orientation="vertical" />
-                    </Typography>
                     {dataRecord.visDescription}
-                    <Divider orientation="vertical" />
-
                     {/* {d.keywords.map((k: string) => (
                       <Chip size="small" variant="outlined" className={classes.chip} label={k} />
                     ))} */}
