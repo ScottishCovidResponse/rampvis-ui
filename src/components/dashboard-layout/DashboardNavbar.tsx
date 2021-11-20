@@ -20,7 +20,6 @@ const DashboardNavbarRoot = experimentalStyled(AppBar)(({ theme }) => ({
     borderBottom: `1px solid ${theme.palette.divider}`,
     boxShadow: "none",
   }),
-  zIndex: theme.zIndex.drawer + 100,
 }));
 
 const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
@@ -34,7 +33,7 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
           onClick={onSidebarMobileOpen}
           sx={{
             display: {
-              lg: "none",
+              md: "none",
             },
           }}
         >

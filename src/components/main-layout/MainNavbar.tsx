@@ -1,15 +1,7 @@
 import type { FC } from "react";
 import PropTypes from "prop-types";
 import Link from "next/link";
-import {
-  AppBar,
-  Box,
-  Button,
-  Divider,
-  IconButton,
-  Toolbar,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
+import { AppBar, Box, Button, Divider, Toolbar } from "@mui/material";
 import Logo from "src/components/Logo";
 
 interface MainNavbarProps {
@@ -17,8 +9,6 @@ interface MainNavbarProps {
 }
 
 const MainNavbar: FC<MainNavbarProps> = (props) => {
-  const { onSidebarMobileOpen } = props;
-
   return (
     <AppBar
       elevation={0}
@@ -28,28 +18,15 @@ const MainNavbar: FC<MainNavbarProps> = (props) => {
       }}
     >
       <Toolbar sx={{ minHeight: 64 }}>
-        <IconButton
-          color="inherit"
-          onClick={onSidebarMobileOpen}
-          sx={{
-            display: {
-              md: "none",
-            },
-          }}
-        >
-          <MenuIcon fontSize="small" />
-        </IconButton>
-        <Link href="/" passHref>
-          <Logo
-            sx={{
-              display: {
-                md: "inline",
-                xs: "none",
-              },
-              height: 40,
-              width: 40,
-            }}
-          />
+        <Link href="/">
+          <a>
+            <Logo
+              sx={{
+                height: 40,
+                width: 40,
+              }}
+            />
+          </a>
         </Link>
         <Box sx={{ flexGrow: 1 }} />
         <Box

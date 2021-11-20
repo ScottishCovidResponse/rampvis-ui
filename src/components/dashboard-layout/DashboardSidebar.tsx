@@ -15,7 +15,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import AllInboxIcon from "@mui/icons-material/AllInbox";
 import Filter2Icon from "@mui/icons-material/Filter2";
 import Filter1Icon from "@mui/icons-material/Filter1";
-import useAuth from "src/hooks/useAuth";
 import Logo from "src/components/Logo";
 import NavSection from "src/components/dashboard-layout/NavSection";
 import Scrollbar from "src/components/Scrollbar";
@@ -141,18 +140,20 @@ const sections = [
   },*/
 ];
 
-const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
-  const { onMobileClose, openMobile } = props;
-  const router = useRouter();
-  const { user } = useAuth();
+const DashboardSidebar: FC<DashboardSidebarProps> = ({
+  onMobileClose,
+  openMobile,
+}) => {
+  const { asPath } = useRouter();
   const theme = useTheme();
-  const lgUp = useMediaQuery(theme.breakpoints.up("sm"));
+  const screenIsMobile = !useMediaQuery(theme.breakpoints.up("md"));
 
+  console.log({ screenIsMobile, openMobile, onMobileClose, asPath });
   useEffect(() => {
-    if (openMobile && onMobileClose) {
+    if (screenIsMobile) {
       onMobileClose();
     }
-  }, [router.asPath]);
+  }, [screenIsMobile, onMobileClose, asPath]);
 
   const content = (
     <Box
@@ -198,7 +199,7 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
           {sections.map((section, sectionIndex) => (
             <NavSection
               key={sectionIndex}
-              pathname={router.asPath}
+              pathname={asPath}
               sx={{
                 "& + &": {
                   mt: 3,
@@ -212,7 +213,7 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
     </Box>
   );
 
-  if (lgUp) {
+  if (!screenIsMobile) {
     return (
       <Drawer
         anchor="left"
@@ -220,8 +221,6 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
         PaperProps={{
           sx: {
             backgroundColor: "background.paper",
-            // height: "calc(100% - 64px) !important",
-            // top: "64px !Important",
             height: "calc(100% - 0) !important",
             top: "0px !Important",
             width: 280,
