@@ -8,7 +8,7 @@ import {
   DialogContentText,
   FormGroup,
   Checkbox,
-} from "@material-ui/core";
+} from "@mui/material";
 
 function AdvancedFilter(props) {
   return (

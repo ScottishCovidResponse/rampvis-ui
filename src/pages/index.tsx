@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography } from "@material-ui/core";
+import { Card, CardContent, Typography } from "@mui/material";
 import React, { ReactElement } from "react";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 

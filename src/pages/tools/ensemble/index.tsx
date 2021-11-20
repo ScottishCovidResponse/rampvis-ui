@@ -1,8 +1,7 @@
-import React, { ReactElement, useCallback, useEffect, useState } from "react";
+import React, { ReactElement, useCallback, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { useTheme } from "@material-ui/core/styles";
-import { Box, Container } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Box, Container, useTheme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 import useSettings from "src/hooks/useSettings";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";

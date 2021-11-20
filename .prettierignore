@@ -37,6 +37,7 @@ public/_redirects
 # misc
 .DS_Store
 .eslintcache
+tsconfig.tsbuildinfo
 /.env.local
 /.env.development.local
 /.env.test.local
@@ -81,3 +82,6 @@ error.log
 
 .next
 out
+
+public/static/mock-images
+public/static/mock-images/thumbnails

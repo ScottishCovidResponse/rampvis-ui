@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { FC, ReactNode } from "react";
 import PropTypes from "prop-types";
-import { experimentalStyled } from "@material-ui/core/styles";
+import { experimentalStyled } from "@mui/material";
 import Footer from "../Footer";
 import MainNavbar from "./MainNavbar";
 import MainSidebar from "./MainSidebar";

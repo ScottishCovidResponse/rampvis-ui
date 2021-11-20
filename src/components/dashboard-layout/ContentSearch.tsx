@@ -14,9 +14,9 @@ import {
   TextField,
   Tooltip,
   Typography,
-} from "@material-ui/core";
-import SearchIcon from "@material-ui/icons/Search";
-import ClearIcon from "@material-ui/icons/Clear";
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import ClearIcon from "@mui/icons-material/Clear";
 import Scrollbar from "../Scrollbar";
 import wait from "../../utils/wait";
 

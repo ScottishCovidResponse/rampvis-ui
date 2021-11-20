@@ -16,7 +16,7 @@ import {
   MenuItem,
   Popover,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import useAuth from "src/hooks/useAuth";
 import ShowHideGuard from "src/components/auth/guards/ShowHideGuard";
 

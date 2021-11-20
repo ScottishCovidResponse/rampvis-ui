@@ -15,8 +15,7 @@
 import * as d3 from "d3";
 import { Data } from "../data";
 import { dashboard } from "./dashboard";
-import { colors, DEATHS } from "../colors.js";
-import { color } from "@material-ui/system";
+import { colors } from "../colors.js";
 
 // import "./css/dashboard.css";
 // import "./css/default-dashboard.css";

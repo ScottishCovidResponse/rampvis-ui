@@ -1,4 +1,4 @@
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 function GridItem(props) {
   const { sx, ...other } = props;
   return (

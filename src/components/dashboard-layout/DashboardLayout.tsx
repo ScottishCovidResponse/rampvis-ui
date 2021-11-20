@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { FC, ReactNode } from "react";
-import { experimentalStyled } from "@mui/material/styles";
+import { experimentalStyled } from "@mui/material";
 import DashboardNavbar from "./DashboardNavbar";
 import DashboardSidebar from "./DashboardSidebar";
 

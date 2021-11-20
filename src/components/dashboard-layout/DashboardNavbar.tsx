@@ -1,8 +1,7 @@
 import type { FC } from "react";
 import PropTypes from "prop-types";
-import { AppBar, Box, IconButton, Toolbar } from "@mui/material";
+import { AppBar, Box, IconButton, Toolbar, AppBarProps } from "@mui/material";
 import { experimentalStyled } from "@mui/material/styles";
-import type { AppBarProps } from "@mui/material";
 import MenuIcon from "@mui/icons-material//Menu";
 import AccountPopover from "./AccountPopover";
 

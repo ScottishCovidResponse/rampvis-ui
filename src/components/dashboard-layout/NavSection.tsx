@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 // import { matchPath } from 'react-router-dom';
 import { matchPath } from "src/utils/matchPath";
 
-import { List, ListSubheader } from "@material-ui/core";
-import type { ListProps } from "@material-ui/core";
+import { List, ListSubheader, ListProps } from "@mui/material";
 import NavItem from "./NavItem";
 
 interface Item {
