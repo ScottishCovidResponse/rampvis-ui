@@ -62,9 +62,9 @@ const PropagatedPageList = () => {
         const { id, date } = d;
         return {
           id,
-          visFunction: d?.vis?.function,
-          visType: d?.vis?.type,
-          visDescription: d?.vis?.description,
+          function: d?.vis?.function,
+          type: d?.vis?.type,
+          title: d?.title,
           pageType: d?.pageType,
           date: moment(date).format("DD-MM-YYYY"),
         };
