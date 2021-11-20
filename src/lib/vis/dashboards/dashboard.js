@@ -36,12 +36,6 @@ author: Benjamin Bach, bbach@ed.ac.uk
 */
 export const dashboard = {};
 
-export const COLOR_CASES = "#e93516"; // orange
-export const COLOR_DEATHS = "#f0852d"; // orange
-export const COLOR_TESTS = "#2a9d8f"; // green
-export const COLOR_HOSPITAL = "#264653"; // blue
-export const COLOR_VACCINATON = "#b642f5"; // purple
-
 var baseline_title = 20;
 var baseline_label = 55;
 
@@ -55,12 +49,13 @@ dashboard.MODE_WEEKLY = 3;
 dashboard.MODE_PERCENT = 4;
 
 dashboard.DETAIL_HIGH = "high";
-dashboard.DETAIL_NARROW = "low";
-dashboard.DETAIL_COMPACT = "medium";
+dashboard.DETAIL_LOW = "low";
+dashboard.DETAIL_MEDIUM = "medium";
 
 dashboard.VIS_LINECHART = "linechart";
 dashboard.VIS_CARTOGRAM = "cartogram";
 dashboard.VIS_BARCHART = "barchart";
+dashboard.VIS_PROGRESS = "progress";
 
 var LINE_1 = 10;
 var LINE_2 = 30;
@@ -70,21 +65,37 @@ var TILE_WIDTH = 40;
 var TILE_HEIGHT = 40;
 var TILE_GAP = 4;
 
+// var TILEMAP_LAYOUT_SCOTLAND = {
+//   "Ayrshire and Arran": [5, 1],
+//   Borders: [6, 3],
+//   "Dumfries and Galloway": [6, 1],
+//   Fife: [4, 2],
+//   "Forth Valley": [4, 1],
+//   Grampian: [3, 2],
+//   "Greater Glasgow and Clyde": [5, 2],
+//   Highland: [2, 1],
+//   Lanarkshire: [6, 2],
+//   Lothian: [5, 3],
+//   Orkney: [1, 2],
+//   Shetland: [0, 2],
+//   Tayside: [3, 1],
+//   "Western Isles": [2, 0],
+// };
 var TILEMAP_LAYOUT_SCOTLAND = {
-  "Ayrshire and Arran": [5, 1],
-  Borders: [6, 3],
+  "Ayrshire and Arran": [6, 0],
+  Borders: [6, 2],
   "Dumfries and Galloway": [6, 1],
   Fife: [4, 2],
   "Forth Valley": [4, 1],
-  Grampian: [3, 2],
-  "Greater Glasgow and Clyde": [5, 2],
+  Grampian: [2, 2],
+  "Greater Glasgow and Clyde": [5, 0],
   Highland: [2, 1],
-  Lanarkshire: [6, 2],
-  Lothian: [5, 3],
-  Orkney: [1, 2],
+  Lanarkshire: [5, 1],
+  Lothian: [5, 2],
+  Orkney: [0, 1],
   Shetland: [0, 2],
-  Tayside: [3, 1],
-  "Western Isles": [2, 0],
+  Tayside: [3, 2],
+  "Western Isles": [1, 0],
 };
 
 dashboard.createDashboard = function (div, config) {
@@ -179,13 +190,28 @@ var createWidget = function (parentHtmlElementId, id, config) {
     console.log("NO WIDGET FOUND WITH id:", id);
     return;
   }
-  var widget = widgets[0];
-  var data = widget.data;
+  var widgetConfig = widgets[0];
+  var data = widgetConfig.data;
+
+  // order data by date:
+  var dateVariable = widgetConfig.dateVariable;
+  if (!dateVariable) dateVariable = "index";
+
+  function byDate(a, b) {
+    var ma = moment(a[dateVariable], ["YYYYMMDD", "YYYY-MM-DD"]);
+    var mb = moment(b[dateVariable], ["YYYYMMDD", "YYYY-MM-DD"]);
+    if (ma.isAfter(mb)) {
+      return 1;
+    }
+    return -1;
+  }
+  data.sort(byDate);
+  console.log("first date--->", data[0][dateVariable]);
 
   // check for conditions on data
-  if (widget.conditions && widget.conditions.length > 0) {
-    for (var i in widget.conditions) {
-      data = executeCondition(data, widget.conditions[i]);
+  if (widgetConfig.conditions && widgetConfig.conditions.length > 0) {
+    for (var i in widgetConfig.conditions) {
+      data = executeCondition(data, widgetConfig.conditions[i]);
     }
   }
 
@@ -194,57 +220,79 @@ var createWidget = function (parentHtmlElementId, id, config) {
     return;
   }
 
-  var title = widget.title;
-  if (data[data.length - 1].index) {
+  var title = widgetConfig.title;
+  if (data[data.length - 1][dateVariable]) {
     var lastDate;
-    lastDate = moment(data[data.length - 1].index, ["YYYYMMDD", "YYYY-MM-DD"]);
+    lastDate = moment(data[data.length - 1][dateVariable], [
+      "YYYYMMDD",
+      "YYYY-MM-DD",
+    ]);
   }
 
-  var normalized = false || (widget && widget.normalized);
-  if (widget.visualization == dashboard.VIS_CARTOGRAM) {
+  var normalized = false || (widgetConfig && widgetConfig.normalized);
+
+  if (widgetConfig.visualization == dashboard.VIS_CARTOGRAM) {
     dashboard.visulizeScotlandNHSBoardCartogram(
       parentHtmlElementId,
       title,
-      widget.color,
+      widgetConfig.color,
       data,
-      widget.normalized ? widget.normalized : false,
-      widget.unit,
-      widget.detail,
+      widgetConfig.normalized ? widgetConfig.normalized : false,
+      widgetConfig.unit,
+      widgetConfig.detail,
       lastDate,
     );
-  } else if (widget.visualization == dashboard.VIS_LINECHART) {
+  } else if (widgetConfig.visualization == dashboard.VIS_LINECHART) {
     dashboard.visualizeLinechart(
       parentHtmlElementId,
       title,
-      widget.dataField,
-      widget.color,
+      widgetConfig.dataField,
+      widgetConfig.color,
       data,
-      widget.mode,
+      widgetConfig.mode,
       normalized,
-      widget.link ? widget.link : null,
-      widget.unit,
-      widget.detail,
+      widgetConfig.link ? widgetConfig.link : null,
+      widgetConfig.unit,
+      widgetConfig.detail,
       lastDate,
+      widgetConfig.abbreviate,
     );
-  } else if (widget.visualization == dashboard.VIS_BARCHART) {
+  } else if (widgetConfig.visualization == dashboard.VIS_BARCHART) {
     dashboard.visualizeBarChart(
       parentHtmlElementId,
       title,
-      widget.dataField,
-      widget.color,
+      widgetConfig.dataField,
+      widgetConfig.color,
       data,
-      widget.mode,
+      widgetConfig.mode,
       normalized,
-      widget.link ? widget.link : null,
-      widget.unit,
-      widget.detail,
+      widgetConfig.link ? widgetConfig.link : null,
+      widgetConfig.unit,
+      widgetConfig.detail,
       lastDate,
-      widget.bars,
+      widgetConfig.bars,
+      widgetConfig.abbreviate,
+    );
+  } else if (widgetConfig.visualization == dashboard.VIS_PROGRESS) {
+    dashboard.visualizeProgress(
+      parentHtmlElementId,
+      title,
+      widgetConfig.dataField,
+      widgetConfig.color,
+      data,
+      widgetConfig.mode,
+      normalized,
+      widgetConfig.link ? widgetConfig.link : null,
+      widgetConfig.unit,
+      widgetConfig.detail,
+      lastDate,
+      widgetConfig.bars,
+      widgetConfig.abbreviate,
     );
   } else {
     console.error(
       'Chart type "' +
-        widget.visualization +
+        widgetConfig.visualization +
         '" not defined. Please check https://github.com/rampvis/rampvis.github.io/wiki/widgets.',
     );
   }
@@ -286,9 +334,12 @@ dashboard.visualizeLinechart = function (
   unit,
   detail,
   lastDate,
+  abbreviate,
 ) {
   // console.log('\t\t\tVisualizeDataStream', title, '-->', id)
   if (!detail) detail = dashboard.DETAIL_HIGH;
+  if (!unit) unit = "";
+  if (!abbreviate) abbreviate = false;
 
   var svg = d3.select("#" + id).append("svg");
 
@@ -306,6 +357,7 @@ dashboard.visualizeLinechart = function (
       mode,
       normalized,
       unit,
+      abbreviate,
     );
     visualizeTrendArrow(
       svg,
@@ -328,7 +380,7 @@ dashboard.visualizeLinechart = function (
       color,
       mode,
     );
-  } else if (detail == dashboard.DETAIL_NARROW) {
+  } else if (detail == dashboard.DETAIL_LOW) {
     svg.attr("width", 180).attr("height", 70);
 
     visualizeNumberSmall(
@@ -354,7 +406,7 @@ dashboard.visualizeLinechart = function (
       mode,
       true,
     );
-  } else if (detail == dashboard.DETAIL_COMPACT) {
+  } else if (detail == dashboard.DETAIL_MEDIUM) {
     var w = 100,
       h = 100;
     svg.attr("width", w).attr("height", h);
@@ -399,6 +451,7 @@ var visualizeNumber = function (
   mode,
   normalized,
   unit,
+  abbreviate,
 ) {
   var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
 
@@ -412,7 +465,18 @@ var visualizeNumber = function (
     setVisLabel(g, "Total", 0, baseline_label);
   }
 
-  var val = Math.round(data[data.length - 1][field] * 10) / 10;
+  var val = data[data.length - 1][field];
+
+  // abbreviate if required
+  if (val > 1000000 && abbreviate) {
+    val = val / 1000000;
+    unit = "M " + unit;
+  } else if (val > 1000 && abbreviate) {
+    val = val / 1000;
+    unit = "k " + unit;
+  }
+
+  val = Math.round(val * 10) / 10;
   val = val.toLocaleString(undefined);
 
   if (mode == dashboard.MODE_PERCENT) {
@@ -422,6 +486,7 @@ var visualizeNumber = function (
   }
 
   var bigNumber = {};
+
   var t = g
     .append("text")
     .text(val)
@@ -732,7 +797,7 @@ var setVisTitle = function (g, text, link, detail, lastDate) {
     .attr("class", "datastream-title")
     .attr("y", baseline_title);
 
-  if (detail == dashboard.DETAIL_NARROW || dashboard.DETAIL_COMPACT) {
+  if (detail == dashboard.DETAIL_LOW || dashboard.DETAIL_MEDIUM) {
     text.style("font-size", "9pt");
   }
 
@@ -925,14 +990,22 @@ dashboard.visualizeBarChart = function (
   detail,
   lastDate,
   barField,
+  abbreviate,
 ) {
-  var svg = d3
+  var random = Math.floor(Math.random() * 1000);
+  var wrapperDiv = d3
     .select("#" + id)
+    .append("div")
+    .attr("id", "wrapperDiv" + random);
+
+  var svg = wrapperDiv
     .append("svg")
     .attr("height", 40)
     .style("margin-bottom", 0);
 
   setVisTitle(svg, title, link, detail, lastDate);
+
+  wrapperDiv.append("br");
 
   // display only last data
   lastDate = dataStream[dataStream.length - 1].index;
@@ -940,18 +1013,18 @@ dashboard.visualizeBarChart = function (
     return e.index == lastDate;
   });
 
-  if (!detail) detail = dashboard.DETAIL_HIGH;
-
   // dashboard.DETAILED
+  if (!detail) detail = dashboard.DETAIL_HIGH;
   let width = 150;
   let barWidth = 20;
-  if (detail == dashboard.DETAIL_NARROW) {
+  if (detail == dashboard.DETAIL_LOW) {
     width = 70;
     barWidth = 10;
-  } else if (detail == dashboard.DETAIL_COMPACT) {
+  } else if (detail == dashboard.DETAIL_MEDIUM) {
     width = 100;
     barWidth = 15;
   }
+
   svg.attr("width", width);
   console.log("data", dataStream);
   var vegaBarchart = {
@@ -976,10 +1049,33 @@ dashboard.visualizeBarChart = function (
       color: { value: color },
     },
   };
-  var random = Math.floor(Math.random() * 1000);
-  d3.select("#" + id)
-    .append("div")
-    .attr("id", "vegadiv-" + id + random);
+
+  wrapperDiv.append("div").attr("id", "vegadiv-" + id + random);
 
   vegaEmbed("#vegadiv-" + id + random, vegaBarchart, { actions: false });
+};
+
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+//  PROGRESS BARS
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+dashboard.visualizeProgress = function (
+  id,
+  title,
+  dataField,
+  color,
+  dataStream,
+  mode,
+  normalized,
+  link,
+  unit,
+  detail,
+  lastDate,
+  barField,
+  abbreviate,
+) {
+  // TIAN
 };

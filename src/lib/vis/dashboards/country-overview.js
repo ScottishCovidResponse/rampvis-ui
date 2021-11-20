@@ -13,15 +13,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import * as d3 from "d3";
-import { Data } from "../data.js";
-import {
-  dashboard,
-  COLOR_VACCINATON,
-  COLOR_HOSPITAL,
-  COLOR_TESTS,
-  COLOR_DEATHS,
-  COLOR_CASES,
-} from "./dashboard";
+import { Data } from "../data";
+import { dashboard } from "./dashboard";
+import { colors, DEATHS } from "../colors.js";
+import { color } from "@material-ui/system";
+
 // import "./css/dashboard.css";
 // import "./css/default-dashboard.css";
 // import "./css/common.css";
@@ -124,7 +120,7 @@ export class CountryOverview {
           data: Data.from(options.data, Data.Fields.COUNTRY_NEW_CASES),
           dataField: "Testing - New cases reported",
           visualization: "linechart",
-          color: COLOR_CASES,
+          color: colors.getCaseColor(),
           mode: dashboard.MODE_DAILY,
           link: links && links[0],
         },
@@ -133,7 +129,7 @@ export class CountryOverview {
           title: "1st Dose Vaccination",
           dataField: "NumberVaccinated",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).brighter(0.6),
+          color: colors.getVaccinationColor(1),
           data: Data.from(options.data, Data.Fields.COUNTRY_VACCINE_TOTAL),
           mode: dashboard.MODE_DAILY,
           conditions: [
@@ -147,53 +143,17 @@ export class CountryOverview {
           title: "2nd Dose Vaccination",
           dataField: "NumberVaccinated",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON),
+          color: colors.getVaccinationColor(2),
           data: Data.from(options.data, Data.Fields.COUNTRY_VACCINE_TOTAL),
           mode: dashboard.MODE_DAILY,
           conditions: ['Dose == "Dose 2"', 'Product == "Total"'],
-        },
-        {
-          id: "vaccinated3",
-          title: "Vaccination (30-39 age group)",
-          dataField: "CumulativePercentCoverage",
-          visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(0.5),
-          data: Data.from(
-            options.data,
-            Data.Fields.COUNTRY_VACCINE_SEX_AGEGROUP,
-          ),
-          mode: dashboard.MODE_PERCENT,
-          detail: dashboard.DETAIL_COMPACT,
-          conditions: [
-            'Dose == "Dose 1"',
-            'Sex == "Total"',
-            'AgeGroup == "30 - 39"',
-          ],
-        },
-        {
-          id: "vaccinated4",
-          title: "Vaccination (40-49 age group)",
-          dataField: "CumulativePercentCoverage",
-          visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(1.4),
-          data: Data.from(
-            options.data,
-            Data.Fields.COUNTRY_VACCINE_SEX_AGEGROUP,
-          ),
-          mode: dashboard.MODE_PERCENT,
-          detail: dashboard.DETAIL_COMPACT,
-          conditions: [
-            'Dose == "Dose 1"',
-            'Sex == "Total"',
-            'AgeGroup == "40 - 49"',
-          ],
         },
         {
           id: "deaths",
           title: "COVID-19 Patients in Hospital",
           dataField: "COVID-19 patients in hospital - Confirmed",
           visualization: "linechart",
-          color: d3.color(COLOR_HOSPITAL).brighter(1.5),
+          color: colors.getHospitalizedColor(),
           data: Data.from(options.data, Data.Fields.COUNTRY_HOSPITAL),
           mode: dashboard.MODE_CUMULATIVE,
         },
@@ -201,7 +161,7 @@ export class CountryOverview {
           id: "patients",
           title: "Covid Patients in ICU",
           dataField: "COVID-19 patients in ICU - Confirmed",
-          color: COLOR_HOSPITAL,
+          color: colors.getICUColor(),
           visualization: "linechart",
           data: Data.from(options.data, Data.Fields.COUNTRY_ICU),
           mode: dashboard.MODE_CURRENT,
@@ -214,7 +174,7 @@ export class CountryOverview {
           id: "regionsTestsNorm",
           title: "Tests per 1000 people",
           visualization: "cartogram",
-          color: COLOR_TESTS,
+          color: colors.getTestColor(),
           normalized: true,
         },
         {
@@ -224,7 +184,7 @@ export class CountryOverview {
           ),
           id: "covidInHospital",
           title: "Covid Patients in Hospital",
-          color: d3.color(COLOR_HOSPITAL).brighter(1.5),
+          color: colors.getHospitalizedColor(),
           visualization: "cartogram",
           normalized: true,
         },
@@ -236,7 +196,7 @@ export class CountryOverview {
           id: "covidInICU",
           title: "Covid Patients in ICU",
           visualization: "cartogram",
-          color: COLOR_HOSPITAL,
+          color: colors.getICUColor(),
           normalized: true,
         },
         {
@@ -247,7 +207,7 @@ export class CountryOverview {
           id: "covidDeaths",
           title: "Weekly Covid Deaths",
           visualization: "cartogram",
-          color: COLOR_DEATHS,
+          color: colors.getDeathColor(),
           normalized: true,
         },
         {
@@ -258,7 +218,7 @@ export class CountryOverview {
           id: "allDeaths",
           title: "Weekly All Deaths",
           visualization: "cartogram",
-          color: d3.color(COLOR_DEATHS).darker(1),
+          color: colors.getDeathColor(),
           normalized: true,
         },
       ],

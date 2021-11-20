@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import _ from "lodash";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import UnderConstruction from "src/components/errors/UnderConstruction";
-import { GetStaticProps, GetStaticPaths, NextPage } from "next";
+import { GetStaticProps, GetStaticPaths } from "next";
 
 const MyPortal = () => {
   const router = useRouter();

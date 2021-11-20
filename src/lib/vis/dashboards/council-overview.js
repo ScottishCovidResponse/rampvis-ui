@@ -14,7 +14,8 @@
 
 import * as d3 from "d3";
 import { Data } from "../data.js";
-import { dashboard, COLOR_VACCINATON, COLOR_DEATHS } from "./dashboard";
+import { dashboard } from "./dashboard";
+import { colors } from "../colors.js";
 
 export class CouncilOverview {
   CHART_WIDTH = 1000;
@@ -26,25 +27,19 @@ export class CouncilOverview {
       .select("#" + options.chartElement)
       .append("div")
       .attr("class", "vis-example-container");
-    // .style('width', this.CHART_WIDTH + 'px')
-    // .style('height', this.CHART_HEIGHT + 'px')
-    // .text('an awesome visualisation');
 
-    // This could be a way to get data without relying on stream order.
-    const allDeathData = Data.from(
-      options.data,
-      Data.Fields.COUNCIL_ALL_DEATHS,
-    );
-    console.log(allDeathData);
+    var council = options.data[0].description;
+
     const covidDeathData = Data.from(
       options.data,
       Data.Fields.COUNCIL_COVID_DEATHS,
     );
+    console.log("allDeathData:", covidDeathData[0]);
+
     const vaccineData = Data.from(
       options.data,
       Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
     );
-    console.log(vaccineData);
 
     var config = {
       layout: [
@@ -56,7 +51,7 @@ export class CouncilOverview {
         {
           id: "council",
           title: "Deaths",
-          layout: [["covidDeathData", "allDeathData"]],
+          layout: ["covidDeathData"],
         },
         {
           id: "vaccinations-total",
@@ -102,9 +97,9 @@ export class CouncilOverview {
         {
           id: "covidDeathData",
           title: "Covid Deaths",
-          dataField: "Aberdeen City",
+          dataField: council,
           visualization: "linechart",
-          color: COLOR_DEATHS,
+          color: colors.getDeathColor(),
           data: Data.from(options.data, Data.Fields.COUNCIL_COVID_DEATHS),
           mode: dashboard.MODE_DAILY,
           conditions: ["index.length > 4"],
@@ -112,9 +107,9 @@ export class CouncilOverview {
         {
           id: "allDeathData",
           title: "All Deaths",
-          dataField: "Aberdeen City",
+          dataField: council,
           visualization: "linechart",
-          color: d3.color(COLOR_DEATHS).brighter(0.8),
+          color: colors.getDeathColor(),
           data: Data.from(options.data, Data.Fields.COUNCIL_ALL_DEATHS),
           mode: dashboard.MODE_DAILY,
           conditions: ["index.length > 4"],
@@ -124,7 +119,7 @@ export class CouncilOverview {
           title: "Vaccination over 18 years (1st Dose)",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: COLOR_VACCINATON,
+          color: colors.getVaccinationColor(1),
           data: Data.from(
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
@@ -141,7 +136,7 @@ export class CouncilOverview {
           title: "Vaccination over 18 years (2nd Dose)",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(0.5),
+          color: colors.getVaccinationColor(2),
           data: Data.from(
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
@@ -159,7 +154,7 @@ export class CouncilOverview {
           title: "Vaccination (18-29 years)",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(1),
+          color: colors.getVaccinationColor(),
           data: Data.from(
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
@@ -177,7 +172,7 @@ export class CouncilOverview {
           title: "Vaccination (30-39 years)",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(1.5),
+          color: colors.getVaccinationColor(),
           data: Data.from(
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
@@ -195,7 +190,7 @@ export class CouncilOverview {
           title: "Vaccination (40-49 years)",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(2),
+          color: colors.getVaccinationColor(),
           data: Data.from(
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
@@ -213,7 +208,7 @@ export class CouncilOverview {
           title: "Vaccination (50-54 years)",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(2.5),
+          color: colors.getVaccinationColor(),
           data: Data.from(
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
@@ -231,7 +226,7 @@ export class CouncilOverview {
           title: "Vaccination (60-64 years)",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(3),
+          color: colors.getVaccinationColor(),
           data: Data.from(
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
@@ -249,7 +244,7 @@ export class CouncilOverview {
           title: "Vaccination (65-69 years)",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(3.5),
+          color: colors.getVaccinationColor(),
           data: Data.from(
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
@@ -267,7 +262,7 @@ export class CouncilOverview {
           title: "Vaccination (70-74 years)",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(4),
+          color: colors.getVaccinationColor(),
           data: Data.from(
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
@@ -285,7 +280,7 @@ export class CouncilOverview {
           title: "Vaccination (75-79 years)",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(4.5),
+          color: colors.getVaccinationColor(),
           data: Data.from(
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
@@ -303,7 +298,7 @@ export class CouncilOverview {
           title: "Vaccination (80+ years)",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(5),
+          color: colors.getVaccinationColor(),
           data: Data.from(
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
@@ -322,7 +317,7 @@ export class CouncilOverview {
           title: "Vaccination (18-29 years)",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(1),
+          color: colors.getVaccinationColor(2),
           data: Data.from(
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
@@ -340,7 +335,7 @@ export class CouncilOverview {
           title: "Vaccination (30-39 years)",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(1.5),
+          color: colors.getVaccinationColor(2),
           data: Data.from(
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
@@ -358,7 +353,7 @@ export class CouncilOverview {
           title: "Vaccination (40-49 years)",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(2),
+          color: colors.getVaccinationColor(2),
           data: Data.from(
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
@@ -376,7 +371,7 @@ export class CouncilOverview {
           title: "Vaccination (50-54 years)",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(2.5),
+          color: colors.getVaccinationColor(2),
           data: Data.from(
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
@@ -394,7 +389,7 @@ export class CouncilOverview {
           title: "Vaccination (60-64 years)",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(3),
+          color: colors.getVaccinationColor(2),
           data: Data.from(
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
@@ -412,7 +407,7 @@ export class CouncilOverview {
           title: "Vaccination (65-69 years)",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(3.5),
+          color: colors.getVaccinationColor(2),
           data: Data.from(
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
@@ -430,7 +425,7 @@ export class CouncilOverview {
           title: "Vaccination (70-74 years)",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(4),
+          color: colors.getVaccinationColor(2),
           data: Data.from(
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
@@ -448,7 +443,7 @@ export class CouncilOverview {
           title: "Vaccination (75-79 years)",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(4.5),
+          color: colors.getVaccinationColor(2),
           data: Data.from(
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
@@ -466,7 +461,7 @@ export class CouncilOverview {
           title: "Vaccination (80+ years)",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(5),
+          color: colors.getVaccinationColor(2),
           data: Data.from(
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
