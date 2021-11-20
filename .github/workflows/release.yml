@@ -1,11 +1,13 @@
-name: Release
+name: Deployment
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
 
 jobs:
-  build:
-    name: Build
+  deployment:
     runs-on: ubuntu-20.04
+    environment: STFC
+    concurrency: STFC
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -13,7 +15,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v1
         with:
-          node-version: 14
+          node-version: 16
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
@@ -21,31 +23,14 @@ jobs:
       - name: Run yarn build
         run: yarn build
 
-      - name: Upload ‘out’ as artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: out
-          path: out
-
-  deploy:
-    name: Deploy to VM
-    needs: build
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Download ‘out’ artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: out
-          path: out
-
       - name: Upload ‘out’ via scp
         uses: appleboy/scp-action@master
         env:
-          HOST: ${{ secrets.VM_HOST }}
-          USERNAME: ${{ secrets.VM_USERNAME }}
-          PORT: ${{ secrets.VM_PORT }}
-          KEY: ${{ secrets.VM_SSHKEY }}
+          HOST: ${{ secrets.SCP_HOST }}
+          USERNAME: ${{ secrets.SCP_USERNAME }}
+          PORT: ${{ secrets.SCP_PORT }}
+          KEY: ${{ secrets.SCP_SSHKEY }}
         with:
           source: "out/"
-          target: ${{ secrets.VM_TARGETDIR }}
+          target: ${{ secrets.SCP_TARGET_DIR }}
           strip_components: 1
