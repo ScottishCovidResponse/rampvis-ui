@@ -12,6 +12,7 @@
 !*.yml
 
 # folders with . (compensates *.*)
+!.*
 !*.*/
 
 # special cases

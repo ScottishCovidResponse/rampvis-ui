@@ -1,5 +1,4 @@
 import type { FC, ReactNode } from "react";
-import PropTypes from "prop-types";
 // import { matchPath } from 'react-router-dom';
 import { matchPath } from "src/utils/matchPath";
 
@@ -130,12 +129,6 @@ const NavSection: FC<NavSectionProps> = (props) => {
       })}
     </List>
   );
-};
-
-NavSection.propTypes = {
-  items: PropTypes.array,
-  pathname: PropTypes.string,
-  title: PropTypes.string,
 };
 
 export default NavSection;

@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from "react";
 import type { FC, ReactNode } from "react";
-import PropTypes from "prop-types";
 import { THEMES } from "../constants";
 
 interface Settings {
@@ -92,10 +91,6 @@ export const SettingsProvider: FC<SettingsProviderProps> = (props) => {
       {children}
     </SettingsContext.Provider>
   );
-};
-
-SettingsProvider.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export const SettingsConsumer = SettingsContext.Consumer;

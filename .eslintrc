@@ -15,6 +15,13 @@
     "no-param-reassign": "off",
     "no-plusplus": "off",
     "no-return-assign": "off",
+    "no-restricted-imports": [
+      "error",
+      {
+        "name": "prop-types",
+        "message": "Please add TypeScript typings to props instead."
+      }
+    ],
     "object-curly-newline": "off",
     "react/forbid-prop-types": "off",
     "react/jsx-filename-extension": "off",

@@ -1,5 +1,4 @@
 import type { FC } from "react";
-import PropTypes from "prop-types";
 import Link from "next/link";
 import { AppBar, Box, Button, Divider, Toolbar } from "@mui/material";
 import Logo from "src/components/Logo";
@@ -59,10 +58,6 @@ const MainNavbar: FC<MainNavbarProps> = (props) => {
       <Divider />
     </AppBar>
   );
-};
-
-MainNavbar.propTypes = {
-  onSidebarMobileOpen: PropTypes.func,
 };
 
 export default MainNavbar;
