@@ -8,6 +8,8 @@ import {
   Container,
   Grid,
   Card,
+  Fade,
+  CircularProgress,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { blue } from "@mui/material/colors";
@@ -50,43 +52,55 @@ const PropagatedPage = () => {
   const pageId =
     typeof router.query.id === "string" ? router.query.id : undefined;
   const [title, setTitle] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
   const fetchOntoPage = useCallback(async () => {
     if (!pageId) {
       return;
     }
-    const page = await apiService.get(`/template/page/${pageId}`);
-    console.log("OntoPage: VIS = ", page.vis);
-    console.log("OntoPage: Data = ", page.data);
 
-    setTitle(page?.title);
+    try {
+      setLoading(true);
 
-    const dataForVisFunction = await Promise.all(
-      page?.data?.map(async (d: any) => {
-        const endpoint = `${API[d.urlCode]}${d.endpoint}`;
-        console.log("PropagatedPage: data endpoint = ", endpoint);
+      const page = await apiService.get(`/template/page/${pageId}`);
+      console.log("OntoPage: VIS = ", page.vis);
+      console.log("OntoPage: Data = ", page.data);
 
-        // const values = (await axios.get(endpoint)).data;
-        const values = (await axios.get(endpoint.replace("data?", "data/?")))
-          .data;
+      setTitle(page?.title);
 
-        const { description } = d;
-        return { endpoint, values, description };
-      }),
-    );
+      const dataForVisFunction = await Promise.all(
+        page?.data?.map(async (d: any) => {
+          const endpoint = `${API[d.urlCode]}${d.endpoint}`;
+          console.log("PropagatedPage: data endpoint = ", endpoint);
 
-    const links = page?.pageIds?.map((d: any) => {
-      console.log(d);
-      return `page?id=${d}`;
-    });
+          // const values = (await axios.get(endpoint)).data;
+          const values = (await axios.get(endpoint.replace("data?", "data/?")))
+            .data;
 
-    console.log("PropagatedPage: dataForVisFunction = ", dataForVisFunction);
+          const { description } = d;
+          return { endpoint, values, description };
+        }),
+      );
 
-    visFactory(page?.vis?.function, {
-      chartElement: "charts", // ref.current,
-      data: dataForVisFunction,
-      links,
-    });
+      const links = page?.pageIds?.map((d: any) => {
+        console.log(d);
+        return `page?id=${d}`;
+      });
+
+      console.log("PropagatedPage: dataForVisFunction = ", dataForVisFunction);
+
+      visFactory(page?.vis?.function, {
+        chartElement: "charts", // ref.current,
+        data: dataForVisFunction,
+        links,
+      });
+
+      setLoading(false);
+    } catch (err) {
+      // prettier-ignore
+      console.error(`PropagatedPage: Fetching data error = ${err}`);
+      setLoading(false);
+    }
   }, [pageId]);
 
   useEffect(() => {
@@ -127,6 +141,19 @@ const PropagatedPage = () => {
                 />
 
                 <CardContent sx={{ pt: "8px" }}>
+                  {loading && (
+                    <Box sx={{ height: 40 }}>
+                      <Fade
+                        in={loading}
+                        style={{
+                          transitionDelay: loading ? "800ms" : "0ms",
+                        }}
+                        unmountOnExit
+                      >
+                        <CircularProgress />
+                      </Fade>
+                    </Box>
+                  )}
                   <div id="charts" />
                 </CardContent>
               </Card>
