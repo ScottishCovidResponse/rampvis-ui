@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { experimentalStyled } from "@mui/material";
 import Footer from "../Footer";
 import MainNavbar from "./MainNavbar";
-import MainSidebar from "./MainSidebar";
 
 interface MainLayoutProps {
   children?: ReactNode;
@@ -17,18 +16,9 @@ const MainLayoutRoot = experimentalStyled("div")(({ theme }) => ({
 }));
 
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
-  const [isSidebarMobileOpen, setIsSidebarMobileOpen] =
-    useState<boolean>(false);
-
   return (
     <MainLayoutRoot>
-      <MainNavbar
-        onSidebarMobileOpen={(): void => setIsSidebarMobileOpen(true)}
-      />
-      <MainSidebar
-        onMobileClose={(): void => setIsSidebarMobileOpen(false)}
-        openMobile={isSidebarMobileOpen}
-      />
+      <MainNavbar />
       {children}
       <Footer />
     </MainLayoutRoot>
