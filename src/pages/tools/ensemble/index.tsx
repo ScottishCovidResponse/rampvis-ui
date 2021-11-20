@@ -150,7 +150,7 @@ const Ensemble = () => {
         }}
       >
         <Container maxWidth={settings.compact ? "xl" : false}>
-          <Card sx={{ minWidth: 275 }}>
+          <Card sx={{ minWidth: 1600 }}>
             <CardContent>
               <div id="container">
                 <div id="line-chart">
