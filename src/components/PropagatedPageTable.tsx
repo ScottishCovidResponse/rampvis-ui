@@ -16,7 +16,7 @@ import Router from "next/router";
 import useSettings from "src/hooks/useSettings";
 
 interface Column {
-  id: "visFunction" | "visDescription" | "visType" | "pageType" | "date";
+  id: "title" | "function" | "type" | "pageType" | "date";
   label: string;
   minWidth?: number;
   align?: "right";
@@ -24,10 +24,10 @@ interface Column {
 }
 
 const columns: Column[] = [
-  { id: "visFunction", label: "VIS Function", minWidth: 100 },
-  { id: "visDescription", label: "Description", minWidth: 100 },
-  { id: "visType", label: "Type", minWidth: 100 },
-  { id: "pageType", label: "Page type", minWidth: 100 },
+  { id: "title", label: "Page Title", minWidth: 100 },
+  { id: "function", label: "VIS Function", minWidth: 100 },
+  { id: "type", label: "Type", minWidth: 100 },
+  { id: "pageType", label: "Page Type", minWidth: 100 },
   { id: "date", label: "Date", minWidth: 100 },
 ];
 
