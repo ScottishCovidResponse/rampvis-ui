@@ -6,7 +6,9 @@ on:
 jobs:
   release:
     runs-on: ubuntu-20.04
-    environment: STFC
+    environment:
+      name: STFC
+      url: https://vis.scrc.uk
     concurrency: STFC
     steps:
       - name: Check out repository
