@@ -1,10 +1,9 @@
 import { useState } from "react";
 import type { FC, ReactNode } from "react";
 import PropTypes from "prop-types";
-import { Box, Button, Collapse, ListItem } from "@material-ui/core";
-import type { ListItemProps } from "@material-ui/core";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import { Box, Button, Collapse, ListItem, ListItemProps } from "@mui/material";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { NavLink } from "src/components/dashboard-layout/NavLink";
 
 interface NavItemProps extends ListItemProps {

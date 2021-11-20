@@ -1,5 +1,3 @@
-import { color } from "@material-ui/system";
-
 const CASES = "#EEB154";
 const DEATHS = "#666";
 const TESTS = "#6FB4D0";

@@ -15,11 +15,11 @@ import {
   Popover,
   Tooltip,
   Typography,
-} from "@material-ui/core";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import ChatIcon from "@material-ui/icons/Chat";
-import CreditCardIcon from "@material-ui/icons/CreditCard";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+} from "@mui/material";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import ChatIcon from "@mui/icons-material/Chat";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ShowHideGuard from "src/components/auth/guards/ShowHideGuard";
 
 interface Notification {

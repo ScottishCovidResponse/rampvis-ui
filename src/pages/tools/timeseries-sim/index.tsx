@@ -1,8 +1,6 @@
-/* eslint-disable no-new */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useRef, useState, ReactElement } from "react";
+import { useState, ReactElement } from "react";
 import { Helmet } from "react-helmet-async";
-import { Grid, Box, Card, CardContent } from "@material-ui/core";
+import { Grid, Box, Card, CardContent } from "@mui/material";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import axios from "axios";
 import FirstForm from "src/components/timeseries-sim/FirstForm";
@@ -44,7 +42,6 @@ const initialFirstRunState = {
 const TimeseriesSim = () => {
   //const { settings } = useSettings();
   const classes = useStyles();
-  const ref = useRef();
 
   const [advancedFilterPopup, setAdvancedFilterPopup] = useState(false);
   const advancedFilterClickOpen = () => {

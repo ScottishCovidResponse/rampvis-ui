@@ -1,6 +1,6 @@
 import merge from "lodash/merge";
-import { createTheme, responsiveFontSizes } from "@material-ui/core/styles";
-import type { Direction, Theme, ThemeOptions } from "@material-ui/core";
+import { createTheme, responsiveFontSizes } from "@mui/material/styles";
+import { Direction, Theme, ThemeOptions } from "@mui/material";
 import { THEMES } from "../constants";
 import { lightShadows, darkShadows } from "./shadows";
 

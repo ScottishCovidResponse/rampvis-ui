@@ -1,11 +1,8 @@
 import { useEffect, FC } from "react";
-// import { useLocation } from 'react-router-dom';
 import Link from "next/link";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
-import { Box, Chip, Drawer } from "@material-ui/core";
-import type { Theme } from "@material-ui/core";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { Box, Chip, Drawer, Theme, useMediaQuery } from "@mui/material";
 import Logo from "src/components/Logo";
 
 interface MainSidebarProps {

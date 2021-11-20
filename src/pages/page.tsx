@@ -66,7 +66,10 @@ const PropagatedPage = () => {
         const endpoint = `${API[d.urlCode]}${d.endpoint}`;
         console.log("PropagatedPage: data endpoint = ", endpoint);
 
-        const values = (await axios.get(endpoint)).data;
+        // const values = (await axios.get(endpoint)).data;
+        const values = (await axios.get(endpoint.replace("data?", "data/?")))
+          .data;
+
         const { description } = d;
         return { endpoint, values, description };
       }),
