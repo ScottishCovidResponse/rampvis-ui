@@ -1,10 +1,10 @@
-name: Deployment
+name: Release
 
 on:
   workflow_dispatch:
 
 jobs:
-  deployment:
+  release:
     runs-on: ubuntu-20.04
     environment: STFC
     concurrency: STFC
@@ -23,7 +23,7 @@ jobs:
       - name: Run yarn build
         run: yarn build
 
-      - name: Upload ‘out’ via scp
+      - name: Upload `out` via scp (secure copy)
         uses: appleboy/scp-action@master
         env:
           HOST: ${{ secrets.SCP_HOST }}
