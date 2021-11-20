@@ -28,7 +28,7 @@ jobs:
           path: out
 
   deploy:
-    name: Deploy (incomplete)
+    name: Deploy to VM
     needs: build
     runs-on: ubuntu-20.04
     steps:
@@ -38,10 +38,14 @@ jobs:
           name: out
           path: out
 
-      - name: List files (temp step)
-        run: |
-          echo ""
-          echo "This pipeline is incomplete. TODO: replace listing files with deploying"
-          echo "https://github.com/sdras/awesome-actions#deployment"
-          echo ""
-          ls -R out
+      - name: Upload ‘out’ via scp
+        uses: appleboy/scp-action@master
+        env:
+          HOST: ${{ secrets.VM_HOST }}
+          USERNAME: ${{ secrets.VM_USERNAME }}
+          PORT: ${{ secrets.VM_PORT }}
+          KEY: ${{ secrets.VM_SSHKEY }}
+        with:
+          source: "out/"
+          target: ${{ secrets.VM_TARGETDIR }}
+          strip_components: 1
