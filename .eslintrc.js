@@ -1,7 +1,7 @@
-{
-  "plugins": ["@typescript-eslint"],
-  "extends": ["next", "plugin:@typescript-eslint/recommended", "prettier"],
-  "rules": {
+module.exports = {
+  plugins: ["@typescript-eslint"],
+  extends: ["next", "plugin:@typescript-eslint/recommended", "prettier"],
+  rules: {
     "@typescript-eslint/comma-dangle": "off",
     "class-methods-use-this": "off",
     "comma-dangle": "off",
@@ -18,9 +18,9 @@
     "no-restricted-imports": [
       "error",
       {
-        "name": "prop-types",
-        "message": "Please add TypeScript typings to props instead."
-      }
+        name: "prop-types",
+        message: "Please add TypeScript typings to props instead.",
+      },
     ],
     "object-curly-newline": "off",
     "react/forbid-prop-types": "off",
@@ -31,9 +31,9 @@
     "@typescript-eslint/no-this-alias": [
       "error",
       {
-        "allowDestructuring": true,
-        "allowedNames": ["_this"]
-      }
-    ]
-  }
-}
+        allowDestructuring: true,
+        allowedNames: ["_this"],
+      },
+    ],
+  },
+};

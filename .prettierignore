@@ -2,21 +2,17 @@
 ## Prettier-specific
 ####################
 
-# extensions
+# Ignore all extensions (folders with . are allowed)
 *.*
-!*.js
+!.*/
+!*.*/
+
+# Allow certain extensions
 !*.json
 !*.md
 !*.ts
 !*.tsx
 !*.yml
-
-# folders with . (compensates *.*)
-!.*
-!*.*/
-
-# special cases
-public/_redirects
 
 ########################
 ## Same as in .gitignore
