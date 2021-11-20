@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import type { FC } from "react";
 import { useRouter } from "next/router";
-import PropTypes from "prop-types";
 import { Box, Divider, Drawer, Typography } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
@@ -249,11 +248,6 @@ const DashboardSidebar: FC<DashboardSidebarProps> = ({
       {content}
     </Drawer>
   );
-};
-
-DashboardSidebar.propTypes = {
-  onMobileClose: PropTypes.func,
-  openMobile: PropTypes.bool,
 };
 
 export default DashboardSidebar;

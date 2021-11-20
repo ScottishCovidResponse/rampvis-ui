@@ -4,7 +4,6 @@ import { FC, useCallback, useState, useEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import { createStyles, IconButton, Theme } from "@mui/material";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
-import PropTypes from "prop-types";
 import { orange, grey } from "@mui/material/colors";
 import ShowHideGuard from "src/components/auth/guards/ShowHideGuard";
 import { apiService } from "src/utils/apiService";
@@ -57,10 +56,6 @@ const Bookmark: FC<any> = ({ pageId }) => {
       </IconButton>
     </ShowHideGuard>
   );
-};
-
-Bookmark.propTypes = {
-  pageId: PropTypes.any,
 };
 
 export default Bookmark;

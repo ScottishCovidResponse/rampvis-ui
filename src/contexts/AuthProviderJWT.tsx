@@ -1,6 +1,5 @@
 import { createContext, useEffect, useReducer } from "react";
 import type { FC, ReactNode } from "react";
-import PropTypes from "prop-types";
 import jwt_decode from "jwt-decode";
 import { useRouter } from "next/router";
 import type { User } from "src/types/user";
@@ -204,10 +203,6 @@ export const AuthProviderJWT: FC<AuthProviderProps> = (props) => {
       {children}
     </AuthContext.Provider>
   );
-};
-
-AuthProviderJWT.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export default AuthContext;

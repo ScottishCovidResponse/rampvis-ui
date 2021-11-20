@@ -1,5 +1,4 @@
 import type { FC } from "react";
-import PropTypes from "prop-types";
 import { AppBar, Box, IconButton, Toolbar, AppBarProps } from "@mui/material";
 import { experimentalStyled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material//Menu";
@@ -78,10 +77,6 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
       </Toolbar>
     </DashboardNavbarRoot>
   );
-};
-
-DashboardNavbar.propTypes = {
-  onSidebarMobileOpen: PropTypes.func,
 };
 
 export default DashboardNavbar;
