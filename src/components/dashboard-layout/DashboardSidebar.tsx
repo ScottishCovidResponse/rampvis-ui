@@ -147,7 +147,6 @@ const DashboardSidebar: FC<DashboardSidebarProps> = ({
   const theme = useTheme();
   const screenIsMobile = !useMediaQuery(theme.breakpoints.up("md"));
 
-  console.log({ screenIsMobile, openMobile, onMobileClose, asPath });
   useEffect(() => {
     if (screenIsMobile) {
       onMobileClose();
