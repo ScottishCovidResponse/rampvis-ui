@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import { Theme, makeStyles } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
+import { Theme, Grid } from "@mui/material";
 import PortalItem from "./PortalItem";
 
 const useStyles = makeStyles((theme: Theme) => ({

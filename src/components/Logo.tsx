@@ -1,7 +1,7 @@
 import type { FC } from "react";
-import type { Theme } from "@material-ui/core";
-import { experimentalStyled } from "@material-ui/core/styles";
-import type { SxProps } from "@material-ui/system";
+import type { Theme } from "@mui/material";
+import { experimentalStyled } from "@mui/material";
+import { SxProps } from "@mui/system";
 
 interface LogoProps {
   sx?: SxProps<Theme>;

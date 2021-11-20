@@ -1,7 +1,7 @@
 import { FC, KeyboardEvent, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import { Box, Button, TextField, InputAdornment } from "@mui/material";
-import { Theme, makeStyles } from "@material-ui/core/styles";
+import { Box, Button, TextField, InputAdornment, Theme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme: Theme) => ({
   input: {

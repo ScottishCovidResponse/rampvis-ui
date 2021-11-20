@@ -90,4 +90,4 @@ This requires [Docker](https://www.docker.com/products/docker-desktop).
 ## References
 
 - Bootstrapped with [Next.js](https://github.com/vercel/next.js)
-- Using [React material dashboard style](https://material-ui.com)
+- Using [React MUI dashboard style](https://mui.com)

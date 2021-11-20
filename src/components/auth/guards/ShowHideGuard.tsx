@@ -1,5 +1,4 @@
 import type { FC, ReactNode } from "react";
-import PropTypes from "prop-types";
 import useAuth from "src/hooks/useAuth";
 
 interface ShowHideGuardProps {
@@ -14,10 +13,6 @@ const ShowHideGuard: FC<ShowHideGuardProps> = ({ children }) => {
   }
 
   return <>{children}</>;
-};
-
-ShowHideGuard.propTypes = {
-  children: PropTypes.node,
 };
 
 export default ShowHideGuard;

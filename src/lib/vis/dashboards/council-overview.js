@@ -102,6 +102,7 @@ export class CouncilOverview {
           color: colors.getDeathColor(),
           data: Data.from(options.data, Data.Fields.COUNCIL_COVID_DEATHS),
           mode: dashboard.MODE_DAILY,
+          detail: dashboard.DETAIL_HIGHT,
           conditions: ["index.length > 4"],
         },
         {
@@ -111,6 +112,7 @@ export class CouncilOverview {
           visualization: "linechart",
           color: colors.getDeathColor(),
           data: Data.from(options.data, Data.Fields.COUNCIL_ALL_DEATHS),
+          detail: dashboard.DETAIL_HIGH,
           mode: dashboard.MODE_DAILY,
           conditions: ["index.length > 4"],
         },
@@ -125,6 +127,7 @@ export class CouncilOverview {
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
+          detail: dashboard.DETAIL_HIGH,
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -142,6 +145,7 @@ export class CouncilOverview {
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
+          detail: dashboard.DETAIL_HIGH,
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',
@@ -154,13 +158,13 @@ export class CouncilOverview {
           title: "Vaccination (18-29 years)",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: colors.getVaccinationColor(),
+          color: colors.getVaccinationColor(1),
           data: Data.from(
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
-          detail: dashboard.DETAIL_NARROW,
+          detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -178,7 +182,7 @@ export class CouncilOverview {
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
-          detail: dashboard.DETAIL_NARROW,
+          detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -196,7 +200,7 @@ export class CouncilOverview {
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
-          detail: dashboard.DETAIL_NARROW,
+          detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -214,7 +218,7 @@ export class CouncilOverview {
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
-          detail: dashboard.DETAIL_NARROW,
+          detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -232,7 +236,7 @@ export class CouncilOverview {
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
-          detail: dashboard.DETAIL_NARROW,
+          detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -250,7 +254,7 @@ export class CouncilOverview {
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
-          detail: dashboard.DETAIL_NARROW,
+          detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -268,7 +272,7 @@ export class CouncilOverview {
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
-          detail: dashboard.DETAIL_NARROW,
+          detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -286,7 +290,7 @@ export class CouncilOverview {
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_CUMULATIVE,
-          detail: dashboard.DETAIL_NARROW,
+          detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -304,7 +308,7 @@ export class CouncilOverview {
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
-          detail: dashboard.DETAIL_NARROW,
+          detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -322,7 +326,7 @@ export class CouncilOverview {
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
-          detail: dashboard.DETAIL_NARROW,
+          detail: dashboard.DETAIL_LOW,
           mode: dashboard.MODE_PERCENT,
           conditions: [
             'Sex == "Total"',
@@ -341,7 +345,7 @@ export class CouncilOverview {
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
-          detail: dashboard.DETAIL_NARROW,
+          detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',
@@ -359,7 +363,7 @@ export class CouncilOverview {
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
-          detail: dashboard.DETAIL_NARROW,
+          detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',
@@ -377,7 +381,7 @@ export class CouncilOverview {
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
-          detail: dashboard.DETAIL_NARROW,
+          detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',
@@ -395,7 +399,7 @@ export class CouncilOverview {
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
-          detail: dashboard.DETAIL_NARROW,
+          detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',
@@ -413,7 +417,7 @@ export class CouncilOverview {
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
-          detail: dashboard.DETAIL_NARROW,
+          detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',
@@ -431,7 +435,7 @@ export class CouncilOverview {
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
-          detail: dashboard.DETAIL_NARROW,
+          detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',
@@ -449,7 +453,7 @@ export class CouncilOverview {
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
-          detail: dashboard.DETAIL_NARROW,
+          detail: dashboard.DETAIL_LOW,
           onditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',
@@ -467,7 +471,7 @@ export class CouncilOverview {
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
-          detail: dashboard.DETAIL_NARROW,
+          detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',

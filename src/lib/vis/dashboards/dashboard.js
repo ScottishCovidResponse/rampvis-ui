@@ -194,19 +194,28 @@ var createWidget = function (parentHtmlElementId, id, config) {
   var data = widgetConfig.data;
 
   // order data by date:
-  var dateVariable = widgetConfig.dateVariable;
-  if (!dateVariable) dateVariable = "index";
+  var dateField = widgetConfig.dateVariable;
+  if (!dateField) dateField = "index";
 
   function byDate(a, b) {
-    var ma = moment(a[dateVariable], ["YYYYMMDD", "YYYY-MM-DD"]);
-    var mb = moment(b[dateVariable], ["YYYYMMDD", "YYYY-MM-DD"]);
+    var ma = moment(a[dateField], ["YYYYMMDD", "YYYY-MM-DD"]);
+    var mb = moment(b[dateField], ["YYYYMMDD", "YYYY-MM-DD"]);
     if (ma.isAfter(mb)) {
       return 1;
     }
     return -1;
   }
   data.sort(byDate);
-  console.log("first date--->", data[0][dateVariable]);
+
+  // convert dates in to YYYY-MM-DD
+  for (var i in data) {
+    data[i][dateField] = moment(data[i][dateField], [
+      "YYYYMMDD",
+      "YYYY-MM-DD",
+    ]).format("YYYY-MM-DD");
+  }
+
+  console.log("first date--->", data[0][dateField]);
 
   // check for conditions on data
   if (widgetConfig.conditions && widgetConfig.conditions.length > 0) {
@@ -221,9 +230,9 @@ var createWidget = function (parentHtmlElementId, id, config) {
   }
 
   var title = widgetConfig.title;
-  if (data[data.length - 1][dateVariable]) {
+  if (data[data.length - 1][dateField]) {
     var lastDate;
-    lastDate = moment(data[data.length - 1][dateVariable], [
+    lastDate = moment(data[data.length - 1][dateField], [
       "YYYYMMDD",
       "YYYY-MM-DD",
     ]);
@@ -256,6 +265,7 @@ var createWidget = function (parentHtmlElementId, id, config) {
       widgetConfig.detail,
       lastDate,
       widgetConfig.abbreviate,
+      dateField,
     );
   } else if (widgetConfig.visualization == dashboard.VIS_BARCHART) {
     dashboard.visualizeBarChart(
@@ -325,9 +335,9 @@ var canonizeNames = function (s) {
 dashboard.visualizeLinechart = function (
   id,
   title,
-  field,
+  dataField,
   color,
-  dataStream,
+  data,
   mode,
   normalized,
   link,
@@ -335,24 +345,36 @@ dashboard.visualizeLinechart = function (
   detail,
   lastDate,
   abbreviate,
+  dateField,
 ) {
-  // console.log('\t\t\tVisualizeDataStream', title, '-->', id)
   if (!detail) detail = dashboard.DETAIL_HIGH;
   if (!unit) unit = "";
   if (!abbreviate) abbreviate = false;
 
-  var svg = d3.select("#" + id).append("svg");
-
-  setVisTitle(svg, title, link, detail, lastDate);
   if (detail == dashboard.DETAIL_HIGH) {
-    svg.attr("width", 400).attr("height", 110);
+    var random = Math.floor(Math.random() * 1000);
+    var wrapperDiv = d3
+      .select("#" + id)
+      .append("div")
+      .attr("id", "wrapperDiv" + random);
+
+    const WIDTH = 500;
+    const HEIGHT = 200;
+
+    var svg = wrapperDiv
+      .append("svg")
+      .attr("width", WIDTH)
+      .attr("height", 120)
+      .style("margin-bottom", 0);
+
+    setVisTitle(svg, title, link, detail, lastDate);
 
     visualizeNumber(
       svg,
-      dataStream,
+      data,
       0,
       baseline_title + 25,
-      field,
+      dataField,
       color,
       mode,
       normalized,
@@ -361,34 +383,102 @@ dashboard.visualizeLinechart = function (
     );
     visualizeTrendArrow(
       svg,
-      dataStream,
+      data,
+      WIDTH - 120,
+      baseline_title + 25,
+      dataField,
+      color,
+      mode,
+      unit,
+    );
+
+    wrapperDiv.append("br");
+
+    var mark = "line";
+    if (mode == dashboard.MODE_DAILY || mode == dashboard.MODE_WEEKLY)
+      mark = "bar";
+
+    var scale;
+    if (mode == this.MODE_PERCENT) scale = { domain: [0, 100] };
+
+    var vegaLinechart = {
+      $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+      data: {
+        values: data,
+      },
+      mark: mark,
+      width: WIDTH - 100,
+      height: HEIGHT - 100,
+      encoding: {
+        y: {
+          field: dataField,
+          type: "quantitative",
+          title: "",
+          scale: scale,
+        },
+        x: {
+          field: dateField,
+          type: "temporal",
+          title: "",
+        },
+        color: { value: color },
+      },
+    };
+
+    wrapperDiv.append("div").attr("id", "vegadiv-" + id + random);
+
+    vegaEmbed("#vegadiv-" + id + random, vegaLinechart, { actions: false });
+  } else if (detail == dashboard.DETAIL_MEDIUM) {
+    var svg = d3.select("#" + id).append("svg");
+    setVisTitle(svg, title, link, detail, lastDate);
+
+    svg.attr("width", 400).attr("height", 110);
+
+    visualizeNumber(
+      svg,
+      data,
+      0,
+      baseline_title + 25,
+      dataField,
+      color,
+      mode,
+      normalized,
+      unit,
+      abbreviate,
+    );
+    visualizeTrendArrow(
+      svg,
+      data,
       150,
       baseline_title + 25,
-      field,
+      dataField,
       color,
       mode,
       unit,
     );
     visualizeMiniChart(
       svg,
-      dataStream,
+      data,
       300,
       baseline_title + 25,
       35,
       100,
-      field,
+      dataField,
       color,
       mode,
     );
   } else if (detail == dashboard.DETAIL_LOW) {
+    var svg = d3.select("#" + id).append("svg");
+    setVisTitle(svg, title, link, detail, lastDate);
+
     svg.attr("width", 180).attr("height", 70);
 
     visualizeNumberSmall(
       svg,
-      dataStream,
+      data,
       0,
       baseline_title + 25,
-      field,
+      dataField,
       color,
       mode,
       normalized,
@@ -396,45 +486,46 @@ dashboard.visualizeLinechart = function (
     );
     visualizeMiniChart(
       svg,
-      dataStream,
+      data,
       100,
       baseline_title + 25,
       18,
       70,
-      field,
-      color,
-      mode,
-      true,
-    );
-  } else if (detail == dashboard.DETAIL_MEDIUM) {
-    var w = 100,
-      h = 100;
-    svg.attr("width", w).attr("height", h);
-
-    visualizeNumberSmall(
-      svg,
-      dataStream,
-      0,
-      baseline_title + 25,
-      field,
-      color,
-      mode,
-      normalized,
-      unit,
-    );
-    visualizeMiniChart(
-      svg,
-      dataStream,
-      0,
-      baseline_title + 55,
-      18,
-      w,
-      field,
+      dataField,
       color,
       mode,
       true,
     );
   }
+  // else if (detail == dashboard.DETAIL_MEDIUM) {
+  //   var w = 100,
+  //     h = 100;
+  //   svg.attr("width", w).attr("height", h);
+
+  //   visualizeNumberSmall(
+  //     svg,
+  //     dataStream,
+  //     0,
+  //     baseline_title + 25,
+  //     field,
+  //     color,
+  //     mode,
+  //     normalized,
+  //     unit,
+  //   );
+  //   visualizeMiniChart(
+  //     svg,
+  //     dataStream,
+  //     0,
+  //     baseline_title + 55,
+  //     18,
+  //     w,
+  //     field,
+  //     color,
+  //     mode,
+  //     true,
+  //   );
+  // }
 };
 
 /////////////////////////////
@@ -446,7 +537,7 @@ var visualizeNumber = function (
   data,
   x,
   y,
-  field,
+  dataField,
   color,
   mode,
   normalized,
@@ -465,7 +556,7 @@ var visualizeNumber = function (
     setVisLabel(g, "Total", 0, baseline_label);
   }
 
-  var val = data[data.length - 1][field];
+  var val = data[data.length - 1][dataField];
 
   // abbreviate if required
   if (val > 1000000 && abbreviate) {

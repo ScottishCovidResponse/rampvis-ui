@@ -1,4 +1,6 @@
 #!/bin/sh
+if [ -n "$NF_IMAGE_TAG" ]; then exit 0; fi ## Skip on Netlify
+
 . "$(dirname "$0")/_/husky.sh"
 
 yarn install

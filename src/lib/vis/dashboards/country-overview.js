@@ -15,8 +15,7 @@
 import * as d3 from "d3";
 import { Data } from "../data";
 import { dashboard } from "./dashboard";
-import { colors, DEATHS } from "../colors.js";
-import { color } from "@material-ui/system";
+import { colors } from "../colors.js";
 
 // import "./css/dashboard.css";
 // import "./css/default-dashboard.css";
@@ -123,6 +122,7 @@ export class CountryOverview {
           color: colors.getCaseColor(),
           mode: dashboard.MODE_DAILY,
           link: links && links[0],
+          detail: dashboard.DETAIL_MEDIUM,
         },
         {
           id: "vaccinated1",
@@ -132,6 +132,7 @@ export class CountryOverview {
           color: colors.getVaccinationColor(1),
           data: Data.from(options.data, Data.Fields.COUNTRY_VACCINE_TOTAL),
           mode: dashboard.MODE_DAILY,
+          detail: dashboard.DETAIL_MEDIUM,
           conditions: [
             'Dose == "Dose 1"',
             'AgeBand == "18 years and over"',
@@ -146,6 +147,7 @@ export class CountryOverview {
           color: colors.getVaccinationColor(2),
           data: Data.from(options.data, Data.Fields.COUNTRY_VACCINE_TOTAL),
           mode: dashboard.MODE_DAILY,
+          detail: dashboard.DETAIL_MEDIUM,
           conditions: ['Dose == "Dose 2"', 'Product == "Total"'],
         },
         {
@@ -153,6 +155,7 @@ export class CountryOverview {
           title: "COVID-19 Patients in Hospital",
           dataField: "COVID-19 patients in hospital - Confirmed",
           visualization: "linechart",
+          detail: dashboard.DETAIL_MEDIUM,
           color: colors.getHospitalizedColor(),
           data: Data.from(options.data, Data.Fields.COUNTRY_HOSPITAL),
           mode: dashboard.MODE_CUMULATIVE,
@@ -163,6 +166,7 @@ export class CountryOverview {
           dataField: "COVID-19 patients in ICU - Confirmed",
           color: colors.getICUColor(),
           visualization: "linechart",
+          detail: dashboard.DETAIL_MEDIUM,
           data: Data.from(options.data, Data.Fields.COUNTRY_ICU),
           mode: dashboard.MODE_CURRENT,
         },
