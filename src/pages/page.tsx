@@ -19,9 +19,8 @@ import { useRouter } from "next/router";
 
 import useSettings from "src/hooks/useSettings";
 import { visFactory } from "src/lib/vis/vis-factory";
-import useAuth from "src/hooks/useAuth";
 import Bookmark from "src/components/Bookmark";
-import { apiService } from "src/utils/apiService";
+import { apiService } from "src/utils/ApiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 
 const API = {
@@ -63,36 +62,32 @@ const PropagatedPage = () => {
       setLoading(true);
 
       const page = await apiService.get(`/template/page/${pageId}`);
-      console.log("OntoPage: VIS = ", page.vis);
-      console.log("OntoPage: Data = ", page.data);
+      // eslint-disable-next-line no-console -- VIS developers need....
+      console.log("[TEMPLATE] VIS Function = ", page.vis);
+      // eslint-disable-next-line no-console -- VIS developers need....
+      console.log("[TEMPLATE] Data = ", page.data);
 
       setTitle(page?.title);
 
       const dataForVisFunction = await Promise.all(
         page?.data?.map(async (d: any) => {
           const endpoint = `${API[d.urlCode]}${d.endpoint}`;
-          console.log("PropagatedPage: data endpoint = ", endpoint);
+          // eslint-disable-next-line no-console -- VIS developers need....
+          console.log("[TEMPLATE] data endpoint = ", endpoint);
 
-          // const values = (await axios.get(endpoint)).data;
-          const values = (await axios.get(endpoint.replace("data?", "data/?")))
-            .data;
-
-          const { description } = d;
-          return { endpoint, values, description };
+          const values = (await axios.get(endpoint)).data;
+          const { id, description } = d;
+          return { id, endpoint, values, description };
         }),
       );
 
-      const links = page?.pageIds?.map((d: any) => {
-        console.log(d);
-        return `page?id=${d}`;
-      });
-
-      console.log("PropagatedPage: dataForVisFunction = ", dataForVisFunction);
+      // eslint-disable-next-line no-console -- VIS developers need....
+      console.log("[TEMPLATE] fetched data = ", dataForVisFunction);
 
       visFactory(page?.vis?.function, {
-        chartElement: "charts", // ref.current,
+        chartElement: "charts",
         data: dataForVisFunction,
-        links,
+        links: [],
       });
 
       setLoading(false);
@@ -125,12 +120,13 @@ const PropagatedPage = () => {
             <Grid item xs={12}>
               <Card>
                 <CardHeader
-                  action={
-                    // <IconButton aria-label="settings">
-                    //   { user?.id ? (<MoreVertIcon />) : (<TimelineIcon />)}
-                    // </IconButton>
-                    <Bookmark pageId={pageId} />
-                  }
+                  // TODO:
+                  // action={
+                  //   <IconButton aria-label="settings">
+                  //     { user?.id ? (<MoreVertIcon />) : (<TimelineIcon />)}
+                  //   </IconButton>
+                  //   <Bookmark pageId={pageId} />
+                  // }
                   avatar={
                     <Avatar className={classes.avatar}>
                       <InsertChartIcon />
