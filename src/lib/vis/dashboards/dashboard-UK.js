@@ -166,7 +166,7 @@ export class DashboardUK {
         data: data,
         mode: mode,
         detail: detail,
-        dateVariable: "date",
+        dateField: "date",
         abbreviate: true,
       };
       return w;

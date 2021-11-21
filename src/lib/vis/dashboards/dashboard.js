@@ -35,6 +35,7 @@ Namespace for dashboard functions
 author: Benjamin Bach, bbach@ed.ac.uk
 */
 export const dashboard = {};
+export const dashboardComponents = {}
 
 var baseline_title = 20;
 var baseline_label = 55;
@@ -56,6 +57,7 @@ dashboard.VIS_LINECHART = "linechart";
 dashboard.VIS_CARTOGRAM = "cartogram";
 dashboard.VIS_BARCHART = "barchart";
 dashboard.VIS_PROGRESS = "progress";
+
 
 var LINE_1 = 10;
 var LINE_2 = 30;
@@ -178,9 +180,8 @@ var addGroup = function (parentHTMLElementId, id, config) {
   // }
 };
 
+//////////////////////////////////////
 var createWidget = function (parentHtmlElementId, id, config) {
-  // console.log('\t\tAttach Panel: ', id, '-->', parentHtmlElementId)
-  // get latest date:
 
   var widgets = config.widgets.filter(function (el) {
     return el.id == id;
@@ -190,55 +191,73 @@ var createWidget = function (parentHtmlElementId, id, config) {
     console.log("NO WIDGET FOUND WITH id:", id);
     return;
   }
+
   var widgetConfig = widgets[0];
+
+  // create convenience variable for 'data' that will be linked back
+  // to thw widgetConf before visualizing.
   var data = widgetConfig.data;
+  // check if data is not empty
+  if (data.length == 0) {
+    console.log("NO DATA FOUND / DATA ARRAY IS EMPTY", id);
+    return;
+  }
+
+  // set widget detault values 
+  if (!widgetConfig.dateField) 
+    widgetConfig.dateField = "index";
+
+  if(!widgetConfig.detail)
+    widgetConfig.detail = dashboard.DETAIL_HIGH;
+
+  if(!widgetConfig.normalized) 
+    widgetConfig.normalized = false
+
+  if (!widgetConfig.unit) 
+    widgetConfig.unit = "";
+  
+  if (!widgetConfig.abbreviate) 
+    widgetConfig.abbreviate = false;
+  
+  // include, once LAYOUT has been implemented as a variable
+  // if(!widgetConfig.layout)
+  //   widgetConfig.layout = dashboard.LAYOUT_COMPACT;
+
 
   // order data by date:
-  var dateField = widgetConfig.dateVariable;
-  if (!dateField) dateField = "index";
-
   function byDate(a, b) {
-    var ma = moment(a[dateField], ["YYYYMMDD", "YYYY-MM-DD"]);
-    var mb = moment(b[dateField], ["YYYYMMDD", "YYYY-MM-DD"]);
+    var ma = moment(a[widgetConfig.dateField], ["YYYYMMDD", "YYYY-MM-DD"]);
+    var mb = moment(b[widgetConfig.dateField], ["YYYYMMDD", "YYYY-MM-DD"]);
     if (ma.isAfter(mb)) {
       return 1;
     }
     return -1;
   }
-  data.sort(byDate);
 
-  // convert dates in to YYYY-MM-DD
+  // convert all dates in to YYYY-MM-DD
   for (var i in data) {
-    data[i][dateField] = moment(data[i][dateField], [
+    data[i][widgetConfig.dateField] = moment(data[i][widgetConfig.dateField], [
       "YYYYMMDD",
       "YYYY-MM-DD",
     ]).format("YYYY-MM-DD");
   }
+  // find last date in data set, i.e., when data has been updated last.
+  var lastDateUpdated = moment(data[data.length - 1][widgetConfig.dateField], ["YYYY-MM-DD"]);
+  
+  // sort array by date, first/earliest to last/most recent
+  data.sort(byDate);
 
-  console.log("first date--->", data[0][dateField]);
-
-  // check for conditions on data
+  // check for filter conditions on data
   if (widgetConfig.conditions && widgetConfig.conditions.length > 0) {
     for (var i in widgetConfig.conditions) {
       data = executeCondition(data, widgetConfig.conditions[i]);
     }
   }
-
-  if (data.length == 0) {
-    console.log("data.length == 0");
-    return;
-  }
-
+  
   var title = widgetConfig.title;
-  if (data[data.length - 1][dateField]) {
-    var lastDate;
-    lastDate = moment(data[data.length - 1][dateField], [
-      "YYYYMMDD",
-      "YYYY-MM-DD",
-    ]);
-  }
-
-  var normalized = false || (widgetConfig && widgetConfig.normalized);
+  
+  // link data var back to widget
+  widgetConfig.data = data;
 
   if (widgetConfig.visualization == dashboard.VIS_CARTOGRAM) {
     dashboard.visulizeScotlandNHSBoardCartogram(
@@ -249,25 +268,16 @@ var createWidget = function (parentHtmlElementId, id, config) {
       widgetConfig.normalized ? widgetConfig.normalized : false,
       widgetConfig.unit,
       widgetConfig.detail,
-      lastDate,
+      lastDateUpdated,
     );
-  } else if (widgetConfig.visualization == dashboard.VIS_LINECHART) {
-    dashboard.visualizeLinechart(
-      parentHtmlElementId,
-      title,
-      widgetConfig.dataField,
-      widgetConfig.color,
-      data,
-      widgetConfig.mode,
-      normalized,
-      widgetConfig.link ? widgetConfig.link : null,
-      widgetConfig.unit,
-      widgetConfig.detail,
-      lastDate,
-      widgetConfig.abbreviate,
-      dateField,
-    );
-  } else if (widgetConfig.visualization == dashboard.VIS_BARCHART) {
+  } 
+  else if (widgetConfig.visualization == dashboard.VIS_LINECHART) {
+    dashboard.visualizeTime(
+      parentHtmlElementId, 
+      widgetConfig,
+      lastDateUpdated);
+  } 
+  else if (widgetConfig.visualization == dashboard.VIS_BARCHART) {
     dashboard.visualizeBarChart(
       parentHtmlElementId,
       title,
@@ -279,11 +289,12 @@ var createWidget = function (parentHtmlElementId, id, config) {
       widgetConfig.link ? widgetConfig.link : null,
       widgetConfig.unit,
       widgetConfig.detail,
-      lastDate,
+      lastDateUpdated,
       widgetConfig.bars,
       widgetConfig.abbreviate,
     );
-  } else if (widgetConfig.visualization == dashboard.VIS_PROGRESS) {
+  } 
+  else if (widgetConfig.visualization == dashboard.VIS_PROGRESS) {
     dashboard.visualizeProgress(
       parentHtmlElementId,
       title,
@@ -295,7 +306,7 @@ var createWidget = function (parentHtmlElementId, id, config) {
       widgetConfig.link ? widgetConfig.link : null,
       widgetConfig.unit,
       widgetConfig.detail,
-      lastDate,
+      lastDateUpdated,
       widgetConfig.bars,
       widgetConfig.abbreviate,
     );
@@ -332,29 +343,18 @@ var canonizeNames = function (s) {
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
 
-dashboard.visualizeLinechart = function (
-  id,
-  title,
-  dataField,
-  color,
-  data,
-  mode,
-  normalized,
-  link,
-  unit,
-  detail,
-  lastDate,
-  abbreviate,
-  dateField,
-) {
-  if (!detail) detail = dashboard.DETAIL_HIGH;
-  if (!unit) unit = "";
-  if (!abbreviate) abbreviate = false;
+dashboard.visualizeTime = function (
+  parentHtmlId,
+  widgetConfig,
+  lastDate
+  ) 
+  {
 
-  if (detail == dashboard.DETAIL_HIGH) {
+  if (widgetConfig.detail == dashboard.DETAIL_HIGH) 
+  {
     var random = Math.floor(Math.random() * 1000);
     var wrapperDiv = d3
-      .select("#" + id)
+      .select("#" + parentHtmlId)
       .append("div")
       .attr("id", "wrapperDiv" + random);
 
@@ -367,133 +367,138 @@ dashboard.visualizeLinechart = function (
       .attr("height", 120)
       .style("margin-bottom", 0);
 
-    setVisTitle(svg, title, link, detail, lastDate);
+    dashboardComponents.setVisTitle(svg, widgetConfig.title, widgetConfig.link, widgetConfig.detail, lastDate);
 
-    visualizeNumber(
+    dashboardComponents.visualizeNumber(
       svg,
-      data,
+      widgetConfig.data,
       0,
       baseline_title + 25,
-      dataField,
-      color,
-      mode,
-      normalized,
-      unit,
-      abbreviate,
+      widgetConfig.dataField,
+      widgetConfig.color,
+      widgetConfig.mode,
+      widgetConfig.normalized,
+      widgetConfig.unit,
+      widgetConfig.abbreviate,
     );
-    visualizeTrendArrow(
+    dashboardComponents.visualizeTrendArrow(
       svg,
-      data,
+      widgetConfig.data,
       WIDTH - 120,
       baseline_title + 25,
-      dataField,
-      color,
-      mode,
-      unit,
+      widgetConfig.dataField,
+      widgetConfig.color,
+      widgetConfig.mode,
+      widgetConfig.unit,
     );
 
     wrapperDiv.append("br");
 
     var mark = "line";
-    if (mode == dashboard.MODE_DAILY || mode == dashboard.MODE_WEEKLY)
+    if (widgetConfig.mode == dashboard.MODE_DAILY || widgetConfig.mode == dashboard.MODE_WEEKLY)
       mark = "bar";
 
     var scale;
-    if (mode == this.MODE_PERCENT) scale = { domain: [0, 100] };
+    if (widgetConfig.mode == this.MODE_PERCENT) scale = { domain: [0, 100] };
 
+    console.log('>> widgetConfig.data:', widgetConfig.data, widgetConfig.dataField)
     var vegaLinechart = {
       $schema: "https://vega.github.io/schema/vega-lite/v5.json",
       data: {
-        values: data,
+        values: widgetConfig.data,
       },
       mark: mark,
       width: WIDTH - 100,
       height: HEIGHT - 100,
       encoding: {
         y: {
-          field: dataField,
+          field: widgetConfig.dataField,
           type: "quantitative",
           title: "",
           scale: scale,
         },
         x: {
-          field: dateField,
+          field: widgetConfig.dateField,
           type: "temporal",
           title: "",
         },
-        color: { value: color },
+        color: { value: widgetConfig.color },
       },
     };
 
-    wrapperDiv.append("div").attr("id", "vegadiv-" + id + random);
+    wrapperDiv.append("div").attr("id", "vegadiv-" + parentHtmlId + random);
 
-    vegaEmbed("#vegadiv-" + id + random, vegaLinechart, { actions: false });
-  } else if (detail == dashboard.DETAIL_MEDIUM) {
-    var svg = d3.select("#" + id).append("svg");
-    setVisTitle(svg, title, link, detail, lastDate);
+    vegaEmbed("#vegadiv-" + parentHtmlId + random, vegaLinechart, { actions: false });
+  } 
+  else if (widgetConfig.detail == dashboard.DETAIL_MEDIUM) 
+  {
+    var svg = d3.select("#" + parentHtmlId).append("svg");
+    dashboardComponents.setVisTitle(svg, widgetConfig.title, widgetConfig.link, widgetConfig.detail, lastDate);
 
     svg.attr("width", 400).attr("height", 110);
 
-    visualizeNumber(
+    dashboardComponents.visualizeNumber(
       svg,
-      data,
+      widgetConfig.data,
       0,
       baseline_title + 25,
-      dataField,
-      color,
-      mode,
-      normalized,
-      unit,
-      abbreviate,
+      widgetConfig.dataField,
+      widgetConfig.color,
+      widgetConfig.mode,
+      widgetConfig.normalized,
+      widgetConfig.unit,
+      widgetConfig.abbreviate,
     );
-    visualizeTrendArrow(
+    dashboardComponents.visualizeTrendArrow(
       svg,
-      data,
+      widgetConfig.data,
       150,
       baseline_title + 25,
-      dataField,
-      color,
-      mode,
-      unit,
+      widgetConfig.dataField,
+      widgetConfig.color,
+      widgetConfig.mode,
+      widgetConfig.unit,
     );
-    visualizeMiniChart(
+    dashboardComponents.visualizeMiniChart(
       svg,
-      data,
+      widgetConfig.data,
       300,
       baseline_title + 25,
       35,
       100,
-      dataField,
-      color,
-      mode,
+      widgetConfig.dataField,
+      widgetConfig.color,
+      widgetConfig.mode,
     );
-  } else if (detail == dashboard.DETAIL_LOW) {
-    var svg = d3.select("#" + id).append("svg");
-    setVisTitle(svg, title, link, detail, lastDate);
+  } 
+  else if (widgetConfig.detail == dashboard.DETAIL_LOW) 
+  {
+    var svg = d3.select("#" + parentHtmlId).append("svg");
+    dashboardComponents.setVisTitle(svg, widgetConfig.title, widgetConfig.link, widgetConfig.detail, lastDate);
 
     svg.attr("width", 180).attr("height", 70);
 
-    visualizeNumberSmall(
+    dashboardComponents.visualizeNumberSmall(
       svg,
-      data,
+      widgetConfig.data,
       0,
       baseline_title + 25,
-      dataField,
-      color,
-      mode,
-      normalized,
-      unit,
+      widgetConfig.dataField,
+      widgetConfig.color,
+      widgetConfig.mode,
+      widgetConfig.normalized,
+      widgetConfig.unit,
     );
-    visualizeMiniChart(
+    dashboardComponents.visualizeMiniChart(
       svg,
-      data,
+      widgetConfig.data,
       100,
       baseline_title + 25,
       18,
       70,
-      dataField,
-      color,
-      mode,
+      widgetConfig.dataField,
+      widgetConfig.color,
+      widgetConfig.mode,
       true,
     );
   }
@@ -528,403 +533,6 @@ dashboard.visualizeLinechart = function (
   // }
 };
 
-/////////////////////////////
-/// VISULIZATION FUNCTION ///
-/////////////////////////////
-
-var visualizeNumber = function (
-  svg,
-  data,
-  x,
-  y,
-  dataField,
-  color,
-  mode,
-  normalized,
-  unit,
-  abbreviate,
-) {
-  var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
-
-  if (mode == dashboard.MODE_DAILY) {
-    setVisLabel(g, "Today", 0, baseline_label);
-  } else if (mode == dashboard.MODE_CURRENT) {
-    setVisLabel(g, "Current", 0, baseline_label);
-  } else if (mode == dashboard.MODE_WEEKLY) {
-    setVisLabel(g, "This week", 0, baseline_label);
-  } else {
-    setVisLabel(g, "Total", 0, baseline_label);
-  }
-
-  var val = data[data.length - 1][dataField];
-
-  // abbreviate if required
-  if (val > 1000000 && abbreviate) {
-    val = val / 1000000;
-    unit = "M " + unit;
-  } else if (val > 1000 && abbreviate) {
-    val = val / 1000;
-    unit = "k " + unit;
-  }
-
-  val = Math.round(val * 10) / 10;
-  val = val.toLocaleString(undefined);
-
-  if (mode == dashboard.MODE_PERCENT) {
-    val += "%";
-  } else if (unit) {
-    val += "" + unit;
-  }
-
-  var bigNumber = {};
-
-  var t = g
-    .append("text")
-    .text(val)
-    .attr("y", 33)
-    .attr("class", "bigNumber")
-    .style("fill", color)
-    .each(function () {
-      bigNumber.width = this.getBBox().width;
-    });
-
-  if (normalized) {
-    g.append("text")
-      .text("per")
-      .attr("x", bigNumber.width + 10)
-      .attr("y", y + LINE_1)
-      .attr("class", "thin");
-    g.append("text")
-      .text("100,000")
-      .attr("x", bigNumber.width + 10)
-      .attr("y", y + LINE_2)
-      .attr("class", "thin");
-  }
-};
-
-var visualizeNumberSmall = function (
-  svg,
-  data,
-  x,
-  y,
-  field,
-  color,
-  mode,
-  normalized,
-  unit,
-) {
-  // var g = svg.append("g")
-  //     .attr("transform", "translate(" + xOffset + ",0)")
-
-  // if (mode == dashboard.MODE_DAILY) {
-  //     setVisLabel(g, 'Today')
-  // } else if (mode == dashboard.MODE_CURRENT) {
-  //     setVisLabel(g, 'Current')
-  // } else if (mode == dashboard.MODE_WEEKLY) {
-  //     setVisLabel(g, 'This week')
-  // } else {
-  //     setVisLabel(g, 'Total')
-  // }
-
-  var val = Math.round(data[data.length - 1][field] * 10) / 10;
-  val = val.toLocaleString(undefined);
-
-  if (mode == dashboard.MODE_PERCENT) {
-    val += "%";
-  } else if (unit) {
-    val += "" + unit;
-  }
-
-  var bigNumber = {};
-  svg
-    .append("text")
-    .text(val)
-    .attr("y", y + 18)
-    .attr("x", x)
-    .attr("class", "smallNumber")
-    .style("fill", color);
-
-  // if (normalized) {
-  //     g.append('text')
-  //         .text('per')
-  //         .attr('x', bigNumber.width + 10)
-  //         .attr('y', top_content + LINE_1)
-  //         .attr('class', 'thin')
-  //     g.append('text')
-  //         .text('100,000')
-  //         .attr('x', bigNumber.width + 10)
-  //         .attr('y', top_content + LINE_2)
-  //         .attr('class', 'thin')
-  // }
-};
-
-var visualizeTrendArrow = function (svg, data, x, y, field, color, mode, unit) {
-  var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
-
-  if (mode == dashboard.MODE_WEEKLY)
-    setVisLabel(g, "From last week", 0, baseline_label);
-  else setVisLabel(g, "From yesterday", 0, baseline_label);
-
-  var secondLast = parseInt(data[data.length - 2][field]);
-  var last = parseInt(data[data.length - 1][field]);
-  let v = last - secondLast;
-  let r = 0;
-  if (v < 0) r = 45;
-  if (v > 0) r = -45;
-
-  g.append("text")
-    .text(function () {
-      if (v > 0) {
-        return "up by";
-      } else if (v < 0) {
-        return "down by";
-      } else {
-        return "no ";
-      }
-    })
-    .attr("x", 45)
-    .attr("y", LINE_1)
-    .attr("class", "thin");
-
-  if (v == 0) {
-    g.append("text")
-      .text("change")
-      .attr("x", 45)
-      .attr("y", LINE_2)
-      .attr("class", "thin");
-  } else {
-    g.append("text")
-      .text(function () {
-        v = Math.abs(v);
-        if (mode == dashboard.MODE_PERCENT) {
-          v += "% pts.";
-        }
-        return v;
-      })
-      .attr("x", 45)
-      .attr("y", LINE_2)
-      .style("fill", color);
-  }
-
-  var g2 = g.append("g").attr("transform", function () {
-    return "translate(17," + 20 + "),rotate(" + r + ")";
-  });
-
-  g2.append("line")
-    .attr("x1", -15)
-    .attr("x2", 15)
-    .attr("y1", 0)
-    .attr("y2", 0)
-    .attr("class", "arrow")
-    .attr("stroke", color);
-  g2.append("line")
-    .attr("x1", 15)
-    .attr("x2", 0)
-    .attr("y1", 0)
-    .attr("y2", -15)
-    .attr("class", "arrow")
-    .attr("stroke", color);
-  g2.append("line")
-    .attr("x1", 15)
-    .attr("x2", 0)
-    .attr("y1", 0)
-    .attr("y2", 15)
-    .attr("class", "arrow")
-    .attr("stroke", color);
-};
-
-var visualizeMiniChart = function (
-  svg,
-  data,
-  x,
-  y,
-  chartHeight,
-  chartWidth,
-  field,
-  color,
-  mode,
-  noTitle,
-) {
-  var trendWindow = 14; // days
-  if (mode == dashboard.MODE_WEEKLY) trendWindow = 8;
-
-  var barWidth = (chartWidth - 10) / trendWindow;
-
-  var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
-
-  if (mode == dashboard.MODE_WEEKLY && !noTitle) {
-    setVisLabel(g, "Last " + trendWindow + " Weeks", 0, baseline_label);
-  } else if (!noTitle) {
-    setVisLabel(g, "Last " + trendWindow + " Days", 0, baseline_label);
-  }
-
-  var x = d3
-    .scaleLinear()
-    .domain([0, trendWindow - 1])
-    .range([0, chartWidth - barWidth]);
-
-  // get N last entries
-  data = data.slice(data.length - trendWindow);
-
-  var max = d3.max(data, function (d) {
-    return parseInt(d[field]);
-  });
-  if (mode == dashboard.MODE_PERCENT) {
-    max = 100;
-  }
-  var y = d3.scaleLinear().domain([0, max]).range([chartHeight, 0]);
-
-  // if perentage, show 100% line
-  if (mode == dashboard.MODE_PERCENT) {
-    g.append("line")
-      .attr("y1", y(max))
-      .attr("y2", y(max))
-      .attr("x1", x(0))
-      .attr("x2", x(data.length - 1))
-      .attr("class", "chartTopLine");
-    g.append("rect")
-      .attr("x", x(0))
-      .attr("y", y(max))
-      .attr("height", Math.abs(y(max) - y(0)))
-      .attr("width", x(data.length - 1) - x(0))
-      .attr("class", "chartTopRect");
-  }
-
-  if (
-    mode == dashboard.MODE_CUMULATIVE ||
-    mode == dashboard.MODE_CURRENT ||
-    mode == dashboard.MODE_PERCENT
-  ) {
-    g.append("path")
-      .datum(data)
-      .attr("fill", color)
-      .style("opacity", 0.4)
-      .attr(
-        "d",
-        d3
-          .area()
-          .x(function (d, i) {
-            return x(i);
-          })
-          .y0(y(0))
-          .y1(function (d) {
-            return y(d[field]);
-          }),
-      );
-
-    g.append("path")
-      .datum(data)
-      .attr("fill", "none")
-      .attr("stroke", color)
-      .attr("stroke-width", 2)
-      .attr(
-        "d",
-        d3
-          .line()
-          .x(function (d, i) {
-            return x(i);
-          })
-          .y(function (d) {
-            return y(d[field]);
-          }),
-      );
-
-    g.append("circle")
-      .attr("fill", color)
-      .attr("r", 3)
-      .attr("cx", x(data.length - 1))
-      .attr("cy", y(data[data.length - 1][field]));
-  } else {
-    g.selectAll("bar")
-      .data(data)
-      .enter()
-      .append("rect")
-      .style("fill", function (d, i) {
-        var c = color;
-        if (i == 13) c = d3.rgb(c).darker(1);
-        return c;
-      })
-      .attr("x", function (d, i) {
-        return x(i);
-      })
-      .attr("width", barWidth)
-      .attr("y", function (d) {
-        return y(d[field]);
-      })
-      .attr("height", function (d) {
-        return chartHeight - y(d[field]);
-      });
-  }
-
-  if (
-    mode == dashboard.MODE_DAILY ||
-    mode == dashboard.MODE_CUMULATIVE ||
-    mode == dashboard.MODE_CURRENT
-  ) {
-    g.append("line")
-      .attr("x1", x(6.9))
-      .attr("x2", x(7.1))
-      .attr("y1", 37)
-      .attr("y2", 37)
-      .attr("class", "weekBar");
-  }
-};
-
-var setVisTitle = function (g, text, link, detail, lastDate) {
-  g.append("line")
-    .attr("x1", 0)
-    .attr("x2", 10000)
-    .attr("y1", baseline_title + 5)
-    .attr("y2", baseline_title + 5)
-    .attr("class", "separator");
-
-  if (link) {
-    text = text + " [details available]";
-  }
-
-  var text = g
-    .append("text")
-    .text(text)
-    .attr("class", "datastream-title")
-    .attr("y", baseline_title);
-
-  if (detail == dashboard.DETAIL_LOW || dashboard.DETAIL_MEDIUM) {
-    text.style("font-size", "9pt");
-  }
-
-  if (lastDate) {
-    g.append("text")
-      .text(lastDate.format("MMM DD, YYYY"))
-      .attr("class", "datastream-date")
-      .attr("y", baseline_title + 15);
-  }
-
-  if (link) {
-    text.classed("hasLink", true);
-    text.on("click", function () {
-      window.open(link);
-    });
-    text.on("mouseover", function () {
-      d3.select(this).classed("hover", true);
-    });
-    text.on("mouseout", function () {
-      d3.select(this).classed("hover", false);
-    });
-  }
-};
-
-var setVisLabel = function (g, text, x, y) {
-  g.append("text").text(text).attr("class", "label").attr("x", x).attr("y", y);
-};
-
-var setVisLabelRow2 = function (g, text, x, y) {
-  g.append("text")
-    .text(text)
-    .attr("class", "label")
-    .attr("x", x)
-    .attr("y", y + 15);
-};
-
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
@@ -949,7 +557,7 @@ dashboard.visulizeScotlandNHSBoardCartogram = function (
     .attr("width", TILE_WIDTH * 4)
     .attr("height", 100 + TILE_HEIGHT * 7);
 
-  setVisTitle(svg, title, null, detail, lastDate);
+    dashboardComponents.setVisTitle(svg, title, null, detail, lastDate);
 
   svg
     .append("text")
@@ -1094,7 +702,7 @@ dashboard.visualizeBarChart = function (
     .attr("height", 40)
     .style("margin-bottom", 0);
 
-  setVisTitle(svg, title, link, detail, lastDate);
+  dashboardComponents.setVisTitle(svg, title, link, detail, lastDate);
 
   wrapperDiv.append("br");
 
@@ -1170,3 +778,405 @@ dashboard.visualizeProgress = function (
 ) {
   // TIAN
 };
+
+
+
+
+/////////////////////////////
+/// VISULIZATION FUNCTION ///
+/////////////////////////////
+
+dashboardComponents.visualizeNumber = function (
+  svg,
+  data,
+  x,
+  y,
+  dataField,
+  color,
+  mode,
+  normalized,
+  unit,
+  abbreviate,
+) {
+  var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
+
+  if (mode == dashboard.MODE_DAILY) {
+    dashboardComponents.setVisLabel(g, "Today", 0, baseline_label);
+  } else if (mode == dashboard.MODE_CURRENT) {
+    dashboardComponents.setVisLabel(g, "Current", 0, baseline_label);
+  } else if (mode == dashboard.MODE_WEEKLY) {
+    dashboardComponents.setVisLabel(g, "This week", 0, baseline_label);
+  } else {
+    dashboardComponents.setVisLabel(g, "Total", 0, baseline_label);
+  }
+
+  var val = data[data.length - 1][dataField];
+
+  // abbreviate if required
+  if (val > 1000000 && abbreviate) {
+    val = val / 1000000;
+    unit = "M " + unit;
+  } else if (val > 1000 && abbreviate) {
+    val = val / 1000;
+    unit = "k " + unit;
+  }
+
+  val = Math.round(val * 10) / 10;
+  val = val.toLocaleString(undefined);
+
+  if (mode == dashboard.MODE_PERCENT) {
+    val += "%";
+  } else if (unit) {
+    val += "" + unit;
+  }
+
+  var bigNumber = {};
+
+  var t = g
+    .append("text")
+    .text(val)
+    .attr("y", 33)
+    .attr("class", "bigNumber")
+    .style("fill", color)
+    .each(function () {
+      bigNumber.width = this.getBBox().width;
+    });
+
+  if (normalized) {
+    g.append("text")
+      .text("per")
+      .attr("x", bigNumber.width + 10)
+      .attr("y", y + LINE_1)
+      .attr("class", "thin");
+    g.append("text")
+      .text("100,000")
+      .attr("x", bigNumber.width + 10)
+      .attr("y", y + LINE_2)
+      .attr("class", "thin");
+  }
+};
+
+dashboardComponents.visualizeNumberSmall = function (
+  svg,
+  data,
+  x,
+  y,
+  field,
+  color,
+  mode,
+  normalized,
+  unit,
+) {
+  // var g = svg.append("g")
+  //     .attr("transform", "translate(" + xOffset + ",0)")
+
+  // if (mode == dashboard.MODE_DAILY) {
+  //     setVisLabel(g, 'Today')
+  // } else if (mode == dashboard.MODE_CURRENT) {
+  //     setVisLabel(g, 'Current')
+  // } else if (mode == dashboard.MODE_WEEKLY) {
+  //     setVisLabel(g, 'This week')
+  // } else {
+  //     setVisLabel(g, 'Total')
+  // }
+
+  var val = Math.round(data[data.length - 1][field] * 10) / 10;
+  val = val.toLocaleString(undefined);
+
+  if (mode == dashboard.MODE_PERCENT) {
+    val += "%";
+  } else if (unit) {
+    val += "" + unit;
+  }
+
+  var bigNumber = {};
+  svg
+    .append("text")
+    .text(val)
+    .attr("y", y + 18)
+    .attr("x", x)
+    .attr("class", "smallNumber")
+    .style("fill", color);
+
+  // if (normalized) {
+  //     g.append('text')
+  //         .text('per')
+  //         .attr('x', bigNumber.width + 10)
+  //         .attr('y', top_content + LINE_1)
+  //         .attr('class', 'thin')
+  //     g.append('text')
+  //         .text('100,000')
+  //         .attr('x', bigNumber.width + 10)
+  //         .attr('y', top_content + LINE_2)
+  //         .attr('class', 'thin')
+  // }
+};
+
+dashboardComponents.visualizeTrendArrow = function (svg, data, x, y, field, color, mode, unit) {
+  var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
+
+  if (mode == dashboard.MODE_WEEKLY)
+    dashboardComponents.setVisLabel(g, "From last week", 0, baseline_label);
+  else 
+    dashboardComponents.setVisLabel(g, "From yesterday", 0, baseline_label);
+
+  var secondLast = parseInt(data[data.length - 2][field]);
+  var last = parseInt(data[data.length - 1][field]);
+  let v = last - secondLast;
+  let r = 0;
+  if (v < 0) r = 45;
+  if (v > 0) r = -45;
+
+  g.append("text")
+    .text(function () {
+      if (v > 0) {
+        return "up by";
+      } else if (v < 0) {
+        return "down by";
+      } else {
+        return "no ";
+      }
+    })
+    .attr("x", 45)
+    .attr("y", LINE_1)
+    .attr("class", "thin");
+
+  if (v == 0) {
+    g.append("text")
+      .text("change")
+      .attr("x", 45)
+      .attr("y", LINE_2)
+      .attr("class", "thin");
+  } else {
+    g.append("text")
+      .text(function () {
+        v = Math.abs(v);
+        if (mode == dashboard.MODE_PERCENT) {
+          v += "% pts.";
+        }
+        return v;
+      })
+      .attr("x", 45)
+      .attr("y", LINE_2)
+      .style("fill", color);
+  }
+
+  var g2 = g.append("g").attr("transform", function () {
+    return "translate(17," + 20 + "),rotate(" + r + ")";
+  });
+
+  g2.append("line")
+    .attr("x1", -15)
+    .attr("x2", 15)
+    .attr("y1", 0)
+    .attr("y2", 0)
+    .attr("class", "arrow")
+    .attr("stroke", color);
+  g2.append("line")
+    .attr("x1", 15)
+    .attr("x2", 0)
+    .attr("y1", 0)
+    .attr("y2", -15)
+    .attr("class", "arrow")
+    .attr("stroke", color);
+  g2.append("line")
+    .attr("x1", 15)
+    .attr("x2", 0)
+    .attr("y1", 0)
+    .attr("y2", 15)
+    .attr("class", "arrow")
+    .attr("stroke", color);
+};
+
+dashboardComponents.visualizeMiniChart = function (
+  svg,
+  data,
+  x,
+  y,
+  chartHeight,
+  chartWidth,
+  field,
+  color,
+  mode,
+  noTitle,
+) {
+  var trendWindow = 14; // days
+  if (mode == dashboard.MODE_WEEKLY) trendWindow = 8;
+
+  var barWidth = (chartWidth - 10) / trendWindow;
+
+  var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
+
+  if (mode == dashboard.MODE_WEEKLY && !noTitle) {
+    dashboardComponents.setVisLabel(g, "Last " + trendWindow + " Weeks", 0, baseline_label);
+  } else if (!noTitle) {
+    dashboardComponents.setVisLabel(g, "Last " + trendWindow + " Days", 0, baseline_label);
+  }
+
+  var x = d3
+    .scaleLinear()
+    .domain([0, trendWindow - 1])
+    .range([0, chartWidth - barWidth]);
+
+  // get N last entries
+  data = data.slice(data.length - trendWindow);
+
+  var max = d3.max(data, function (d) {
+    return parseInt(d[field]);
+  });
+  if (mode == dashboard.MODE_PERCENT) {
+    max = 100;
+  }
+  var y = d3.scaleLinear().domain([0, max]).range([chartHeight, 0]);
+
+  // if perentage, show 100% line
+  if (mode == dashboard.MODE_PERCENT) {
+    g.append("line")
+      .attr("y1", y(max))
+      .attr("y2", y(max))
+      .attr("x1", x(0))
+      .attr("x2", x(data.length - 1))
+      .attr("class", "chartTopLine");
+    g.append("rect")
+      .attr("x", x(0))
+      .attr("y", y(max))
+      .attr("height", Math.abs(y(max) - y(0)))
+      .attr("width", x(data.length - 1) - x(0))
+      .attr("class", "chartTopRect");
+  }
+
+  if (
+    mode == dashboard.MODE_CUMULATIVE ||
+    mode == dashboard.MODE_CURRENT ||
+    mode == dashboard.MODE_PERCENT
+  ) {
+    g.append("path")
+      .datum(data)
+      .attr("fill", color)
+      .style("opacity", 0.4)
+      .attr(
+        "d",
+        d3
+          .area()
+          .x(function (d, i) {
+            return x(i);
+          })
+          .y0(y(0))
+          .y1(function (d) {
+            return y(d[field]);
+          }),
+      );
+
+    g.append("path")
+      .datum(data)
+      .attr("fill", "none")
+      .attr("stroke", color)
+      .attr("stroke-width", 2)
+      .attr(
+        "d",
+        d3
+          .line()
+          .x(function (d, i) {
+            return x(i);
+          })
+          .y(function (d) {
+            return y(d[field]);
+          }),
+      );
+
+    g.append("circle")
+      .attr("fill", color)
+      .attr("r", 3)
+      .attr("cx", x(data.length - 1))
+      .attr("cy", y(data[data.length - 1][field]));
+  } else {
+    g.selectAll("bar")
+      .data(data)
+      .enter()
+      .append("rect")
+      .style("fill", function (d, i) {
+        var c = color;
+        if (i == 13) c = d3.rgb(c).darker(1);
+        return c;
+      })
+      .attr("x", function (d, i) {
+        return x(i);
+      })
+      .attr("width", barWidth)
+      .attr("y", function (d) {
+        return y(d[field]);
+      })
+      .attr("height", function (d) {
+        return chartHeight - y(d[field]);
+      });
+  }
+
+  if (
+    mode == dashboard.MODE_DAILY ||
+    mode == dashboard.MODE_CUMULATIVE ||
+    mode == dashboard.MODE_CURRENT
+  ) {
+    g.append("line")
+      .attr("x1", x(6.9))
+      .attr("x2", x(7.1))
+      .attr("y1", 37)
+      .attr("y2", 37)
+      .attr("class", "weekBar");
+  }
+};
+
+dashboardComponents.setVisTitle = function (g, text, link, detail, lastDate) {
+  g.append("line")
+    .attr("x1", 0)
+    .attr("x2", 10000)
+    .attr("y1", baseline_title + 5)
+    .attr("y2", baseline_title + 5)
+    .attr("class", "separator");
+
+  if (link) {
+    text = text + " [details available]";
+  }
+
+  var text = g
+    .append("text")
+    .text(text)
+    .attr("class", "datastream-title")
+    .attr("y", baseline_title);
+
+  if (detail == dashboard.DETAIL_LOW || dashboard.DETAIL_MEDIUM) {
+    text.style("font-size", "9pt");
+  }
+
+  if (lastDate) {
+    g.append("text")
+      .text(lastDate.format("MMM DD, YYYY"))
+      .attr("class", "datastream-date")
+      .attr("y", baseline_title + 15);
+  }
+
+  if (link) {
+    text.classed("hasLink", true);
+    text.on("click", function () {
+      window.open(link);
+    });
+    text.on("mouseover", function () {
+      d3.select(this).classed("hover", true);
+    });
+    text.on("mouseout", function () {
+      d3.select(this).classed("hover", false);
+    });
+  }
+};
+
+dashboardComponents.setVisLabel = function (g, text, x, y) {
+  g.append("text").text(text).attr("class", "label").attr("x", x).attr("y", y);
+};
+
+dashboardComponents.setVisLabelRow2 = function (g, text, x, y) {
+  g.append("text")
+    .text(text)
+    .attr("class", "label")
+    .attr("x", x)
+    .attr("y", y + 15);
+};
+
