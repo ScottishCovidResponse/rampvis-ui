@@ -103,7 +103,7 @@ export class DashboardLowerTierLocalAuthority {
             dataField: "cumCasesBySpecimenDate",
             details: dashboard.DETAIL_MEDIUM,
             mode: dashboard.MODE_CUMULATIVE,
-            dateVariable: "date",
+            dateField: "date",
             visualization: "linechart",
           },
           {
@@ -114,7 +114,7 @@ export class DashboardLowerTierLocalAuthority {
             dataField: "newCasesBySpecimenDate",
             details: dashboard.DETAIL_MEDIUM,
             mode: dashboard.MODE_DAILY,
-            dateVariable: "date",
+            dateField: "date",
             visualization: "linechart",
           },
           {
@@ -125,7 +125,7 @@ export class DashboardLowerTierLocalAuthority {
             dataField: "cumWeeklyNsoDeathsByRegDate",
             details: dashboard.DETAIL_MEDIUM,
             mode: dashboard.MODE_CUMULATIVE,
-            dateVariable: "date",
+            dateField: "date",
             visualization: "linechart",
           },
           {
@@ -136,7 +136,7 @@ export class DashboardLowerTierLocalAuthority {
             dataField: "newWeeklyNsoDeathsByRegDate",
             details: dashboard.DETAIL_MEDIUM,
             mode: dashboard.MODE_DAILY,
-            dateVariable: "date",
+            dateField: "date",
             visualization: "linechart",
           },
           {
@@ -148,7 +148,7 @@ export class DashboardLowerTierLocalAuthority {
               "cumVaccinationFirstDoseUptakeByVaccinationDatePercentage",
             detail: dashboard.DETAIL_MEDIUM,
             mode: dashboard.MODE_PERCENT,
-            dateVariable: "date",
+            dateField: "date",
             visualization: "linechart",
           },
           {
@@ -160,7 +160,7 @@ export class DashboardLowerTierLocalAuthority {
               "cumVaccinationSecondDoseUptakeByVaccinationDatePercentage",
             detail: dashboard.DETAIL_MEDIUM,
             mode: dashboard.MODE_PERCENT,
-            dateVariable: "date",
+            dateField: "date",
             visualization: "linechart",
           },
           {
@@ -172,7 +172,7 @@ export class DashboardLowerTierLocalAuthority {
               "cumVaccinationFirstDoseUptakeByVaccinationDatePercentage",
             detail: dashboard.DETAIL_HIGH,
             mode: dashboard.MODE_PERCENT,
-            dateVariable: "date",
+            dateField: "date",
             visualization: "barchart",
             bars: "age",
           },
@@ -185,7 +185,7 @@ export class DashboardLowerTierLocalAuthority {
               "cumVaccinationSecondDoseUptakeByVaccinationDatePercentage",
             detail: dashboard.DETAIL_HIGH,
             mode: dashboard.MODE_PERCENT,
-            dateVariable: "date",
+            dateField: "date",
             visualization: "barchart",
             bars: "age",
           },

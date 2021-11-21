@@ -1,6 +1,12 @@
 import React, { ReactElement, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Box, CircularProgress, Container } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Container,
+  Card,
+  CardContent,
+} from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import useSettings from "src/hooks/useSettings";
 import SearchBar from "src/components/search/SearchBar";
@@ -63,22 +69,25 @@ const PageSearch = () => {
         }}
       >
         <Container maxWidth={settings.compact ? "xl" : false}>
-          <>
-            <SearchBar onClick={handleClick} />
+          <Card sx={{ minWidth: 275 }}>
+            <CardContent>
+              <SearchBar onClick={handleClick} />
 
-            {isLoading ? (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <CircularProgress />
-              </Box>
-            ) : (
-              result && result.length > 0 && <SearchResultView data={result} />
-            )}
-          </>
+              {isLoading ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <CircularProgress />
+                </Box>
+              ) : (
+                result &&
+                result.length > 0 && <SearchResultView data={result} />
+              )}
+            </CardContent>
+          </Card>
         </Container>
       </Box>
     </>
