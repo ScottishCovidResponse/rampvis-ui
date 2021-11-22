@@ -19,7 +19,7 @@ import moment from "moment";
 import _ from "lodash";
 import { GetStaticPaths, GetStaticProps } from "next";
 import useSettings from "src/hooks/useSettings";
-import { apiService } from "src/utils/ApiService";
+import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import PropagatedPageTable from "src/components/PropagatedPageTable";
 

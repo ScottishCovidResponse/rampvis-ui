@@ -1,4 +1,4 @@
-import { apiService } from "src/utils/ApiService";
+import { apiService } from "src/utils/apiService";
 
 const api: string = `${process.env.NEXT_PUBLIC_API_JS}/template/link`;
 

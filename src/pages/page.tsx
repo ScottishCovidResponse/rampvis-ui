@@ -20,7 +20,7 @@ import { useRouter } from "next/router";
 import useSettings from "src/hooks/useSettings";
 import { visFactory } from "src/lib/vis/vis-factory";
 import Bookmark from "src/components/Bookmark";
-import { apiService } from "src/utils/ApiService";
+import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 
 const API = {

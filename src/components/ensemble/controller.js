@@ -94,11 +94,9 @@ export class Controller {
     // get first of the displayed table points
     var simulationIndex = this.tablePoints[0];
 
-    var _this = this;
-
-    this.getSimulationData(simulationIndex).then(function (ageData) {
-      _this.line.removeContainer();
-      _this.line.displayData(ageData);
+    this.getSimulationData(simulationIndex, (ageData) => {
+      this.line.removeContainer();
+      this.line.displayData(ageData);
     });
 
     this.changeParallelChart();
@@ -246,10 +244,10 @@ export class Controller {
   }
 
   async changeParallelChart() {
-    var _this = this;
-    this.getSimulationAgeData().then(function (visualizationData) {
-      _this.getPolylineData().then(function (polylineData) {
-        _this.parallel2.removeContainer().then(function (controller) {
+
+    this.getSimulationAgeData((visualizationData) => {
+      this.getPolylineData((polylineData) => {
+        this.parallel2.removeContainer((controller) => {
           var parallel2 = visFactory("ParallelChart", {
             chartElement: "parallel_chart",
             data: [
@@ -271,10 +269,9 @@ export class Controller {
             ],
             controller: controller,
           });
-
-          _this.parallel2 = parallel2;
-        });
-      });
+          this.parallel2 = parallel2;
+        })
+      })
     });
   }
 }

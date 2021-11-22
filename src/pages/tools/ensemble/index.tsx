@@ -118,18 +118,37 @@ const Ensemble = () => {
     controller.table = table;
   }, []);
 
+  const heatMap = useCallback(async () => {
+    const metadata = await controller.getMetaData();
+    const table_data = metadata.posterior_parameters;
+
+    const table_keys = Object.keys(table_data[0]);
+
+    const options = {
+      chartElement: "heatmap_chart",
+      data: table_data,
+      columns: table_keys,
+      retainedDimensions: ["Index"],
+      controller: controller,
+    };
+
+    const scatter = visFactory("HeatMap", options);
+  }, []);
+
   useEffect(() => {
     lineChart();
     parallelVerticalChart();
     parallelAdditionalChart();
     scatterPlot();
     tablePlot();
+    heatMap();
   }, [
     lineChart,
     parallelVerticalChart,
     parallelAdditionalChart,
     scatterPlot,
     tablePlot,
+    heatMap,
   ]);
 
   const setDatasetIndex = useCallback(async (event) => {
@@ -173,6 +192,7 @@ const Ensemble = () => {
                   <div id="table_plot" />
                 </div>
               </div>
+              <div id="heatmap_chart" />
             </CardContent>
           </Card>
         </Container>
