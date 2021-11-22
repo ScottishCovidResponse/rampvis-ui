@@ -74,3 +74,16 @@
   justify-content: center;
   align-items: center;
 }
+
+div.tooltip {	
+  position: absolute;			
+  text-align: center;			
+  width: 120px;					
+  height: auto;					
+  padding: 2px;				
+  font: 16px sans-serif;		
+  background: rgb(200, 212, 90);	
+  border: 0px;		
+  border-radius: 8px;			
+  pointer-events: none;			
+}
