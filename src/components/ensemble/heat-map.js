@@ -86,7 +86,7 @@ export class HeatMap {
 
 
         const myColor = d3.scaleLinear()
-            .range(["#FF66B2", "#660033", "#00FF7F", "#2E8B57"])
+            .range(["#00FF7F", "#FF66B2"])
             .domain([1, 100]);
 
 
@@ -98,7 +98,7 @@ export class HeatMap {
             .attr("y", function (d) { return y(d.index) })
             .attr("width", x.bandwidth())
             .attr("height", y.bandwidth())
-            .style("fill", function (d) { return myColor(d.value) });
+            .style("fill", function (d) { return myColor(d.value) })
 
     }
 
