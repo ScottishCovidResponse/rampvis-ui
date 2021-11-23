@@ -218,6 +218,9 @@ var createWidget = function (parentHtmlElementId, id, config) {
   
   if (!widgetConfig.abbreviate) 
     widgetConfig.abbreviate = false;
+
+  if(!widgetConfig.normalized)
+    widgetConfig.normalized = false;
   
   // include, once LAYOUT has been implemented as a variable
   // if(!widgetConfig.layout)
@@ -285,7 +288,7 @@ var createWidget = function (parentHtmlElementId, id, config) {
       widgetConfig.color,
       data,
       widgetConfig.mode,
-      normalized,
+      widgetConfig.normalized,
       widgetConfig.link ? widgetConfig.link : null,
       widgetConfig.unit,
       widgetConfig.detail,
@@ -302,7 +305,7 @@ var createWidget = function (parentHtmlElementId, id, config) {
       widgetConfig.color,
       data,
       widgetConfig.mode,
-      normalized,
+      widgetConfig.normalized,
       widgetConfig.link ? widgetConfig.link : null,
       widgetConfig.unit,
       widgetConfig.detail,
