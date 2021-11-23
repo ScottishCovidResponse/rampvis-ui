@@ -271,15 +271,15 @@ export class DashboardUK {
             colors.getVaccinationColor(1),
             dashboard.DETAIL_MEDIUM,
           ),
-          // timeseriesWidget(
-          //   "vacc1d",
-          //   "Daily 1st Dose Vaccinations",
-          //   "newPeopleVaccinatedFirstDoseByPublishDate",
-          //   dashboard.MODE_DAILY,
-          //   newPeopleVaccinatedFirstDoseByPublishDate,
-          //   colors.getVaccinationColor(1),
-          //   dashboard.DETAIL_MEDIUM
-          // ),
+          timeseriesWidget(
+            "vacc1d",
+            "Daily 1st Dose Vaccinations",
+            "newPeopleVaccinatedFirstDoseByPublishDate",
+            dashboard.MODE_DAILY,
+            newPeopleVaccinatedFirstDoseByPublishDate,
+            colors.getVaccinationColor(1),
+            dashboard.DETAIL_MEDIUM
+          ),
           timeseriesWidget(
             "vacc2",
             "Total 2nd Dose Update",
@@ -289,15 +289,15 @@ export class DashboardUK {
             colors.getVaccinationColor(2),
             dashboard.DETAIL_MEDIUM,
           ),
-          // timeseriesWidget(
-          //   "vacc2d",
-          //   "2nd Dose Daily",
-          //   "newPeopleVaccinatedSecondDoseByPublishDate",
-          //   dashboard.MODE_DAILY,
-          //   newPeopleVaccinatedSecondDoseByPublishDate,
-          //   colors.getVaccinationColor(2),
-          //   dashboard.DETAIL_MEDIUM
-          // ),
+          timeseriesWidget(
+            "vacc2d",
+            "2nd Dose Daily",
+            "newPeopleVaccinatedSecondDoseByPublishDate",
+            dashboard.MODE_DAILY,
+            newPeopleVaccinatedSecondDoseByPublishDate,
+            colors.getVaccinationColor(2),
+            dashboard.DETAIL_MEDIUM
+          ),
           timeseriesWidget(
             "vacc3",
             "Total 3rd Dose Uptake",
@@ -307,15 +307,15 @@ export class DashboardUK {
             colors.getVaccinationColor(3),
             dashboard.DETAIL_MEDIUM,
           ),
-          // timeseriesWidget(
-          //   "vacc3d",
-          //   "3rd Dose Daily",
-          //   "newPeopleVaccinatedThirdInjectionByPublishDate",
-          //   dashboard.MODE_DAILY,
-          //   newPeopleVaccinatedThirdInjectionByPublishDate,
-          //   colors.getVaccinationColor(3),
-          //   dashboard.DETAIL_MEDIUM
-          // ),
+          timeseriesWidget(
+            "vacc3d",
+            "3rd Dose Daily",
+            "newPeopleVaccinatedThirdInjectionByPublishDate",
+            dashboard.MODE_DAILY,
+            newPeopleVaccinatedThirdInjectionByPublishDate,
+            colors.getVaccinationColor(3),
+            dashboard.DETAIL_MEDIUM
+          ),
         ],
       };
 
