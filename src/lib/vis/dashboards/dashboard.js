@@ -222,6 +222,9 @@ var createWidget = function (parentHtmlElementId, id, config) {
   if(!widgetConfig.normalized)
     widgetConfig.normalized = false;
   
+  if(!widgetConfig.trend)
+    widgetConfig.trend = false;
+  
   // include, once LAYOUT has been implemented as a variable
   // if(!widgetConfig.layout)
   //   widgetConfig.layout = dashboard.LAYOUT_COMPACT;
