@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { data } from "jquery";
 
 export function alignmentPlot(response, firstRunForm) {
   //------ DATA and Graph Functions ------//
@@ -101,11 +102,16 @@ export function alignmentPlot(response, firstRunForm) {
     .attr("class", "label")
     .attr("id", (d, i) => "label" + i);
 
+  layout
+    .append("path")
+    .attr("class", "highlight")
+    .attr("id", (d, i) => "highlight" + i);
+
   GraphData.map(function (streams, i) {
-    d3.select("#" + "xaxis" + i).call(streams.xAxis); // call individual xaxis properties
-    d3.select("#" + "yaxis" + i).call(streams.yAxis); // call individual yaxis properties
-    d3.select("#" + "path" + i)
-      .datum(streams.values) // add  lines
+    d3.select("#xaxis" + i).call(streams.xAxis); // call individual xaxis properties
+    d3.select("#yaxis" + i).call(streams.yAxis); // call individual yaxis properties
+    d3.select("#path" + i) // add lines
+      .datum(streams.values)
       .attr("fill", "none")
       .attr("stroke", otherColor)
       .attr("stroke-width", otherStrokeWidth)
@@ -120,7 +126,7 @@ export function alignmentPlot(response, firstRunForm) {
             return streams.yScale(d.value);
           }),
       );
-    d3.select("#" + "label" + i)
+    d3.select("#label" + i) // add labels at the end of the lines
       .append("text")
       .attr("id", "labeltext" + i)
       .datum(function (d) {
@@ -139,6 +145,40 @@ export function alignmentPlot(response, firstRunForm) {
       .text(function (d) {
         return d.name;
       });
+  });
+
+  let dataFiltered = Array.from(GraphData);
+  dataFiltered = dataFiltered.map(function (streams) {
+    let start = parseTime(streams.matchedPeriodStart);
+    let end = parseTime(streams.matchedPeriodEnd);
+    let values = streams.values;
+    let filteredValues = values.filter(function (values) {
+      if (start <= parseTime(values.date) && end >= parseTime(values.date)) {
+        return values;
+      }
+    });
+    streams.values = filteredValues;
+    return streams;
+  });
+
+  dataFiltered.map(function (streams, i) {
+    d3.select("#highlight" + i)
+      .datum(streams.values)
+      .attr("fill", queryColor)
+      .attr(
+        "d",
+        d3
+          .area()
+          .x(function (d) {
+            return streams.xScale(parseTime(d.date));
+          })
+          .y1(function (d) {
+            return streams.yScale(d.value);
+          })
+          .y0(function () {
+            return streams.yScale(streams.minValue);
+          }),
+      );
   });
 
   /*
