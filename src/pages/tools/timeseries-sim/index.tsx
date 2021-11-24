@@ -2,29 +2,30 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useRef, useState, ReactElement } from "react";
 import { Helmet } from "react-helmet-async";
-import { Grid, Box, Card, CardContent } from "@material-ui/core";
+import { Box, Card, CardContent, CardHeader, Grid } from "@material-ui/core";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import axios from "axios";
 import FirstForm from "src/components/timeseries-sim/FirstForm";
 import AdvancedFilter from "src/components/timeseries-sim/AdvancedFilter";
 import SearchButton from "src/components/timeseries-sim/SearchButton";
-import GridItem from "src/components/timeseries-sim/GridItem";
 import { SegmentedMultiLinePlot } from "src/components/timeseries-sim/plotfunctions/segmentedmultilineplot";
 import { FullMultiLinePlot } from "src/components/timeseries-sim/plotfunctions/fullmultilineplot.js";
 import {
   covidIndicators,
   similarityMeasures,
   continents,
+  plotTypes,
 } from "src/components/timeseries-sim/variables/variables";
 import { useStyles } from "src/components/timeseries-sim/style/style";
 import GraphArea from "src/components/timeseries-sim/GraphArea";
-
+import GraphTitle from "src/components/timeseries-sim/GraphTitle";
+import { alignmentPlot } from "src/components/timeseries-sim/plotfunctions/alignmentplot";
 const API = process.env.NEXT_PUBLIC_API_PY;
 
 //first run object initalization
 const initialFirstRunState = {
-  targetCountry: "United Kingdom",
-  firstDate: "2021-08-02",
+  targetCountry: "France",
+  firstDate: "2021-07-02",
   lastDate: "2021-08-16",
   indicator: "new_cases",
   method: "euclidean",
@@ -40,6 +41,7 @@ const initialFirstRunState = {
     "North America": false,
     "South America": false,
   },
+  plotType: "segmented",
 };
 
 const TimeseriesSim = () => {
@@ -73,11 +75,16 @@ const TimeseriesSim = () => {
     }
   };
 
+  const plotSwitch = (response, firstRunForm) => {
+    alignmentPlot(response, firstRunForm);
+    SegmentedMultiLinePlot(response, firstRunForm);
+  };
+
   const fetchAPI = () => {
-    const apiUrl = `${API}/timeseries-sim-search/`;
+    const apiUrl = `http://127.0.0.1:4010/stat/v1/timeseries-sim-search/`;
     axios
       .post(apiUrl, firstRunForm)
-      .then((response) => SegmentedMultiLinePlot(response, firstRunForm));
+      .then((response) => plotSwitch(response, firstRunForm));
   };
 
   return (
@@ -85,54 +92,51 @@ const TimeseriesSim = () => {
       <Helmet>
         <title>Timeseries Similarity</title>
       </Helmet>
-      <Box
-        sx={{
-          backgroundColor: "background.default",
-          minHeight: "100%",
-          py: 8,
-          display: "grid",
-          gap: 1,
-          gridTemplateColumns: "0.2fr 1fr",
-        }}
-      >
-        <GridItem>
-          <Card>
-            <CardContent>
-              <FirstForm
-                className={classes.firstRunForm}
-                form={firstRunForm}
-                onChange={multipleHandleChange}
-                indicator={covidIndicators}
-                method={similarityMeasures}
-              />
-              <AdvancedFilter
-                className={classes.firstRunForm}
-                open={advancedFilterClickOpen}
-                state={advancedFilterPopup}
-                close={advancedFilterClickClose}
-                continents={continents}
-                form={firstRunForm}
-                onChange={multipleHandleChange}
-              />
-              <SearchButton
-                className={classes.searchButton}
-                onClick={fetchAPI}
-              />
-            </CardContent>
-          </Card>
-        </GridItem>
+      <Box>
+        <Grid>
+          <Grid sx={{ width: 300 }}>
+            <Card>
+              <CardContent>
+                <FirstForm
+                  className={classes.firstRunForm}
+                  form={firstRunForm}
+                  onChange={multipleHandleChange}
+                  indicator={covidIndicators}
+                  method={similarityMeasures}
+                  plotTypes={plotTypes}
+                />
+                <AdvancedFilter
+                  className={classes.firstRunForm}
+                  open={advancedFilterClickOpen}
+                  state={advancedFilterPopup}
+                  close={advancedFilterClickClose}
+                  continents={continents}
+                  form={firstRunForm}
+                  onChange={multipleHandleChange}
+                />
+                <SearchButton
+                  className={classes.searchButton}
+                  onClick={fetchAPI}
+                />
+              </CardContent>
+            </Card>
+          </Grid>
 
-        <GridItem>
-          <Card>
-            <CardContent>
-              <GraphArea
-                containerClass={classes.container}
-                titleClass={classes.title}
-                chartsClass={classes.charts}
-              />
-            </CardContent>
-          </Card>
-        </GridItem>
+          <Grid>
+            <Card>
+              <GraphTitle />
+              <GraphArea />
+            </Card>
+          </Grid>
+          <Grid>
+            <Card sx={{ width: 1 }}>
+              <CardHeader />
+              <CardContent>
+                <div id="alignmentchart" />
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
       </Box>
     </>
   );

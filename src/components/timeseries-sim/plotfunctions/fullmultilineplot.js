@@ -2,21 +2,18 @@ import * as d3 from "d3";
 
 export function FullMultiLinePlot(response, firstRunForm) {
   //add rectangles to the matched regions//
-
-  d3.select("#charts").html(""); //clear charts
-  d3.select("#title").html(""); //clear legends
-
+  d3.select("#alignment-example-container").html("");
   const parseTime = d3.timeParse("%Y-%m-%d"); // date parser (str to date)
   const formatTime = d3.timeFormat("%b %d"); // date formatter (date to str)
 
   //--- Graph Formatting ---//
 
-  const width = 960;
-  const height = 500;
-  const margin = 5;
-  const padding = 100;
-  const adj = 100;
+  const width = 1400;
+  const height = 600;
+  const margin = 50;
+  const adj = 50;
 
+  console.log(response.data);
   //------------------------//
 
   const queryColor = "#FF6600";
@@ -69,23 +66,32 @@ export function FullMultiLinePlot(response, firstRunForm) {
   const lastDate = firstRunForm.lastDate;
 
   //chart AREA
+
+  d3.select("#alignmentchart")
+    .append("div")
+    .attr("class", "alignment-example-container")
+    .attr("id", "alignment-example-container")
+    .style("width", width + "px")
+    .style("height", height + "px")
+    .style("margin", margin);
+
+  let canvas = document.getElementById("alignment-example-container");
+
   const svg = d3
-    .select("#charts")
+    .select(canvas)
     .append("svg")
-    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("preserveAspectRatio", "xMidYMid meet")
     .attr(
       "viewBox",
       "-" +
-        adj +
+        1.5 * adj +
         " -" +
-        adj +
+        adj / 2 +
         " " +
-        (width + adj * 3) +
+        (width + adj * 5) +
         " " +
-        (height + adj * 3),
+        (height + adj * 5),
     )
-    .style("padding", padding)
-    .style("margin", margin)
     .classed("svg-content", true);
 
   //x-axis
@@ -96,7 +102,7 @@ export function FullMultiLinePlot(response, firstRunForm) {
     .call(xaxis)
     .selectAll("text")
     .attr("transform", "translate(0,20)")
-    .style("font-size", "10px")
+    .style("font-size", "20px")
     .style("color", queryColor);
 
   //y-axis
@@ -105,7 +111,7 @@ export function FullMultiLinePlot(response, firstRunForm) {
     .attr("class", "axis")
     .call(yaxis)
     .selectAll("text")
-    .style("font-size", "10px");
+    .style("font-size", "20px");
 
   //multi-line drawer
   svg
@@ -130,7 +136,7 @@ export function FullMultiLinePlot(response, firstRunForm) {
     console.log("success");
   });
 
-  const title = d3.select("#title");
+  const title = d3.select("#chartTitle");
 
   title
     .append("text")
@@ -171,7 +177,7 @@ export function FullMultiLinePlot(response, firstRunForm) {
     .style("fill", function (d) {
       return color(d.name);
     })
-    .style("font-size", "10px");
+    .style("font-size", "20px");
 
   // Highlighting matched region //
 
@@ -189,8 +195,7 @@ export function FullMultiLinePlot(response, firstRunForm) {
     return streams;
   });
 
-  const relCoef = 0.1;
-
+  const relCoef = 0.05;
   const RectCoords = dataFiltered.map(function (streams) {
     // get rectangulaar coordinates
     return {
@@ -198,21 +203,21 @@ export function FullMultiLinePlot(response, firstRunForm) {
       startRectCoords: [
         {
           x: streams.values[0].date,
-          y: streams.values[0].value * (1 - relCoef),
+          y: streams.values[0].value - max * relCoef,
         },
         {
           x: streams.values[0].date,
-          y: streams.values[0].value * (1 + relCoef),
+          y: streams.values[0].value + max * relCoef,
         },
       ],
       endRectCoords: [
         {
           x: streams.values[streams.values.length - 1].date,
-          y: streams.values[streams.values.length - 1].value * (1 - relCoef),
+          y: streams.values[streams.values.length - 1].value - max * relCoef,
         },
         {
           x: streams.values[streams.values.length - 1].date,
-          y: streams.values[streams.values.length - 1].value * (1 + relCoef),
+          y: streams.values[streams.values.length - 1].value + max * relCoef,
         },
       ],
     };
@@ -296,6 +301,4 @@ export function FullMultiLinePlot(response, firstRunForm) {
     .selectAll(".multiline")
     .on("mouseenter", lineMouseEnter)
     .on("mouseleave", lineMouseLeave);
-
-  console.log(RectCoords);
 }

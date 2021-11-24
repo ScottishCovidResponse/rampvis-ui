@@ -1,23 +1,21 @@
 import * as d3 from "d3";
-import { date } from "yup/lib/locale";
 
 export function SegmentedMultiLinePlot(response, firstRunForm) {
   // align labels
 
-  d3.select("#charts").html(""); //clear charts
-  d3.select("#title").html(""); //clear legends
-
+  d3.select("#chart").html(""); //clear charts
+  d3.select("#chartTitle").html(""); //clear charts title
+  d3.select("#vis-example-container").html("");
   const parseTime = d3.timeParse("%Y-%m-%d"); // date parser (str to date)
   const formatTime = d3.timeFormat("%b %d"); // date formatter (date to str)
   const strTime = d3.timeFormat("%Y-%m-%d");
 
   //--- Graph Formatting ---//
 
-  const width = 960;
-  const height = 500;
-  const margin = 5;
-  const padding = 100;
-  const adj = 100;
+  const width = 1400;
+  const height = 600;
+  const margin = 50;
+  const adj = 50;
 
   //------------------------//
 
@@ -26,9 +24,10 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
   const queryStrokeWidth = 8;
   const otherStrokeWidth = 4;
 
-  const data = response.data; // data including all values from 01-01-2021 for the data stream
+  const dataSegmented = Array.from(response.data); // data including all values from 01-01-2021 for the data stream
 
-  const dataFiltered = data.map(function (streams) {
+  let dataFiltered = Array.from(dataSegmented);
+  dataFiltered = dataFiltered.map(function (streams) {
     // data for matched period
     let start = parseTime(streams.matchedPeriodStart);
     let end = parseTime(streams.matchedPeriodEnd);
@@ -43,16 +42,16 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
   });
 
   const max = Math.max(
-    ...data.map((streams) =>
+    ...dataFiltered.map((streams) =>
       Math.max(...streams.values.map((values) => values.value)),
     ),
   ); //get max value for y range
   const min = Math.min(
-    ...data.map((streams) =>
+    ...dataFiltered.map((streams) =>
       Math.min(...streams.values.map((values) => values.value)),
     ),
   ); //get min value for x range
-  const dateRange = data
+  const dateRange = dataFiltered
     .filter((streams) => streams.isQuery)[0]
     .values.map((values) => values.date)
     .map(parseTime); // get query dates and parse
@@ -65,11 +64,11 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
   xaxis.tickFormat((d, i) => dateRange[i]); //x-ticks alignment with data
   xaxis.tickFormat(formatTime); //x-ticks formating
 
-  const keyDomain = data.map((d) => d.key); // list of group names
-  const colorRange = data
+  const keyDomain = dataFiltered.map((d) => d.key); // list of group names
+  const colorRange = dataFiltered
     .map((streams) => streams.isQuery)
     .map((bools) => (bools ? queryColor : otherColor)); //color picking for query and other streams
-  const strokeRange = data
+  const strokeRange = dataFiltered
     .map((streams) => streams.isQuery)
     .map((bools) => (bools ? queryStrokeWidth : otherStrokeWidth)); //stroke width picking
 
@@ -85,23 +84,31 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
   const lastDate = firstRunForm.lastDate;
 
   //chart AREA
+
+  d3.select("#chart")
+    .append("div")
+    .attr("class", "vis-example-container")
+    .attr("id", "vis-example-container")
+    .style("width", width + "px")
+    .style("height", height + "px")
+    .style("margin", margin);
+
+  let canvas = document.getElementById("vis-example-container");
   const svg = d3
-    .select("#charts")
+    .select(canvas)
     .append("svg")
-    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("preserveAspectRatio", "xMaxYMax meet")
     .attr(
       "viewBox",
       "-" +
-        adj +
+        1.5 * adj +
         " -" +
-        adj +
+        adj / 2 +
         " " +
-        (width + adj * 3) +
+        (width + adj * 5) +
         " " +
-        (height + adj * 3),
+        (height + adj * 5),
     )
-    .style("padding", padding)
-    .style("margin", margin)
     .classed("svg-content", true);
 
   //x-axis
@@ -112,7 +119,7 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
     .call(xaxis)
     .selectAll("text")
     .attr("transform", "translate(0,20)")
-    .style("font-size", "10px")
+    .style("font-size", "20px")
     .style("color", queryColor);
 
   //y-axis
@@ -121,7 +128,7 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
     .attr("class", "yaxis")
     .call(yaxis)
     .selectAll("text")
-    .style("font-size", "10px");
+    .style("font-size", "20px");
 
   //multi-line drawer
   svg
@@ -173,7 +180,7 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
     .style("fill", function (d) {
       return color(d.name);
     })
-    .style("font-size", "10px");
+    .style("font-size", "20px");
 
   //line interaction for changing visibility
 
@@ -219,19 +226,12 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
 
   // add title
 
-  const title = d3.select("#title");
-
-  title
-    .append("text")
-    .text(
-      indicator +
-        " matches for " +
-        targetCountry +
-        " from " +
-        formatTime(parseTime(firstDate)) +
-        " to " +
-        formatTime(parseTime(lastDate)),
-    );
+  document.getElementById(
+    "chartTitle",
+  ).innerHTML = `${indicator} matches for ${targetCountry} from ${formatTime(
+    parseTime(firstDate),
+  )} to ${formatTime(parseTime(lastDate))}`;
+  document.getElementById("chartTitle").style.textAlign = "center";
 
   // --- CONSOLE / PROT --- //
 

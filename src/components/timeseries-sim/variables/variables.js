@@ -127,3 +127,14 @@ export const continents = [
     value: "South America",
   },
 ];
+
+export const plotTypes = [
+  {
+    label: "Segmented Plot",
+    value: "segmented",
+  },
+  {
+    label: "Full Plot",
+    value: "full",
+  },
+];

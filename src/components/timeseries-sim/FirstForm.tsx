@@ -97,6 +97,22 @@ function FirstForm(props) {
           InputProps={{ inputProps: { min: 0, max: 10 } }}
         />
       </h2>
+      <h2>
+        <TextField
+          select
+          label="Plot Type"
+          name="plotType"
+          value={props.form.plotType}
+          variant="standard"
+          onChange={props.onChange}
+        >
+          {props.plotTypes.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+      </h2>
     </div>
   );
 }

@@ -1,10 +1,9 @@
-import { Grid } from "@material-ui/core";
+import { CardContent } from "@material-ui/core";
 function GraphArea(props) {
   return (
-    <Grid className={props.containerClass} id="container">
-      <Grid className={props.titleClass} id="title"></Grid>
-      <Grid className={props.chartsClass} id="charts"></Grid>
-    </Grid>
+    <CardContent id="chartArea" sx={{ height: 1 }}>
+      <div className={props.chartsClass} id="chart"></div>
+    </CardContent>
   );
 }
 

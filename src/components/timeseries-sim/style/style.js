@@ -5,23 +5,6 @@ import { blue } from "@material-ui/core/colors";
 //https://casbin.org/CssToAndFromReact/ good website for conversions
 
 export const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 0,
-    paddingTop: "56.25%", // 16:9
-  },
-  expand: {
-    transform: "rotate(0deg)",
-    marginLeft: "auto",
-    transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: "rotate(180deg)",
-  },
   avatar: {
     backgroundColor: blue[500],
   },
@@ -37,18 +20,11 @@ export const useStyles = makeStyles((theme) => ({
     float: "right",
   },
 
-  container: {
-    display: "grid",
-    gridTemplateColumns: "1fr",
-    gridTemplateRows: "0.2fr 1.8fr",
-    gap: "0px 0px",
-    gridTemplateAreas: "title charts",
-  },
-  title: {
-    gridArea: "title",
+  chartTitle: {
     textAlign: "center",
   },
-  charts: {
-    gridArea: "charts",
+  chart: {
+    height: "100%",
+    width: "100%",
   },
 }));
