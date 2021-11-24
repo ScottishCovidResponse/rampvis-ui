@@ -62,7 +62,7 @@ export function alignmentPlot(response, firstRunForm) {
     .append("div")
     .attr("id", (d, i) => "container" + i)
     .style("width", "100%")
-    .style("height", height + "px")
+    .style("height", height * 1.5 + "px")
     .style("margin", margin) // add divs for individual alignment plots
 
     .append("svg")
