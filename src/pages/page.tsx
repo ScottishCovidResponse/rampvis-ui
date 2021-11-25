@@ -8,6 +8,8 @@ import {
   Container,
   Grid,
   Card,
+  Fade,
+  CircularProgress,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { blue } from "@mui/material/colors";
@@ -17,7 +19,6 @@ import { useRouter } from "next/router";
 
 import useSettings from "src/hooks/useSettings";
 import { visFactory } from "src/lib/vis/vis-factory";
-import useAuth from "src/hooks/useAuth";
 import Bookmark from "src/components/Bookmark";
 import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
@@ -50,40 +51,51 @@ const PropagatedPage = () => {
   const pageId =
     typeof router.query.id === "string" ? router.query.id : undefined;
   const [title, setTitle] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
   const fetchOntoPage = useCallback(async () => {
     if (!pageId) {
       return;
     }
-    const page = await apiService.get(`/template/page/${pageId}`);
-    console.log("OntoPage: VIS = ", page.vis);
-    console.log("OntoPage: Data = ", page.data);
 
-    setTitle(page?.title);
+    try {
+      setLoading(true);
 
-    const dataForVisFunction = await Promise.all(
-      page?.data?.map(async (d: any) => {
-        const endpoint = `${API[d.urlCode]}${d.endpoint}`;
-        console.log("PropagatedPage: data endpoint = ", endpoint);
+      const page = await apiService.get(`/template/page/${pageId}`);
+      // eslint-disable-next-line no-console -- VIS developers need....
+      console.log("[TEMPLATE] VIS Function = ", page.vis);
+      // eslint-disable-next-line no-console -- VIS developers need....
+      console.log("[TEMPLATE] Data = ", page.data);
 
-        const values = (await axios.get(endpoint)).data;
-        const { description } = d;
-        return { endpoint, values, description };
-      }),
-    );
+      setTitle(page?.title);
 
-    const links = page?.pageIds?.map((d: any) => {
-      console.log(d);
-      return `page?id=${d}`;
-    });
+      const dataForVisFunction = await Promise.all(
+        page?.data?.map(async (d: any) => {
+          const endpoint = `${API[d.urlCode]}${d.endpoint}`;
+          // eslint-disable-next-line no-console -- VIS developers need....
+          console.log("[TEMPLATE] data endpoint = ", endpoint);
 
-    console.log("PropagatedPage: dataForVisFunction = ", dataForVisFunction);
+          const values = (await axios.get(endpoint)).data;
+          const { id, description } = d;
+          return { id, endpoint, values, description };
+        }),
+      );
 
-    visFactory(page?.vis?.function, {
-      chartElement: "charts", // ref.current,
-      data: dataForVisFunction,
-      links,
-    });
+      // eslint-disable-next-line no-console -- VIS developers need....
+      console.log("[TEMPLATE] fetched data = ", dataForVisFunction);
+
+      visFactory(page?.vis?.function, {
+        chartElement: "charts",
+        data: dataForVisFunction,
+        links: [],
+      });
+
+      setLoading(false);
+    } catch (err) {
+      // prettier-ignore
+      console.error(`PropagatedPage: Fetching data error = ${err}`);
+      setLoading(false);
+    }
   }, [pageId]);
 
   useEffect(() => {
@@ -108,12 +120,13 @@ const PropagatedPage = () => {
             <Grid item xs={12}>
               <Card>
                 <CardHeader
-                  action={
-                    // <IconButton aria-label="settings">
-                    //   { user?.id ? (<MoreVertIcon />) : (<TimelineIcon />)}
-                    // </IconButton>
-                    <Bookmark pageId={pageId} />
-                  }
+                  // TODO:
+                  // action={
+                  //   <IconButton aria-label="settings">
+                  //     { user?.id ? (<MoreVertIcon />) : (<TimelineIcon />)}
+                  //   </IconButton>
+                  //   <Bookmark pageId={pageId} />
+                  // }
                   avatar={
                     <Avatar className={classes.avatar}>
                       <InsertChartIcon />
@@ -124,6 +137,19 @@ const PropagatedPage = () => {
                 />
 
                 <CardContent sx={{ pt: "8px" }}>
+                  {loading && (
+                    <Box sx={{ height: 40 }}>
+                      <Fade
+                        in={loading}
+                        style={{
+                          transitionDelay: loading ? "800ms" : "0ms",
+                        }}
+                        unmountOnExit
+                      >
+                        <CircularProgress />
+                      </Fade>
+                    </Box>
+                  )}
                   <div id="charts" />
                 </CardContent>
               </Card>

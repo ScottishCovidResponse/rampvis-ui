@@ -1,24 +1,28 @@
 import React, { ReactElement, ReactNode, StrictMode } from "react";
-import type { AppProps, AppContext } from "next/app";
+import type { AppProps } from "next/app";
 import Head from "next/head";
 import type { NextPage } from "next";
-import App from "next/app";
 import {
   CssBaseline,
   StyledEngineProvider,
   ThemeProvider,
-} from "@material-ui/core";
+} from "@mui/material";
 import { Toaster } from "react-hot-toast";
-import { LocalizationProvider } from "@material-ui/lab";
-import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
+import { LocalizationProvider } from "@mui/lab";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import { CacheProvider } from "@emotion/react";
 
 import useSettings from "src/hooks/useSettings";
-import { createCustomTheme } from "src/theme";
+import { createCustomTheme } from "src/mui/theme";
+import { createEmotionCache } from "src/mui/createEmotionCache";
 import useScrollReset from "src/hooks/useScrollReset";
 import useAuth from "src/hooks/useAuth";
 import { HelmetProvider } from "react-helmet-async";
 import { SettingsProvider } from "src/contexts/SettingsContext";
 import { AuthProviderJWT } from "src/contexts/AuthProviderJWT";
+
+// Client-side cache, shared for the whole session of the user in the browser.
+const clientSideEmotionCache = createEmotionCache();
 
 //
 // Import all the css files created for d3 charts
@@ -30,6 +34,7 @@ import "src/lib/vis/css/default-dashboard.css";
 import "src/lib/vis/css/overview-top-level-screen-a.css";
 import "src/lib/vis/css/portal.css";
 import "src/lib/vis/css/pv-legend.css";
+import "src/lib/vis/css/ensemble.css";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -60,7 +65,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     });
 
   return (
-    <>
+    <CacheProvider value={clientSideEmotionCache}>
       <Head>
         <meta
           name="viewport"
@@ -85,7 +90,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
           </StyledEngineProvider>
         </HelmetProvider>
       </StrictMode>
-    </>
+    </CacheProvider>
   );
 }
 

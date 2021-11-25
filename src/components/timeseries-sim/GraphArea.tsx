@@ -1,4 +1,4 @@
-import { CardContent } from "@material-ui/core";
+import { CardContent } from "@mui/material";
 function GraphArea(props) {
   return (
     <CardContent id="chartArea" sx={{ height: 1 }}>

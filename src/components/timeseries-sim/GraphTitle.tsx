@@ -1,4 +1,4 @@
-import { CardHeader } from "@material-ui/core";
+import { CardHeader } from "@mui/material";
 function GraphTitle() {
   return (
     <CardHeader

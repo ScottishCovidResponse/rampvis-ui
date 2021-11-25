@@ -60,7 +60,7 @@ export function alignmentPlot(response, firstRunForm) {
     .enter()
 
     .append("div")
-    .attr("id", (d, i) => "container" + i)
+    .attr("id", (d, i) => "alignmentContainer" + i)
     .style("width", "100%")
     .style("height", height * 1.5 + "px")
     .style("margin", margin) // add divs for individual alignment plots

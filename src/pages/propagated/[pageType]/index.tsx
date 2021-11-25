@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import { useRouter } from "next/router";
 import { Helmet } from "react-helmet-async";
 import {
@@ -13,10 +13,10 @@ import {
   Container,
   Grid,
   IconButton,
-} from "@material-ui/core";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+} from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import TableViewIcon from "@mui/icons-material/TableView";
-import { blue } from "@material-ui/core/colors";
+import { blue } from "@mui/material/colors";
 import moment from "moment";
 import _ from "lodash";
 import useSettings from "src/hooks/useSettings";
@@ -65,9 +65,9 @@ const PropagatedPageList = () => {
         const { id, date } = d;
         return {
           id,
-          visFunction: d?.vis?.function,
-          visType: d?.vis?.type,
-          visDescription: d?.vis?.description,
+          function: d?.vis?.function,
+          type: d?.vis?.type,
+          title: d?.title,
           pageType: d?.pageType,
           date: moment(date).format("DD-MM-YYYY"),
         };

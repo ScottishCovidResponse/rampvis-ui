@@ -1,0 +1,37 @@
+name: Release
+
+on: workflow_dispatch
+
+jobs:
+  release:
+    runs-on: ubuntu-20.04
+    environment:
+      name: STFC
+      url: https://vis.scrc.uk
+    concurrency: STFC
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run yarn build
+        run: yarn build
+
+      - name: Upload `out` via scp (secure copy)
+        uses: appleboy/scp-action@master
+        env:
+          HOST: ${{ secrets.SCP_HOST }}
+          USERNAME: ${{ secrets.SCP_USERNAME }}
+          PORT: ${{ secrets.SCP_PORT }}
+          KEY: ${{ secrets.SCP_SSHKEY }}
+        with:
+          source: "out/"
+          target: ${{ secrets.SCP_TARGET_DIR }}
+          strip_components: 1

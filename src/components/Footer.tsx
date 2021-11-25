@@ -10,9 +10,8 @@ import {
   ListItemAvatar,
   ListItemText,
   Typography,
-} from "@material-ui/core";
-import { alpha } from "@material-ui/core/styles";
-import RemoveIcon from "@material-ui/icons/Remove";
+} from "@mui/material";
+import RemoveIcon from "@mui/icons-material/Remove";
 import Logo from "./Logo";
 
 const sections = [

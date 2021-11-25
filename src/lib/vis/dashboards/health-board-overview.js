@@ -14,7 +14,8 @@
 
 import * as d3 from "d3";
 import { Data } from "../data.js";
-import { dashboard, COLOR_VACCINATON } from "./dashboard";
+import { dashboard } from "./dashboard";
+import { colors } from "../colors.js";
 
 /* 
 author: Benjamin Bach, bbach@ed.ac.uk
@@ -63,16 +64,12 @@ export class HealthBoardOverview {
     var data = options.data;
 
     var config = {
-      layout: [
-        ["testing", "vaccination"],
-        ["deaths", "hospital"],
-        "vaccination-agegroups",
-      ],
+      layout: [["testing", "deaths", "hospital"], "vaccination"],
       groups: [
         {
           id: "hospital",
           title: "Covid19 in Hospital",
-          layout: ["icu", "hospital2", "hospital-normalized"],
+          layout: [["hospital2", "icu"]],
         },
         {
           id: "testing",
@@ -82,11 +79,11 @@ export class HealthBoardOverview {
         {
           id: "deaths",
           title: "Deaths",
-          layout: [["deaths-weekly", "deaths-all"]],
+          layout: ["deaths-weekly"],
         },
         {
           id: "vaccination",
-          title: "Vaccinations Total",
+          title: "Vaccinations",
           layout: [
             ["vaccination-total-1st", "vaccination-agegroups-dose1"],
             ["vaccination-total-2nd", "vaccination-agegroups-dose2"],
@@ -99,51 +96,40 @@ export class HealthBoardOverview {
           id: "icu",
           title: "In ICU",
           dataField: nhsBoardField,
-          color: d3.rgb(COLOR_HOSPITAL).brighter(1),
+          color: colors.getICUColor(),
           data: Data.from(options.data, Data.Fields.HEALTH_BOARD_ICU),
           visualization: "linechart",
           mode: dashboard.MODE_CURRENT,
-          detail: "medium",
-          normalized: true,
+          detail: dashboard.DETAIL_HIGH,
+          dateVariable: "index",
         },
         {
           id: "hospital2",
           title: "In Hospital",
           dataField: nhsBoardField,
-          color: d3.rgb(COLOR_HOSPITAL).brighter(2),
+          color: colors.getHospitalizedColor(),
           data: Data.from(options.data, Data.Fields.HEALTH_BOARD_HOSPITAL),
           visualization: "linechart",
           detail: "medium",
           mode: dashboard.MODE_CURRENT,
-        },
-        {
-          id: "hospital-normalized",
-          title: "In Hospital, Normalized",
-          dataField: nhsBoardField,
-          color: d3.rgb(COLOR_HOSPITAL).brighter(2.5),
-          visualization: "linechart",
-          detail: "medium",
-          data: Data.from(
-            options.data,
-            Data.Fields.HEALTH_BOARD_HOSPITAL_NORMALIZED,
-          ),
-          mode: dashboard.MODE_CURRENT,
+          detail: dashboard.DETAIL_HIGH,
         },
         {
           id: "dailyTests",
           title: "Daily Tests",
           visualization: "linechart",
           dataField: nhsBoardField,
-          color: COLOR_TESTS,
+          color: colors.getTestColor(),
           data: Data.from(options.data, Data.Fields.HEALTH_BOARD_TESTS),
           mode: dashboard.MODE_DAILY,
+          detail: dashboard.DETAIL_MEDIUM,
         },
         {
           id: "deaths-weekly",
           title: "Covid19 related deaths (weekly)",
           visualization: "linechart",
           dataField: nhsBoardField,
-          color: COLOR_DEATHS,
+          color: colors.getDeathColor(),
           data: Data.from(options.data, Data.Fields.HEALTH_BOARD_COVID_DEATHS),
           mode: dashboard.MODE_WEEKLY,
           conditions: ["index.length > 4"],
@@ -153,7 +139,7 @@ export class HealthBoardOverview {
           title: "All Deaths (weekly)",
           dataField: nhsBoardField,
           visualization: "linechart",
-          color: d3.rgb(COLOR_DEATHS).darker(0.5),
+          color: colors.getDeathColor(),
           data: Data.from(options.data, Data.Fields.HEALTH_BOARD_ALL_DEATHS),
           mode: dashboard.MODE_WEEKLY,
           conditions: ["index.length > 4"],
@@ -163,13 +149,13 @@ export class HealthBoardOverview {
           title: "Total Vaccination Dose 1",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: COLOR_VACCINATON,
+          color: colors.getVaccinationColor(1),
           data: Data.from(
             options.data,
             Data.Fields.HEALTH_BOARD_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
-          detail: "low",
+          detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -181,13 +167,13 @@ export class HealthBoardOverview {
           title: "Total Vaccination Dose 2",
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
-          color: d3.color(COLOR_VACCINATON).darker(0.5),
+          color: colors.getVaccinationColor(2),
           data: Data.from(
             options.data,
             Data.Fields.HEALTH_BOARD_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
-          detail: "low",
+          detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',
@@ -199,13 +185,13 @@ export class HealthBoardOverview {
           title: "Dose 1",
           dataField: "CumulativePercentCoverage",
           visualization: "barchart",
-          color: COLOR_VACCINATON,
+          color: colors.getVaccinationColor(1),
           data: Data.from(
             options.data,
             Data.Fields.HEALTH_BOARD_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
-          detail: "medium",
+          detail: dashboard.DETAIL_HIGH,
           bars: "AgeGroup",
           conditions: [
             'Sex == "Total"',
@@ -215,16 +201,16 @@ export class HealthBoardOverview {
         },
         {
           id: "vaccination-agegroups-dose2",
-          title: "Dose 2",
+          title: "Dose 1",
           dataField: "CumulativePercentCoverage",
           visualization: "barchart",
-          color: COLOR_VACCINATON,
+          color: colors.getVaccinationColor(1),
           data: Data.from(
             options.data,
             Data.Fields.HEALTH_BOARD_VACCINE_SEX_AGEGROUP,
           ),
           mode: dashboard.MODE_PERCENT,
-          detail: "medium",
+          detail: dashboard.DETAIL_HIGH,
           bars: "AgeGroup",
           conditions: [
             'Sex == "Total"',

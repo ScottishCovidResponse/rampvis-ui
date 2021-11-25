@@ -1,5 +1,5 @@
-import { makeStyles } from "@material-ui/core/styles";
-import { blue } from "@material-ui/core/colors";
+import { makeStyles } from "@mui/styles";
+import { blue } from "@mui/material/colors";
 
 //react style function for creating css classes and assigning attributes
 //https://casbin.org/CssToAndFromReact/ good website for conversions
