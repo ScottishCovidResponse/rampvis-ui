@@ -1,12 +1,10 @@
 import * as d3 from "d3";
-import { data } from "jquery";
 
 export function alignmentPlot(response, firstRunForm) {
   //------ DATA and Graph Functions ------//
 
   const parseTime = d3.timeParse("%Y-%m-%d"); // date parser (str to date)
   const formatTime = d3.timeFormat("%b %d"); // date formatter (date to str)
-  const strTime = d3.timeFormat("%Y-%m-%d");
 
   const width = 1400;
   const height = 200;
@@ -71,13 +69,13 @@ export function alignmentPlot(response, firstRunForm) {
     .attr(
       "viewBox",
       "-" +
-        1.5 * adj +
-        " -" +
-        adj / 2 +
-        " " +
-        (width + adj * 5) +
-        " " +
-        (height + adj * 5),
+      1.5 * adj +
+      " -" +
+      adj / 2 +
+      " " +
+      (width + adj * 5) +
+      " " +
+      (height + adj * 5),
     )
     .classed("svg-content", true);
 
@@ -85,12 +83,14 @@ export function alignmentPlot(response, firstRunForm) {
     .append("g")
     .attr("class", "xaxis")
     .attr("id", (d, i) => "xaxis" + i)
-    .attr("transform", "translate(0," + height + ")");
+    .attr("transform", "translate(0," + height + ")")
+    .style("font-size", "20px")
 
   layout // add y-axis region to call yAxis func
     .append("g")
     .attr("class", "yaxis")
-    .attr("id", (d, i) => "yaxis" + i);
+    .attr("id", (d, i) => "yaxis" + i)
+    .style("font-size", "20px");
 
   layout // add path to each subplot for line drawing
     .append("path")
@@ -100,12 +100,19 @@ export function alignmentPlot(response, firstRunForm) {
   layout
     .append("g")
     .attr("class", "label")
-    .attr("id", (d, i) => "label" + i);
+    .attr("id", (d, i) => "label" + i)
+    .style("font-size", "20px");
 
   layout
     .append("path")
-    .attr("class", "highlight")
-    .attr("id", (d, i) => "highlight" + i);
+    .attr("class", "highlightLine")
+    .attr("id", (d, i) => "highlightLine" + i);
+
+
+  layout
+    .append("path")
+    .attr("class", "highlightArea")
+    .attr("id", (d, i) => "highlightArea" + i);
 
   GraphData.map(function (streams, i) {
     d3.select("#xaxis" + i).call(streams.xAxis); // call individual xaxis properties
@@ -145,7 +152,9 @@ export function alignmentPlot(response, firstRunForm) {
       .text(function (d) {
         return d.name;
       });
+
   });
+
 
   let dataFiltered = Array.from(GraphData);
   dataFiltered = dataFiltered.map(function (streams) {
@@ -161,10 +170,30 @@ export function alignmentPlot(response, firstRunForm) {
     return streams;
   });
 
+
   dataFiltered.map(function (streams, i) {
-    d3.select("#highlight" + i)
+    d3.select("#highlightLine" + i)
       .datum(streams.values)
-      .attr("fill", queryColor)
+      .attr("fill","none")
+      .attr("stroke", queryColor)
+      .attr("stroke-width",queryStrokeWidth)
+      .attr(
+        "d",
+        d3
+          .line()
+          .x(function (d) {
+            return streams.xScale(parseTime(d.date));
+          })
+          .y(function (d) {
+            return streams.yScale(d.value);
+          })
+
+      );
+
+    d3.select("#highlightArea" + i)
+      .datum(streams.values)
+      .attr("fill", "lightsteelblue")
+      .attr("opacity","0.2")
       .attr(
         "d",
         d3
@@ -173,137 +202,13 @@ export function alignmentPlot(response, firstRunForm) {
             return streams.xScale(parseTime(d.date));
           })
           .y1(function (d) {
-            return streams.yScale(d.value);
+            return streams.yScale(streams.maxValue);
           })
           .y0(function () {
             return streams.yScale(streams.minValue);
           }),
       );
+
   });
 
-  /*
-
-
-    // add labels at the end of lines (!!OVERLAY ALGORITHM WILL BE IMPLEMENTED!!) //
-
-    svg
-        .selectAll("myLabels")
-        .data(dataFiltered)
-        .enter()
-        .append("g")
-        .append("text")
-        .attr("class", "myLabels")
-        .attr("id", (d) => d.key)
-        .datum(function (d) {
-            return { name: d.key, value: d.values[d.values.length - 1] };
-        }) // keep only the last value of each time series
-        .attr("transform", function (d) {
-            return (
-                "translate(" +
-                xScale(dateRange[dateRange.length - 1]) +
-                "," +
-                yScale(d.value.value) +
-                ")"
-            );
-        }) // Put the text at the position of the last point
-        .attr("x", 12) // shift the text a bit more right
-        .text(function (d) {
-            return d.name;
-        })
-        .style("fill", function (d) {
-            return color(d.name);
-        })
-        .style("font-size", "10px");
-
-    //line interaction for changing visibility
-
-    const lineMouseEnter = (d) => {
-        svg.selectAll(".multiline").attr("visibility", "hidden");
-        svg.selectAll(".myLabels").attr("visibility", "hidden");
-
-        svg
-            .selectAll(".multiline")
-            .filter(function () {
-                return (
-                    d3.select(this).attr("id") == d.key ||
-                    d3.select(this).attr("id") == targetCountry
-                );
-            })
-            .attr("visibility", "visible");
-
-        svg
-            .selectAll(".myLabels")
-            .filter(function () {
-                return (
-                    d3.select(this).attr("id") == d.key ||
-                    d3.select(this).attr("id") == targetCountry
-                );
-            })
-            .attr("visibility", "visible");
-
-        axisChange(d.key);
-    };
-
-    const lineMouseLeave = () => {
-        svg.selectAll(".multiline").attr("visibility", "visible");
-        svg.selectAll(".myLabels").attr("visibility", "visible");
-        axisChange(targetCountry);
-    };
-
-    //add interaction to all lines
-
-    svg
-        .selectAll(".multiline")
-        .on("mouseenter", lineMouseEnter)
-        .on("mouseleave", lineMouseLeave);
-
-    // add title
-
-    document.getElementById("chartTitle").innerHTML = `${indicator} matches for ${targetCountry} from ${formatTime(parseTime(firstDate))} to ${formatTime(parseTime(lastDate))}`
-    document.getElementById("chartTitle").style.textAlign = "center"
-
-    // --- CONSOLE / PROT --- //
-
-    const xticks = d3.select(".xaxis");
-    const dateArray = Array.prototype.slice
-        .call(xticks._groups[0][0].childNodes)
-        .filter((nodes) => nodes.nodeName === "g")
-        .map((nodes) => nodes.__data__); // get dates on the axis smart
-    const dateIndex = dateArray.map(strTime).map((date) =>
-        dataFiltered
-            .filter((streams) => streams.isQuery)[0]
-            .values.map((values) => values.date)
-            .indexOf(date),
-    ); // get index of those date from data
-    const dateObj = dataFiltered.map(function (streams) {
-        // create object to store date labels for all lines for mouse interaction
-        return {
-            key: streams.key,
-            xLabels: dateIndex.map((i) => streams.values[i].date),
-        };
-    });
-
-    const axisChange = (d) => {
-        //mouse interaction to change x-axis dates by manipulating .text() of parsed ticks above
-        const filter = d;
-        const filteredDateObj = dateObj.filter(
-            (streams) => streams.key === filter,
-        )[0];
-        let count = 0;
-        d3.select(".xaxis")
-            .selectAll("g")
-            .selectAll("text")
-            .each(function () {
-                d3.select(this).text(
-                    formatTime(parseTime(filteredDateObj.xLabels[count])),
-                );
-                d3.select(this).style("color", color(d));
-                count = count + 1;
-            });
-    };
-
-
-
-
-    */
 }
