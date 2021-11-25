@@ -128,13 +128,3 @@ export const continents = [
   },
 ];
 
-export const plotTypes = [
-  {
-    label: "Segmented Plot",
-    value: "segmented",
-  },
-  {
-    label: "Full Plot",
-    value: "full",
-  },
-];

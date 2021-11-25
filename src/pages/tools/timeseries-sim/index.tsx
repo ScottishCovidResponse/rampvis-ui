@@ -7,12 +7,10 @@ import FirstForm from "src/components/timeseries-sim/FirstForm";
 import AdvancedFilter from "src/components/timeseries-sim/AdvancedFilter";
 import SearchButton from "src/components/timeseries-sim/SearchButton";
 import { SegmentedMultiLinePlot } from "src/components/timeseries-sim/plotfunctions/segmentedmultilineplot";
-import { FullMultiLinePlot } from "src/components/timeseries-sim/plotfunctions/fullmultilineplot.js";
 import {
   covidIndicators,
   similarityMeasures,
   continents,
-  plotTypes,
 } from "src/components/timeseries-sim/variables/variables";
 import { useStyles } from "src/components/timeseries-sim/style/style";
 import GraphArea from "src/components/timeseries-sim/GraphArea";
@@ -39,7 +37,6 @@ const initialFirstRunState = {
     "North America": false,
     "South America": false,
   },
-  plotType: "segmented",
 };
 
 const TimeseriesSim = () => {
@@ -100,7 +97,6 @@ const TimeseriesSim = () => {
                   onChange={multipleHandleChange}
                   indicator={covidIndicators}
                   method={similarityMeasures}
-                  plotTypes={plotTypes}
                 />
                 <AdvancedFilter
                   className={classes.firstRunForm}
