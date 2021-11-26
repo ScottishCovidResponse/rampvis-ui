@@ -208,7 +208,9 @@ export function alignmentPlot(response, firstRunForm) {
             return streams.yScale(streams.minValue);
           }),
       );
+    
 
   });
 
+  d3.select("#alignmentcard").style("visibility","visible")
 }

@@ -116,13 +116,13 @@ const TimeseriesSim = () => {
           </Grid>
 
           <Grid>
-            <Card>
+            <Card id="segmentedcard" sx={{ visibility: "hidden" }}>
               <GraphTitle />
               <GraphArea />
             </Card>
           </Grid>
           <Grid>
-            <Card sx={{ width: 1 }}>
+            <Card id="alignmentcard" sx={{ width: 1, visibility: "hidden" }}>
               <CardContent>
                 <div id="alignmentchart" />
               </CardContent>
