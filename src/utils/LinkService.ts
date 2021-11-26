@@ -1,5 +1,5 @@
 import { ILink } from "src/models/ILink";
-import { apiService } from "src/utils/ApiService";
+import { apiService } from "./ApiService";
 
 const api: string = `${process.env.NEXT_PUBLIC_API_JS}/template/link`;
 
