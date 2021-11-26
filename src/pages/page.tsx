@@ -22,6 +22,9 @@ import { visFactory } from "src/lib/vis/vis-factory";
 import Bookmark from "src/components/Bookmark";
 import { apiService } from "src/utils/apiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
+import { IData } from "src/models/IData";
+import { ILink } from "src/models/ILink";
+import { getLinks } from "src/utils/LinkService";
 
 const API = {
   API_PY: process.env.NEXT_PUBLIC_API_PY,
@@ -69,25 +72,32 @@ const PropagatedPage = () => {
 
       setTitle(page?.title);
 
-      const dataForVisFunction = await Promise.all(
+      // fetch data streams
+      const data = await Promise.all(
         page?.data?.map(async (d: any) => {
           const endpoint = `${API[d.urlCode]}${d.endpoint}`;
-          // eslint-disable-next-line no-console -- VIS developers need....
-          console.log("[TEMPLATE] data endpoint = ", endpoint);
-
           const values = (await axios.get(endpoint)).data;
           const { id, description } = d;
-          return { id, endpoint, values, description };
+          return { id, endpoint, values, description } as IData;
+        }),
+      );
+
+      // fetch links
+      const links: ILink[] = await Promise.all(
+        page?.data?.map(async (d: any) => {
+          const links: ILink[] = await getLinks(d.id);
+          return links;
         }),
       );
 
       // eslint-disable-next-line no-console -- VIS developers need....
-      console.log("[TEMPLATE] fetched data = ", dataForVisFunction);
+      console.log("[TEMPLATE] fetched data = ", data);
+      console.log("[TEMPLATE] fetched links = ", links);
 
       visFactory(page?.vis?.function, {
         chartElement: "charts",
-        data: dataForVisFunction,
-        links: [],
+        data: data,
+        links: links,
       });
 
       setLoading(false);
