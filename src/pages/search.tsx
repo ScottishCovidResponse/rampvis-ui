@@ -11,7 +11,7 @@ import { makeStyles } from "@mui/styles";
 import useSettings from "src/hooks/useSettings";
 import SearchBar from "src/components/search/SearchBar";
 import SearchResultView from "src/components/search/SearchResultView";
-import { apiService } from "src/utils/apiService";
+import { apiService } from "src/utils/ApiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 
 const useStyles = makeStyles((theme) => ({}));

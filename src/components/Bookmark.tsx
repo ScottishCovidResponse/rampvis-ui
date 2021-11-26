@@ -6,7 +6,7 @@ import { createStyles, IconButton, Theme } from "@mui/material";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { orange, grey } from "@mui/material/colors";
 import ShowHideGuard from "src/components/auth/guards/ShowHideGuard";
-import { apiService } from "src/utils/apiService";
+import { apiService } from "src/utils/ApiService";
 // import useAuth from "src/hooks/useAuth";
 
 const useStyles = makeStyles((theme) => ({

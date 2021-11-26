@@ -13,7 +13,7 @@ export async function getLinks(dataId: string): Promise<ILink[]> {
       };
     });
 
-    console.log("getLinks: dataId =  ", dataId, ", links = ", links);
+    // console.log("getLinks: dataId =  ", dataId, ", links = ", links);
     return links;
   } catch (error) {
     console.error(`LinkService:getLinks: error = ${error}`);

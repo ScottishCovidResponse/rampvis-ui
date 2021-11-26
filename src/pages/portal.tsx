@@ -13,7 +13,7 @@ import {
 import { blue } from "@mui/material/colors";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import useSettings from "src/hooks/useSettings";
-import { apiService } from "src/utils/apiService";
+import { apiService } from "src/utils/ApiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import AuthGuard from "src/components/auth/guards/AuthGuard";
 import PortalView from "src/components/portal/PortalView";

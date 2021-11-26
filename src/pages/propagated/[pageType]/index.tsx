@@ -20,7 +20,7 @@ import { blue } from "@mui/material/colors";
 import moment from "moment";
 import _ from "lodash";
 import useSettings from "src/hooks/useSettings";
-import { apiService } from "src/utils/apiService";
+import { apiService } from "src/utils/ApiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import PropagatedPageTable from "src/components/PropagatedPageTable";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";

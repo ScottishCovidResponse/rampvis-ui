@@ -4,7 +4,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { useRouter } from "next/router";
 import jwt_decode from "jwt-decode";
 import Link from "next/link";
-import { apiService } from "src/utils/apiService";
+import { apiService } from "src/utils/ApiService";
 import { IDataStoredInToken } from "src/types/dataStoredInToken";
 import useMounted from "src/hooks/useMounted";
 import useAuth from "src/hooks/useAuth";
