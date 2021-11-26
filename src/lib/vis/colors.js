@@ -1,4 +1,4 @@
-const CASES = "#FFC369";
+const CASES = "#EBB87C";
 const DEATHS = "#AAA";
 const TESTS = "#6FB4D0";
 const HOSPITALIZED = "#E17A76";
@@ -27,11 +27,21 @@ colors.get = function (dataType, value) {
   }
 };
 
-colors.getCaseColor = function () {
+colors.getCaseColor = function (numberOfDose) {
+  if (numberOfDose && numberOfDose > 1)
+    return d3
+      .color(CASES)
+      .darker(numberOfDose * 0.1)
+      .formatHex();
   return CASES;
 };
 
-colors.getDeathColor = function () {
+colors.getDeathColor = function (numberOfDose) {
+  if (numberOfDose && numberOfDose > 1)
+    return d3
+      .color(DEATHS)
+      .darker(numberOfDose * 0.2)
+      .formatHex();
   return DEATHS;
 };
 
@@ -47,7 +57,7 @@ colors.getVaccinationColor = function (numberOfDose) {
   if (numberOfDose && numberOfDose > 1)
     return d3
       .color(VACCINATIONS)
-      .darker(numberOfDose * 0.5)
+      .darker(numberOfDose * 0.3)
       .formatHex();
   return VACCINATIONS;
 };

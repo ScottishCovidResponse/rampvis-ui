@@ -37,13 +37,15 @@ export class CountryOverview {
     // 2. specify data URLs here...
 
     // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
-    var config = {
-      layout: [],
-      groups: [],
-      widgets: [],
-    };
+    setTimeout(function () {
+      var config = {
+        layout: [],
+        groups: [],
+        widgets: [],
+      };
 
-    // this will interpret the dashboard specifiation
-    dashboard.createDashboard(div, config);
+      // this will interpret the dashboard specifiation
+      dashboard.createDashboard(div, config);
+    }, 3000);
   }
 }

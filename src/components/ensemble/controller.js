@@ -83,6 +83,12 @@ export class Controller {
     return this.getIntersectionPoints().length != 0;
   }
 
+
+  changeLineChart(ageData) {
+    this.line.removeContainer();
+    this.line.displayData(ageData);
+  }
+
   tableToggled(points) {
     this.tablePoints = points;
 
@@ -94,11 +100,8 @@ export class Controller {
     // get first of the displayed table points
     var simulationIndex = this.tablePoints[0];
 
-    var _this = this;
-
-    this.getSimulationData(simulationIndex).then(function (ageData) {
-      _this.line.removeContainer();
-      _this.line.displayData(ageData);
+    this.getSimulationData(simulationIndex).then(ageData => {
+      this.changeLineChart(ageData);
     });
 
     this.changeParallelChart();
@@ -133,15 +136,6 @@ export class Controller {
     //   var simulationIndex = this.randomIntFromInterval(0, 159);
     //   console.log("Random Simulation Index: " + simulationIndex);
 
-    //   var _this = this;
-
-    //   this.getSimulationData(simulationIndex).then(function (ageData) {
-    //     _this.line.removeContainer();
-    //     _this.line.displayData(ageData);
-    //   });
-
-    //   this.changeParallelChart();
-    // }
   }
 
   makeDataforLineVis(ageData, simulation, age) {
@@ -196,7 +190,11 @@ export class Controller {
     return ageData;
   }
 
-  async getSimulationData(simulation) {
+  isCallback(callback) {
+    return callback && typeof callback == "function";
+  }
+
+  async getSimulationData(simulation, callback) {
     this.simulationIndex = simulation;
 
     var allAgeData = [];
@@ -213,7 +211,12 @@ export class Controller {
 
     this.simulationData = allAgeData;
 
-    return this.simulationData;
+    if (this.isCallback(callback)) {
+      callback.call(this.simulationData);
+    }
+    else {
+      return this.simulationData;
+    }
   }
 
   async getMetaData() {
@@ -232,48 +235,64 @@ export class Controller {
     return res.data;
   }
 
-  async getPolylineData() {
+  async getPolylineData(callback) {
     const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data?path=data/output/simu_${this.simulationIndex}/avgPolyline.csv`;
     const res = await axios.get(apiUrl);
-    return res.data;
+    if (this.isCallback(callback)) {
+      callback.call(res.data);
+    }
+    else {
+      return res.data;
+    }
+
   }
 
-  async getSimulationAgeData() {
+  async getSimulationAgeData(callback) {
     const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data?path=data/output/simu_${this.simulationIndex}/age_${this.ageIndex}.csv`;
     const res = await axios.get(apiUrl);
     const ageData = res.data;
-    return this.makeDataforParallelVis(ageData, this.ageIndex);
+    const data = this.makeDataforParallelVis(ageData, this.ageIndex);
+    if (this.isCallback(callback)) {
+      callback.call(data);
+    }
+    else {
+      return data;
+    }
+
+  }
+
+  async drawParallelChart(visualizationData, polylineData) {
+    const controller = this.parallel2.removeContainer();
+
+    var parallel2 = visFactory("ParallelChart", {
+      chartElement: "parallel_chart",
+      data: [
+        {
+          values: visualizationData,
+          displayedDimensions: [
+            "age_group",
+            "day",
+            "S_mean",
+            "E_mean",
+            "H_mean",
+            "R_mean",
+            "D_mean",
+            "I_mean",
+            "IS_mean",
+          ],
+          additionalData: polylineData,
+        },
+      ],
+      controller: controller,
+    });
+
+    this.parallel2 = parallel2;
   }
 
   async changeParallelChart() {
-    var _this = this;
-    this.getSimulationAgeData().then(function (visualizationData) {
-      _this.getPolylineData().then(function (polylineData) {
-        _this.parallel2.removeContainer().then(function (controller) {
-          var parallel2 = visFactory("ParallelChart", {
-            chartElement: "parallel_chart",
-            data: [
-              {
-                values: visualizationData,
-                displayedDimensions: [
-                  "age_group",
-                  "day",
-                  "S_mean",
-                  "E_mean",
-                  "H_mean",
-                  "R_mean",
-                  "D_mean",
-                  "I_mean",
-                  "IS_mean",
-                ],
-                additionalData: polylineData,
-              },
-            ],
-            controller: controller,
-          });
-
-          _this.parallel2 = parallel2;
-        });
+    this.getSimulationAgeData().then(visualizationData => {
+      this.getPolylineData().then(polylineData => {
+        this.drawParallelChart(visualizationData, polylineData);
       });
     });
   }

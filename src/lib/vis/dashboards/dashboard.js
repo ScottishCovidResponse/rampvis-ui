@@ -60,7 +60,7 @@ dashboard.VIS_PROGRESS = "progress";
 
 
 var LINE_1 = 10;
-var LINE_2 = 30;
+var LINE_2 = 34;
 
 // Cartogram/Tilemap
 var TILE_WIDTH = 40;
@@ -218,6 +218,12 @@ var createWidget = function (parentHtmlElementId, id, config) {
   
   if (!widgetConfig.abbreviate) 
     widgetConfig.abbreviate = false;
+
+  if(!widgetConfig.normalized)
+    widgetConfig.normalized = false;
+  
+  if(!widgetConfig.trend)
+    widgetConfig.trend = false;
   
   // include, once LAYOUT has been implemented as a variable
   // if(!widgetConfig.layout)
@@ -285,7 +291,7 @@ var createWidget = function (parentHtmlElementId, id, config) {
       widgetConfig.color,
       data,
       widgetConfig.mode,
-      normalized,
+      widgetConfig.normalized,
       widgetConfig.link ? widgetConfig.link : null,
       widgetConfig.unit,
       widgetConfig.detail,
@@ -302,7 +308,7 @@ var createWidget = function (parentHtmlElementId, id, config) {
       widgetConfig.color,
       data,
       widgetConfig.mode,
-      normalized,
+      widgetConfig.normalized,
       widgetConfig.link ? widgetConfig.link : null,
       widgetConfig.unit,
       widgetConfig.detail,
@@ -392,6 +398,37 @@ dashboard.visualizeTime = function (
       widgetConfig.unit,
     );
 
+    // showing the highest value doesn't make sense 
+    // for cumulative data 
+    // if(widgetConfig.mode != dashboard.MODE_CUMULATIVE){
+      dashboardComponents.visualizeValue(
+        svg,
+        widgetConfig.data,
+        widgetConfig.dataField,
+        widgetConfig.dateField,
+        widgetConfig.unit,
+        WIDTH - 270,
+        baseline_title + 25,
+        widgetConfig.color, 
+        widgetConfig.abbreviate, 
+        'max', 
+        LINE_1
+      );
+      dashboardComponents.visualizeValue(
+        svg,
+        widgetConfig.data,
+        widgetConfig.dataField,
+        widgetConfig.dateField,
+        widgetConfig.unit,
+        WIDTH - 270,
+        baseline_title + 25,
+        widgetConfig.color, 
+        widgetConfig.abbreviate, 
+        'min', 
+        LINE_2
+      );
+    // }
+
     wrapperDiv.append("br");
 
     var mark = "line";
@@ -401,7 +438,6 @@ dashboard.visualizeTime = function (
     var scale;
     if (widgetConfig.mode == this.MODE_PERCENT) scale = { domain: [0, 100] };
 
-    console.log('>> widgetConfig.data:', widgetConfig.data, widgetConfig.dataField)
     var vegaLinechart = {
       $schema: "https://vega.github.io/schema/vega-lite/v5.json",
       data: {
@@ -782,9 +818,42 @@ dashboard.visualizeProgress = function (
 
 
 
-/////////////////////////////
-/// VISULIZATION FUNCTION ///
-/////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////
+/// VISULIZATION COMPONENTS ///
+///////////////////////////////
 
 dashboardComponents.visualizeNumber = function (
   svg,
@@ -986,6 +1055,77 @@ dashboardComponents.visualizeTrendArrow = function (svg, data, x, y, field, colo
     .attr("y2", 15)
     .attr("class", "arrow")
     .attr("stroke", color);
+};
+
+
+dashboardComponents.visualizeValue = function (
+  svg, 
+  data, 
+  dataField,
+  dateField, 
+  unit,
+  x, 
+  y, 
+  color,
+  abbreviate,
+  type, 
+  line
+  )
+  {
+
+    var val = 0
+    var valDate = ''
+    if(type == 'max'){
+      for(var i in data)
+      {
+        if(parseFloat(data[i][dataField]) > val){
+          val = parseFloat(data[i][dataField]);
+          valDate = data[i][dateField]
+        }
+      }
+    }else if(type == 'min'){
+      val = 999999999;
+      for(var i in data)
+      {
+        if(parseFloat(data[i][dataField]) <= val){
+          val = parseFloat(data[i][dataField]);
+          valDate = data[i][dateField]
+        }
+      }
+    }
+    // abbreviate if required
+    if (val > 1000000 && abbreviate) {
+      val = val / 1000000;
+      unit = "M " + unit;
+    } else if (val > 1000 && abbreviate) {
+      val = val / 1000;
+      unit = "k " + unit;
+    }
+
+    val = Math.round(val * 10) / 10;
+    val = val.toLocaleString(undefined);
+  
+    var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
+
+    g.append("text")
+      .text(type.charAt(0).toUpperCase() + type.slice(1) + ':')
+      .attr("x", 0)
+      .attr("y", line)
+      .style('text-anchor', 'end')
+      .attr("class", "thin")
+    var valText = g.append("text")
+      .text(val + unit)
+      .attr("x", 5)
+      .attr("y", line)
+      .style('fill', color)
+      .style('font-weight', '300')
+      .attr("class", "thin");
+    g.append("text")
+      .text(valDate)
+      .attr("x", valText.node().getBBox().width + 7)
+      .attr("y", line)
+      .attr("class", "thin");
+
 };
 
 dashboardComponents.visualizeMiniChart = function (
