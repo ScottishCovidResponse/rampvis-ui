@@ -17,7 +17,7 @@ export class UncertaintyClusterSampleAndMean {
 
   constructor(options) {
 
-    const data = options.data
+    const data = options.data[0].values
     let factor = 1 / 3.5
     data.processed.length < 4 ? factor = 1 / data.processed.length : factor = 1 / 3.5
     console.log(data)

@@ -32,7 +32,7 @@ export class UncertaintySampleAndMean {
       .style("height", CHART_HEIGHT + "px");
 
     //Load JSON containing all time series and mean time serie
-    const data = options.data;
+    const data = options.data[0].values;
     console.log("data is")
     console.log(data)
     //unpack the data for all the time series and for the mean time series 
