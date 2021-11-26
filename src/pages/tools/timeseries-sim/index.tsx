@@ -5,9 +5,8 @@ import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import axios from "axios";
 import FirstForm from "src/components/timeseries-sim/FirstForm";
 import AdvancedFilter from "src/components/timeseries-sim/AdvancedFilter";
-import SubmitButton from "src/components/timeseries-sim/SubmitButton";
-import GridItem from "src/components/timeseries-sim/GridItem";
-import { MultiLinePlot } from "src/components/timeseries-sim/plotfunctions/multilineplot.js";
+import SearchButton from "src/components/timeseries-sim/SearchButton";
+import { SegmentedMultiLinePlot } from "src/components/timeseries-sim/plotfunctions/segmentedmultilineplot";
 import {
   covidIndicators,
   similarityMeasures,
@@ -15,13 +14,14 @@ import {
 } from "src/components/timeseries-sim/variables/variables";
 import { useStyles } from "src/components/timeseries-sim/style/style";
 import GraphArea from "src/components/timeseries-sim/GraphArea";
-
+import GraphTitle from "src/components/timeseries-sim/GraphTitle";
+import { alignmentPlot } from "src/components/timeseries-sim/plotfunctions/alignmentplot";
 const API = process.env.NEXT_PUBLIC_API_PY;
 
 //first run object initalization
 const initialFirstRunState = {
-  targetCountry: "United Kingdom",
-  firstDate: "2021-08-02",
+  targetCountry: "France",
+  firstDate: "2021-07-02",
   lastDate: "2021-08-16",
   indicator: "new_cases",
   method: "euclidean",
@@ -69,11 +69,16 @@ const TimeseriesSim = () => {
     }
   };
 
+  const plotSwitch = (response, firstRunForm) => {
+    alignmentPlot(response, firstRunForm);
+    SegmentedMultiLinePlot(response, firstRunForm);
+  };
+
   const fetchAPI = () => {
     const apiUrl = `${API}/timeseries-sim-search/`;
     axios
       .post(apiUrl, firstRunForm)
-      .then((response) => MultiLinePlot(response, firstRunForm));
+      .then((response) => plotSwitch(response, firstRunForm));
   };
 
   return (
@@ -81,55 +86,49 @@ const TimeseriesSim = () => {
       <Helmet>
         <title>Timeseries Similarity</title>
       </Helmet>
-      <Box
-        sx={{
-          backgroundColor: "background.default",
-          minHeight: "100%",
-          py: 8,
-          display: "grid",
-          gap: 1,
-          gridTemplateColumns: "0.2fr 1fr",
-        }}
-      >
-        <GridItem>
-          <Card>
-            <CardContent>
-              <FirstForm
-                className={classes.firstRunForm}
-                form={firstRunForm}
-                onChange={multipleHandleChange}
-                indicator={covidIndicators}
-                method={similarityMeasures}
-              />
-              <AdvancedFilter
-                className={classes.firstRunForm}
-                open={advancedFilterClickOpen}
-                state={advancedFilterPopup}
-                close={advancedFilterClickClose}
-                continents={continents}
-                form={firstRunForm}
-                onChange={multipleHandleChange}
-              />
-              <SubmitButton
-                className={classes.firstRunForm}
-                onClick={fetchAPI}
-              />
-            </CardContent>
-          </Card>
-        </GridItem>
+      <Box>
+        <Grid>
+          <Grid sx={{ width: 300 }}>
+            <Card>
+              <CardContent>
+                <FirstForm
+                  className={classes.firstRunForm}
+                  form={firstRunForm}
+                  onChange={multipleHandleChange}
+                  indicator={covidIndicators}
+                  method={similarityMeasures}
+                />
+                <AdvancedFilter
+                  className={classes.firstRunForm}
+                  open={advancedFilterClickOpen}
+                  state={advancedFilterPopup}
+                  close={advancedFilterClickClose}
+                  continents={continents}
+                  form={firstRunForm}
+                  onChange={multipleHandleChange}
+                />
+                <SearchButton
+                  className={classes.searchButton}
+                  onClick={fetchAPI}
+                />
+              </CardContent>
+            </Card>
+          </Grid>
 
-        <GridItem>
-          <Card>
-            <CardContent>
-              <GraphArea
-                containerClass={classes.container}
-                legendClass={classes.legend}
-                chartsClass={classes.charts}
-              />
-              <Grid id="slider-range"></Grid>
-            </CardContent>
-          </Card>
-        </GridItem>
+          <Grid>
+            <Card id="segmentedcard" sx={{ visibility: "hidden" }}>
+              <GraphTitle />
+              <GraphArea />
+            </Card>
+          </Grid>
+          <Grid>
+            <Card id="alignmentcard" sx={{ width: 1, visibility: "hidden" }}>
+              <CardContent>
+                <div id="alignmentchart" />
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
       </Box>
     </>
   );
