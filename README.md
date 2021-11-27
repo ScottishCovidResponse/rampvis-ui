@@ -93,5 +93,6 @@ This requires [Docker](https://www.docker.com/products/docker-desktop).
 - Using [React MUI dashboard style](https://mui.com)
 
 ## Earlier Prototypes
- - [v.0.1 - Angular](https://github.com/ScottishCovidResponse/rampvis-ui-0.1)
- - [v.0.2 - Plain HTML/CSS](https://github.com/ScottishCovidResponse/rampvis-ui-0.2.git)
+
+- [v.0.1 - Angular](https://github.com/ScottishCovidResponse/rampvis-ui-0.1)
+- [v.0.2 - Plain HTML/CSS](https://github.com/ScottishCovidResponse/rampvis-ui-0.2.git)
