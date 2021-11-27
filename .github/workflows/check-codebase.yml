@@ -48,7 +48,7 @@ jobs:
             exit 1
           fi
 
-      - name: Run yarn lint:tsc (exit code is ignored)
+      - name: Run yarn lint:tsc
         if: ${{ success() || failure() }}
         run: |
           if ! yarn lint:tsc; then
@@ -60,7 +60,6 @@ jobs:
             echo 'ℹ️ ℹ️ ℹ️'
             exit 1
           fi
-        continue-on-error: true ## TODO: remove after fixing all TypeScript compiler problems
 
         ## TODO: Replace with `yarn fix:yarn-dedupe` after upgrading to Yarn v3+
         ## https://yarnpkg.com/cli/dedupe
