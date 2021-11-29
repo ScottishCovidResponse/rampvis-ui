@@ -10,6 +10,8 @@ import { MirroredStackedAreaChart } from "./mirrored-stacked-area-chart";
 import { MirroredStackedBarChart } from "./mirrored-stacked-bar-chart";
 import { SensitivityStackedBarChart } from "./sensitivity-stacked-bar-chart";
 import { RiskMonitoring } from "./risk-monitoring";
+import { UncertaintySampleAndMean } from "./uncertainty-sample-and-mean";
+import { UncertaintyClusterSampleAndMean } from "./uncertainty-cluster-sample-and-mean";
 
 // Dashboards
 import { CouncilOverview } from "./dashboards/council-overview";
@@ -41,6 +43,10 @@ export const visFactory = (type, args) => {
   if (type === "SensitivityStackedBarChart")
     return new SensitivityStackedBarChart(args);
   if (type === "RiskMonitoring") return new RiskMonitoring(args);
+  if (type == "UncertaintySampleAndMean")
+    return new UncertaintySampleAndMean(args);
+  if (type == "UncertaintyClusterSampleAndMean")
+    return new UncertaintyClusterSampleAndMean(args);
 
   // Dashboards
   if (type === "CouncilOverview") return new CouncilOverview(args);
