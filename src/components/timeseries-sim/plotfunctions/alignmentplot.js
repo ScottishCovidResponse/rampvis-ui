@@ -7,8 +7,8 @@ export function alignmentPlot(response, firstRunForm) {
   const formatTime = d3.timeFormat("%b %d"); // date formatter (date to str)
 
   const width = 1400;
-  const height = 200;
-  const margin = 10;
+  const height = 150;
+  const margin = 5;
   const adj = 50;
 
   const queryColor = "#FF6600";
@@ -22,35 +22,34 @@ export function alignmentPlot(response, firstRunForm) {
   // create individual containers for individual charts <div> <svg/> </div>
 
   const GraphData = [...response.data];
-  GraphData.map(function (streams) {
-    // Graph Data which includes additional attributes for drawing
 
-    streams.maxValue = Math.max(
-      ...streams.values.map((values) => values.value),
-    );
-    streams.minValue = Math.min(
-      ...streams.values.map((values) => values.value),
-    );
-    streams.dateRange = streams.values
-      .map((values) => values.date)
-      .map(parseTime);
-    streams.xScale = d3
-      .scaleTime()
-      .range([0, width])
-      .domain(d3.extent(streams.dateRange));
-    streams.yScale = d3
-      .scaleLinear()
-      .rangeRound([height, 0])
-      .domain([streams.minValue, streams.maxValue]);
-    streams.xAxis = d3
-      .axisBottom(streams.xScale)
-      .tickFormat((d, i) => streams.dateRange[i])
-      .tickFormat(formatTime);
-    streams.yAxis = d3.axisLeft(streams.yScale).ticks(3);
+  const dateRange = GraphData
+    .filter((streams) => streams.isQuery)[0]
+    .values.map((values) => values.date)
+    .map(parseTime); // get query dates and parse
+  
+  const xScale = d3.scaleTime().range([0, width]).domain(d3.extent(dateRange)); //xscale for dates
+  const xAxis = d3.axisBottom(xScale); //x-axis on the bottom
+  xAxis.tickFormat((d, i) => dateRange[i]); //x-ticks alignment with data
+  xAxis.tickFormat(formatTime); //x-ticks formating
 
-    return streams;
-  });
+  const max = Math.max(
+    ...GraphData.map((streams) =>
+      Math.max(...streams.values.map((values) => values.value)),
+    ),
+  ); //get max value for y range
+  const min = Math.min(
+    ...GraphData.map((streams) =>
+      Math.min(...streams.values.map((values) => values.value)),
+    ),
+  ); 
 
+  const yScale =  d3.scaleLinear()
+  .rangeRound([height, 0])
+  .domain([min, max]);
+
+  const yAxis = d3.axisLeft(yScale).ticks(3);
+  
   let layout = d3 // creating individual regions for alignment plots
     .select("#alignmentchart")
     .selectAll("div")
@@ -115,8 +114,8 @@ export function alignmentPlot(response, firstRunForm) {
     .attr("id", (d, i) => "highlightArea" + i);
 
   GraphData.map(function (streams, i) {
-    d3.select("#xaxis" + i).call(streams.xAxis); // call individual xaxis properties
-    d3.select("#yaxis" + i).call(streams.yAxis); // call individual yaxis properties
+    d3.select("#xaxis" + i).call(xAxis); // call individual xaxis properties
+    d3.select("#yaxis" + i).call(yAxis); // call individual yaxis properties
     d3.select("#path" + i) // add lines
       .datum(streams.values)
       .attr("fill", "none")
@@ -127,10 +126,10 @@ export function alignmentPlot(response, firstRunForm) {
         d3
           .line()
           .x(function (d) {
-            return streams.xScale(parseTime(d.date));
+            return xScale(parseTime(d.date));
           })
           .y(function (d) {
-            return streams.yScale(d.value);
+            return yScale(d.value);
           }),
       );
     d3.select("#label" + i) // add labels at the end of the lines
@@ -142,9 +141,9 @@ export function alignmentPlot(response, firstRunForm) {
       .attr("transform", function (d) {
         return (
           "translate(" +
-          streams.xScale(streams.dateRange[streams.dateRange.length - 1]) +
+          xScale(dateRange[dateRange.length - 1]) +
           "," +
-          streams.yScale(d.value.value) +
+          yScale(d.value.value) +
           ")"
         );
       })
@@ -182,10 +181,10 @@ export function alignmentPlot(response, firstRunForm) {
         d3
           .line()
           .x(function (d) {
-            return streams.xScale(parseTime(d.date));
+            return xScale(parseTime(d.date));
           })
           .y(function (d) {
-            return streams.yScale(d.value);
+            return yScale(d.value);
           })
 
       );
@@ -199,18 +198,22 @@ export function alignmentPlot(response, firstRunForm) {
         d3
           .area()
           .x(function (d) {
-            return streams.xScale(parseTime(d.date));
+            return xScale(parseTime(d.date));
           })
           .y1(function (d) {
-            return streams.yScale(streams.maxValue);
+            return yScale(max);
           })
           .y0(function () {
-            return streams.yScale(streams.minValue);
+            return yScale(min);
           }),
       );
 
   });
 
   d3.select("#alignmentcard").style("visibility","visible");
+
+
+  //--Console/Prot--//
+
 
 }
