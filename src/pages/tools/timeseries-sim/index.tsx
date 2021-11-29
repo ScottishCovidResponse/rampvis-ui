@@ -19,7 +19,7 @@ import { alignmentPlot } from "src/components/timeseries-sim/plotfunctions/align
 const API = process.env.NEXT_PUBLIC_API_PY;
 
 //first run object initalization
-let today = new Date();
+const today = new Date();
 
 const initialFirstRunState = {
   targetCountry: "France",
