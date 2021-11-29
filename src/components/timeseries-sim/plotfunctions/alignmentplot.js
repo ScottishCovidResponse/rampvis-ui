@@ -211,9 +211,5 @@ export function alignmentPlot(response, firstRunForm) {
   });
 
   d3.select("#alignmentcard").style("visibility","visible");
-
-
-  //--Console/Prot--//
-
-
+  
 }

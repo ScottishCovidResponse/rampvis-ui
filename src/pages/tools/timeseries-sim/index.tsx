@@ -19,6 +19,8 @@ import { alignmentPlot } from "src/components/timeseries-sim/plotfunctions/align
 const API = process.env.NEXT_PUBLIC_API_PY;
 
 //first run object initalization
+let today = new Date();
+
 const initialFirstRunState = {
   targetCountry: "France",
   firstDate: "2021-07-02",
@@ -28,7 +30,7 @@ const initialFirstRunState = {
   numberOfResults: 10,
   minPopulation: 600000,
   startDate: "2021-01-01",
-  endDate: "2021-10-01",
+  endDate: `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`,
   continentCheck: {
     Africa: false,
     Asia: false,
