@@ -1,14 +1,3 @@
-/* eslint-disable spaced-comment */
-/* eslint-disable one-var */
-/* eslint-disable prefer-arrow-callback */
-/* eslint-disable prefer-const */
-/* eslint-disable func-names */
-/* eslint-disable prefer-template */
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable prefer-spread */
-/* eslint-disable @typescript-eslint/lines-between-class-members */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import * as d3 from "d3";
 import Common from "./common";
 
