@@ -27,6 +27,16 @@ export class DashboardUK {
   CHART_HEIGHT = 400;
 
   constructor(options) {
+    // Phong added - to remove
+    // @Ben: please get data this way rather than relying on index in options.data
+    console.log('PHE_CUM_ADMISSIONS', Data.from(options.data, Data.Fields.PHE_CUM_ADMISSIONS));
+    // end Phong added - to remove
+
+
+
+
+
+
     // creates the main div. don't touch
     var div = d3
       .select("#" + options.chartElement)
