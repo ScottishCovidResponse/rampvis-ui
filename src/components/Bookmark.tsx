@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { FC, useCallback, useState, useEffect } from "react";
-import { createStyles, IconButton, Theme, makeStyles } from "@material-ui/core";
-import BookmarkIcon from "@material-ui/icons/Bookmark";
-import PropTypes from "prop-types";
-import { orange, grey } from "@material-ui/core/colors";
+import { makeStyles } from "@mui/styles";
+import { createStyles, IconButton, Theme } from "@mui/material";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import { orange, grey } from "@mui/material/colors";
 import ShowHideGuard from "src/components/auth/guards/ShowHideGuard";
-import { apiService } from "src/utils/apiService";
-import useAuth from "src/hooks/useAuth";
+import { apiService } from "src/utils/ApiService";
+// import useAuth from "src/hooks/useAuth";
 
 const useStyles = makeStyles((theme) => ({
   bookmarkedStyle: {
@@ -23,16 +23,16 @@ const useStyles = makeStyles((theme) => ({
 const Bookmark: FC<any> = ({ pageId }) => {
   const classes = useStyles();
   const [isBookmarked, setBookmark] = useState<boolean>(false);
-  const { user } = useAuth();
+  // const { user } = useAuth();
 
-  if (user?.bookmarks?.includes(pageId)) {
-    setBookmark(true);
-  }
-  console.log("Bookmark: isBookmarked = ", isBookmarked);
+  // if (user?.bookmarks?.includes(pageId)) {
+  //   setBookmark(true);
+  // }
+  // console.log("Bookmark: isBookmarked = ", isBookmarked);
 
   const onClickBookmark = async () => {
     console.log("Bookmark: !isBookmarked = ", !isBookmarked);
-    const res = await apiService.post<any>(`/me/bookmark`, {
+    const res = await apiService.post(`/me/bookmark`, {
       pageId,
       status: !isBookmarked,
     });
@@ -40,7 +40,7 @@ const Bookmark: FC<any> = ({ pageId }) => {
     //   setBookmark(true);
     // }
     // TODO update user
-    console.log(res);
+    console.log("Bookmark: res = ", res);
   };
 
   return (
@@ -56,10 +56,6 @@ const Bookmark: FC<any> = ({ pageId }) => {
       </IconButton>
     </ShowHideGuard>
   );
-};
-
-Bookmark.propTypes = {
-  pageId: PropTypes.any,
 };
 
 export default Bookmark;

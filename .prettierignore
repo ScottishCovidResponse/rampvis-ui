@@ -1,21 +1,17 @@
-####################
-## Prettier-specific
-####################
+#######################
+## Specific to Prettier
+#######################
 
-# extensions
-*.*
-!*.js
+# Ignore all files (but still allow sub-folder scanning)
+*
+!*/
+
+# Allow certain file types
 !*.json
 !*.md
 !*.ts
 !*.tsx
 !*.yml
-
-# folders with . (compensates *.*)
-!*.*/
-
-# special cases
-public/_redirects
 
 ########################
 ## Same as in .gitignore
@@ -37,6 +33,7 @@ public/_redirects
 # misc
 .DS_Store
 .eslintcache
+tsconfig.tsbuildinfo
 /.env.local
 /.env.development.local
 /.env.test.local
@@ -81,3 +78,6 @@ error.log
 
 .next
 out
+
+public/static/mock-images
+public/static/mock-images/thumbnails

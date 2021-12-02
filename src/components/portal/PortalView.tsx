@@ -1,51 +1,19 @@
 import React, { FC } from "react";
-import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
-import ImageList from "@material-ui/core/ImageList";
-import ImageListItem from "@material-ui/core/ImageListItem";
-import ImageListItemBar from "@material-ui/core/ImageListItemBar";
-import ListSubheader from "@material-ui/core/ListSubheader";
-import IconButton from "@material-ui/core/IconButton";
-import BookmarkIcon from "@material-ui/icons/Bookmark";
-import { orange } from "@material-ui/core/colors";
-import { Grid } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
+import { Theme, Grid } from "@mui/material";
 import PortalItem from "./PortalItem";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: "flex",
-      flexWrap: "wrap",
-      justifyContent: "space-around",
-      overflow: "hidden",
-      backgroundColor: theme.palette.background.paper,
-    },
-    // imageList: {
-    //   width: 1000,
-    //   height: 1000,
-    // },
-    icon: {
-      color: orange,
-    },
-  }),
-);
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    overflow: "hidden",
+    backgroundColor: theme.palette.background.paper,
+    padding: "10px 10px 10px 0px",
+  },
+}));
 
-/**
- * The example data is structured as follows:
- *
- * import image from 'path/to/image.jpg';
- * [etc...]
- *
- * const itemData = [
- *   {
- *     img: image,
- *     title: 'Image',
- *     author: 'author',
- *   },
- *   {
- *     [etc...]
- *   },
- * ];
- */
 interface PortalViewProps {
   data: any[];
 }
@@ -54,17 +22,16 @@ const PortalView: FC<PortalViewProps> = ({ data = [] }) => {
   const classes = useStyles();
   console.log("PortalView: data = ", data);
 
-  data = data.map((d) => ({
-    ...d,
-    img: `/static/mock-images/${d.id}.jpeg`,
-  }));
-
   return (
     <>
-      <Grid alignItems="stretch" className={classes.root}>
-        {data.map((d, index) => (
-          // TODO: Consider using d.id (or similar) instead of index for better DOM diffing
-          <PortalItem key={index} data={d} />
+      <Grid container spacing={3} className={classes.root}>
+        {data.map((d) => (
+          <PortalItem
+            key={d.id}
+            id={d.id}
+            image={`/static/mock-images/thumbnails/${d.id}.jpeg`}
+            title={d.title}
+          />
         ))}
       </Grid>
     </>

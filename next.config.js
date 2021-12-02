@@ -4,13 +4,4 @@ module.exports = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  async redirects() {
-    return [
-      {
-        source: "/",
-        destination: "/home",
-        permanent: false,
-      },
-    ];
-  },
 };

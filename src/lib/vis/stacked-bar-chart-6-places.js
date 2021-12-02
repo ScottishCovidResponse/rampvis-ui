@@ -21,12 +21,21 @@
 import * as d3 from "d3";
 import Common from "./common";
 import { pv } from "./pv";
+import { getLinks } from "src/utils/LinkService";
 
 export class StackedBarChartWith6Places {
   CHART_WIDTH = 1000;
   CHART_HEIGHT = 400;
 
   constructor(options) {
+
+    console.log(`StackedBarChartWith6Places: options.data = `, options.data);
+    for (let d of options.data) {
+       getLinks().then(link => {
+        console.log(`StackedBarChartWith6Places: data id = ${d.id}, link = ${link}`);
+      })
+    }
+
     const data = this.processData(options.data);
     const container = d3.select("#" + options.chartElement);
     container.innerHTML = "";

@@ -1,11 +1,9 @@
 import { useState } from "react";
 import type { FC, ReactNode } from "react";
+import { Box, Button, Collapse, ListItem, ListItemProps } from "@mui/material";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { NavLink } from "src/components/dashboard-layout/NavLink";
-import PropTypes from "prop-types";
-import { Box, Button, Collapse, ListItem } from "@material-ui/core";
-import type { ListItemProps } from "@material-ui/core";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 
 interface NavItemProps extends ListItemProps {
   active?: boolean;
@@ -18,19 +16,17 @@ interface NavItemProps extends ListItemProps {
   title: string;
 }
 
-const NavItem: FC<NavItemProps> = (props) => {
-  const {
-    active,
-    children,
-    depth,
-    icon,
-    info,
-    open: openProp,
-    path,
-    title,
-    ...other
-  } = props;
-
+const NavItem: FC<NavItemProps> = ({
+  active = false,
+  children,
+  depth,
+  icon,
+  info,
+  open: openProp = false,
+  path,
+  title,
+  ...rest
+}) => {
   const [open, setOpen] = useState<boolean>(openProp);
 
   const handleToggle = (): void => {
@@ -52,7 +48,7 @@ const NavItem: FC<NavItemProps> = (props) => {
           display: "block",
           py: 0,
         }}
-        {...other}
+        {...rest}
       >
         <Button
           endIcon={
@@ -124,22 +120,6 @@ const NavItem: FC<NavItemProps> = (props) => {
       </NavLink>
     </ListItem>
   );
-};
-
-NavItem.propTypes = {
-  active: PropTypes.bool,
-  children: PropTypes.node,
-  depth: PropTypes.number.isRequired,
-  icon: PropTypes.node,
-  info: PropTypes.node,
-  open: PropTypes.bool,
-  path: PropTypes.string,
-  title: PropTypes.string.isRequired,
-};
-
-NavItem.defaultProps = {
-  active: false,
-  open: false,
 };
 
 export default NavItem;

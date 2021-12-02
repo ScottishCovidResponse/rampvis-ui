@@ -37,6 +37,8 @@ export class Data {
       "vaccination&component=daily_health_board",
     HEALTH_BOARD_VACCINE_SEX_AGEGROUP_ALL:
       "vaccination&component=daily_health_boards",
+
+    PHE_CUM_ADMISSIONS: "product=phe&component=cumAdmissions&"
   };
 
   static from(data, field) {

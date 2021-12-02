@@ -1,6 +1,5 @@
 import type { FC, ReactNode } from "react";
-import { Navigate } from "react-router-dom";
-import PropTypes from "prop-types";
+import { useRouter } from "next/router";
 import useAuth from "src/hooks/useAuth";
 
 interface GuestGuardProps {
@@ -9,16 +8,14 @@ interface GuestGuardProps {
 
 const GuestGuard: FC<GuestGuardProps> = ({ children }) => {
   const { isAuthenticated } = useAuth();
+  const router = useRouter();
 
   if (isAuthenticated) {
-    return <Navigate to="/pages/example" />;
+    router.push("/pages/example");
+    return <></>;
   }
 
   return <>{children}</>;
-};
-
-GuestGuard.propTypes = {
-  children: PropTypes.node,
 };
 
 export default GuestGuard;

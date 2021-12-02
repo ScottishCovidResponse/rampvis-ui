@@ -1,23 +1,19 @@
 import { useEffect } from "react";
 import type { FC } from "react";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import PropTypes from "prop-types";
-import { Avatar, Box, Divider, Drawer, Typography } from "@material-ui/core";
-import type { Theme } from "@material-ui/core";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import TimelineIcon from "@material-ui/icons/Timeline";
-import BookmarksIcon from "@material-ui/icons/Bookmarks";
-import SettingsIcon from "@material-ui/icons/Settings";
-import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
-import PlaceIcon from "@material-ui/icons/Place";
-import AssessmentIcon from "@material-ui/icons/Assessment";
-import DonutSmallIcon from "@material-ui/icons/DonutSmall";
-import SearchIcon from "@material-ui/icons/Search";
-import AllInboxIcon from "@material-ui/icons/AllInbox";
-import Filter1Icon from "@material-ui/icons/Filter1";
-import useAuth from "src/hooks/useAuth";
+import { Box, Divider, Drawer, Typography } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import TimelineIcon from "@mui/icons-material/Timeline";
+import BookmarksIcon from "@mui/icons-material/Bookmarks";
+import PlaceIcon from "@mui/icons-material/Place";
+import AssessmentIcon from "@mui/icons-material/Assessment";
+import DonutSmallIcon from "@mui/icons-material/DonutSmall";
+import SearchIcon from "@mui/icons-material/Search";
+import AllInboxIcon from "@mui/icons-material/AllInbox";
+import Filter2Icon from "@mui/icons-material/Filter2";
+import Filter1Icon from "@mui/icons-material/Filter1";
 import Logo from "src/components/Logo";
 import NavSection from "src/components/dashboard-layout/NavSection";
 import Scrollbar from "src/components/Scrollbar";
@@ -108,53 +104,54 @@ const sections = [
           {
             title: "Ensemble",
             path: "/tools/ensemble",
-            icon: <Filter1Icon fontSize="small" />,
+            icon: <Filter2Icon fontSize="small" />,
           },
         ],
       },
     ],
   },
-  {
+  /*{
     title: "",
     items: [
       {
-        title: "Development",
-        path: "/development/release",
-        icon: <ArrowForwardIosIcon fontSize="small" />,
+        title: "Propagated Pages",
+        path: "/propagated/release",
+        icon: <KeyboardArrowRightIcon fontSize="small" />,
         children: [
           {
             title: "Example",
-            path: "/development/example",
-            icon: <ArrowForwardIosIcon fontSize="small" />,
+            path: "/propagated/example",
+            icon: <KeyboardArrowRightIcon fontSize="small" />,
           },
           {
             title: "Review",
-            path: "/development/review",
-            icon: <ArrowForwardIosIcon fontSize="small" />,
+            path: "/propagated/review",
+            icon: <KeyboardArrowRightIcon fontSize="small" />,
           },
           {
             title: "Released",
-            path: "/development/release",
-            icon: <ArrowForwardIosIcon fontSize="small" />,
+            path: "/propagated/release",
+            icon: <KeyboardArrowRightIcon fontSize="small" />,
           },
         ],
       },
     ],
-  },
+  },*/
 ];
 
-const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
-  const { onMobileClose, openMobile } = props;
-  const router = useRouter();
-
-  const { user } = useAuth();
-  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up("lg"));
+const DashboardSidebar: FC<DashboardSidebarProps> = ({
+  onMobileClose,
+  openMobile,
+}) => {
+  const { asPath } = useRouter();
+  const theme = useTheme();
+  const screenIsMobile = !useMediaQuery(theme.breakpoints.up("md"));
 
   useEffect(() => {
-    if (openMobile && onMobileClose) {
+    if (screenIsMobile) {
       onMobileClose();
     }
-  }, [router.asPath]);
+  }, [screenIsMobile, onMobileClose, asPath]);
 
   const content = (
     <Box
@@ -200,7 +197,7 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
           {sections.map((section, sectionIndex) => (
             <NavSection
               key={sectionIndex}
-              pathname={router.asPath}
+              pathname={asPath}
               sx={{
                 "& + &": {
                   mt: 3,
@@ -214,7 +211,7 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
     </Box>
   );
 
-  if (lgUp) {
+  if (!screenIsMobile) {
     return (
       <Drawer
         anchor="left"
@@ -222,8 +219,6 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
         PaperProps={{
           sx: {
             backgroundColor: "background.paper",
-            // height: "calc(100% - 64px) !important",
-            // top: "64px !Important",
             height: "calc(100% - 0) !important",
             top: "0px !Important",
             width: 280,
@@ -252,11 +247,6 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
       {content}
     </Drawer>
   );
-};
-
-DashboardSidebar.propTypes = {
-  onMobileClose: PropTypes.func,
-  openMobile: PropTypes.bool,
 };
 
 export default DashboardSidebar;

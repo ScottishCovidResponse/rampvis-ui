@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import type { FC, ReactNode } from "react";
-import { experimentalStyled } from "@material-ui/core/styles";
+import { experimentalStyled } from "@mui/material";
 import DashboardNavbar from "./DashboardNavbar";
 import DashboardSidebar from "./DashboardSidebar";
 
@@ -21,7 +21,7 @@ const DashboardLayoutWrapper = experimentalStyled("div")(({ theme }) => ({
   flex: "1 1 auto",
   overflow: "hidden",
   paddingTop: "64px",
-  [theme.breakpoints.up("lg")]: {
+  [theme.breakpoints.up("md")]: {
     paddingLeft: "280px",
   },
 }));
@@ -44,13 +44,18 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
   const [isSidebarMobileOpen, setIsSidebarMobileOpen] =
     useState<boolean>(false);
 
+  const handleSidebarClose = useCallback(
+    (): void => setIsSidebarMobileOpen(false),
+    [],
+  );
+
   return (
     <DashboardLayoutRoot>
       <DashboardNavbar
         onSidebarMobileOpen={(): void => setIsSidebarMobileOpen(true)}
       />
       <DashboardSidebar
-        onMobileClose={(): void => setIsSidebarMobileOpen(false)}
+        onMobileClose={handleSidebarClose}
         openMobile={isSidebarMobileOpen}
       />
       <DashboardLayoutWrapper>

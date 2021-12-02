@@ -1,11 +1,10 @@
 import { createContext, useEffect, useReducer } from "react";
 import type { FC, ReactNode } from "react";
-import PropTypes from "prop-types";
 import jwt_decode from "jwt-decode";
 import { useRouter } from "next/router";
 import type { User } from "src/types/user";
 import { ITokenData } from "src/types/tokenData";
-import { apiService } from "src/utils/apiService";
+import { apiService } from "src/utils/ApiService";
 import { IDataStoredInToken } from "src/types/dataStoredInToken";
 
 interface State {
@@ -151,7 +150,7 @@ export const AuthProviderJWT: FC<AuthProviderProps> = (props) => {
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
-      const res: ITokenData = await apiService.post<any>(`/auth/login`, {
+      const res: ITokenData = await apiService.post(`/auth/login`, {
         email,
         password,
       });
@@ -171,7 +170,7 @@ export const AuthProviderJWT: FC<AuthProviderProps> = (props) => {
         },
       });
 
-      router.push(`/search`);
+      router.push(`/`);
     } catch (err) {
       console.error("AuthProviderJWT:login: error =", err);
     }
@@ -185,7 +184,7 @@ export const AuthProviderJWT: FC<AuthProviderProps> = (props) => {
 
   const me = async (): Promise<User> => {
     try {
-      return await apiService.get<any>(`/me`);
+      return await apiService.get(`/me`);
     } catch (err) {
       console.log("AuthProviderJWT:me: error = ", err);
       return err;
@@ -204,10 +203,6 @@ export const AuthProviderJWT: FC<AuthProviderProps> = (props) => {
       {children}
     </AuthContext.Provider>
   );
-};
-
-AuthProviderJWT.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export default AuthContext;

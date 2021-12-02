@@ -1,13 +1,8 @@
 import type { FC } from "react";
 import * as Yup from "yup";
 import { Formik } from "formik";
-import {
-  Alert,
-  Box,
-  Button,
-  FormHelperText,
-  TextField,
-} from "@material-ui/core";
+import { Box, Button, FormHelperText, TextField } from "@mui/material";
+
 import useAuth from "src/hooks/useAuth";
 import useMounted from "src/hooks/useMounted";
 
@@ -104,19 +99,6 @@ const LoginJWT: FC = (props) => {
               Log In
             </Button>
           </Box>
-          {/* <Box sx={{ mt: 2 }}>
-            <Alert severity="info">
-              <div>
-                Use
-                {' '}
-                <b>admin@user.org</b>
-                {' '}
-                and password
-                {' '}
-                <b>Password123!</b>
-              </div>
-            </Alert>
-          </Box> */}
         </form>
       )}
     </Formik>

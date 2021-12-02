@@ -1,14 +1,8 @@
 import type { FC } from "react";
-import Link from "next/link";
-import PropTypes from "prop-types";
-import { AppBar, Box, IconButton, Toolbar } from "@material-ui/core";
-import { experimentalStyled } from "@material-ui/core/styles";
-import type { AppBarProps } from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
+import { AppBar, Box, IconButton, Toolbar, AppBarProps } from "@mui/material";
+import { experimentalStyled } from "@mui/material/styles";
+import MenuIcon from "@mui/icons-material/Menu";
 import AccountPopover from "./AccountPopover";
-import Logo from "../Logo";
-import NotificationsPopover from "./NotificationsPopover";
-import ContentSearch from "./ContentSearch";
 
 interface DashboardNavbarProps extends AppBarProps {
   onSidebarMobileOpen?: () => void;
@@ -25,7 +19,6 @@ const DashboardNavbarRoot = experimentalStyled(AppBar)(({ theme }) => ({
     borderBottom: `1px solid ${theme.palette.divider}`,
     boxShadow: "none",
   }),
-  zIndex: theme.zIndex.drawer + 100,
 }));
 
 const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
@@ -39,7 +32,7 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
           onClick={onSidebarMobileOpen}
           sx={{
             display: {
-              lg: "none",
+              md: "none",
             },
           }}
         >
@@ -84,10 +77,6 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
       </Toolbar>
     </DashboardNavbarRoot>
   );
-};
-
-DashboardNavbar.propTypes = {
-  onSidebarMobileOpen: PropTypes.func,
 };
 
 export default DashboardNavbar;

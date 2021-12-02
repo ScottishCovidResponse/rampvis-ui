@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import type { ScrollBarProps as PerfectScrollbarProps } from "react-perfect-scrollbar";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 
 type ScrollbarProps = PerfectScrollbarProps;
 

@@ -93,4 +93,75 @@ export default class Common {
     total = 213px
     */
   static MAIN_CONTENT_GAP = 220;
+
+  static splitSides(data) {
+    const topData = [];
+    const bottomData = [];
+    const groups = [];
+    let firstValue = null;
+    data.forEach((d) => {
+      const tokens = Common.getValueField(d.values[0]).split("___");
+      d.splitAttribute = tokens[0];
+      d.group = tokens[1];
+
+      if (!firstValue || d.splitAttribute === firstValue) {
+        topData.push(d);
+        firstValue = d.splitAttribute;
+      } else {
+        bottomData.push(d);
+      }
+
+      if (!groups.includes(d.group)) {
+        groups.push(d.group);
+      }
+    });
+
+    return [topData, bottomData, groups];
+  }
+
+  static formatSide(data) {
+    // input has N streams, each stream has M dates,
+    // each date item has the following format {index: "2020-03-23", female___0 years: 0}
+    // Merge N streams together, each having index and N columns, i.e., convert to wide format
+    // Create an empty place holder before merging
+    let records = data[0].values.map((d) => ({
+      index: d.index,
+    }));
+
+    data.forEach(({ splitAttribute, values }) => {
+      values.forEach((v, i) => {
+        const field = Common.getValueField(v);
+        records[i][field.split("___")[1]] = v[field];
+        records[i].splitAttribute = splitAttribute;
+      });
+    });
+
+    // Date may have aggreate values like '2021'
+    records = records.filter((d) => d.index.length !== 4);
+
+    // Parse time
+    records.forEach((d) => {
+      d.label = d.index;
+      d.time = new Date(d.index);
+    });
+
+    return records;
+  }
+
+  static processDataMirroredChart(input) {
+    if (!input) {
+      return null;
+    }
+
+    const [topData, bottomData, groups] = this.splitSides(input);
+    const data = {
+      top: this.formatSide(topData),
+      bottom: this.formatSide(bottomData),
+      columns: groups,
+    };
+
+    console.log(data);
+
+    return data;
+  }
 }
