@@ -812,7 +812,175 @@ dashboard.visualizeProgress = function (
   barField,
   abbreviate,
 ) {
-  // TIAN
+  var random = Math.floor(Math.random() * 1000);
+  var wrapperDiv = d3
+  .select("#" + id)
+  .append("div")
+  .attr("id", "wrapperDiv" + random);
+
+  var svg = wrapperDiv
+  .append("svg")
+  .attr("height", 40)
+  .style("margin-bottom", 0);
+
+  dashboardComponents.setVisTitle(svg, title, link, detail, lastDate);
+  
+  if (detail == dashboard.DETAIL_HIGH) 
+  {
+    wrapperDiv.append("br");
+    
+    //width - 300
+    svg.attr("width", 300);
+    console.log(dataStream)
+
+    var vegaProgressChart = {
+      $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+      data: { 
+        values: dataStream,
+      },
+      layer: [{
+        mark: "bar",
+        encoding: {
+          x: {
+            field: dataField,
+            type: "quantitative",
+            scale: {"domain": [0.0, 100.0]},
+            title: "vaccinated population",
+            tickExtra: true,
+            tickBand: "extent"
+          },
+          color: { value: color }
+        },
+      }, {
+        mark: {
+          type: "text",
+          align: "center",
+          baseline: "middle",
+          fontSize: 20,
+          dx: 6
+        },
+        encoding: {
+          text: {
+            fontWeight: 900,
+            field: "percent", 
+            formatType:"number",
+            format: "~%"
+          },
+      }
+      }],
+      config: {
+        axis: {grid: true, tickBand: "extent"}
+      }, 
+    }
+    // dashboardComponents.visualizeTrendArrow(
+    //   svg,
+    //   england_newCasesRate,
+    //   500,
+    //   baseline_title + 25,
+    //   "cumCasesByPublishDateRate",
+    //   color,
+    //   mode,
+    //   unit,
+    // );
+  }
+  else if(detail == dashboard.DETAIL_MEDIUM){
+    wrapperDiv.append("br");
+    
+    //width - 300
+    svg.attr("width", 300);
+    console.log(dataStream)
+
+    var vegaProgressChart = {
+      $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+      data: { 
+        values: dataStream,
+      },
+      layer: [{
+        mark: "bar",
+        encoding: {
+          x: {
+            field: dataField,
+            type: "quantitative",
+            scale: {"domain": [0.0, 100.0]},
+            title: "vaccinated population",
+            tickExtra: true,
+            tickBand: "extent"
+          },
+          color: { value: color }
+        },
+      }, {
+        mark: {
+          type: "text",
+          align: "center",
+          baseline: "middle",
+          fontSize: 20,
+          dx: 6
+        },
+        encoding: {
+          text: {
+            fontWeight: 900,
+            field: "percent", 
+            formatType:"number",
+            format: "~%"
+          },
+      }
+      }],
+      config: {
+        axis: {grid: true, tickBand: "extent"}
+      }, 
+      
+    };
+  }
+  else if(detail == dashboard.DETAIL_LOW){
+    wrapperDiv.append("br");
+    
+    //width - 300
+    svg.attr("width", 300);
+
+    var vegaProgressChart = {
+      $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+      data: { 
+        values: dataStream
+      },
+      layer: [{
+        mark: "bar",
+        encoding: {
+          x: {
+            field: dataField,
+            type: "quantitative",
+            scale: {"domain": [0.0, 100.0]},
+            title: "vaccinated population",
+            axis: null
+          },
+          color: { value: color }
+        },
+      }, {
+        mark: {
+          type: "text",
+          align: "center",
+          baseline: "middle",
+          fontSize: 20,
+          dx: 6
+        },
+        encoding: {
+          text: {
+            fontWeight: 900,
+            field: "percent", 
+            formatType:"number",
+            format: "~%"
+          },
+      }
+      }],
+      config: {
+        axis: {grid: true, tickBand: "extent"}
+      },
+      
+    };
+  }
+
+  wrapperDiv.append("div").attr("id", "vegadiv-" + id + random);
+
+  vegaEmbed("#vegadiv-" + id + random, vegaProgressChart, { actions: false });
 };
 
 
@@ -982,6 +1150,8 @@ dashboardComponents.visualizeNumberSmall = function (
 };
 
 dashboardComponents.visualizeTrendArrow = function (svg, data, x, y, field, color, mode, unit) {
+  console.log("called")
+  console.log(field)
   var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
 
   if (mode == dashboard.MODE_WEEKLY)

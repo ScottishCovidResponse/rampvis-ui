@@ -87,6 +87,13 @@ export class DashboardTian {
     d3.csv(scotland_newAdmissionsRollingRate).then(function (data) {
       scotland_newAdmissionsRollingRate = data;
     });
+    //d3.csv(aberdeenshire_vacc_rate).then(function (data) {
+    //  aberdeenshire_vacc_rate = data;
+    //});
+    d3.csv(aberdeenshire_vacc_rate).then(function (data) {
+      data[0].percent = data[0].cumVaccinationFirstDoseUptakeByPublishDatePercentage/100
+      aberdeenshire_vacc_rate = data
+    })
 
     console.log("Tian's playground");
 
@@ -98,7 +105,7 @@ export class DashboardTian {
           {
             id: "england",
             title: "England Data",
-            layout: ["england_newCasesRate", "england_newDeathsRate"],
+            layout: ["england_newCasesRate", "aberdeen_vax_progress"],
           },
         ],
         widgets: [
@@ -110,21 +117,22 @@ export class DashboardTian {
             color: colors.getCaseColor(),
             data: england_newCasesRate,
             mode: dashboard.MODE_DAILY,
+            normalized: false,
             detail: dashboard.DETAIL_HIGH,
             dateVariable: "date",
             abbreviate: true,
           },
           {
-            id: "england_newDeathsRate",
-            title: "New Daily Deaths",
-            dataField: "cumDeaths28DaysByDeathDateRate",
-            visualization: "linechart",
-            color: colors.getDeathColor(),
-            data: england_newDeathsRate,
+            id: "aberdeen_vax_progress",
+            title: "Vaccination progress in Aberdeen county",
+            dataField: "cumVaccinationFirstDoseUptakeByPublishDatePercentage",
+            visualization: "progress",
+            color: colors.getCaseColor(),
+            data: aberdeenshire_vacc_rate,
             mode: dashboard.MODE_DAILY,
+            normalized: false,
             detail: dashboard.DETAIL_HIGH,
-            dateVariable: "date",
-            abbreviate: true,
+            abbreviate: true
           },
         ],
       };
