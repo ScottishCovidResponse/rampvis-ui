@@ -139,7 +139,7 @@ const Ensemble = () => {
     const datasetNames = await controller.getDatasetList();
     const datasetListElement = document.getElementById("dataset_list");
 
-    for (var i = 0; i < datasetNames.length; i++) {
+    for (let i = 0; i < datasetNames.length; i++) {
       const datasetName = document.createElement("option");
       datasetName.innerText = datasetNames[i];
       datasetName.value = datasetNames[i];
