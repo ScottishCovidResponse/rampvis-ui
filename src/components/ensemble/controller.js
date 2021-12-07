@@ -200,7 +200,7 @@ export class Controller {
     var allAgeData = [];
 
     for (var age_index = 0; age_index < 8; age_index++) {
-      const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data?path=data/output/simu_${simulation}/age_${age_index}.csv`;
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data/default?path=data/output/simu_${simulation}/age_${age_index}.csv`;
       const res = await axios.get(apiUrl);
       const ageData = res.data;
 
@@ -224,19 +224,19 @@ export class Controller {
       return this.metadata;
     }
 
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/meta`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/meta/default`;
     const res = await axios.get(apiUrl);
     return res.data;
   }
 
   async getMeanData() {
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data?path=data/output/pca/d/age_mean.csv`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data/default?path=data/output/pca/d/age_mean.csv`;
     const res = await axios.get(apiUrl);
     return res.data;
   }
 
   async getPolylineData(callback) {
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data?path=data/output/simu_${this.simulationIndex}/avgPolyline.csv`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data/default?path=data/output/simu_${this.simulationIndex}/avgPolyline.csv`;
     const res = await axios.get(apiUrl);
     if (this.isCallback(callback)) {
       callback.call(res.data);
@@ -248,7 +248,7 @@ export class Controller {
   }
 
   async getSimulationAgeData(callback) {
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data?path=data/output/simu_${this.simulationIndex}/age_${this.ageIndex}.csv`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data/default?path=data/output/simu_${this.simulationIndex}/age_${this.ageIndex}.csv`;
     const res = await axios.get(apiUrl);
     const ageData = res.data;
     const data = this.makeDataforParallelVis(ageData, this.ageIndex);
