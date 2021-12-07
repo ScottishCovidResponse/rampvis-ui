@@ -125,10 +125,9 @@ export class Controller {
 
   async setDatasetName(datasetName) {
     this.datasetName = datasetName;
-    console.log(this.datasetName + ": changed")
 
     /// for now, this should work. there are other components that also have to be refreshed
-    this.tableToggled([]);
+    this.tableToggled([0]);
     // refresh everything on this page
 
   }
