@@ -223,13 +223,13 @@ export class ParallelChart {
       additionalData = additionalData.filter((d) => d.type === "average");
 
       const legendData = additionalData.map((d) => d.age_group);
-      const colors = d3.schemeDark2;
+      const colors = d3.schemeTableau10;
 
       // Legend
-      const legendContainer = container.append("div");
+      const legendContainer = container.append("div").lower();
       const legend = pv
         .legend()
-        .margin({ top: 3, right: 0, bottom: 3, left: 0 })
+        .margin({ top: 3, right: 0, bottom: 3, left: 80})
         .colorScale(d3.scaleOrdinal().domain(legendData).range(colors));
       legendContainer.datum(legendData).call(legend);
 
