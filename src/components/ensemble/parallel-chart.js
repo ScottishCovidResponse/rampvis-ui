@@ -226,7 +226,6 @@ export class ParallelChart {
       const colors = d3.schemeTableau10;
 
       // Legend
-      console.log(container)
       const legendContainer = container.append("div").lower();
       const legend = pv
         .legend()

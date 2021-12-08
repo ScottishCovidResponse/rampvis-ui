@@ -55,7 +55,6 @@ const Ensemble = () => {
     const polylineData = await controller.getPolylineData();
 
     const parallel2 = visFactory("ParallelChart", {
-      documentElement: "parallel-chart",
       chartElement: "parallel_chart",
       data: [
         {
