@@ -38,8 +38,21 @@ export class Data {
     HEALTH_BOARD_VACCINE_SEX_AGEGROUP_ALL:
       "vaccination&component=daily_health_boards",
 
-    PHE_CUM_ADMISSIONS: "product=phe&component=cumAdmissions&"
+    PHE_UK_CUM_ADMISSIONS: "product=phe&component=cumAdmissions&",
+    PHE_UK_CUM_CASES: "product=phe&component=cumCasesBySpecimenDate&",
+    PHE_UK_CUM_DEATHS_28_DAYS: "product=phe&component=cumDeaths28DaysByDeathDate&",
+    PHE_UK_CUM_VACC_FIRST: "product=phe&component=cumPeopleVaccinatedFirstDoseByPublishDate&",
+    PHE_UK_CUM_VACC_SECOND: "product=phe&component=cumPeopleVaccinatedSecondDoseByPublishDate&",
+    PHE_UK_CUM_VACC_THIRD: "product=phe&component=cumPeopleVaccinatedThirdInjectionByPublishDate&",
+    PHE_UK_NEW_AMISSIONS: "product=phe&component=newAdmissions&",
+    PHE_UK_NEW_CASES: "product=phe&component=newCasesBySpecimenDate&",
+    PHE_UK_NEW_DEATHS_28_DAYS: "product=phe&component=newDeaths28DaysByDeathDate&",
+    PHE_UK_NEW_VACC_FIRST: "product=phe&component=newPeopleVaccinatedFirstDoseByPublishDate&",
+    PHE_UK_NEW_VACC_SECOND: "product=phe&component=newPeopleVaccinatedSecondDoseByPublishDate&",
+    PHE_UK_NEW_VACC_THIRD: "product=phe&component=newPeopleVaccinatedThirdInjectionByPublishDate&",
+
   };
+
 
   static from(data, field) {
     return data.find((d) => d.endpoint.includes(field)).values;

@@ -16,26 +16,21 @@
 // This is a dashboard template file. Copy this file and start scripting a new dashboard //
 // by linking to data URLS and specifying the config variable below.                     //
 ///////////////////////////////////////////////////////////////////////////////////////////
+// http://localhost:3000/page?id=619d00017d01359c29937ed9
 
 import * as d3 from "d3";
-import { Data } from "../data";
+import { Data } from '../data'
 import { dashboard } from "./dashboard";
-import { colors, DEATHS } from "../colors.js";
+import { colors } from "../colors";
 
 export class DashboardUK {
-  CHART_WIDTH = 1000;
-  CHART_HEIGHT = 400;
+  CHART_WIDTH = 1200;
+  CHART_HEIGHT = 1000;
 
   constructor(options) {
     // Phong added - to remove
     // @Ben: please get data this way rather than relying on index in options.data
-    console.log('PHE_CUM_ADMISSIONS', Data.from(options.data, Data.Fields.PHE_CUM_ADMISSIONS));
     // end Phong added - to remove
-
-
-
-
-
 
     // creates the main div. don't touch
     var div = d3
@@ -44,31 +39,31 @@ export class DashboardUK {
       .attr("class", "vis-example-container");
 
     // 1. specify data URLs here...
-    var cumAdmissions =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=cumAdmissions&format=csv";
-    var cumCasesBySpecimenDate =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=cumCasesBySpecimenDate&format=csv";
-    var cumDeaths28DaysByDeathDate =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=cumDeaths28DaysByDeathDate&format=csv";
-    var cumPeopleVaccinatedFirstDoseByPublishDate =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=cumPeopleVaccinatedFirstDoseByPublishDate&format=csv";
-    var cumPeopleVaccinatedSecondDoseByPublishDate =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=cumPeopleVaccinatedSecondDoseByPublishDate&format=csv";
-    var cumPeopleVaccinatedThirdInjectionByPublishDate =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=cumPeopleVaccinatedThirdInjectionByPublishDate&format=csv";
+    // var cumAdmissions =
+    // //   "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=cumAdmissions&format=csv";
+    // var cumCasesBySpecimenDate =
+    //   "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=cumCasesBySpecimenDate&format=csv";
+    // var cumDeaths28DaysByDeathDate =
+    //   "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=cumDeaths28DaysByDeathDate&format=csv";
+    // var cumPeopleVaccinatedFirstDoseByPublishDate =
+    //   "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=cumPeopleVaccinatedFirstDoseByPublishDate&format=csv";
+    // var cumPeopleVaccinatedSecondDoseByPublishDate =
+    //   "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=cumPeopleVaccinatedSecondDoseByPublishDate&format=csv";
+    // var cumPeopleVaccinatedThirdInjectionByPublishDate =
+    //   "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=cumPeopleVaccinatedThirdInjectionByPublishDate&format=csv";
 
-    var newAdmissions =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=newAdmissions&metric=newAdmissionsChange&format=csv";
-    var newCasesBySpecimenDate =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=newCasesBySpecimenDate&format=csv";
-    var newDeaths28DaysByDeathDate =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=newDeaths28DaysByDeathDate&metric=newDeaths28DaysByPublishDateChange&format=csv";
-    var newPeopleVaccinatedFirstDoseByPublishDate =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=newPeopleVaccinatedFirstDoseByPublishDate&format=csv";
-    var newPeopleVaccinatedSecondDoseByPublishDate =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=newPeopleVaccinatedSecondDoseByPublishDate&format=csv";
-    var newPeopleVaccinatedThirdInjectionByPublishDate =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=newPeopleVaccinatedThirdInjectionByPublishDate&format=csv";
+    // var newAdmissions =
+    //   "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=newAdmissions&metric=newAdmissionsChange&format=csv";
+    // var newCasesBySpecimenDate =
+    //   "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=newCasesBySpecimenDate&format=csv";
+    // var newDeaths28DaysByDeathDate =
+    //   "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=newDeaths28DaysByDeathDate&metric=newDeaths28DaysByPublishDateChange&format=csv";
+    // var newPeopleVaccinatedFirstDoseByPublishDate =
+    //   "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=newPeopleVaccinatedFirstDoseByPublishDate&format=csv";
+    // var newPeopleVaccinatedSecondDoseByPublishDate =
+    //   "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=newPeopleVaccinatedSecondDoseByPublishDate&format=csv";
+    // var newPeopleVaccinatedThirdInjectionByPublishDate =
+    //   "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=newPeopleVaccinatedThirdInjectionByPublishDate&format=csv";
 
     // var england_newCasesRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumCasesByPublishDateRate&format=csv"
     // var england_newDeathsRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumDeaths28DaysByDeathDateRate&format=csv"
@@ -111,51 +106,51 @@ export class DashboardUK {
     //   scotland_newAdmissionsRollingRate = data;
     // });
 
-    d3.csv(cumAdmissions).then(function (data) {
-      cumAdmissions = data;
-    });
-    d3.csv(newAdmissions).then(function (data) {
-      newAdmissions = data;
-    });
+    // d3.csv(cumAdmissions).then(function (data) {
+    //   cumAdmissions = data;
+    // });
+    // d3.csv(newAdmissions).then(function (data) {
+    //   newAdmissions = data;
+    // });
 
-    d3.csv(cumCasesBySpecimenDate).then(function (data) {
-      cumCasesBySpecimenDate = data;
-    });
-    d3.csv(newCasesBySpecimenDate).then(function (data) {
-      newCasesBySpecimenDate = data;
-    });
+    // d3.csv(cumCasesBySpecimenDate).then(function (data) {
+    //   cumCasesBySpecimenDate = data;
+    // });
+    // d3.csv(newCasesBySpecimenDate).then(function (data) {
+    //   newCasesBySpecimenDate = data;
+    // });
 
-    d3.csv(cumDeaths28DaysByDeathDate).then(function (data) {
-      cumDeaths28DaysByDeathDate = data;
-    });
-    d3.csv(newDeaths28DaysByDeathDate).then(function (data) {
-      newDeaths28DaysByDeathDate = data;
-    });
+    // d3.csv(cumDeaths28DaysByDeathDate).then(function (data) {
+    //   cumDeaths28DaysByDeathDate = data;
+    // });
+    // d3.csv(newDeaths28DaysByDeathDate).then(function (data) {
+    //   newDeaths28DaysByDeathDate = data;
+    // });
 
-    d3.csv(cumPeopleVaccinatedFirstDoseByPublishDate).then(function (data) {
-      cumPeopleVaccinatedFirstDoseByPublishDate = data;
-    });
-    d3.csv(newPeopleVaccinatedFirstDoseByPublishDate).then(function (data) {
-      newPeopleVaccinatedFirstDoseByPublishDate = data;
-    });
+    // d3.csv(cumPeopleVaccinatedFirstDoseByPublishDate).then(function (data) {
+    //   cumPeopleVaccinatedFirstDoseByPublishDate = data;
+    // });
+    // d3.csv(newPeopleVaccinatedFirstDoseByPublishDate).then(function (data) {
+    //   newPeopleVaccinatedFirstDoseByPublishDate = data;
+    // });
 
-    d3.csv(cumPeopleVaccinatedSecondDoseByPublishDate).then(function (data) {
-      cumPeopleVaccinatedSecondDoseByPublishDate = data;
-    });
-    d3.csv(newPeopleVaccinatedSecondDoseByPublishDate).then(function (data) {
-      newPeopleVaccinatedSecondDoseByPublishDate = data;
-    });
+    // d3.csv(cumPeopleVaccinatedSecondDoseByPublishDate).then(function (data) {
+    //   cumPeopleVaccinatedSecondDoseByPublishDate = data;
+    // });
+    // d3.csv(newPeopleVaccinatedSecondDoseByPublishDate).then(function (data) {
+    //   newPeopleVaccinatedSecondDoseByPublishDate = data;
+    // });
 
-    d3.csv(cumPeopleVaccinatedThirdInjectionByPublishDate).then(function (
-      data,
-    ) {
-      cumPeopleVaccinatedThirdInjectionByPublishDate = data;
-    });
-    d3.csv(newPeopleVaccinatedThirdInjectionByPublishDate).then(function (
-      data,
-    ) {
-      newPeopleVaccinatedThirdInjectionByPublishDate = data;
-    });
+    // d3.csv(cumPeopleVaccinatedThirdInjectionByPublishDate).then(function (
+    //   data,
+    // ) {
+    //   cumPeopleVaccinatedThirdInjectionByPublishDate = data;
+    // });
+    // d3.csv(newPeopleVaccinatedThirdInjectionByPublishDate).then(function (
+    //   data,
+    // ) {
+    //   newPeopleVaccinatedThirdInjectionByPublishDate = data;
+    // });
 
     // test all data are loaded, once every second
     var timeseriesWidget = function (
@@ -223,7 +218,7 @@ export class DashboardUK {
             "Cumulative Admissions",
             "cumAdmissions",
             dashboard.MODE_CUMULATIVE,
-            cumAdmissions,
+            Data.from(options.data, Data.Fields.PHE_UK_CUM_ADMISSIONS),
             colors.getHospitalizedColor(),
             dashboard.DETAIL_HIGH,
           ),
@@ -232,7 +227,7 @@ export class DashboardUK {
             "New Daily Admissions",
             "newAdmissions",
             dashboard.MODE_DAILY,
-            newAdmissions,
+            Data.from(options.data, Data.Fields.PHE_UK_NEW_AMISSIONS),
             colors.getHospitalizedColor(),
             dashboard.DETAIL_HIGH,
           ),
@@ -241,7 +236,7 @@ export class DashboardUK {
             "Cumulative Cases",
             "cumCasesBySpecimenDate",
             dashboard.MODE_CUMULATIVE,
-            cumCasesBySpecimenDate,
+            Data.from(options.data, Data.Fields.PHE_UK_CUM_CASES),
             colors.getCaseColor(),
             dashboard.DETAIL_HIGH,
           ),
@@ -250,7 +245,7 @@ export class DashboardUK {
             "New Daily Cases",
             "newCasesBySpecimenDate",
             dashboard.MODE_DAILY,
-            newCasesBySpecimenDate,
+            Data.from(options.data, Data.Fields.PHE_UK_NEW_CASES),
             colors.getCaseColor(),
             dashboard.DETAIL_HIGH,
           ),
@@ -259,7 +254,7 @@ export class DashboardUK {
             "Cumulative Deaths",
             "cumDeaths28DaysByDeathDate",
             dashboard.MODE_CUMULATIVE,
-            cumDeaths28DaysByDeathDate,
+            Data.from(options.data, Data.Fields.PHE_UK_CUM_DEATHS_28_DAYS),
             colors.getDeathColor(),
             dashboard.DETAIL_HIGH,
           ),
@@ -268,7 +263,7 @@ export class DashboardUK {
             "New Weekly Deaths ",
             "newDeaths28DaysByDeathDate",
             dashboard.MODE_WEEKLY,
-            newDeaths28DaysByDeathDate,
+            Data.from(options.data, Data.Fields.PHE_UK_NEW_DEATHS_28_DAYS),
             colors.getDeathColor(),
             dashboard.DETAIL_HIGH,
           ),
@@ -277,7 +272,7 @@ export class DashboardUK {
             "Total 1st Dose Update",
             "cumPeopleVaccinatedFirstDoseByPublishDate",
             dashboard.MODE_CUMULATIVE,
-            cumPeopleVaccinatedFirstDoseByPublishDate,
+            Data.from(options.data, Data.Fields.PHE_UK_CUM_VACC_FIRST),
             colors.getVaccinationColor(1),
             dashboard.DETAIL_MEDIUM,
           ),
@@ -286,7 +281,7 @@ export class DashboardUK {
             "Daily 1st Dose Vaccinations",
             "newPeopleVaccinatedFirstDoseByPublishDate",
             dashboard.MODE_DAILY,
-            newPeopleVaccinatedFirstDoseByPublishDate,
+            Data.from(options.data, Data.Fields.PHE_UK_NEW_VACC_FIRST),
             colors.getVaccinationColor(1),
             dashboard.DETAIL_MEDIUM
           ),
@@ -295,7 +290,7 @@ export class DashboardUK {
             "Total 2nd Dose Update",
             "cumPeopleVaccinatedSecondDoseByPublishDate",
             dashboard.MODE_CUMULATIVE,
-            cumPeopleVaccinatedSecondDoseByPublishDate,
+            Data.from(options.data, Data.Fields.PHE_UK_CUM_VACC_SECOND),
             colors.getVaccinationColor(2),
             dashboard.DETAIL_MEDIUM,
           ),
@@ -304,7 +299,7 @@ export class DashboardUK {
             "2nd Dose Daily",
             "newPeopleVaccinatedSecondDoseByPublishDate",
             dashboard.MODE_DAILY,
-            newPeopleVaccinatedSecondDoseByPublishDate,
+            Data.from(options.data, Data.Fields.PHE_UK_NEW_VACC_SECOND),
             colors.getVaccinationColor(2),
             dashboard.DETAIL_MEDIUM
           ),
@@ -313,7 +308,7 @@ export class DashboardUK {
             "Total 3rd Dose Uptake",
             "cumPeopleVaccinatedThirdInjectionByPublishDate",
             dashboard.MODE_CUMULATIVE,
-            cumPeopleVaccinatedThirdInjectionByPublishDate,
+            Data.from(options.data, Data.Fields.PHE_UK_CUM_VACC_THIRD),
             colors.getVaccinationColor(3),
             dashboard.DETAIL_MEDIUM,
           ),
@@ -322,7 +317,7 @@ export class DashboardUK {
             "3rd Dose Daily",
             "newPeopleVaccinatedThirdInjectionByPublishDate",
             dashboard.MODE_DAILY,
-            newPeopleVaccinatedThirdInjectionByPublishDate,
+            Data.from(options.data, Data.Fields.PHE_UK_NEW_VACC_THIRD),
             colors.getVaccinationColor(3),
             dashboard.DETAIL_MEDIUM
           ),
