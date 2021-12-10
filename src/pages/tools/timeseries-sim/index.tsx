@@ -23,17 +23,22 @@ const today = new Date();
 
 const initialFirstRunState = {
   targetCountry: "France",
-  firstDate: "2021-07-02",
-  lastDate: "2021-08-16",
+  firstDate: "2021-10-01",
+  lastDate: "2021-12-01",
   indicator: "new_cases",
   method: "euclidean",
   numberOfResults: 10,
   minPopulation: 600000,
   startDate: "2021-01-01",
-  endDate: `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`,
+  endDate:
+    String(today.getFullYear()) +
+    "-" +
+    String(today.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(today.getDate()).padStart(2, "0"),
   continentCheck: {
     Africa: false,
-    Asia: false,
+    Asia: true,
     Australia: false,
     Europe: true,
     "North America": false,
