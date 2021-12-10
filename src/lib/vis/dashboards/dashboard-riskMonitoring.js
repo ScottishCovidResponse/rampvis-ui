@@ -19,7 +19,7 @@
 /* eslint-disable radix */
 
 import * as d3 from "d3";
-import Common from "./common";
+import Common from "../common";
 
 export class RiskMonitoring {
   CHART_WIDTH = document.getElementById("charts").offsetWidth;

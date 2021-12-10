@@ -23,7 +23,7 @@ import { dashboard } from "./dashboard";
 import { colors, DEATHS } from "../colors.js";
 
 // 1. Give class a name
-export class DashboardRegion {
+export class DashboardNHSEnglandRegion {
   CHART_WIDTH = 1000;
   CHART_HEIGHT = 400;
 
