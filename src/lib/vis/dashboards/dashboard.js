@@ -285,6 +285,9 @@ var createWidget = function (parentHtmlElementId, id, config) {
   } 
   else if (widgetConfig.visualization == dashboard.VIS_BARCHART) {
     dashboard.visualizeBarChart(
+      // parentHtmlElementId, 
+      // widgetConfig,
+      // lastDateUpdated
       parentHtmlElementId,
       title,
       widgetConfig.dataField,
