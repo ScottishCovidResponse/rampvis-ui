@@ -42,23 +42,23 @@ export const visFactory = (type, args) => {
     return new MirroredStackedBarChart(args);
   if (type === "SensitivityStackedBarChart")
     return new SensitivityStackedBarChart(args);
-    if (type == "UncertaintySampleAndMean")
+  if (type == "UncertaintySampleAndMean")
     return new UncertaintySampleAndMean(args);
-    if (type == "UncertaintyClusterSampleAndMean")
+  if (type == "UncertaintyClusterSampleAndMean")
     return new UncertaintyClusterSampleAndMean(args);
     
-    // Dashboards
-    if (type === "CouncilOverview") return new DashboardScotlandCouncil(args);
-    if (type === "HealthBoardOverview") return new DashboardScotlandNHSBoard(args);
-    if (type === "CountryOverview") return new DashboardScotland(args);
-    if (type === "CountryOverviewNew") return new DashboardScotlandNew(args);
-    // if (type === "CountryOverviewNew") return new DashboardTian(args);
-    if (type === "VaccineOverview") return new DashboardScotlandVaccination(args);
-    if (type === "DashboardUK") return new DashboardUK(args);
-    // if (type === "VaccineOverview") return new DashboardLowerTierLocalAuthority(args);
-    // if (type === "VaccineOverview") return new DashboardMSOA(args);
-    // if (type === "VaccineOverview") return new DashboardNHSEnglandRegion(args);
-    if (type === "RiskMonitoring") return new DashboardRiskMonitoring(args);
+  // Dashboards
+  if (type === "CouncilOverview") return new DashboardScotlandCouncil(args);
+  if (type === "HealthBoardOverview") return new DashboardScotlandNHSBoard(args);
+  if (type === "CountryOverview") return new DashboardScotland(args);
+  if (type === "CountryOverviewNew") return new DashboardScotlandNew(args);
+  // if (type === "CountryOverviewNew") return new DashboardTian(args);
+  if (type === "VaccineOverview") return new DashboardScotlandVaccination(args);
+  if (type === "DashboardUK") return new DashboardUK(args);
+  if (type === "DashboardLTLA") return new DashboardLowerTierLocalAuthority(args);
+  // if (type === "VaccineOverview") return new DashboardMSOA(args);
+  // if (type === "VaccineOverview") return new DashboardNHSEnglandRegion(args);
+  if (type === "RiskMonitoring") return new DashboardRiskMonitoring(args);
 
   return null;
 };

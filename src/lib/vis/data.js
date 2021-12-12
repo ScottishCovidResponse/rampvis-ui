@@ -51,10 +51,14 @@ export class Data {
     PHE_UK_NEW_VACC_SECOND: "product=phe/overview&component=newPeopleVaccinatedSecondDoseByPublishDate&",
     PHE_UK_NEW_VACC_THIRD: "product=phe/overview&component=newPeopleVaccinatedThirdInjectionByPublishDate&",
 
+    PHE_LTLA_NEW_CASES: ["product=phe/ltla/", "component=newCasesBySpecimenDate&"],
   };
 
 
   static from(data, field) {
-    return data.find((d) => d.endpoint.includes(field)).values;
+    if (typeof(field) == 'string') return data.find((d) => d.endpoint.includes(field)).values;
+    
+    // Array of AND conditions
+    return data.find((d) => field.every((f) => d.endpoint.includes(f))).values;
   }
 }
