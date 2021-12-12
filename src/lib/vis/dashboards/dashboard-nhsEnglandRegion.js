@@ -177,7 +177,7 @@ export class DashboardNHSEnglandRegion {
             detail: dashboard.DETAIL_HIGH, 
             mode: dashboard.MODE_DAILY,
             dateField: 'date', 
-            bars: 'age',
+            categories: 'age',
             color: colors.getDeathColor(3)
           },{
             id: 'maleDeaths28Days', 
@@ -188,7 +188,7 @@ export class DashboardNHSEnglandRegion {
             detail: dashboard.DETAIL_HIGH, 
             mode: dashboard.MODE_DAILY,
             dateField: 'date', 
-            bars: 'age',
+            categories: 'age',
             color: colors.getDeathColor(3)
           },{
             id: 'vaccinationsAgeDemographics1', 
@@ -198,7 +198,7 @@ export class DashboardNHSEnglandRegion {
             visualization: 'barchart', 
             detail: dashboard.DETAIL_HIGH, 
             dateField: 'date', 
-            bars: 'age',
+            categories: 'age',
             color: colors.getVaccinationColor(1)
           },{
             id: 'vaccinationsAgeDemographics2', 
@@ -208,7 +208,7 @@ export class DashboardNHSEnglandRegion {
             visualization: 'barchart', 
             detail: dashboard.DETAIL_HIGH, 
             dateField: 'date', 
-            bars: 'age',
+            categories: 'age',
             color: colors.getVaccinationColor(2)
           },
           {

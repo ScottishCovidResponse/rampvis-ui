@@ -3,7 +3,7 @@ import { Data } from "../data.js";
 import { dashboard } from "./dashboard";
 import { colors } from "../colors.js";
 
-export class VaccineOverview {
+export class DashboardScotlandVaccination {
   CHART_WIDTH = 1000;
   CHART_HEIGHT = 400;
 

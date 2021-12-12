@@ -20,7 +20,7 @@ import { colors } from "../colors";
 var nhsBoardField = "";
 var latestUpdateTime = "";
 
-export class CountryOverviewNew {
+export class DashboardScotlandNew {
   CHART_WIDTH = 1000;
   CHART_HEIGHT = 400;
 

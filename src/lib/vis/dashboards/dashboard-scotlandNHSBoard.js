@@ -30,7 +30,7 @@ var latestUpdateTime = "";
 
 // DATA STREAM TITLES
 
-export class HealthBoardOverview {
+export class DashboardScotlandNHSBoard {
   constructor(options) {
     console.log("--> OPTIONs:", options);
     console.log("--> Input data:", options.data);
@@ -192,7 +192,7 @@ export class HealthBoardOverview {
           ),
           mode: dashboard.MODE_PERCENT,
           detail: dashboard.DETAIL_HIGH,
-          bars: "AgeGroup",
+          categories: "AgeGroup",
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -211,7 +211,7 @@ export class HealthBoardOverview {
           ),
           mode: dashboard.MODE_PERCENT,
           detail: dashboard.DETAIL_HIGH,
-          bars: "AgeGroup",
+          categories: "AgeGroup",
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',

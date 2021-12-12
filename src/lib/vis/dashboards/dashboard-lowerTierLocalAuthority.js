@@ -184,7 +184,7 @@ export class DashboardLowerTierLocalAuthority{
             mode: dashboard.MODE_PERCENT,
             dateField: "date",
             visualization: "barchart",
-            bars: "age",
+            categories: "age",
           },
           {
             id: "vacc2Ages",
@@ -197,7 +197,7 @@ export class DashboardLowerTierLocalAuthority{
             mode: dashboard.MODE_PERCENT,
             dateField: "date",
             visualization: "barchart",
-            bars: "age",
+            categories: "age",
           },
         ],
       };

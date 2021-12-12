@@ -203,7 +203,7 @@ var createWidget = function (parentHtmlElementId, id, config) {
     return;
   }
 
-  // set widget detault values 
+  // SET WIDGET DEFAULT VALUES
   if (!widgetConfig.dateField) 
     widgetConfig.dateField = "index";
 
@@ -267,40 +267,31 @@ var createWidget = function (parentHtmlElementId, id, config) {
 
   if (widgetConfig.visualization == dashboard.VIS_CARTOGRAM) {
     dashboard.visulizeScotlandNHSBoardCartogram(
-      parentHtmlElementId,
-      title,
-      widgetConfig.color,
-      data,
-      widgetConfig.normalized ? widgetConfig.normalized : false,
-      widgetConfig.unit,
-      widgetConfig.detail,
-      lastDateUpdated,
+      parentHtmlElementId, 
+      widgetConfig,
+      lastDateUpdated
+      // parentHtmlElementId,
+      // title,
+      // widgetConfig.color,
+      // data,
+      // widgetConfig.normalized ? widgetConfig.normalized : false,
+      // widgetConfig.unit,
+      // widgetConfig.detail,
+      // lastDateUpdated,
     );
   } 
   else if (widgetConfig.visualization == dashboard.VIS_LINECHART) {
     dashboard.visualizeTime(
       parentHtmlElementId, 
       widgetConfig,
-      lastDateUpdated);
+      lastDateUpdated
+      );
   } 
   else if (widgetConfig.visualization == dashboard.VIS_BARCHART) {
     dashboard.visualizeBarChart(
-      // parentHtmlElementId, 
-      // widgetConfig,
-      // lastDateUpdated
-      parentHtmlElementId,
-      title,
-      widgetConfig.dataField,
-      widgetConfig.color,
-      data,
-      widgetConfig.mode,
-      widgetConfig.normalized,
-      widgetConfig.link ? widgetConfig.link : null,
-      widgetConfig.unit,
-      widgetConfig.detail,
-      lastDateUpdated,
-      widgetConfig.bars,
-      widgetConfig.abbreviate,
+      parentHtmlElementId, 
+      widgetConfig,
+      lastDateUpdated
     );
   } 
   else if (widgetConfig.visualization == dashboard.VIS_PROGRESS) {
@@ -581,22 +572,25 @@ dashboard.visualizeTime = function (
 ////////////////////////////////////////////////////////
 
 dashboard.visulizeScotlandNHSBoardCartogram = function (
-  id,
-  title,
-  color,
-  data,
-  normalized,
-  detail,
-  lastDate,
+  parentHtmlElementId, 
+  widgetConfig,
+  lastDateUpdated
+  //   id,
+  // title,
+  // color,
+  // data,
+  // normalized,
+  // detail,
+  // lastDate,
 ) {
   // data comes in JSON
   var svg = d3
-    .select("#" + id)
+    .select("#" + parentHtmlElementId)
     .append("svg")
     .attr("width", TILE_WIDTH * 4)
     .attr("height", 100 + TILE_HEIGHT * 7);
 
-    dashboardComponents.setVisTitle(svg, title, null, detail, lastDate);
+    dashboardComponents.setVisTitle(svg, widgetConfig.title, null, widgetConfig.detail, lastDateUpdated);
 
   svg
     .append("text")
@@ -605,34 +599,34 @@ dashboard.visulizeScotlandNHSBoardCartogram = function (
     .attr("class", "thin")
     .text("per NHS Board");
 
-  if (normalized) {
-    svg
-      .append("text")
-      .attr("x", 0)
-      .attr("y", baseline_title + 30 + LINE_HIGHT)
-      .attr("class", "thin")
-      .text("per 1000 people");
-  }
-
+  // if (normalized) {
+  //   svg
+  //     .append("text")
+  //     .attr("x", 0)
+  //     .attr("y", baseline_title + 30 + LINE_HIGHT)
+  //     .attr("class", "thin")
+  //     .text("per 1000 people");
+  // }
+  let data = widgetConfig.data;
   var current = data[data.length - 1];
-  var array = [];
+  var dataArray = [];
   var max = 0;
   var min = 10000000;
 
   for (let r in current) {
     if (!(r == "week commencing" || r == "date" || r == "index")) {
-      array.push({ name: r, value: current[r] });
+      dataArray.push({ name: r, value: current[r] });
       max = Math.max(max, current[r]);
       min = Math.min(min, current[r]);
     }
   }
-  // console.log(array);
+  console.log('>> dataArray', dataArray);
 
   var valueScale = d3.scaleLinear().domain([0, max]).range([0, 1]);
 
   svg
     .selectAll("rect")
-    .data(array)
+    .data(dataArray)
     .enter()
     .append("rect")
     .style("stroke", "#ccc")
@@ -651,13 +645,13 @@ dashboard.visulizeScotlandNHSBoardCartogram = function (
 
   svg
     .selectAll(".rect")
-    .data(array)
+    .data(dataArray)
     .enter()
     .append("rect")
     .style("opacity", function (d) {
       return valueScale(d.value);
     })
-    .style("fill", color)
+    .style("fill", widgetConfig.color)
     .attr("x", function (d) {
       return TILEMAP_LAYOUT_SCOTLAND[d.name][1] * TILE_WIDTH;
     })
@@ -670,7 +664,7 @@ dashboard.visulizeScotlandNHSBoardCartogram = function (
 
   svg
     .selectAll(".cartogramLabel")
-    .data(array)
+    .data(dataArray)
     .enter()
     .append("text")
     // .filter(function (d) {
@@ -715,24 +709,18 @@ dashboard.visulizeScotlandNHSBoardCartogram = function (
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
+// parentHtmlElementId, 
+// widgetConfig,
+// lastDateUpdated
+
 dashboard.visualizeBarChart = function (
-  id,
-  title,
-  dataField,
-  color,
-  dataStream,
-  mode,
-  normalized,
-  link,
-  unit,
-  detail,
-  lastDate,
-  barField,
-  abbreviate,
+  parentHtmlElementId,
+  widgetConfig,
+  lastDateUpdated
 ) {
   var random = Math.floor(Math.random() * 1000);
   var wrapperDiv = d3
-    .select("#" + id)
+    .select("#" + parentHtmlElementId)
     .append("div")
     .attr("id", "wrapperDiv" + random);
 
@@ -741,56 +729,59 @@ dashboard.visualizeBarChart = function (
     .attr("height", 40)
     .style("margin-bottom", 0);
 
-  dashboardComponents.setVisTitle(svg, title, link, detail, lastDate);
+  dashboardComponents.setVisTitle(svg, widgetConfig.title, widgetConfig.link, widgetConfig.detail, lastDateUpdated);
 
   wrapperDiv.append("br");
 
+  var data = widgetConfig.data;
   // display only last data
-  lastDate = dataStream[dataStream.length - 1].index;
-  dataStream = dataStream.filter((e) => {
+  let lastDate = data[data.length - 1].index;
+  data = data.filter((e) => {
     return e.index == lastDate;
   });
 
-  // dashboard.DETAILED
-  if (!detail) detail = dashboard.DETAIL_HIGH;
-  let width = 150;
-  let barWidth = 20;
-  if (detail == dashboard.DETAIL_LOW) {
-    width = 70;
-    barWidth = 10;
-  } else if (detail == dashboard.DETAIL_MEDIUM) {
+  // dashboard.DETAILED  
+  var width = 150;
+  var barWidth = 20;
+
+  if (widgetConfig.detail == dashboard.DETAIL_MEDIUM) {
     width = 100;
     barWidth = 15;
   }
+  else
+  if (widgetConfig.detail == dashboard.DETAIL_LOW) {
+    width = 70;
+    barWidth = 10;
+  }
 
   svg.attr("width", width);
-  console.log("data", dataStream);
+  
   var vegaBarchart = {
     $schema: "https://vega.github.io/schema/vega-lite/v5.json",
     data: {
-      values: dataStream,
+      values: data,
     },
     width: width,
     height: { step: barWidth },
     mark: "bar",
     encoding: {
       y: {
-        field: barField,
+        field: widgetConfig.categories,
         type: "nominal",
         title: "",
       },
       x: {
-        field: dataField,
+        field: widgetConfig.dataField,
         type: "quantitative",
         title: "",
       },
-      color: { value: color },
+      color: { value: widgetConfig.color },
     },
   };
 
-  wrapperDiv.append("div").attr("id", "vegadiv-" + id + random);
+  wrapperDiv.append("div").attr("id", "vegadiv-" + parentHtmlElementId + random);
 
-  vegaEmbed("#vegadiv-" + id + random, vegaBarchart, { actions: false });
+  vegaEmbed("#vegadiv-" + parentHtmlElementId + random, vegaBarchart, { actions: false });
 };
 
 ////////////////////////////////////////////////////////////////////////

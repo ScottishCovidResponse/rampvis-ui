@@ -21,7 +21,7 @@
 import * as d3 from "d3";
 import Common from "../common";
 
-export class RiskMonitoring {
+export class DashboardRiskMonitoring {
   CHART_WIDTH = document.getElementById("charts").offsetWidth;
   CHART_HEIGHT = window.innerHeight - Common.MAIN_CONTENT_GAP;
 
