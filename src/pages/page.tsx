@@ -80,7 +80,13 @@ const PropagatedPage = () => {
         ontoPageTemplate?.ontoData?.map(async (d: IOntoData) => {
           const endpoint = `${API[d.urlCode]}${d.endpoint}`;
           const values = (await axios.get(endpoint)).data;
-          return { ...d, endpoint, values } as IOntoData;
+          const links = d.links.map((l: ILink) => {
+            return {
+              ...l,
+              url: `${window.location.origin}/page/?id=${l.pageId}`,
+            };
+          });
+          return { ...d, endpoint, values, links } as IOntoData;
         }),
       );
 
@@ -93,8 +99,15 @@ const PropagatedPage = () => {
         chartElement: "charts",
         data: ontoData,
       };
+
       if (ontoPageTemplate.links) {
-        visFactoryArg.links = ontoPageTemplate.links;
+        const links = ontoPageTemplate.links.map((l: ILink) => {
+          return {
+            ...l,
+            url: `${window.location.origin}/page/?id=${l.pageId}`,
+          };
+        });
+        visFactoryArg.links = links;
       }
 
       visFactory(ontoPageTemplate?.ontoVis?.function, visFactoryArg);
