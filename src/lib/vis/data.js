@@ -52,6 +52,9 @@ export class Data {
     PHE_UK_NEW_VACC_THIRD: "product=phe/overview&component=newPeopleVaccinatedThirdInjectionByPublishDate&",
 
     PHE_LTLA_NEW_CASES: ["product=phe/ltla/", "component=newCasesBySpecimenDate&"],
+    PHE_LTLA_NEW_DEATHS: ["product=phe/ltla/", "component=newWeeklyNsoDeathsByRegDate&"],
+    PHE_LTLA_NEW_VACCINATION: ["product=phe/ltla/", "component=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&"],
+    PHE_LTLA_NEW_VACC_AGE_DEMOGRAPHICS: ["product=phe/ltla/", "component=vaccinationsAgeDemographics&"],
   };
 
 
