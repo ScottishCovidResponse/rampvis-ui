@@ -225,6 +225,11 @@ var createWidget = function (parentHtmlElementId, id, config) {
   if(!widgetConfig.trend)
     widgetConfig.trend = false;
   
+  // if(!widgetConfig.max)
+  //   widgetConfig.max = 0;
+
+  // if(!widgetConfig.min)
+  //   widgetConfig.min = 100
   // include, once LAYOUT has been implemented as a variable
   // if(!widgetConfig.layout)
   //   widgetConfig.layout = dashboard.LAYOUT_COMPACT;
@@ -311,6 +316,8 @@ var createWidget = function (parentHtmlElementId, id, config) {
       widgetConfig.normalized,
       widgetConfig.link ? widgetConfig.link : null,
       widgetConfig.unit,
+      widgetConfig.max,
+      widgetConfig.min,
       widgetConfig.detail,
       lastDateUpdated,
       widgetConfig.bars,
@@ -807,6 +814,8 @@ dashboard.visualizeProgress = function (
   normalized,
   link,
   unit,
+  max,
+  min,
   detail,
   lastDate,
   barField,
