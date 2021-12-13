@@ -28,12 +28,6 @@ export class DashboardLowerTierLocalAuthority{
   CHART_HEIGHT = 400;
 
   constructor(options) {
-    // Phong
-    // Note that although the name is 'new' cases, it actually includes both new and cumulative
-    // the same way as you construc the downloaded url 
-    // I think this way, you don't need to change much of your code
-    console.log('PHE_LTLA_NEW_CASES', Data.from(options.data, Data.Fields.PHE_LTLA_NEW_CASES));
-    // 
 
     // creates the main div. don't touch
     var div = d3
@@ -55,23 +49,8 @@ export class DashboardLowerTierLocalAuthority{
     // cumVaccinationCompleteCoverageByVaccinationDatePercentage
     // cumVaccinationSecondDoseUptakeByVaccinationDatePercentage
 
-    d3.csv(cases).then(function (data) {
-      cases = data;
-    });
-    d3.csv(deaths).then(function (data) {
-      deaths = data;
-    });
-    d3.csv(vaccination).then(function (data) {
-      vaccination = data;
-    });
-    d3.csv(vaccinationAgeDemographics).then(function (data) {
-      vaccinationAgeDemographics = data;
-    });
-
-    setTimeout(function () {
-      console.log("vaccination", vaccination);
-      // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
-      var config = {
+    // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
+    var config = {
         layout: [["cases", "deaths", "vacc"]],
         groups: [
           {
@@ -191,8 +170,7 @@ export class DashboardLowerTierLocalAuthority{
         ],
       };
 
-      // this will interpret the dashboard specifiation
-      dashboard.createDashboard(div, config);
-    }, 3000);
+    // this will interpret the dashboard specifiation
+    // dashboard.createDashboard(div, config);
   }
 }
