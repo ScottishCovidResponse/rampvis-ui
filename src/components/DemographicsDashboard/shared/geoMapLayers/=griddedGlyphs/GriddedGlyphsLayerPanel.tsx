@@ -121,8 +121,7 @@ const GriddedGlyphsLayerPanel: GeoMapLayerPanel<GriddedGlyphsLayerConfig> = ({
       <FormGroup>
         <FormControl>
           <Typography gutterBottom>
-            aggregate distance in kilometers:{" "}
-            {layerConfig.dataAggregateDistance / 1000}
+            aggregate distance in km: {layerConfig.dataAggregateDistance / 1000}
           </Typography>
           <Slider
             disabled={disabled}

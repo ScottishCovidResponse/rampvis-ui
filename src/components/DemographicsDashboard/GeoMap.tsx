@@ -165,7 +165,7 @@ const GeoMapInner: React.VoidFunctionComponent<
       </div>
       <style jsx>{`
         .wrapper {
-          border-radius: 0.25rem;
+          border-radius: 1em; // FIXME: sync with theme border-radius
           overflow: hidden;
           position: absolute;
           touch-action: none;

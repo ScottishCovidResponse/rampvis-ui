@@ -37,17 +37,16 @@ const DemographicsDashboard: React.VoidFunctionComponent = () => {
 
   return (
     <Box
-      height="100vh"
       display="flex"
       flexDirection="row"
-      sx={{ boxSizing: "border-box" }}
+      sx={{ boxSizing: "border-box", maxHeight: "100%" }}
     >
       <Container
         sx={{
-          paddingTop: 2,
+          paddingTop: 0.1,
           paddingLeft: 2,
           paddingRight: 2,
-          marginRight: 1,
+          marginRight: 0,
           flex: 0,
           width: 300,
           minWidth: 300,
@@ -68,7 +67,7 @@ const DemographicsDashboard: React.VoidFunctionComponent = () => {
                 padding: 2,
                 paddingTop: 0,
                 marginBottom: 2,
-                background: "#f0f4f4",
+                // background: "rgb(248 249 253)",
                 flex: 0,
               }}
             >
@@ -99,7 +98,13 @@ const DemographicsDashboard: React.VoidFunctionComponent = () => {
         </Button>
       </Container>
       <Paper
-        sx={{ margin: 2, marginLeft: 0, flex: 1, background: "#f0f4f4" }}
+        sx={{
+          margin: 2,
+          marginTop: 0.1,
+          marginLeft: 0,
+          flex: 1,
+          // background: "rgb(248 249 253)",
+        }}
         ref={geoMapContainerRef}
       >
         {geoMapContainerWidth && geoMapContainerHeight ? (
