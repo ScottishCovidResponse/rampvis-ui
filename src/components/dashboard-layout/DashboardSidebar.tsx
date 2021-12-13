@@ -12,8 +12,9 @@ import AssessmentIcon from "@mui/icons-material/Assessment";
 import DonutSmallIcon from "@mui/icons-material/DonutSmall";
 import SearchIcon from "@mui/icons-material/Search";
 import AllInboxIcon from "@mui/icons-material/AllInbox";
-import Filter2Icon from "@mui/icons-material/Filter2";
 import Filter1Icon from "@mui/icons-material/Filter1";
+import Filter2Icon from "@mui/icons-material/Filter2";
+import Filter3Icon from "@mui/icons-material/Filter3";
 import Logo from "src/components/Logo";
 import NavSection from "src/components/dashboard-layout/NavSection";
 import Scrollbar from "src/components/Scrollbar";
@@ -105,6 +106,11 @@ const sections = [
             title: "Ensemble",
             path: "/tools/ensemble",
             icon: <Filter2Icon fontSize="small" />,
+          },
+          {
+            title: "Gridded Glyphs",
+            path: "/tools/gridded-glyphs",
+            icon: <Filter3Icon fontSize="small" />,
           },
         ],
       },
