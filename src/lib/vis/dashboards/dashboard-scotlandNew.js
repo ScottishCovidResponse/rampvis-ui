@@ -88,7 +88,7 @@ export class DashboardScotlandNew {
         {
           id: "summary",
           title: "Nation Summary",
-          layout: [["cases", "deaths", "patients"]],
+          layout: [["cases", "patients", "patientsICU"]],
         },
         {
           id: "vaccinations",
@@ -116,9 +116,25 @@ export class DashboardScotlandNew {
           visualization: "linechart",
           color: colors.getCaseColor(),
           data: Data.from(options.data, Data.Fields.COUNTRY_NEW_CASES),
-          mode: dashboard.MODE_DAILY,
           link: links[0],
         },
+        {
+          id: "patients",
+          title: "COVID-19 Patients in Hospital",
+          dataField: "COVID-19 patients in hospital - Confirmed",
+          visualization: "linechart",
+          color: colors.getHospitalizedColor(),
+          data: Data.from(options.data, Data.Fields.COUNTRY_HOSPITAL),
+        },
+        {
+          id: "patientsICU",
+          title: "Covid Patients in ICU",
+          dataField: "COVID-19 patients in ICU - Confirmed",
+          color: colors.getICUColor(),
+          visualization: "linechart",
+          data: Data.from(options.data, Data.Fields.COUNTRY_ICU),
+        },
+
         {
           id: "vaccinated1",
           title: "1st Dose Vaccination",
@@ -126,12 +142,12 @@ export class DashboardScotlandNew {
           visualization: "linechart",
           color: colors.getVaccinationColor(),
           data: Data.from(options.data, Data.Fields.COUNTRY_VACCINE_TOTAL),
-          mode: dashboard.MODE_DAILY,
           conditions: [
             'Dose == "Dose 1"',
             'AgeBand == "18 years and over"',
             'Product == "Total"',
           ],
+          detail: dashboard.DETAIL_MEDIUM
         },
         {
           id: "vaccinated2",
@@ -140,8 +156,11 @@ export class DashboardScotlandNew {
           visualization: "linechart",
           color: colors.getVaccinationColor(),
           data: Data.from(options.data, Data.Fields.COUNTRY_VACCINE_TOTAL),
-          mode: dashboard.MODE_DAILY,
-          conditions: ['Dose == "Dose 2"', 'Product == "Total"'],
+          conditions: [
+            'Dose == "Dose 2"', 
+            'AgeBand == "18 years and over"',
+            'Product == "Total"'],
+          detail: dashboard.DETAIL_MEDIUM
         },
         {
           id: "vaccinated3",
@@ -153,8 +172,9 @@ export class DashboardScotlandNew {
             options.data,
             Data.Fields.COUNTRY_VACCINE_SEX_AGEGROUP,
           ),
-          mode: dashboard.MODE_PERCENT,
-          detail: dashboard.DETAIL_COMPACT,
+          unit: '%',
+          cumulative: true,
+          detail: dashboard.DETAIL_MEDIUM,
           conditions: [
             'Dose == "Dose 1"',
             'Sex == "Total"',
@@ -167,35 +187,18 @@ export class DashboardScotlandNew {
           dataField: "CumulativePercentCoverage",
           visualization: "linechart",
           color: colors.getVaccinationColor(),
+          cumulative: true,
           data: Data.from(
             options.data,
             Data.Fields.COUNTRY_VACCINE_SEX_AGEGROUP,
           ),
-          mode: dashboard.MODE_PERCENT,
-          detail: dashboard.DETAIL_COMPACT,
+          unit: '%',
+          detail: dashboard.DETAIL_MEDIUM,
           conditions: [
             'Dose == "Dose 1"',
             'Sex == "Total"',
             'AgeGroup == "40 - 49"',
           ],
-        },
-        {
-          id: "deaths",
-          title: "COVID-19 Patients in Hospital",
-          dataField: "COVID-19 patients in hospital - Confirmed",
-          visualization: "linechart",
-          color: colors.getVaccinationColor(),
-          data: Data.from(options.data, Data.Fields.COUNTRY_HOSPITAL),
-          mode: dashboard.MODE_CUMULATIVE,
-        },
-        {
-          id: "patients",
-          title: "Covid Patients in ICU",
-          dataField: "COVID-19 patients in ICU - Confirmed",
-          color: colors.getHospitalizedColor(),
-          visualization: "linechart",
-          data: Data.from(options.data, Data.Fields.COUNTRY_ICU),
-          mode: dashboard.MODE_CURRENT,
         },
         {
           data: Data.from(
@@ -209,45 +212,45 @@ export class DashboardScotlandNew {
           normalized: true,
         },
         {
+          id: "covidInHospital",
+          title: "Covid Patients in Hospital",
           data: Data.from(
             options.data,
             Data.Fields.HEALTH_BOARD_HOSPITAL_NORMALIZED,
           ),
-          id: "covidInHospital",
-          title: "Covid Patients in Hospital",
           color: colors.getHospitalizedColor(),
           visualization: "cartogram",
           normalized: true,
         },
         {
+          id: "covidInICU",
+          title: "Covid Patients in ICU",
           data: Data.from(
             options.data,
             Data.Fields.HEALTH_BOARD_ICU_NORMALIZED,
           ),
-          id: "covidInICU",
-          title: "Covid Patients in ICU",
           visualization: "cartogram",
-          color: colors.getHospitalizedColor(),
+          color: colors.getICUColor(),
           normalized: true,
         },
         {
+          id: "covidDeaths",
+          title: "Weekly Covid Deaths",
           data: Data.from(
             options.data,
             Data.Fields.HEALTH_BOARD_COVID_DEATHS_NORMALIZED,
           ),
-          id: "covidDeaths",
-          title: "Weekly Covid Deaths",
           visualization: "cartogram",
           color: colors.getDeathColor(),
           normalized: true,
         },
         {
+          id: "allDeaths",
+          title: "Weekly All Deaths",
           data: Data.from(
             options.data,
             Data.Fields.HEALTH_BOARD_ALL_DEATHS_NORMALIZED,
           ),
-          id: "allDeaths",
-          title: "Weekly All Deaths",
           visualization: "cartogram",
           color:  colors.getDeathColor(),
           normalized: true,
