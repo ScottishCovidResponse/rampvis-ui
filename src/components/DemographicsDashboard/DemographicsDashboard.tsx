@@ -39,7 +39,7 @@ const DemographicsDashboard: React.VoidFunctionComponent = () => {
     <Box
       display="flex"
       flexDirection="row"
-      sx={{ boxSizing: "border-box", maxHeight: "100%" }}
+      sx={{ boxSizing: "border-box", height: "100%" }}
     >
       <Container
         sx={{
