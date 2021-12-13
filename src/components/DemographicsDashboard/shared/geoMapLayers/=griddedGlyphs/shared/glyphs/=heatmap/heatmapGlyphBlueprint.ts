@@ -9,7 +9,7 @@ export const heatmapGlyphBlueprint: GlyphBlueprint<
   HeatmapGlyphConfig
 > = {
   aggregateDatasets: (inputs) => {
-    let result: HeatmapGlyphDataset = { totalPopulation: 0 };
+    const result: HeatmapGlyphDataset = { totalPopulation: 0 };
     inputs.forEach(([glyphMapRecord, weight]) => {
       result.totalPopulation += _.sum(glyphMapRecord.data.flat(2)) * weight;
     });

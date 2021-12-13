@@ -1,4 +1,4 @@
-import { GlyphMapRecord } from "../../../../../../../shared/glyphMapRecords";
+import { GlyphMapRecord } from "../../../../glyphMapRecords";
 
 export interface BaseGlyphConfig {
   glyphType: string;

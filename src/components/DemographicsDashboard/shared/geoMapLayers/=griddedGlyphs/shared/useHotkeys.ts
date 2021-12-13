@@ -3,7 +3,7 @@ import tinykeys, { KeyBindingMap } from "tinykeys";
 
 export const useHotkeys = (keyBindingMap: KeyBindingMap): void => {
   React.useEffect(() => {
-    let unsubscribe = tinykeys(window, keyBindingMap);
+    const unsubscribe = tinykeys(window, keyBindingMap);
     return () => {
       unsubscribe();
     };

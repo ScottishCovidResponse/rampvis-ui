@@ -75,7 +75,7 @@ const GriddedGlyphsLayerPanel: GeoMapLayerPanel<GriddedGlyphsLayerConfig> = ({
     }
 
     const applyGridPixelSize = (newValue: number) => {
-      let cappedValue = Math.min(
+      const cappedValue = Math.min(
         gridPixelSizeSetup.max,
         Math.max(gridPixelSizeSetup.min, newValue),
       );

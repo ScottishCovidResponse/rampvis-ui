@@ -47,7 +47,7 @@ export const drawPopulationPyramidGlyph: DrawGlyph<
       genderIdx < glyphDataset.populationBins[ageIdx].length;
       genderIdx++
     ) {
-      let hBar = height / glyphDataset.populationBins.length;
+      const hBar = height / glyphDataset.populationBins.length;
       let wBar =
         ((glyphDataset.populationBins[ageIdx][genderIdx] /
           populationOfBiggestBar) *

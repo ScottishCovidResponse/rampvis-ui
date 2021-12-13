@@ -11,7 +11,7 @@ export const populationPyramidGlyphBlueprint: GlyphBlueprint<
   PopulationPyramidGlyphConfig
 > = {
   aggregateDatasets: (inputs) => {
-    let result: PopulationPyramidGlyphDataset = { populationBins: [] };
+    const result: PopulationPyramidGlyphDataset = { populationBins: [] };
     inputs.forEach(([glyphMapRecord, weight], index) => {
       for (let index1 = 0; index1 < glyphMapRecord.data.length; index1 += 1) {
         if (result.populationBins[index1] === undefined) {

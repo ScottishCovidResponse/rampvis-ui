@@ -94,7 +94,7 @@ const GlyphScalePanel = <
     }
 
     const applyMaxScaleValue = (newValue: number | undefined) => {
-      let roundedValue =
+      const roundedValue =
         typeof newValue === "number"
           ? Math.min(Number.MAX_SAFE_INTEGER, Math.max(1, Math.round(newValue)))
           : newValue;

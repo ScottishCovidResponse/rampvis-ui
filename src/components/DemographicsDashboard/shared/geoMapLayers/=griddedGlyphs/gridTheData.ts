@@ -1,4 +1,4 @@
-import { GlyphMapRecord } from "../../../../../shared/glyphMapRecords";
+import { GlyphMapRecord } from "../../glyphMapRecords";
 
 export const gridTheData = (
   glyphMapRecords: GlyphMapRecord[],
@@ -13,13 +13,13 @@ export const gridTheData = (
     gridPixelSize /= 2;
   }
   //create a grid
-  let grid: [GlyphMapRecord, number][][][] = new Array();
+  const grid: [GlyphMapRecord, number][][][] = [];
   for (let col = 0; col < Math.ceil(width / gridPixelSize); col++)
     grid.push(new Array(Math.ceil(height / gridPixelSize)));
 
   for (const glyphMapRecord of glyphMapRecords) {
-    let col = Math.floor(geoToScreenX(glyphMapRecord.x) / gridPixelSize);
-    let row = Math.floor(geoToScreenY(glyphMapRecord.y) / gridPixelSize);
+    const col = Math.floor(geoToScreenX(glyphMapRecord.x) / gridPixelSize);
+    const row = Math.floor(geoToScreenY(glyphMapRecord.y) / gridPixelSize);
     if (col >= 0 && col < grid.length && row >= 0 && row < grid[0].length) {
       let records: [GlyphMapRecord, number][] = grid[col][row];
       if (records === undefined) {
