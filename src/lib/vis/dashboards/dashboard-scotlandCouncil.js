@@ -101,7 +101,7 @@ export class DashboardScotlandCouncil {
           visualization: "linechart",
           color: colors.getDeathColor(),
           data: Data.from(options.data, Data.Fields.COUNCIL_COVID_DEATHS),
-          mode: dashboard.MODE_DAILY,
+          cumulative: false,
           detail: dashboard.DETAIL_HIGHT,
           conditions: ["index.length > 4"],
         },
@@ -113,7 +113,7 @@ export class DashboardScotlandCouncil {
           color: colors.getDeathColor(),
           data: Data.from(options.data, Data.Fields.COUNCIL_ALL_DEATHS),
           detail: dashboard.DETAIL_HIGH,
-          mode: dashboard.MODE_DAILY,
+          cumulative: false,
           conditions: ["index.length > 4"],
         },
         {
@@ -126,7 +126,8 @@ export class DashboardScotlandCouncil {
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
-          mode: dashboard.MODE_PERCENT,
+          cumulative: true,
+          unit: '%',
           detail: dashboard.DETAIL_HIGH,
           conditions: [
             'Sex == "Total"',
@@ -144,7 +145,8 @@ export class DashboardScotlandCouncil {
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
-          mode: dashboard.MODE_PERCENT,
+          cumulative: true,
+          unit: '%',
           detail: dashboard.DETAIL_HIGH,
           conditions: [
             'Sex == "Total"',
@@ -163,7 +165,8 @@ export class DashboardScotlandCouncil {
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
-          mode: dashboard.MODE_PERCENT,
+          cumulative: true,
+          unit: '%',
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -181,7 +184,8 @@ export class DashboardScotlandCouncil {
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
-          mode: dashboard.MODE_PERCENT,
+          cumulative: true,
+          unit: '%',
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -199,7 +203,8 @@ export class DashboardScotlandCouncil {
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
-          mode: dashboard.MODE_PERCENT,
+          cumulative: true,
+          unit: '%',
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -217,7 +222,8 @@ export class DashboardScotlandCouncil {
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
-          mode: dashboard.MODE_PERCENT,
+          cumulative: true,
+          unit: '%',
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -235,7 +241,8 @@ export class DashboardScotlandCouncil {
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
-          mode: dashboard.MODE_PERCENT,
+          cumulative: true,
+          unit: '%',
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -253,7 +260,8 @@ export class DashboardScotlandCouncil {
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
-          mode: dashboard.MODE_PERCENT,
+          cumulative: true,
+          unit: '%',
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -271,7 +279,8 @@ export class DashboardScotlandCouncil {
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
-          mode: dashboard.MODE_PERCENT,
+          cumulative: true,
+          unit: '%',
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -289,7 +298,8 @@ export class DashboardScotlandCouncil {
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
-          mode: dashboard.MODE_CUMULATIVE,
+          cumulative: true,
+          unit: '%',
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -307,7 +317,8 @@ export class DashboardScotlandCouncil {
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
-          mode: dashboard.MODE_PERCENT,
+          cumulative: true,
+          unit: '%',
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -327,7 +338,8 @@ export class DashboardScotlandCouncil {
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           detail: dashboard.DETAIL_LOW,
-          mode: dashboard.MODE_PERCENT,
+          cumulative: true,
+          unit: '%',
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',
@@ -344,7 +356,8 @@ export class DashboardScotlandCouncil {
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
-          mode: dashboard.MODE_PERCENT,
+          cumulative: true,
+          unit: '%',
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -362,7 +375,8 @@ export class DashboardScotlandCouncil {
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
-          mode: dashboard.MODE_PERCENT,
+          cumulative: true,
+          unit: '%',
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -380,7 +394,8 @@ export class DashboardScotlandCouncil {
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
-          mode: dashboard.MODE_PERCENT,
+          cumulative: true,
+          unit: '%',
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -398,7 +413,8 @@ export class DashboardScotlandCouncil {
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
-          mode: dashboard.MODE_PERCENT,
+          cumulative: true,
+          unit: '%',
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -416,7 +432,8 @@ export class DashboardScotlandCouncil {
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
-          mode: dashboard.MODE_PERCENT,
+          cumulative: true,
+          unit: '%',
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -434,7 +451,8 @@ export class DashboardScotlandCouncil {
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
-          mode: dashboard.MODE_PERCENT,
+          cumulative: true,
+          unit: '%',
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -452,7 +470,8 @@ export class DashboardScotlandCouncil {
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
-          mode: dashboard.MODE_PERCENT,
+          cumulative: true,
+          unit: '%',
           detail: dashboard.DETAIL_LOW,
           onditions: [
             'Sex == "Total"',
@@ -470,7 +489,8 @@ export class DashboardScotlandCouncil {
             options.data,
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
-          mode: dashboard.MODE_PERCENT,
+          cumulative: true,
+          unit: '%',
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',

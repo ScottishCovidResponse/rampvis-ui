@@ -128,7 +128,7 @@ export class DashboardScotland {
           dataField: "Testing - New cases reported",
           visualization: "linechart",
           color: colors.getCaseColor(),
-          mode: dashboard.MODE_DAILY,
+          cumulative: false,
           link: links && links[0],
           detail: dashboard.DETAIL_MEDIUM,
         },
@@ -139,7 +139,7 @@ export class DashboardScotland {
           visualization: "linechart",
           color: colors.getVaccinationColor(1),
           data: Data.from(options.data, Data.Fields.COUNTRY_VACCINE_TOTAL),
-          mode: dashboard.MODE_DAILY,
+          cumulative: false,
           detail: dashboard.DETAIL_MEDIUM,
           conditions: [
             'Dose == "Dose 1"',
@@ -154,7 +154,7 @@ export class DashboardScotland {
           visualization: "linechart",
           color: colors.getVaccinationColor(2),
           data: Data.from(options.data, Data.Fields.COUNTRY_VACCINE_TOTAL),
-          mode: dashboard.MODE_DAILY,
+          cumulative: false,
           detail: dashboard.DETAIL_MEDIUM,
           conditions: ['Dose == "Dose 2"', 'Product == "Total"'],
         },
@@ -164,9 +164,9 @@ export class DashboardScotland {
           dataField: "COVID-19 patients in hospital - Confirmed",
           visualization: "linechart",
           detail: dashboard.DETAIL_MEDIUM,
+          cumulative: true,
           color: colors.getHospitalizedColor(),
           data: Data.from(options.data, Data.Fields.COUNTRY_HOSPITAL),
-          mode: dashboard.MODE_CUMULATIVE,
         },
         {
           id: "patients",
@@ -176,7 +176,7 @@ export class DashboardScotland {
           visualization: "linechart",
           detail: dashboard.DETAIL_MEDIUM,
           data: Data.from(options.data, Data.Fields.COUNTRY_ICU),
-          mode: dashboard.MODE_CURRENT,
+          cumulative: true,
         },
         {
           data: Data.from(

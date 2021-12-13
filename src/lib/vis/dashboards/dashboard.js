@@ -43,11 +43,11 @@ var baseline_label = 55;
 dashboard.LINE_HIGHT = 20;
 let LINE_HIGHT = 20;
 
-dashboard.MODE_DAILY = 0;
-dashboard.MODE_CURRENT = 1;
-dashboard.MODE_CUMULATIVE = 2;
-dashboard.MODE_WEEKLY = 3;
-dashboard.MODE_PERCENT = 4;
+// dashboard.MODE_DAILY = 0;
+// dashboard.MODE_CURRENT = 1;
+// dashboard.MODE_CUMULATIVE = 2;
+// dashboard.MODE_WEEKLY = 3;
+// dashboard.MODE_PERCENT = 4;
 
 dashboard.DETAIL_HIGH = "high";
 dashboard.DETAIL_LOW = "low";
@@ -57,6 +57,14 @@ dashboard.VIS_LINECHART = "linechart";
 dashboard.VIS_CARTOGRAM = "cartogram";
 dashboard.VIS_BARCHART = "barchart";
 dashboard.VIS_PROGRESS = "progress";
+
+dashboard.TIMEUNIT_SECOND = 'second';
+dashboard.TIMEUNIT_MINUTE = 'minute';
+dashboard.TIMEUNIT_HOUR = 'hour';
+dashboard.TIMEUNIT_DAY = 'day';
+dashboard.TIMEUNIT_WEEK = 'week';
+dashboard.TIMEUNIT_MONTH = 'month';
+dashboard.TIMEUNIT_YEAR = 'year';
 
 
 var LINE_1 = 10;
@@ -210,21 +218,32 @@ var createWidget = function (parentHtmlElementId, id, config) {
   if(!widgetConfig.detail)
     widgetConfig.detail = dashboard.DETAIL_HIGH;
 
-  if(!widgetConfig.normalized) 
-    widgetConfig.normalized = false
-
   if (!widgetConfig.unit) 
     widgetConfig.unit = "";
   
   if (!widgetConfig.abbreviate) 
     widgetConfig.abbreviate = false;
 
+  // deprecated. remove when not used anymore
   if(!widgetConfig.normalized)
     widgetConfig.normalized = false;
   
   if(!widgetConfig.trend)
     widgetConfig.trend = false;
+
+  if(!widgetConfig.unit)
+    widgetConfig.unit = '';
+
+  if(!widgetConfig.min)
+    widgetConfig.min = 0;
+
+  if(!widgetConfig.cumulative)
+    widgetConfig.cumulative = false;
+
+  if(!widgetConfig.timeUnit)
+    widgetConfig.timeUnit = dashboard.TIMEUNIT_DAY;
   
+
   // include, once LAYOUT has been implemented as a variable
   // if(!widgetConfig.layout)
   //   widgetConfig.layout = dashboard.LAYOUT_COMPACT;
@@ -247,12 +266,12 @@ var createWidget = function (parentHtmlElementId, id, config) {
       "YYYY-MM-DD",
     ]).format("YYYY-MM-DD");
   }
+  // sort array by date, first/earliest to last/most recent
+  data.sort(byDate);
+  
   // find last date in data set, i.e., when data has been updated last.
   var lastDateUpdated = moment(data[data.length - 1][widgetConfig.dateField], ["YYYY-MM-DD"]);
   
-  // sort array by date, first/earliest to last/most recent
-  data.sort(byDate);
-
   // check for filter conditions on data
   if (widgetConfig.conditions && widgetConfig.conditions.length > 0) {
     for (var i in widgetConfig.conditions) {
@@ -281,7 +300,7 @@ var createWidget = function (parentHtmlElementId, id, config) {
     );
   } 
   else if (widgetConfig.visualization == dashboard.VIS_LINECHART) {
-    dashboard.visualizeTime(
+    dashboard.visualizeTimeSeries(
       parentHtmlElementId, 
       widgetConfig,
       lastDateUpdated
@@ -343,14 +362,15 @@ var canonizeNames = function (s) {
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
 
-dashboard.visualizeTime = function (
+dashboard.visualizeTimeSeries = function (
   parentHtmlId,
-  widgetConfig,
+  config,
   lastDate
   ) 
   {
 
-  if (widgetConfig.detail == dashboard.DETAIL_HIGH) 
+  console.log('visulize time series', config.data) 
+  if (config.detail == dashboard.DETAIL_HIGH) 
   {
     var random = Math.floor(Math.random() * 1000);
     var wrapperDiv = d3
@@ -367,92 +387,86 @@ dashboard.visualizeTime = function (
       .attr("height", 120)
       .style("margin-bottom", 0);
 
-    dashboardComponents.setVisTitle(svg, widgetConfig.title, widgetConfig.link, widgetConfig.detail, lastDate);
+    dashboardComponents.setVisTitle(svg, config.title, config.link, config.detail, lastDate);
 
     dashboardComponents.visualizeNumber(
       svg,
-      widgetConfig.data,
+      config,
       0,
       baseline_title + 25,
-      widgetConfig.dataField,
-      widgetConfig.color,
-      widgetConfig.mode,
-      widgetConfig.normalized,
-      widgetConfig.unit,
-      widgetConfig.abbreviate,
     );
     dashboardComponents.visualizeTrendArrow(
       svg,
-      widgetConfig.data,
+      config,
       WIDTH - 120,
       baseline_title + 25,
-      widgetConfig.dataField,
-      widgetConfig.color,
-      widgetConfig.mode,
-      widgetConfig.unit,
     );
 
     // showing the highest value doesn't make sense 
     // for cumulative data 
-    // if(widgetConfig.mode != dashboard.MODE_CUMULATIVE){
+    if(!config.cumulative)
+    {
       dashboardComponents.visualizeValue(
         svg,
-        widgetConfig.data,
-        widgetConfig.dataField,
-        widgetConfig.dateField,
-        widgetConfig.unit,
+        config.data,
+        config.dataField,
+        config.dateField,
+        config.unit,
         WIDTH - 270,
         baseline_title + 25,
-        widgetConfig.color, 
-        widgetConfig.abbreviate, 
+        config.color, 
+        config.abbreviate, 
         'max', 
         LINE_1
       );
       dashboardComponents.visualizeValue(
         svg,
-        widgetConfig.data,
-        widgetConfig.dataField,
-        widgetConfig.dateField,
-        widgetConfig.unit,
+        config.data,
+        config.dataField,
+        config.dateField,
+        config.unit,
         WIDTH - 270,
         baseline_title + 25,
-        widgetConfig.color, 
-        widgetConfig.abbreviate, 
+        config.color, 
+        config.abbreviate, 
         'min', 
         LINE_2
       );
-    // }
+    }
 
     wrapperDiv.append("br");
 
-    var mark = "line";
-    if (widgetConfig.mode == dashboard.MODE_DAILY || widgetConfig.mode == dashboard.MODE_WEEKLY)
-      mark = "bar";
+
+    var mark = "bar";
+    if (config.cumulative)
+      mark = "line";
 
     var scale;
-    if (widgetConfig.mode == this.MODE_PERCENT) scale = { domain: [0, 100] };
+    console.log(config.unit)
+    if (config.unit == '%') 
+      scale = { domain: [0, 100] };
 
     var vegaLinechart = {
       $schema: "https://vega.github.io/schema/vega-lite/v5.json",
       data: {
-        values: widgetConfig.data,
+        values: config.data,
       },
       mark: mark,
       width: WIDTH - 100,
       height: HEIGHT - 100,
       encoding: {
         y: {
-          field: widgetConfig.dataField,
+          field: config.dataField,
           type: "quantitative",
           title: "",
           scale: scale,
         },
         x: {
-          field: widgetConfig.dateField,
+          field: config.dateField,
           type: "temporal",
           title: "",
         },
-        color: { value: widgetConfig.color },
+        color: { value: config.color },
       },
     };
 
@@ -460,76 +474,57 @@ dashboard.visualizeTime = function (
 
     vegaEmbed("#vegadiv-" + parentHtmlId + random, vegaLinechart, { actions: false });
   } 
-  else if (widgetConfig.detail == dashboard.DETAIL_MEDIUM) 
+  // MEDIUM 
+  else if (config.detail == dashboard.DETAIL_MEDIUM) 
   {
     var svg = d3.select("#" + parentHtmlId).append("svg");
-    dashboardComponents.setVisTitle(svg, widgetConfig.title, widgetConfig.link, widgetConfig.detail, lastDate);
+    dashboardComponents.setVisTitle(svg, config.title, config.link, config.detail, lastDate);
 
     svg.attr("width", 400).attr("height", 110);
 
     dashboardComponents.visualizeNumber(
       svg,
-      widgetConfig.data,
+      config,
       0,
       baseline_title + 25,
-      widgetConfig.dataField,
-      widgetConfig.color,
-      widgetConfig.mode,
-      widgetConfig.normalized,
-      widgetConfig.unit,
-      widgetConfig.abbreviate,
     );
     dashboardComponents.visualizeTrendArrow(
       svg,
-      widgetConfig.data,
+      config,
       150,
       baseline_title + 25,
-      widgetConfig.dataField,
-      widgetConfig.color,
-      widgetConfig.mode,
-      widgetConfig.unit,
     );
     dashboardComponents.visualizeMiniChart(
       svg,
-      widgetConfig.data,
+      config,
       300,
       baseline_title + 25,
       35,
       100,
-      widgetConfig.dataField,
-      widgetConfig.color,
-      widgetConfig.mode,
     );
   } 
-  else if (widgetConfig.detail == dashboard.DETAIL_LOW) 
+  // LOW
+  else if (config.detail == dashboard.DETAIL_LOW) 
   {
+
     var svg = d3.select("#" + parentHtmlId).append("svg");
-    dashboardComponents.setVisTitle(svg, widgetConfig.title, widgetConfig.link, widgetConfig.detail, lastDate);
+    dashboardComponents.setVisTitle(svg, config.title, config.link, config.detail, lastDate);
 
     svg.attr("width", 180).attr("height", 70);
 
     dashboardComponents.visualizeNumberSmall(
       svg,
-      widgetConfig.data,
+      config,
       0,
       baseline_title + 25,
-      widgetConfig.dataField,
-      widgetConfig.color,
-      widgetConfig.mode,
-      widgetConfig.normalized,
-      widgetConfig.unit,
     );
     dashboardComponents.visualizeMiniChart(
       svg,
-      widgetConfig.data,
+      config,
       100,
       baseline_title + 25,
       18,
       70,
-      widgetConfig.dataField,
-      widgetConfig.color,
-      widgetConfig.mode,
-      true,
     );
   }
   // else if (detail == dashboard.DETAIL_MEDIUM) {
@@ -851,47 +846,41 @@ dashboard.visualizeProgress = function (
 
 dashboardComponents.visualizeNumber = function (
   svg,
-  data,
+  config,
   x,
   y,
-  dataField,
-  color,
-  mode,
-  normalized,
-  unit,
-  abbreviate,
 ) {
   var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
 
-  if (mode == dashboard.MODE_DAILY) {
-    dashboardComponents.setVisLabel(g, "Today", 0, baseline_label);
-  } else if (mode == dashboard.MODE_CURRENT) {
-    dashboardComponents.setVisLabel(g, "Current", 0, baseline_label);
-  } else if (mode == dashboard.MODE_WEEKLY) {
-    dashboardComponents.setVisLabel(g, "This week", 0, baseline_label);
-  } else {
-    dashboardComponents.setVisLabel(g, "Total", 0, baseline_label);
+  var prefix = 'New '
+  if (config.cumlative){
+    prefix  = 'Total '
   }
+  
+  if (config.timeUnit == dashboard.TIMEUNIT_DAY)
+      dashboardComponents.setVisLabel(g, prefix + "today", 0, baseline_label);
+  if (config.timeUnit == dashboard.TIMEUNIT_WEEK)
+      dashboardComponents.setVisLabel(g, prefix + "this week", 0, baseline_label);
+  if (config.timeUnit == dashboard.TIMEUNIT_MONTH)
+      dashboardComponents.setVisLabel(g, prefix + "this month", 0, baseline_label);
+  
 
-  var val = data[data.length - 1][dataField];
-
+  var val = config.data[config.data.length - 1][config.dataField];
+  
   // abbreviate if required
-  if (val > 1000000 && abbreviate) {
+  if (val > 1000000 && config.abbreviate) {
     val = val / 1000000;
-    unit = "M " + unit;
-  } else if (val > 1000 && abbreviate) {
+    config.unit = "M ";
+  } else if (val > 1000 && config.abbreviate) {
     val = val / 1000;
-    unit = "k " + unit;
+    config.unit = "k ";
   }
 
   val = Math.round(val * 10) / 10;
   val = val.toLocaleString(undefined);
 
-  if (mode == dashboard.MODE_PERCENT) {
-    val += "%";
-  } else if (unit) {
-    val += "" + unit;
-  }
+  // add unit to value
+  val += "" + config.unit;
 
   var bigNumber = {};
 
@@ -900,35 +889,30 @@ dashboardComponents.visualizeNumber = function (
     .text(val)
     .attr("y", 33)
     .attr("class", "bigNumber")
-    .style("fill", color)
+    .style("fill", config.color)
     .each(function () {
       bigNumber.width = this.getBBox().width;
     });
 
-  if (normalized) {
+  // if (config.) {
     g.append("text")
-      .text("per")
+      .text(config.unit)
       .attr("x", bigNumber.width + 10)
       .attr("y", y + LINE_1)
       .attr("class", "thin");
-    g.append("text")
-      .text("100,000")
-      .attr("x", bigNumber.width + 10)
-      .attr("y", y + LINE_2)
-      .attr("class", "thin");
-  }
+  //   g.append("text")
+  //     .text("100,000")
+  //     .attr("x", bigNumber.width + 10)
+  //     .attr("y", y + LINE_2)
+  //     .attr("class", "thin");
+  // }
 };
 
 dashboardComponents.visualizeNumberSmall = function (
   svg,
-  data,
+  config,
   x,
   y,
-  field,
-  color,
-  mode,
-  normalized,
-  unit,
 ) {
   // var g = svg.append("g")
   //     .attr("transform", "translate(" + xOffset + ",0)")
@@ -943,23 +927,17 @@ dashboardComponents.visualizeNumberSmall = function (
   //     setVisLabel(g, 'Total')
   // }
 
-  var val = Math.round(data[data.length - 1][field] * 10) / 10;
-  val = val.toLocaleString(undefined);
+  var val = Math.round(config.data[config.data.length - 1][config.dataField] * 10) / 10;
+  val = val.toLocaleString(undefined) + ' ' + config.unit ;
 
-  if (mode == dashboard.MODE_PERCENT) {
-    val += "%";
-  } else if (unit) {
-    val += "" + unit;
-  }
-
-  var bigNumber = {};
+  // var bigNumber = {};
   svg
     .append("text")
     .text(val)
     .attr("y", y + 18)
     .attr("x", x)
     .attr("class", "smallNumber")
-    .style("fill", color);
+    .style("fill", config.color);
 
   // if (normalized) {
   //     g.append('text')
@@ -975,26 +953,28 @@ dashboardComponents.visualizeNumberSmall = function (
   // }
 };
 
-dashboardComponents.visualizeTrendArrow = function (svg, data, x, y, field, color, mode, unit) {
+dashboardComponents.visualizeTrendArrow = function (
+  svg, config, x, y) {
+
   var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
 
-  if (mode == dashboard.MODE_WEEKLY)
-    dashboardComponents.setVisLabel(g, "From last week", 0, baseline_label);
-  else 
-    dashboardComponents.setVisLabel(g, "From yesterday", 0, baseline_label);
+  if (config.timeUnit == dashboard.TIMEUNIT_WEEK)
+    dashboardComponents.setVisLabel(g, "Since last week", 0, baseline_label);
+  if (config.timeUnit == dashboard.TIMEUNIT_DAY)
+    dashboardComponents.setVisLabel(g, "Since yesterday", 0, baseline_label);
 
-  var secondLast = parseInt(data[data.length - 2][field]);
-  var last = parseInt(data[data.length - 1][field]);
-  let v = last - secondLast;
-  let r = 0;
-  if (v < 0) r = 45;
-  if (v > 0) r = -45;
+  var secondLast = parseInt(config.data[config.data.length - 2][config.dataField]);
+  var last = parseInt(config.data[config.data.length - 1][config.dataField]);
+  let trendValue = last - secondLast;
+  let rotation = 0;
+  if (trendValue < 0) rotation = 45;
+  if (trendValue > 0) rotation = -45;
 
   g.append("text")
     .text(function () {
-      if (v > 0) {
+      if (trendValue > 0) {
         return "up by";
-      } else if (v < 0) {
+      } else if (trendValue < 0) {
         return "down by";
       } else {
         return "no ";
@@ -1004,7 +984,7 @@ dashboardComponents.visualizeTrendArrow = function (svg, data, x, y, field, colo
     .attr("y", LINE_1)
     .attr("class", "thin");
 
-  if (v == 0) {
+  if (trendValue == 0) {
     g.append("text")
       .text("change")
       .attr("x", 45)
@@ -1013,19 +993,19 @@ dashboardComponents.visualizeTrendArrow = function (svg, data, x, y, field, colo
   } else {
     g.append("text")
       .text(function () {
-        v = Math.abs(v);
-        if (mode == dashboard.MODE_PERCENT) {
-          v += "% pts.";
+        trendValue = Math.abs(trendValue);
+        if (config.unit == '%') {
+          trendValue += "% pts.";
         }
-        return v;
+        return trendValue;
       })
       .attr("x", 45)
       .attr("y", LINE_2)
-      .style("fill", color);
+      .style("fill", config.color);
   }
 
   var g2 = g.append("g").attr("transform", function () {
-    return "translate(17," + 20 + "),rotate(" + r + ")";
+    return "translate(17," + 20 + "),rotate(" + rotation + ")";
   });
 
   g2.append("line")
@@ -1034,21 +1014,21 @@ dashboardComponents.visualizeTrendArrow = function (svg, data, x, y, field, colo
     .attr("y1", 0)
     .attr("y2", 0)
     .attr("class", "arrow")
-    .attr("stroke", color);
+    .attr("stroke", config.color);
   g2.append("line")
     .attr("x1", 15)
     .attr("x2", 0)
     .attr("y1", 0)
     .attr("y2", -15)
     .attr("class", "arrow")
-    .attr("stroke", color);
+    .attr("stroke", config.color);
   g2.append("line")
     .attr("x1", 15)
     .attr("x2", 0)
     .attr("y1", 0)
     .attr("y2", 15)
     .attr("class", "arrow")
-    .attr("stroke", color);
+    .attr("stroke", config.color);
 };
 
 
@@ -1124,28 +1104,27 @@ dashboardComponents.visualizeValue = function (
 
 dashboardComponents.visualizeMiniChart = function (
   svg,
-  data,
+  config,
   x,
   y,
   chartHeight,
   chartWidth,
-  field,
-  color,
-  mode,
-  noTitle,
 ) {
-  var trendWindow = 14; // days
-  if (mode == dashboard.MODE_WEEKLY) trendWindow = 8;
+  var trendWindow = 1;
+  if (config.timeUnit == dashboard.TIMEUNIT_WEEK) 
+    trendWindow = 8;
+  if (config.timeUnit == dashboard.TIMEUNIT_DAY) 
+    trendWindow = 14;
 
   var barWidth = (chartWidth - 10) / trendWindow;
 
   var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
 
-  if (mode == dashboard.MODE_WEEKLY && !noTitle) {
+  if (config.timeUnit == dashboard.TIMEUNIT_WEEK)
     dashboardComponents.setVisLabel(g, "Last " + trendWindow + " Weeks", 0, baseline_label);
-  } else if (!noTitle) {
+  if (config.timeUnit == dashboard.TIMEUNIT_DAY)
     dashboardComponents.setVisLabel(g, "Last " + trendWindow + " Days", 0, baseline_label);
-  }
+
 
   var x = d3
     .scaleLinear()
@@ -1153,18 +1132,23 @@ dashboardComponents.visualizeMiniChart = function (
     .range([0, chartWidth - barWidth]);
 
   // get N last entries
-  data = data.slice(data.length - trendWindow);
+  var data = config.data.slice(config.data.length - trendWindow);
 
-  var max = d3.max(data, function (d) {
-    return parseInt(d[field]);
-  });
-  if (mode == dashboard.MODE_PERCENT) {
+  if(config.max){
+    max = config.max
+  } else 
+  if (config.unit == '%') {
     max = 100;
+  } else 
+  if(!config.max){
+    var max = d3.max(data, function (d) {
+      return parseInt(d[config.dataField]);
+    });
   }
   var y = d3.scaleLinear().domain([0, max]).range([chartHeight, 0]);
 
   // if perentage, show 100% line
-  if (mode == dashboard.MODE_PERCENT) {
+  if (config.max) {
     g.append("line")
       .attr("y1", y(max))
       .attr("y2", y(max))
@@ -1179,14 +1163,13 @@ dashboardComponents.visualizeMiniChart = function (
       .attr("class", "chartTopRect");
   }
 
-  if (
-    mode == dashboard.MODE_CUMULATIVE ||
-    mode == dashboard.MODE_CURRENT ||
-    mode == dashboard.MODE_PERCENT
-  ) {
+  console.log('config.cumulative', config.cumulative)
+
+  if (config.cumulative)
+  {
     g.append("path")
       .datum(data)
-      .attr("fill", color)
+      .attr("fill", config.color)
       .style("opacity", 0.4)
       .attr(
         "d",
@@ -1197,14 +1180,14 @@ dashboardComponents.visualizeMiniChart = function (
           })
           .y0(y(0))
           .y1(function (d) {
-            return y(d[field]);
+            return y(d[config.dataField]);
           }),
       );
 
     g.append("path")
       .datum(data)
       .attr("fill", "none")
-      .attr("stroke", color)
+      .attr("stroke", config.color)
       .attr("stroke-width", 2)
       .attr(
         "d",
@@ -1214,22 +1197,24 @@ dashboardComponents.visualizeMiniChart = function (
             return x(i);
           })
           .y(function (d) {
-            return y(d[field]);
+            return y(d[config.dataField]);
           }),
       );
 
     g.append("circle")
-      .attr("fill", color)
+      .attr("fill", config.color)
       .attr("r", 3)
       .attr("cx", x(data.length - 1))
-      .attr("cy", y(data[data.length - 1][field]));
-  } else {
+      .attr("cy", y(data[data.length - 1][config.dataField]));
+  } else 
+  if(!config.cumulative)
+  {
     g.selectAll("bar")
       .data(data)
       .enter()
       .append("rect")
       .style("fill", function (d, i) {
-        var c = color;
+        var c = config.color;
         if (i == 13) c = d3.rgb(c).darker(1);
         return c;
       })
@@ -1238,18 +1223,14 @@ dashboardComponents.visualizeMiniChart = function (
       })
       .attr("width", barWidth)
       .attr("y", function (d) {
-        return y(d[field]);
+        return y(d[config.dataField]);
       })
       .attr("height", function (d) {
-        return chartHeight - y(d[field]);
+        return chartHeight - y(d[config.dataField]);
       });
   }
 
-  if (
-    mode == dashboard.MODE_DAILY ||
-    mode == dashboard.MODE_CUMULATIVE ||
-    mode == dashboard.MODE_CURRENT
-  ) {
+  if (config.cumlative) {
     g.append("line")
       .attr("x1", x(6.9))
       .attr("x2", x(7.1))

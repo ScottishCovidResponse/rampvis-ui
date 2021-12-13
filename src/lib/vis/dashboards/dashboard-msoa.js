@@ -83,7 +83,7 @@ export class DashboardMSOA {
             dataField: 'newCasesBySpecimenDateRollingSum', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_HIGH, 
-            mode: dashboard.MODE_CUMULATIVE,
+            cumulative: true,
             dateField: 'date', 
             color: colors.getCaseColor()
           },{
@@ -93,7 +93,7 @@ export class DashboardMSOA {
             dataField: 'newCasesBySpecimenDateRollingRate', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_HIGH, 
-            mode: dashboard.MODE_DAILY,
+            cumulative: false,
             dateField: 'date', 
             color: colors.getCaseColor()
           }
@@ -104,7 +104,7 @@ export class DashboardMSOA {
             dataField: 'newCasesBySpecimenDateChangePercentage', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_HIGH, 
-            mode: dashboard.MODE_DAILY,
+            cumulative: false,
             dateField: 'date', 
             color: colors.getCaseColor()
           },{
@@ -114,7 +114,8 @@ export class DashboardMSOA {
             dataField: 'cumVaccinationFirstDoseUptakeByVaccinationDatePercentage', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_MEDIUM, 
-            mode: dashboard.MODE_PERCENT,
+            cumulative: true,
+            unit: '%',
             dateField: 'date', 
             color: colors.getCaseColor()
           },{
@@ -124,7 +125,8 @@ export class DashboardMSOA {
             dataField: 'cumVaccinationSecondDoseUptakeByVaccinationDatePercentage', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_HIGH, 
-            mode: dashboard.DETAIL_MEDIUM,
+            cumulative: true, 
+            unit: '%,',
             dateField: 'date', 
             color: colors.getCaseColor()
           }

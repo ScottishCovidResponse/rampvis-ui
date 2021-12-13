@@ -55,6 +55,7 @@ export class Data {
     PHE_LTLA_NEW_DEATHS: ["product=phe/ltla/", "component=newWeeklyNsoDeathsByRegDate&"],
     PHE_LTLA_NEW_VACCINATION: ["product=phe/ltla/", "component=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&"],
     PHE_LTLA_NEW_VACC_AGE_DEMOGRAPHICS: ["product=phe/ltla/", "component=vaccinationsAgeDemographics&"],
+
   };
 
 

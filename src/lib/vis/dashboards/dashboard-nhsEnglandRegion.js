@@ -120,7 +120,7 @@ export class DashboardNHSEnglandRegion {
             dataField: 'cumCasesBySpecimenDate', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_MEDIUM, 
-            mode: dashboard.MODE_CUMULATIVE,
+            cumulative: true,
             dateField: 'date', 
             abbreviate: true,
             color: colors.getCaseColor(1)
@@ -132,7 +132,7 @@ export class DashboardNHSEnglandRegion {
             dataField: 'uniqueCasePositivityBySpecimenDateRollingSum', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_MEDIUM, 
-            mode: dashboard.MODE_DAILY,
+            cumulative: true,
             dateField: 'date', 
             abbreviate: true,
             color: colors.getCaseColor(2)
@@ -143,7 +143,7 @@ export class DashboardNHSEnglandRegion {
             dataField: 'newCasesBySpecimenDate', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_HIGH, 
-            mode: dashboard.MODE_DAILY,
+            cumulative: false,
             dateField: 'date', 
             color: colors.getCaseColor(3)
           },
@@ -154,7 +154,7 @@ export class DashboardNHSEnglandRegion {
             dataField: 'cumDailyNsoDeathsByDeathDate', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_MEDIUM, 
-            mode: dashboard.MODE_CUMULATIVE,
+            cumulative: true,
             dateField: 'date', 
             abbreviate: true,
             color: colors.getDeathColor()
@@ -165,7 +165,7 @@ export class DashboardNHSEnglandRegion {
             dataField: 'newDailyNsoDeathsByDeathDate', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_HIGH, 
-            mode: dashboard.MODE_DAILY,
+            cumulative: false,
             dateField: 'date', 
             color: colors.getDeathColor(2)
           },{
@@ -175,7 +175,8 @@ export class DashboardNHSEnglandRegion {
             dataField: 'rate', 
             visualization: 'barchart', 
             detail: dashboard.DETAIL_HIGH, 
-            mode: dashboard.MODE_DAILY,
+            cumulative: false,
+            timeUnit: dashboard.TIMEUNIT_MONTH,
             dateField: 'date', 
             categories: 'age',
             color: colors.getDeathColor(3)
@@ -186,7 +187,8 @@ export class DashboardNHSEnglandRegion {
             dataField: 'rate', 
             visualization: 'barchart', 
             detail: dashboard.DETAIL_HIGH, 
-            mode: dashboard.MODE_DAILY,
+            cumulative: false,
+            timeUnit: dashboard.TIMEUNIT_MONTH,
             dateField: 'date', 
             categories: 'age',
             color: colors.getDeathColor(3)
@@ -197,6 +199,7 @@ export class DashboardNHSEnglandRegion {
             dataField: 'cumVaccinationFirstDoseUptakeByVaccinationDatePercentage', 
             visualization: 'barchart', 
             detail: dashboard.DETAIL_HIGH, 
+            unit: '%',
             dateField: 'date', 
             categories: 'age',
             color: colors.getVaccinationColor(1)
@@ -207,6 +210,7 @@ export class DashboardNHSEnglandRegion {
             dataField: 'cumVaccinationSecondDoseUptakeByVaccinationDatePercentage', 
             visualization: 'barchart', 
             detail: dashboard.DETAIL_HIGH, 
+            unit: '%',
             dateField: 'date', 
             categories: 'age',
             color: colors.getVaccinationColor(2)
@@ -218,7 +222,7 @@ export class DashboardNHSEnglandRegion {
             dataField: 'cumVaccinationFirstDoseUptakeByVaccinationDatePercentage', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_MEDIUM, 
-            mode: dashboard.MODE_PERCENT,
+            unit: '%',
             dateField: 'date', 
             color: colors.getVaccinationColor()
           },{
@@ -228,7 +232,7 @@ export class DashboardNHSEnglandRegion {
             dataField: 'cumVaccinationSecondDoseUptakeByVaccinationDatePercentage', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_MEDIUM, 
-            mode: dashboard.MODE_PERCENT,
+            unit: '%',
             dateField: 'date', 
             color: colors.getVaccinationColor(2)
           }

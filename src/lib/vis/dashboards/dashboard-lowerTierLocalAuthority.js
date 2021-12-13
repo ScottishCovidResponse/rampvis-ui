@@ -35,8 +35,6 @@ export class DashboardLowerTierLocalAuthority{
       .append("div")
       .attr("class", "vis-example-container");
 
-    // 2. specify data URLs here...
-
     // for any age range:
     // VaccineRegisterPopulationByVaccinationDate
     // cumPeopleVaccinatedCompleteByVaccinationDate
@@ -51,7 +49,11 @@ export class DashboardLowerTierLocalAuthority{
 
     // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
     var config = {
-        layout: [["cases", "deaths", "vacc"]],
+        layout: [[
+          // "cases", 
+          // "deaths", 
+          // "vacc"
+        ]],
         groups: [
           {
             id: "cases",
@@ -79,8 +81,8 @@ export class DashboardLowerTierLocalAuthority{
             color: colors.getCaseColor(),
             data: Data.from(options.data, Data.Fields.PHE_LTLA_NEW_CASES),
             dataField: "cumCasesBySpecimenDate",
-            details: dashboard.DETAIL_MEDIUM,
-            mode: dashboard.MODE_CUMULATIVE,
+            detail: dashboard.DETAIL_MEDIUM,
+            cumulative: true,
             dateField: "date",
             visualization: "linechart",
           },
@@ -90,8 +92,8 @@ export class DashboardLowerTierLocalAuthority{
             color: colors.getCaseColor(),
             data: Data.from(options.data, Data.Fields.PHE_LTLA_NEW_CASES),
             dataField: "newCasesBySpecimenDate",
-            details: dashboard.DETAIL_MEDIUM,
-            mode: dashboard.MODE_DAILY,
+            detail: dashboard.DETAIL_MEDIUM,
+            cumulative: false,
             dateField: "date",
             visualization: "linechart",
           },
@@ -101,8 +103,8 @@ export class DashboardLowerTierLocalAuthority{
             color: colors.getDeathColor(),
             data: Data.from(options.data, Data.Fields.PHE_LTLA_NEW_DEATHS),
             dataField: "cumWeeklyNsoDeathsByRegDate",
-            details: dashboard.DETAIL_MEDIUM,
-            mode: dashboard.MODE_CUMULATIVE,
+            detail: dashboard.DETAIL_MEDIUM,
+            cumulative: true,
             dateField: "date",
             visualization: "linechart",
           },
@@ -112,8 +114,7 @@ export class DashboardLowerTierLocalAuthority{
             color: colors.getDeathColor(),
             data: Data.from(options.data, Data.Fields.PHE_LTLA_NEW_DEATHS),
             dataField: "newWeeklyNsoDeathsByRegDate",
-            details: dashboard.DETAIL_MEDIUM,
-            mode: dashboard.MODE_DAILY,
+            detail: dashboard.DETAIL_MEDIUM,
             dateField: "date",
             visualization: "linechart",
           },
@@ -125,7 +126,8 @@ export class DashboardLowerTierLocalAuthority{
             dataField:
               "cumVaccinationFirstDoseUptakeByVaccinationDatePercentage",
             detail: dashboard.DETAIL_MEDIUM,
-            mode: dashboard.MODE_PERCENT,
+            unit: '%',
+            cumulative: true,
             dateField: "date",
             visualization: "linechart",
           },
@@ -137,7 +139,8 @@ export class DashboardLowerTierLocalAuthority{
             dataField:
               "cumVaccinationSecondDoseUptakeByVaccinationDatePercentage",
             detail: dashboard.DETAIL_MEDIUM,
-            mode: dashboard.MODE_PERCENT,
+            unit: '%',
+            cumulative: true,
             dateField: "date",
             visualization: "linechart",
           },
@@ -149,7 +152,8 @@ export class DashboardLowerTierLocalAuthority{
             dataField:
               "cumVaccinationFirstDoseUptakeByVaccinationDatePercentage",
             detail: dashboard.DETAIL_HIGH,
-            mode: dashboard.MODE_PERCENT,
+            unit: '%',
+            cumulative: true,
             dateField: "date",
             visualization: "barchart",
             categories: "age",
@@ -162,7 +166,8 @@ export class DashboardLowerTierLocalAuthority{
             dataField:
               "cumVaccinationSecondDoseUptakeByVaccinationDatePercentage",
             detail: dashboard.DETAIL_HIGH,
-            mode: dashboard.MODE_PERCENT,
+            unit: '%',
+            cumulative: true,
             dateField: "date",
             visualization: "barchart",
             categories: "age",
