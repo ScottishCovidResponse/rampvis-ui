@@ -20,30 +20,21 @@
 import * as d3 from "d3";
 import { Data } from "../data";
 import { dashboard } from "./dashboard";
-import { colors, DEATHS } from "../colors.js";
+import { colors} from "../colors.js";
 
 // 1. Give class a name
-export class DashboardLowerTierLocalAuthority {
+export class DashboardLowerTierLocalAuthority{
   CHART_WIDTH = 1000;
   CHART_HEIGHT = 400;
 
   constructor(options) {
+
     // creates the main div. don't touch
     var div = d3
       .select("#" + options.chartElement)
       .append("div")
       .attr("class", "vis-example-container");
 
-    // 2. specify data URLs here...
-
-    var cases =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=ltla&areaCode=S12000036&metric=cumCasesBySpecimenDate&metric=newCasesBySpecimenDate&format=csv";
-    var deaths =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=ltla&areaCode=S12000036&metric=cumWeeklyNsoDeathsByRegDate&metric=newWeeklyNsoDeathsByRegDate&format=csv";
-    var vaccination =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=ltla&areaCode=S12000036&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&format=csv";
-    var vaccinationAgeDemographics =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=ltla&areaCode=S12000036&metric=vaccinationsAgeDemographics&format=csv";
     // for any age range:
     // VaccineRegisterPopulationByVaccinationDate
     // cumPeopleVaccinatedCompleteByVaccinationDate
@@ -56,24 +47,13 @@ export class DashboardLowerTierLocalAuthority {
     // cumVaccinationCompleteCoverageByVaccinationDatePercentage
     // cumVaccinationSecondDoseUptakeByVaccinationDatePercentage
 
-    d3.csv(cases).then(function (data) {
-      cases = data;
-    });
-    d3.csv(deaths).then(function (data) {
-      deaths = data;
-    });
-    d3.csv(vaccination).then(function (data) {
-      vaccination = data;
-    });
-    d3.csv(vaccinationAgeDemographics).then(function (data) {
-      vaccinationAgeDemographics = data;
-    });
-
-    setTimeout(function () {
-      console.log("vaccination", vaccination);
-      // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
-      var config = {
-        layout: [["cases", "deaths", "vacc"]],
+    // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
+    var config = {
+        layout: [[
+          // "cases", 
+          // "deaths", 
+          // "vacc"
+        ]],
         groups: [
           {
             id: "cases",
@@ -99,10 +79,10 @@ export class DashboardLowerTierLocalAuthority {
             id: "cumCases",
             title: "Cumulative Cases",
             color: colors.getCaseColor(),
-            data: cases,
+            data: Data.from(options.data, Data.Fields.PHE_LTLA_NEW_CASES),
             dataField: "cumCasesBySpecimenDate",
-            details: dashboard.DETAIL_MEDIUM,
-            mode: dashboard.MODE_CUMULATIVE,
+            detail: dashboard.DETAIL_MEDIUM,
+            cumulative: true,
             dateField: "date",
             visualization: "linechart",
           },
@@ -110,10 +90,10 @@ export class DashboardLowerTierLocalAuthority {
             id: "newCases",
             title: "New Cases",
             color: colors.getCaseColor(),
-            data: cases,
+            data: Data.from(options.data, Data.Fields.PHE_LTLA_NEW_CASES),
             dataField: "newCasesBySpecimenDate",
-            details: dashboard.DETAIL_MEDIUM,
-            mode: dashboard.MODE_DAILY,
+            detail: dashboard.DETAIL_MEDIUM,
+            cumulative: false,
             dateField: "date",
             visualization: "linechart",
           },
@@ -121,10 +101,10 @@ export class DashboardLowerTierLocalAuthority {
             id: "cumDeaths",
             title: "Cumulative Deaths",
             color: colors.getDeathColor(),
-            data: deaths,
+            data: Data.from(options.data, Data.Fields.PHE_LTLA_NEW_DEATHS),
             dataField: "cumWeeklyNsoDeathsByRegDate",
-            details: dashboard.DETAIL_MEDIUM,
-            mode: dashboard.MODE_CUMULATIVE,
+            detail: dashboard.DETAIL_MEDIUM,
+            cumulative: true,
             dateField: "date",
             visualization: "linechart",
           },
@@ -132,10 +112,9 @@ export class DashboardLowerTierLocalAuthority {
             id: "newDeaths",
             title: "New Weekly Deaths",
             color: colors.getDeathColor(),
-            data: deaths,
+            data: Data.from(options.data, Data.Fields.PHE_LTLA_NEW_DEATHS),
             dataField: "newWeeklyNsoDeathsByRegDate",
-            details: dashboard.DETAIL_MEDIUM,
-            mode: dashboard.MODE_DAILY,
+            detail: dashboard.DETAIL_MEDIUM,
             dateField: "date",
             visualization: "linechart",
           },
@@ -143,11 +122,12 @@ export class DashboardLowerTierLocalAuthority {
             id: "vacc1",
             title: "1st Dose Percentage",
             color: colors.getVaccinationColor(1),
-            data: vaccination,
+            data: Data.from(options.data, Data.Fields.PHE_LTLA_NEW_VACCINATION),
             dataField:
               "cumVaccinationFirstDoseUptakeByVaccinationDatePercentage",
             detail: dashboard.DETAIL_MEDIUM,
-            mode: dashboard.MODE_PERCENT,
+            unit: '%',
+            cumulative: true,
             dateField: "date",
             visualization: "linechart",
           },
@@ -155,11 +135,12 @@ export class DashboardLowerTierLocalAuthority {
             id: "vacc2",
             title: "2nd Dose Percentage",
             color: colors.getVaccinationColor(2),
-            data: vaccination,
+            data:  Data.from(options.data, Data.Fields.PHE_LTLA_NEW_VACCINATION),
             dataField:
               "cumVaccinationSecondDoseUptakeByVaccinationDatePercentage",
             detail: dashboard.DETAIL_MEDIUM,
-            mode: dashboard.MODE_PERCENT,
+            unit: '%',
+            cumulative: true,
             dateField: "date",
             visualization: "linechart",
           },
@@ -167,33 +148,34 @@ export class DashboardLowerTierLocalAuthority {
             id: "vacc1Ages",
             title: "1st Dose by Age Group",
             color: colors.getVaccinationColor(1),
-            data: vaccinationAgeDemographics,
+            data:  Data.from(options.data, Data.Fields.PHE_LTLA_NEW_VACC_AGE_DEMOGRAPHICS),
             dataField:
               "cumVaccinationFirstDoseUptakeByVaccinationDatePercentage",
             detail: dashboard.DETAIL_HIGH,
-            mode: dashboard.MODE_PERCENT,
+            unit: '%',
+            cumulative: true,
             dateField: "date",
             visualization: "barchart",
-            bars: "age",
+            categories: "age",
           },
           {
             id: "vacc2Ages",
             title: "2st Dose by Age Group",
             color: colors.getVaccinationColor(1),
-            data: vaccinationAgeDemographics,
+            data: Data.from(options.data, Data.Fields.PHE_LTLA_NEW_VACC_AGE_DEMOGRAPHICS),
             dataField:
               "cumVaccinationSecondDoseUptakeByVaccinationDatePercentage",
             detail: dashboard.DETAIL_HIGH,
-            mode: dashboard.MODE_PERCENT,
+            unit: '%',
+            cumulative: true,
             dateField: "date",
             visualization: "barchart",
-            bars: "age",
+            categories: "age",
           },
         ],
       };
 
-      // this will interpret the dashboard specifiation
-      dashboard.createDashboard(div, config);
-    }, 3000);
+    // this will interpret the dashboard specifiation
+    // dashboard.createDashboard(div, config);
   }
 }

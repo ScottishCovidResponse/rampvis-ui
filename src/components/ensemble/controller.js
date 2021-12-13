@@ -19,7 +19,7 @@ export class Controller {
     this.simulationData = null;
     this.ageIndex = 0;
 
-    this.datasetIndex = 1;
+    this.currentDataset = "default";
   }
 
   getIntersectionPoints() {
@@ -123,18 +123,12 @@ export class Controller {
     this.tableToggled(points);
   }
 
-  // randomIntFromInterval(min, max) {
-  //   // min and max included
-  //   return Math.floor(Math.random() * (max - min + 1) + min);
-  // }
+  async setDatasetName(datasetName) {
+    this.datasetName = datasetName;
 
-  async setDatasetIndex(datasetIndex) {
-    this.datasetIndex = datasetIndex;
-
-    // if (this.datasetIndex == 2) {
-    //   // Adhitya: this is only for testing purposes
-    //   var simulationIndex = this.randomIntFromInterval(0, 159);
-    //   console.log("Random Simulation Index: " + simulationIndex);
+    /// for now, this should work. there are other components that also have to be refreshed
+    this.tableToggled([0]);
+    // refresh everything on this page
 
   }
 
@@ -194,13 +188,20 @@ export class Controller {
     return callback && typeof callback == "function";
   }
 
+  async getDatasetList() {
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data`;
+    const res = await axios.get(apiUrl);
+    this.datasetList = res.data;
+    return this.datasetList;
+  }
+
   async getSimulationData(simulation, callback) {
     this.simulationIndex = simulation;
 
     var allAgeData = [];
 
     for (var age_index = 0; age_index < 8; age_index++) {
-      const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data?path=data/output/simu_${simulation}/age_${age_index}.csv`;
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data/${this.currentDataset}?path=data/output/simu_${simulation}/age_${age_index}.csv`;
       const res = await axios.get(apiUrl);
       const ageData = res.data;
 
@@ -224,19 +225,19 @@ export class Controller {
       return this.metadata;
     }
 
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/meta`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/meta/${this.currentDataset}`;
     const res = await axios.get(apiUrl);
     return res.data;
   }
 
   async getMeanData() {
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data?path=data/output/pca/d/age_mean.csv`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data/${this.currentDataset}?path=data/output/pca/d/age_mean.csv`;
     const res = await axios.get(apiUrl);
     return res.data;
   }
 
   async getPolylineData(callback) {
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data?path=data/output/simu_${this.simulationIndex}/avgPolyline.csv`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data/${this.currentDataset}?path=data/output/simu_${this.simulationIndex}/avgPolyline.csv`;
     const res = await axios.get(apiUrl);
     if (this.isCallback(callback)) {
       callback.call(res.data);
@@ -248,7 +249,7 @@ export class Controller {
   }
 
   async getSimulationAgeData(callback) {
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data?path=data/output/simu_${this.simulationIndex}/age_${this.ageIndex}.csv`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_PY}/ensemble/data/${this.currentDataset}?path=data/output/simu_${this.simulationIndex}/age_${this.ageIndex}.csv`;
     const res = await axios.get(apiUrl);
     const ageData = res.data;
     const data = this.makeDataforParallelVis(ageData, this.ageIndex);

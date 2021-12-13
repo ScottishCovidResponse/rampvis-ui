@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { AppBar, Box, IconButton, Toolbar, AppBarProps } from "@mui/material";
 import { experimentalStyled } from "@mui/material/styles";
-import MenuIcon from "@mui/icons-material//Menu";
+import MenuIcon from "@mui/icons-material/Menu";
 import AccountPopover from "./AccountPopover";
 
 interface DashboardNavbarProps extends AppBarProps {

@@ -135,7 +135,20 @@ const Ensemble = () => {
     const scatter = visFactory("HeatMap", options);
   }, []);
 
+  const datasetList = useCallback(async () => {
+    const datasetNames = await controller.getDatasetList();
+    const datasetListElement = document.getElementById("dataset_list");
+
+    for (let i = 0; i < datasetNames.length; i++) {
+      const datasetName = document.createElement("option");
+      datasetName.innerText = datasetNames[i];
+      datasetName.value = datasetNames[i];
+      datasetListElement.appendChild(datasetName);
+    }
+  }, []);
+
   useEffect(() => {
+    datasetList();
     lineChart();
     parallelVerticalChart();
     parallelAdditionalChart();
@@ -143,6 +156,7 @@ const Ensemble = () => {
     tablePlot();
     heatMap();
   }, [
+    datasetList,
     lineChart,
     parallelVerticalChart,
     parallelAdditionalChart,
@@ -151,9 +165,9 @@ const Ensemble = () => {
     heatMap,
   ]);
 
-  const setDatasetIndex = useCallback(async (event) => {
-    const datasetIndex = event.target.value;
-    controller.setDatasetIndex(datasetIndex);
+  const setDatasetName = useCallback(async (event) => {
+    const datasetName = event.target.value;
+    controller.setDatasetName(datasetName);
   }, []);
 
   return (
@@ -171,6 +185,11 @@ const Ensemble = () => {
         <Container maxWidth={settings.compact ? "xl" : false}>
           <Card sx={{ minWidth: 1600 }}>
             <CardContent>
+              <select
+                name="dataset-list"
+                id="dataset_list"
+                onChange={setDatasetName}
+              ></select>
               <div id="container">
                 <div id="line-chart">
                   <div id="line_chart" />

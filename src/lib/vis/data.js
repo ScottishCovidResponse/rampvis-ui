@@ -37,9 +37,32 @@ export class Data {
       "vaccination&component=daily_health_board",
     HEALTH_BOARD_VACCINE_SEX_AGEGROUP_ALL:
       "vaccination&component=daily_health_boards",
+
+    PHE_UK_CUM_ADMISSIONS: "product=phe/overview&component=cumAdmissions&",
+    PHE_UK_CUM_CASES: "product=phe/overview&component=cumCasesBySpecimenDate&",
+    PHE_UK_CUM_DEATHS_28_DAYS: "product=phe/overview&component=cumDeaths28DaysByDeathDate&",
+    PHE_UK_CUM_VACC_FIRST: "product=phe/overview&component=cumPeopleVaccinatedFirstDoseByPublishDate&",
+    PHE_UK_CUM_VACC_SECOND: "product=phe/overview&component=cumPeopleVaccinatedSecondDoseByPublishDate&",
+    PHE_UK_CUM_VACC_THIRD: "product=phe/overview&component=cumPeopleVaccinatedThirdInjectionByPublishDate&",
+    PHE_UK_NEW_AMISSIONS: "product=phe/overview&component=newAdmissions&",
+    PHE_UK_NEW_CASES: "product=phe/overview&component=newCasesBySpecimenDate&",
+    PHE_UK_NEW_DEATHS_28_DAYS: "product=phe/overview&component=newDeaths28DaysByDeathDate&",
+    PHE_UK_NEW_VACC_FIRST: "product=phe/overview&component=newPeopleVaccinatedFirstDoseByPublishDate&",
+    PHE_UK_NEW_VACC_SECOND: "product=phe/overview&component=newPeopleVaccinatedSecondDoseByPublishDate&",
+    PHE_UK_NEW_VACC_THIRD: "product=phe/overview&component=newPeopleVaccinatedThirdInjectionByPublishDate&",
+
+    PHE_LTLA_NEW_CASES: ["product=phe/ltla/", "component=newCasesBySpecimenDate&"],
+    PHE_LTLA_NEW_DEATHS: ["product=phe/ltla/", "component=newWeeklyNsoDeathsByRegDate&"],
+    PHE_LTLA_NEW_VACCINATION: ["product=phe/ltla/", "component=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&"],
+    PHE_LTLA_NEW_VACC_AGE_DEMOGRAPHICS: ["product=phe/ltla/", "component=vaccinationsAgeDemographics&"],
+
   };
 
+
   static from(data, field) {
-    return data.find((d) => d.endpoint.includes(field)).values;
+    if (typeof(field) == 'string') return data.find((d) => d.endpoint.includes(field)).values;
+    
+    // Array of AND conditions
+    return data.find((d) => field.every((f) => d.endpoint.includes(f))).values;
   }
 }

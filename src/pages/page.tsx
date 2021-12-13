@@ -22,9 +22,10 @@ import { visFactory } from "src/lib/vis/vis-factory";
 import Bookmark from "src/components/Bookmark";
 import { apiService } from "src/utils/ApiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
-import { IData } from "src/models/IData";
 import { ILink } from "src/models/ILink";
 import { getLinks } from "src/utils/LinkService";
+import { IOntoPageTemplate } from "src/models/IOntoPageTemplate";
+import { IOntoData } from "src/models/IOntoData";
 
 const API = {
   API_PY: process.env.NEXT_PUBLIC_API_PY,
@@ -64,42 +65,52 @@ const PropagatedPage = () => {
     try {
       setLoading(true);
 
-      const page = await apiService.get(`/template/page/${pageId}`);
+      const ontoPageTemplate: IOntoPageTemplate = await apiService.get(
+        `/template/page/${pageId}`,
+      );
       // eslint-disable-next-line no-console -- VIS developers need....
-      console.log("[TEMPLATE] VIS Function = ", page.vis);
+      console.log("[TEMPLATE] VIS Function = ", ontoPageTemplate.ontoVis);
       // eslint-disable-next-line no-console -- VIS developers need....
-      console.log("[TEMPLATE] Data = ", page.data);
+      console.log("[TEMPLATE] Data = ", ontoPageTemplate.ontoData);
 
-      setTitle(page?.title);
+      setTitle(ontoPageTemplate?.title);
 
-      // fetch data streams
-      const data = await Promise.all(
-        page?.data?.map(async (d: any) => {
+      // fetch data stream values
+      const ontoData = await Promise.all(
+        ontoPageTemplate?.ontoData?.map(async (d: IOntoData) => {
           const endpoint = `${API[d.urlCode]}${d.endpoint}`;
           const values = (await axios.get(endpoint)).data;
-          const { id, description } = d;
-          return { id, endpoint, values, description } as IData;
-        }),
-      );
-
-      // fetch links
-      const links: ILink[] = await Promise.all(
-        page?.data?.map(async (d: any) => {
-          const links: ILink[] = await getLinks(d.id);
-          return links;
+          const links = d.links.map((l: ILink) => {
+            return {
+              ...l,
+              url: `${window.location.origin}/page/?id=${l.pageId}`,
+            };
+          });
+          return { ...d, endpoint, values, links } as IOntoData;
         }),
       );
 
       // eslint-disable-next-line no-console -- VIS developers need....
-      console.log("[TEMPLATE] fetched data = ", data);
-      console.log("[TEMPLATE] fetched links = ", links);
+      console.log("[TEMPLATE] Data and its values = ", ontoData);
+      // eslint-disable-next-line no-console -- VIS developers need....
+      console.log("[TEMPLATE] Propagated links = ", ontoPageTemplate?.links);
 
-      visFactory(page?.vis?.function, {
+      const visFactoryArg: any = {
         chartElement: "charts",
-        data: data,
-        links: links,
-      });
+        data: ontoData,
+      };
 
+      if (ontoPageTemplate.links) {
+        const links = ontoPageTemplate.links.map((l: ILink) => {
+          return {
+            ...l,
+            url: `${window.location.origin}/page/?id=${l.pageId}`,
+          };
+        });
+        visFactoryArg.links = links;
+      }
+
+      visFactory(ontoPageTemplate?.ontoVis?.function, visFactoryArg);
       setLoading(false);
     } catch (err) {
       // prettier-ignore

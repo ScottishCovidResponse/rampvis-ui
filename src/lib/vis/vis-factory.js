@@ -9,19 +9,21 @@ import { StackedBarChart } from "./stacked-bar-chart";
 import { MirroredStackedAreaChart } from "./mirrored-stacked-area-chart";
 import { MirroredStackedBarChart } from "./mirrored-stacked-bar-chart";
 import { SensitivityStackedBarChart } from "./sensitivity-stacked-bar-chart";
-import { RiskMonitoring } from "./risk-monitoring";
+import { DashboardRiskMonitoring } from "./dashboards/dashboard-riskMonitoring";
+import { UncertaintySampleAndMean } from "./uncertainty-sample-and-mean";
+import { UncertaintyClusterSampleAndMean } from "./uncertainty-cluster-sample-and-mean";
 
 // Dashboards
-import { CouncilOverview } from "./dashboards/council-overview";
-import { CountryOverview } from "./dashboards/country-overview";
-import { HealthBoardOverview } from "./dashboards/health-board-overview";
-import { CountryOverviewNew } from "./dashboards/country-overview-new";
-import { VaccineOverview } from "./dashboards/vaccineOverview";
+import { DashboardScotlandCouncil } from "./dashboards/dashboard-scotlandCouncil";
+import { DashboardScotland } from "./dashboards/dashboard-scotland";
+import { DashboardScotlandNHSBoard } from "./dashboards/dashboard-scotlandNHSBoard";
+import { DashboardScotlandNew } from "./dashboards/dashboard-scotlandNew";
+import { DashboardScotlandVaccination } from "./dashboards/dashboard-scotlandVaccination";
 import { DashboardUK } from "./dashboards/dashboard-UK";
 import { DashboardTian } from "./dashboards/dashboard-tian";
 import { DashboardLowerTierLocalAuthority } from "./dashboards/dashboard-lowerTierLocalAuthority";
 import { DashboardMSOA } from "./dashboards/dashboard-msoa";
-import { DashboardRegion } from "./dashboards/dashboard-region"
+import { DashboardNHSEnglandRegion } from "./dashboards/dashboard-nhsEnglandRegion"
 
 export const visFactory = (type, args) => {
   if (type === "SimpleBarChart") return new SimpleBarChart(args);
@@ -40,19 +42,23 @@ export const visFactory = (type, args) => {
     return new MirroredStackedBarChart(args);
   if (type === "SensitivityStackedBarChart")
     return new SensitivityStackedBarChart(args);
-  if (type === "RiskMonitoring") return new RiskMonitoring(args);
-
+  if (type == "UncertaintySampleAndMean")
+    return new UncertaintySampleAndMean(args);
+  if (type == "UncertaintyClusterSampleAndMean")
+    return new UncertaintyClusterSampleAndMean(args);
+    
   // Dashboards
-  if (type === "CouncilOverview") return new CouncilOverview(args);
-  if (type === "HealthBoardOverview") return new HealthBoardOverview(args);
-  if (type === "CountryOverview") return new CountryOverview(args);
-  // if (type === "CountryOverviewNew") return new CountryOverviewNew(args);
-  if (type === "CountryOverviewNew") return new DashboardTian(args);
-  // if (type === "VaccineOverview") return new VaccineOverview(args);
-  if (type === "VaccineOverview") return new DashboardUK(args);
-  // if (type === "VaccineOverview") return new DashboardLowerTierLocalAuthority(args);
+  if (type === "CouncilOverview") return new DashboardScotlandCouncil(args);
+  if (type === "HealthBoardOverview") return new DashboardScotlandNHSBoard(args);
+  if (type === "CountryOverview") return new DashboardScotland(args);
+  if (type === "CountryOverviewNew") return new DashboardScotlandNew(args);
+  // if (type === "CountryOverviewNew") return new DashboardTian(args);
+  if (type === "VaccineOverview") return new DashboardScotlandVaccination(args);
+  if (type === "DashboardUK") return new DashboardUK(args);
+  if (type === "DashboardLTLA") return new DashboardLowerTierLocalAuthority(args);
   // if (type === "VaccineOverview") return new DashboardMSOA(args);
-  // if (type === "VaccineOverview") return new DashboardRegion(args);
+  // if (type === "VaccineOverview") return new DashboardNHSEnglandRegion(args);
+  if (type === "RiskMonitoring") return new DashboardRiskMonitoring(args);
 
   return null;
 };
