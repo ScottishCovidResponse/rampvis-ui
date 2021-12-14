@@ -96,6 +96,9 @@ export function stackedBarChart() {
      * Computation.
      */
     const series = d3.stack().keys(data.columns)(data);
+    series.forEach((d, i) => {
+      d['url'] = data.urls[i];
+    });
 
     xScale.domain(data.map(label)).range([0, width]);
     yScale
@@ -106,12 +109,13 @@ export function stackedBarChart() {
     /**
      * Draw.
      */
-    itemContainer
+    const g = itemContainer
       .selectAll("g")
       .data(series)
       .join("g")
-      .attr("fill", ({ key }) => colorScale(key))
-      .selectAll("rect")
+      .attr("fill", ({ key }) => colorScale(key));
+      
+    g.selectAll("rect")
       .data((d) => d)
       .join("rect")
       .attr("x", (d) => xScale(label(d.data)))
@@ -123,6 +127,16 @@ export function stackedBarChart() {
         const key = d3.select(this.parentNode.parentNode).datum().key;
         return `${label(d.data)}: ${key} (${d.data[key]})`;
       });
+
+    g.on('mouseover', function(d) {
+      if (d.url) {
+        this.style.cursor = 'pointer';
+      }
+    }).on('click', function(d) {
+      if (d.url) {
+        window.open(d.url);
+      }
+    });
 
     xAxisContainer
       .call(xAxis)

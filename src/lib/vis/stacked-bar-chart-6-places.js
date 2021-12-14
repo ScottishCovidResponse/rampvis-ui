@@ -21,7 +21,6 @@
 import * as d3 from "d3";
 import Common from "./common";
 import { pv } from "./pv";
-import { getLinks } from "src/utils/LinkService";
 
 export class StackedBarChartWith6Places {
   CHART_WIDTH = 1000;
@@ -55,8 +54,8 @@ export class StackedBarChartWith6Places {
     legendContainer.datum(data.columns).call(legend);
   }
 
-  processData(data) {
-    data = data.map((d) => d.values);
+  processData(orgData) {
+    const data = orgData.map((d) => d.values);
 
     // Correct field names: Adur___Hospice -> Hospice
     data.forEach((list) => {
@@ -86,6 +85,10 @@ export class StackedBarChartWith6Places {
 
     newData.columns = Object.keys(newData[0]);
     newData.columns.splice(newData.columns.indexOf("index"), 1);
+
+    // d.links is an array of {pageId, visFunction, url}
+    // I just want to select the first url and set to undefined if none is available
+    newData.urls = orgData.map(d => d.links.length > 0 ? d.links[0].url : undefined);
 
     const parseWeek = d3.timeParse("%Y-%m-%d");
     newData.forEach((d) => {

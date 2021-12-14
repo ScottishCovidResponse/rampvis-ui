@@ -53,16 +53,25 @@ export class Data {
 
     PHE_LTLA_NEW_CASES: ["product=phe/ltla/", "component=newCasesBySpecimenDate&"],
     PHE_LTLA_NEW_DEATHS: ["product=phe/ltla/", "component=newWeeklyNsoDeathsByRegDate&"],
-    PHE_LTLA_NEW_VACCINATION: ["product=phe/ltla/", "component=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&"],
+    PHE_LTLA_NEW_VACCINATION: ["product=phe/ltla/", "component=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&"],
     PHE_LTLA_NEW_VACC_AGE_DEMOGRAPHICS: ["product=phe/ltla/", "component=vaccinationsAgeDemographics&"],
 
   };
 
-
   static from(data, field) {
-    if (typeof(field) == 'string') return data.find((d) => d.endpoint.includes(field)).values;
+    let x;
+    if (typeof(field) == 'string') {
+      x = data.find((d) => d.endpoint.includes(field));
+    } else {
+      // Array of AND conditions
+      x = data.find((d) => field.every((f) => d.endpoint.includes(f)));
+    }
     
-    // Array of AND conditions
-    return data.find((d) => field.every((f) => d.endpoint.includes(f))).values;
+    if (x) {
+      return x.values;
+    } else {
+      console.error('Data stream not found with' + field);
+      return undefined;
+    }
   }
 }
