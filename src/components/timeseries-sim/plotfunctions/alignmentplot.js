@@ -2,8 +2,10 @@ import { CollectionsBookmarkOutlined, StreamSharp } from "@mui/icons-material";
 import * as d3 from "d3";
 import { times } from "lodash";
 
-export function alignmentPlot(response,timeSeriesBag,setTimeSeriesBag) {
+export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
   //------ DATA and Graph Functions ------//
+
+  console.log("alignmentPlot: data = ", data);
 
   const parseTime = d3.timeParse("%Y-%m-%d"); // date parser (str to date)
   const formatTime = d3.timeFormat("%b %d"); // date formatter (date to str)
@@ -23,7 +25,7 @@ export function alignmentPlot(response,timeSeriesBag,setTimeSeriesBag) {
 
   // create individual containers for individual charts <div> <svg/> </div>
 
-  const GraphData = [...response.data];
+  const GraphData = data;
   
   let checkState = {}
   GraphData.forEach((streams)=>{
@@ -126,10 +128,13 @@ export function alignmentPlot(response,timeSeriesBag,setTimeSeriesBag) {
 
   const updateTimeSeriesBag = (d) => {
     const identifier = d.key + " " + d.matchedPeriodEnd
-    if (!timeSeriesBag.includes(identifier) && checkState[identifier]==="false"){
-      let temp_arr = timeSeriesBag
-      temp_arr.push(identifier)
-      setTimeSeriesBag(temp_arr)
+    if (!timeSeriesBag.includes(identifier) && checkState[identifier]==="false") {
+      setTimeSeriesBag((old) => [...old, identifier]);
+
+      //let temp_arr = timeSeriesBag
+      //temp_arr.push(identifier)
+      //setTimeSeriesBag(temp_arr)
+
       checkState[identifier] = "true"
       console.log(checkState)
       console.log(timeSeriesBag)

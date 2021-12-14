@@ -59,8 +59,9 @@ const TimeseriesSim = () => {
   };
 
   const [firstRunForm, setFirstRunForm] = useState(initialFirstRunState);
-
   const [timeSeriesBag, setTimeSeriesBag] = useState(["A", "B", "C"]);
+
+  const [responseData, setResponseData] = useState([]);
 
   const multipleHandleChange = (event) => {
     if (event.target.type == "checkbox") {
@@ -78,23 +79,26 @@ const TimeseriesSim = () => {
     }
   };
 
-  const plotSwitch = (
-    response,
-    firstRunForm,
-    timeSeriesBag,
-    setTimeSeriesBag,
-  ) => {
-    alignmentPlot(response, timeSeriesBag, setTimeSeriesBag);
-    SegmentedMultiLinePlot(response, firstRunForm);
+  const plotSwitch = () => {
+    if (responseData.length > 0) {
+      alignmentPlot(responseData, timeSeriesBag, setTimeSeriesBag);
+      SegmentedMultiLinePlot(responseData, firstRunForm);
+    }
   };
 
-  const fetchAPI = () => {
+  const fetchData = async () => {
     const apiUrl = `${API}/timeseries-sim-search/`;
-    axios
-      .post(apiUrl, firstRunForm)
-      .then((response) =>
-        plotSwitch(response, firstRunForm, timeSeriesBag, setTimeSeriesBag),
-      );
+    const response = await axios.post(apiUrl, firstRunForm);
+    console.log("response = ", response);
+    if (response.data?.length > 0) {
+      setResponseData(response.data);
+      console.log("response.data = ", response.data);
+    }
+  };
+
+  const handleClick = async () => {
+    await fetchData();
+    plotSwitch();
   };
 
   return (
@@ -125,7 +129,7 @@ const TimeseriesSim = () => {
                 />
                 <SearchButton
                   className={classes.searchButton}
-                  onClick={fetchAPI}
+                  onClick={handleClick}
                 />
               </CardContent>
             </Card>
@@ -164,7 +168,9 @@ const TimeseriesSim = () => {
     </>
   );
 };
+
 TimeseriesSim.getLayout = function getLayout(page: ReactElement) {
   return <DashboardLayout>{page}</DashboardLayout>;
 };
+
 export default TimeseriesSim;
