@@ -105,7 +105,11 @@ export class DashboardTian {
           {
             id: "england",
             title: "Progress Bars",
-            layout: ["ni_death_rates", "aberdeen_vax_progress"]
+            layout: [[
+              "ni_death_rates", 
+              "aberdeen_vax_progress", 
+              "aberdeen_vax_progress2"
+            ]]
           },
         ],
         widgets: [
@@ -116,11 +120,9 @@ export class DashboardTian {
             visualization: "progress",
             color: colors.getDeathColor(),
             data: ni_newDeathsRate,
-            mode: dashboard.MODE_DAILY,
-            normalized: false,
-            chartTitle: "daily death rate",
-            //min: 0,
-            //max: 100,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            min: 0,
+            max: 1,
             timeWindow: 7,
             timeLabel: dashboard.TIMEUNIT_WEEK,
             detail: dashboard.DETAIL_HIGH,
@@ -129,15 +131,28 @@ export class DashboardTian {
           {
             id: "aberdeen_vax_progress",
             title: "Vaccination progress in Aberdeen county",
+            dataField: "percent",
+            visualization: "progress",
+            color: colors.getVaccinationColor(),
+            data: aberdeenshire_vacc_rate,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            min: 0,
+            max: 100,
+            // unit: '%',
+            detail: dashboard.DETAIL_HIGH,
+            abbreviate: true
+          },
+          {
+            id: "aberdeen_vax_progress2",
+            title: "Vaccination progress in Aberdeen county",
             dataField: "cumVaccinationFirstDoseUptakeByPublishDatePercentage",
             visualization: "progress",
             color: colors.getVaccinationColor(),
             data: aberdeenshire_vacc_rate,
-            mode: dashboard.MODE_DAILY,
-            normalized: false,
-            chartTitle: "vaccinated population",
+            timeUnit: dashboard.TIMEUNIT_DAY,
             min: 0,
             max: 100,
+            unit: '%',
             detail: dashboard.DETAIL_LOW,
             abbreviate: true
           },

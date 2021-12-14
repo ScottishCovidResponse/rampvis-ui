@@ -414,6 +414,7 @@ dashboard.visualizeTimeSeries = function (
       config,
       0,
       baseline_title + 25,
+      25
     );
     dashboardComponents.visualizeTrendArrow(
       svg,
@@ -503,6 +504,7 @@ dashboard.visualizeTimeSeries = function (
       config,
       0,
       baseline_title + 25,
+      25
     );
     dashboardComponents.visualizeTrendArrow(
       svg,
@@ -528,11 +530,12 @@ dashboard.visualizeTimeSeries = function (
 
     svg.attr("width", 180).attr("height", 70);
 
-    dashboardComponents.visualizeNumberSmall(
+    dashboardComponents.visualizeNumber(
       svg,
       config,
       0,
       baseline_title + 25,
+      20
     );
     dashboardComponents.visualizeMiniChart(
       svg,
@@ -809,19 +812,14 @@ dashboard.visualizeProgress = function (
   )  {
 
   var dataObj = {}
-  var datatext = "percent"
-  var format = "~%"
   var width = 40
-  var timeseries = false
+  var isTimeseries = false
   if(config.data.length > 1){
     console.log("restructuring")
-    timeseries = true;
-    datatext = config.dataField;
+    isTimeseries = true;
     dataObj = config.data[config.data.length - 1];
-    format = ".1f";
     width = 120;
-  }
-  else{
+  }else{
     dataObj = config.data;
   }
   var random = Math.floor(Math.random() * 1000);
@@ -842,28 +840,40 @@ dashboard.visualizeProgress = function (
 
   console.log("data here")
   console.log(dataObj)
+  var forignObject;
+
   if (config.detail == dashboard.DETAIL_HIGH) 
   {
     wrapperDiv.append("br");
     
-    if(timeseries){
+    if(isTimeseries)
+    {
       dashboardComponents.visualizeTrendArrowNew(
         svg,
         config,
-        220,
+        280,
         40,
       );
     }
     //width - 300
-    svg.attr("width", 350);
+    svg.attr("width", 400);
 
-    console.log(config.data)
+    dashboardComponents.visualizeNumber(
+      svg,
+      config,
+      0,
+      baseline_title + 25,
+      30
+    );  
+
+    console.log('data', dataObj, config.data)
 
     var vegaProgressChart = {
       $schema: "https://vega.github.io/schema/vega-lite/v5.json",
       data: { 
         values: dataObj,
       },
+      width: 170,
       layer: [{
         mark: "bar",
         encoding: {
@@ -871,46 +881,47 @@ dashboard.visualizeProgress = function (
             field: config.dataField,
             type: "quantitative",
             scale: {"domain": [config.min, config.max]},
-            title: config.chartTitle,
             tickExtra: true,
-            tickBand: "extent"
+            tickBand: "extent",
+            title: null
           },
           color: { value: config.color }
         },
-      }, {
-        mark: {
-          type: "text",
-          align: "center",
-          baseline: "middle",
-          fontSize: 20,
-          dx: 6
-        },
-        encoding: {
-          text: {
-            fontWeight: 900,
-            field: datatext, 
-            formatType:"number",
-            format: format
-          },
-      }
-      }],
+      }, 
+    ],
       config: {
         axis: {grid: true, tickBand: "extent"}
       }, 
     }
+
+    forignObject = svg.append('foreignObject')
+    .attr('width', 220).attr('height', 200)
+    .attr('x', 80)
+    .attr('y', 50)
+      
   }
-  else if(config.detail == dashboard.DETAIL_MEDIUM){
+  else 
+  if(config.detail == dashboard.DETAIL_MEDIUM){
     wrapperDiv.append("br");
     
     //width - 300
     svg.attr("width", 300);
-    svg.attr("background", "black")
+    svg.attr("height", 100);
 
+    dashboardComponents.visualizeNumber(
+      svg,
+      config,
+      0,
+      baseline_title + 22,
+      25
+    );
+  
     var vegaProgressChart = {
       $schema: "https://vega.github.io/schema/vega-lite/v5.json",
       data: { 
         values: dataObj,
       },
+      width: 170,
       layer: [{
         mark: "bar",
         encoding: {
@@ -918,46 +929,44 @@ dashboard.visualizeProgress = function (
             field: config.dataField,
             type: "quantitative",
             scale: {"domain": [config.min, config.max]},
-            title: config.chartTitle,
             tickExtra: true,
-            tickBand: "extent"
+            tickBand: "extent",
+            title: null
           },
           color: { value: config.color }
         },
-      }, {
-        mark: {
-          type: "text",
-          align: "center",
-          baseline: "middle",
-          fontSize: 20,
-          dx: 6
-        },
-        encoding: {
-          text: {
-            fontWeight: 900,
-            field: "percent", 
-            formatType:"number",
-            format: "~%"
-          },
       }
-      }],
+    ],
       config: {
         axis: {grid: true, tickBand: "extent"}
       }, 
-      
     };
+
+    forignObject = svg.append('foreignObject')
+    .attr('width', 300).attr('height', 200)
+    .attr('x', 80)
+    .attr('y', 50)
   }
   else if(config.detail == dashboard.DETAIL_LOW){
     wrapperDiv.append("br");
     
-    //width - 300
     svg.attr("width", 300);
+    svg.attr("height", 100);
+
+    dashboardComponents.visualizeNumber(
+      svg,
+      config,
+      0,
+      baseline_title + 9,
+      20
+    );
 
     var vegaProgressChart = {
       $schema: "https://vega.github.io/schema/vega-lite/v5.json",
       data: { 
         values: dataObj
       },
+      "width": 70,
       layer: [{
         mark: "bar",
         encoding: {
@@ -965,38 +974,27 @@ dashboard.visualizeProgress = function (
             field: config.dataField,
             type: "quantitative",
             scale: {"domain": [config.min, config.max]},
-            title: config.chartTitle,
             axis: null
           },
           color: { value: config.color }
         },
-      }, {
-        mark: {
-          type: "text",
-          align: "center",
-          baseline: "middle",
-          fontSize: 20,
-          dx: 6
-        },
-        encoding: {
-          text: {
-            fontWeight: 900,
-            field: "percent", 
-            formatType:"number",
-            format: "~%"
-          },
-      }
-      }],
+      }, 
+    ],
       config: {
         axis: {grid: true, tickBand: "extent"}
       },
-      
     };
+
+    forignObject = svg.append('foreignObject')
+    .attr('width', 200).attr('height', 100)
+    .attr('x', 70)
+    .attr('y', 40)
   }
 
-  wrapperDiv.append("div").attr("id", "vegadiv-" + parentHtmlId + random).style("z-index", 1).style("position", "absolute");
-
-  vegaEmbed("#vegadiv-" + parentHtmlId + random, vegaProgressChart, { actions: false });
+  forignObject.append("xhtml:div").attr("id", "vegadiv-" + parentHtmlId + random)
+  .style("position", "absolute");
+  
+  vegaEmbed("#vegadiv-" + parentHtmlId + random, vegaProgressChart, { actions: false, renderer: "svg"});
 };
 
 
@@ -1044,6 +1042,7 @@ dashboardComponents.visualizeNumber = function (
   config,
   x,
   y,
+  fontSize
 ) {
   var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
 
@@ -1058,7 +1057,6 @@ dashboardComponents.visualizeNumber = function (
         dashboardComponents.setVisLabel(g, "New this month", 0, baseline_label);
   }
 
-  
 
   var val = config.data[config.data.length - 1][config.dataField];
   
@@ -1083,70 +1081,34 @@ dashboardComponents.visualizeNumber = function (
     .append("text")
     .text(val)
     .attr("y", 33)
-    .attr("class", "bigNumber")
+    .style('font-weight', 'bold')
+    .style('font-size', fontSize)
     .style("fill", config.color)
     .each(function () {
       bigNumber.width = this.getBBox().width;
     });
-
-  // // if (config.) {
-  //   g.append("text")
-  //     .text(config.unit)
-  //     .attr("x", bigNumber.width + 10)
-  //     .attr("y", y + LINE_1)
-  //     .attr("class", "thin");
-  // //   g.append("text")
-  // //     .text("100,000")
-  // //     .attr("x", bigNumber.width + 10)
-  // //     .attr("y", y + LINE_2)
-  // //     .attr("class", "thin");
-  // // }
 };
 
-dashboardComponents.visualizeNumberSmall = function (
-  svg,
-  config,
-  x,
-  y,
-) {
-  // var g = svg.append("g")
-  //     .attr("transform", "translate(" + xOffset + ",0)")
+// dashboardComponents.visualizeNumberSmall = function (
+//   svg,
+//   config,
+//   x,
+//   y,
+// ) {
 
-  // if (mode == dashboard.MODE_DAILY) {
-  //     setVisLabel(g, 'Today')
-  // } else if (mode == dashboard.MODE_CURRENT) {
-  //     setVisLabel(g, 'Current')
-  // } else if (mode == dashboard.MODE_WEEKLY) {
-  //     setVisLabel(g, 'This week')
-  // } else {
-  //     setVisLabel(g, 'Total')
-  // }
+//   var val = Math.round(config.data[config.data.length - 1][config.dataField] * 10) / 10;
+//   val = val.toLocaleString(undefined) + ' ' + config.unit ;
 
-  var val = Math.round(config.data[config.data.length - 1][config.dataField] * 10) / 10;
-  val = val.toLocaleString(undefined) + ' ' + config.unit ;
+//   // var bigNumber = {};
+//   svg
+//     .append("text")
+//     .text(val)
+//     .attr("y", y + 18)
+//     .attr("x", x)
+//     .attr("class", "smallNumber")
+//     .style("fill", config.color);
 
-  // var bigNumber = {};
-  svg
-    .append("text")
-    .text(val)
-    .attr("y", y + 18)
-    .attr("x", x)
-    .attr("class", "smallNumber")
-    .style("fill", config.color);
-
-  // if (normalized) {
-  //     g.append('text')
-  //         .text('per')
-  //         .attr('x', bigNumber.width + 10)
-  //         .attr('y', top_content + LINE_1)
-  //         .attr('class', 'thin')
-  //     g.append('text')
-  //         .text('100,000')
-  //         .attr('x', bigNumber.width + 10)
-  //         .attr('y', top_content + LINE_2)
-  //         .attr('class', 'thin')
-  // }
-};
+// };
 
 dashboardComponents.visualizeTrendArrow = function (
   svg, config, x, y) {
@@ -1253,6 +1215,8 @@ dashboardComponents.visualizeTrendArrowNew = function (
   let rotation = 0;
   if (trendValue < 0) rotation = 45;
   if (trendValue > 0) rotation = -45;
+
+  trendValue = Math.round(trendValue * 100) / 100
 
   g.append("text")
     .text(function () {
