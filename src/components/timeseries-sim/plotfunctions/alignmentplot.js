@@ -1,6 +1,8 @@
+import { CollectionsBookmarkOutlined, StreamSharp } from "@mui/icons-material";
 import * as d3 from "d3";
+import { times } from "lodash";
 
-export function alignmentPlot(response, firstRunForm) {
+export function alignmentPlot(response,timeSeriesBag,setTimeSeriesBag) {
   //------ DATA and Graph Functions ------//
 
   const parseTime = d3.timeParse("%Y-%m-%d"); // date parser (str to date)
@@ -22,7 +24,14 @@ export function alignmentPlot(response, firstRunForm) {
   // create individual containers for individual charts <div> <svg/> </div>
 
   const GraphData = [...response.data];
+  
+  let checkState = {}
+  GraphData.forEach((streams)=>{
+    const identifier = streams.key + " " + streams.matchedPeriodEnd
+    checkState[identifier] = "false" 
+  });
 
+  console.log(checkState)
   const dateRange = GraphData
     .filter((streams) => streams.isQuery)[0]
     .values.map((values) => values.date)
@@ -113,6 +122,21 @@ export function alignmentPlot(response, firstRunForm) {
     .attr("class", "highlightArea")
     .attr("id", (d, i) => "highlightArea" + i);
 
+
+
+  const updateTimeSeriesBag = (d) => {
+    const identifier = d.key + " " + d.matchedPeriodEnd
+    if (!timeSeriesBag.includes(identifier) && checkState[identifier]==="false"){
+      let temp_arr = timeSeriesBag
+      temp_arr.push(identifier)
+      setTimeSeriesBag(temp_arr)
+      checkState[identifier] = "true"
+      console.log(checkState)
+      console.log(timeSeriesBag)
+    }
+
+  }
+
   GraphData.map(function (streams, i) {
     d3.select("#xaxis" + i).call(xAxis); // call individual xaxis properties
     d3.select("#yaxis" + i).call(yAxis); // call individual yaxis properties
@@ -152,7 +176,11 @@ export function alignmentPlot(response, firstRunForm) {
         return d.name;
       });
 
+    d3.select("#alignmentContainer" + i)
+    .on("click",updateTimeSeriesBag)
+
   });
+
 
 
   let dataFiltered = Array.from(GraphData);

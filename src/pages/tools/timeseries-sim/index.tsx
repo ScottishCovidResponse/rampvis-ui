@@ -60,6 +60,8 @@ const TimeseriesSim = () => {
 
   const [firstRunForm, setFirstRunForm] = useState(initialFirstRunState);
 
+  const [timeSeriesBag, setTimeSeriesBag] = useState(["A", "B", "C"]);
+
   const multipleHandleChange = (event) => {
     if (event.target.type == "checkbox") {
       const temp_obj = { ...firstRunForm };
@@ -76,8 +78,13 @@ const TimeseriesSim = () => {
     }
   };
 
-  const plotSwitch = (response, firstRunForm) => {
-    alignmentPlot(response, firstRunForm);
+  const plotSwitch = (
+    response,
+    firstRunForm,
+    timeSeriesBag,
+    setTimeSeriesBag,
+  ) => {
+    alignmentPlot(response, timeSeriesBag, setTimeSeriesBag);
     SegmentedMultiLinePlot(response, firstRunForm);
   };
 
@@ -85,7 +92,9 @@ const TimeseriesSim = () => {
     const apiUrl = `${API}/timeseries-sim-search/`;
     axios
       .post(apiUrl, firstRunForm)
-      .then((response) => plotSwitch(response, firstRunForm));
+      .then((response) =>
+        plotSwitch(response, firstRunForm, timeSeriesBag, setTimeSeriesBag),
+      );
   };
 
   return (
@@ -132,6 +141,21 @@ const TimeseriesSim = () => {
             <Card id="alignmentcard" sx={{ width: 1, visibility: "hidden" }}>
               <CardContent>
                 <div id="alignmentchart" />
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid sx={{ width: 300 }}>
+            <Card>
+              <CardContent>
+                <ul>
+                  {timeSeriesBag.map(
+                    (
+                      series, // time series bag list creation
+                    ) => (
+                      <li key={series}>{series}</li>
+                    ),
+                  )}
+                </ul>
               </CardContent>
             </Card>
           </Grid>
