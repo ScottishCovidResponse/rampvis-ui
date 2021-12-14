@@ -231,12 +231,6 @@ var createWidget = function (parentHtmlElementId, id, config) {
   if(!widgetConfig.trend)
     widgetConfig.trend = false;
 
-  if(!widgetConfig.unit)
-    widgetConfig.unit = '';
-
-  if(!widgetConfig.min)
-    widgetConfig.min = 0;
-
   if(!widgetConfig.cumulative)
     widgetConfig.cumulative = false;
 
@@ -289,14 +283,6 @@ var createWidget = function (parentHtmlElementId, id, config) {
       parentHtmlElementId, 
       widgetConfig,
       lastDateUpdated
-      // parentHtmlElementId,
-      // title,
-      // widgetConfig.color,
-      // data,
-      // widgetConfig.normalized ? widgetConfig.normalized : false,
-      // widgetConfig.unit,
-      // widgetConfig.detail,
-      // lastDateUpdated,
     );
   } 
   else if (widgetConfig.visualization == dashboard.VIS_LINECHART) {
@@ -369,7 +355,37 @@ dashboard.visualizeTimeSeries = function (
   ) 
   {
 
-  console.log('visulize time series', config.data) 
+  var min = 999999999
+  var max = -999999999
+  var minDate = ''
+  var maxDate = ''
+  for(var i in config.data)
+  {    
+    if(parseFloat(config.data[i][config.dataField]) > max){
+      max = parseFloat(config.data[i][config.dataField]);
+      maxDate = config.data[i][config.dateField]
+    }
+  }
+  for(var i in config.data)
+  {
+    if(parseFloat(config.data[i][config.dataField]) <= min){
+      min = parseFloat(config.data[i][config.dataField]);
+      minDate = config.data[i][config.dateField]
+    }
+  }
+
+  // default for all
+  var domain = [min,max]
+  
+  // manually override defaults
+  if (config.min){
+    domain[0] = config.min;
+  }
+  if (config.max){
+    domain[1] = config.max;
+  }
+  console.log('min.max', domain[0], domain[1])
+
   if (config.detail == dashboard.DETAIL_HIGH) 
   {
     var random = Math.floor(Math.random() * 1000);
@@ -408,9 +424,8 @@ dashboard.visualizeTimeSeries = function (
     {
       dashboardComponents.visualizeValue(
         svg,
-        config.data,
-        config.dataField,
-        config.dateField,
+        max, 
+        maxDate,
         config.unit,
         WIDTH - 270,
         baseline_title + 25,
@@ -421,9 +436,8 @@ dashboard.visualizeTimeSeries = function (
       );
       dashboardComponents.visualizeValue(
         svg,
-        config.data,
-        config.dataField,
-        config.dateField,
+        min, 
+        minDate,
         config.unit,
         WIDTH - 270,
         baseline_title + 25,
@@ -441,10 +455,7 @@ dashboard.visualizeTimeSeries = function (
     if (config.cumulative)
       mark = "line";
 
-    var scale;
-    console.log(config.unit)
-    if (config.unit == '%') 
-      scale = { domain: [0, 100] };
+    var scale = { domain: domain};
 
     var vegaLinechart = {
       $schema: "https://vega.github.io/schema/vega-lite/v5.json",
@@ -474,6 +485,7 @@ dashboard.visualizeTimeSeries = function (
 
     vegaEmbed("#vegadiv-" + parentHtmlId + random, vegaLinechart, { actions: false });
   } 
+
   // MEDIUM 
   else if (config.detail == dashboard.DETAIL_MEDIUM) 
   {
@@ -500,7 +512,7 @@ dashboard.visualizeTimeSeries = function (
       300,
       baseline_title + 25,
       35,
-      100,
+      100, 
     );
   } 
   // LOW
@@ -852,17 +864,17 @@ dashboardComponents.visualizeNumber = function (
 ) {
   var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
 
-  var prefix = 'New '
-  if (config.cumlative){
-    prefix  = 'Total '
+  if (config.cumulative){
+    dashboardComponents.setVisLabel(g,"Total", 0, baseline_label);
+  }else{
+    if (config.timeUnit == dashboard.TIMEUNIT_DAY)
+        dashboardComponents.setVisLabel(g, "New today", 0, baseline_label);
+    if (config.timeUnit == dashboard.TIMEUNIT_WEEK)
+        dashboardComponents.setVisLabel(g, "New this week", 0, baseline_label);
+    if (config.timeUnit == dashboard.TIMEUNIT_MONTH)
+        dashboardComponents.setVisLabel(g, "New this month", 0, baseline_label);
   }
-  
-  if (config.timeUnit == dashboard.TIMEUNIT_DAY)
-      dashboardComponents.setVisLabel(g, prefix + "today", 0, baseline_label);
-  if (config.timeUnit == dashboard.TIMEUNIT_WEEK)
-      dashboardComponents.setVisLabel(g, prefix + "this week", 0, baseline_label);
-  if (config.timeUnit == dashboard.TIMEUNIT_MONTH)
-      dashboardComponents.setVisLabel(g, prefix + "this month", 0, baseline_label);
+
   
 
   var val = config.data[config.data.length - 1][config.dataField];
@@ -894,18 +906,18 @@ dashboardComponents.visualizeNumber = function (
       bigNumber.width = this.getBBox().width;
     });
 
-  // if (config.) {
-    g.append("text")
-      .text(config.unit)
-      .attr("x", bigNumber.width + 10)
-      .attr("y", y + LINE_1)
-      .attr("class", "thin");
+  // // if (config.) {
   //   g.append("text")
-  //     .text("100,000")
+  //     .text(config.unit)
   //     .attr("x", bigNumber.width + 10)
-  //     .attr("y", y + LINE_2)
+  //     .attr("y", y + LINE_1)
   //     .attr("class", "thin");
-  // }
+  // //   g.append("text")
+  // //     .text("100,000")
+  // //     .attr("x", bigNumber.width + 10)
+  // //     .attr("y", y + LINE_2)
+  // //     .attr("class", "thin");
+  // // }
 };
 
 dashboardComponents.visualizeNumberSmall = function (
@@ -959,9 +971,9 @@ dashboardComponents.visualizeTrendArrow = function (
   var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
 
   if (config.timeUnit == dashboard.TIMEUNIT_WEEK)
-    dashboardComponents.setVisLabel(g, "Since last week", 0, baseline_label);
+    dashboardComponents.setVisLabel(g, "since last week", 0, baseline_label);
   if (config.timeUnit == dashboard.TIMEUNIT_DAY)
-    dashboardComponents.setVisLabel(g, "Since yesterday", 0, baseline_label);
+    dashboardComponents.setVisLabel(g, "since yesterday", 0, baseline_label);
 
   var secondLast = parseInt(config.data[config.data.length - 2][config.dataField]);
   var last = parseInt(config.data[config.data.length - 1][config.dataField]);
@@ -995,7 +1007,7 @@ dashboardComponents.visualizeTrendArrow = function (
       .text(function () {
         trendValue = Math.abs(trendValue);
         if (config.unit == '%') {
-          trendValue += "% pts.";
+          trendValue += "% pts";
         }
         return trendValue;
       })
@@ -1034,9 +1046,8 @@ dashboardComponents.visualizeTrendArrow = function (
 
 dashboardComponents.visualizeValue = function (
   svg, 
-  data, 
-  dataField,
-  dateField, 
+  val, 
+  valDate, 
   unit,
   x, 
   y, 
@@ -1046,27 +1057,6 @@ dashboardComponents.visualizeValue = function (
   line
   )
   {
-
-    var val = 0
-    var valDate = ''
-    if(type == 'max'){
-      for(var i in data)
-      {
-        if(parseFloat(data[i][dataField]) > val){
-          val = parseFloat(data[i][dataField]);
-          valDate = data[i][dateField]
-        }
-      }
-    }else if(type == 'min'){
-      val = 999999999;
-      for(var i in data)
-      {
-        if(parseFloat(data[i][dataField]) <= val){
-          val = parseFloat(data[i][dataField]);
-          valDate = data[i][dateField]
-        }
-      }
-    }
     // abbreviate if required
     if (val > 1000000 && abbreviate) {
       val = val / 1000000;
@@ -1108,44 +1098,58 @@ dashboardComponents.visualizeMiniChart = function (
   x,
   y,
   chartHeight,
-  chartWidth,
-) {
-  var trendWindow = 1;
-  if (config.timeUnit == dashboard.TIMEUNIT_WEEK) 
+  chartWidth) {
+
+    
+    var trendWindow = 1;
+    if (config.timeUnit == dashboard.TIMEUNIT_WEEK) 
     trendWindow = 8;
-  if (config.timeUnit == dashboard.TIMEUNIT_DAY) 
+    if (config.timeUnit == dashboard.TIMEUNIT_DAY) 
     trendWindow = 14;
-
-  var barWidth = (chartWidth - 10) / trendWindow;
-
-  var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
-
-  if (config.timeUnit == dashboard.TIMEUNIT_WEEK)
-    dashboardComponents.setVisLabel(g, "Last " + trendWindow + " Weeks", 0, baseline_label);
-  if (config.timeUnit == dashboard.TIMEUNIT_DAY)
-    dashboardComponents.setVisLabel(g, "Last " + trendWindow + " Days", 0, baseline_label);
-
-
-  var x = d3
+    
+    var barWidth = (chartWidth - 10) / trendWindow;
+    
+    var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
+    
+    if (config.timeUnit == dashboard.TIMEUNIT_WEEK)
+    dashboardComponents.setVisLabel(g, "Last " + trendWindow + " weeks", 0, baseline_label);
+    if (config.timeUnit == dashboard.TIMEUNIT_DAY)
+    dashboardComponents.setVisLabel(g, "Last " + trendWindow + " days", 0, baseline_label);
+    
+    var x = d3
     .scaleLinear()
     .domain([0, trendWindow - 1])
     .range([0, chartWidth - barWidth]);
+    
+    // get N last entries
+    var dataSlice = config.data.slice(config.data.length - trendWindow);
 
-  // get N last entries
-  var data = config.data.slice(config.data.length - trendWindow);
+    // calc min & max in trend interval
+    var min = 99999999
+    var max = -99999999
+    if(config.max != undefined)
+      max = config.max;
+    else{
+      for(var i in dataSlice)
+      {    
+        if(parseFloat(dataSlice[i][config.dataField]) > max){
+          max = parseFloat(dataSlice[i][config.dataField]);
+        }
+      }
+    }
+    if(config.min != undefined){
+      min = config.min
+    }else{
+      for(var i in dataSlice)
+      {
+        if(parseFloat(dataSlice[i][config.dataField]) <= min){
+          min = parseFloat(dataSlice[i][config.dataField]);
+        }
+      }
+    }
 
-  if(config.max){
-    max = config.max
-  } else 
-  if (config.unit == '%') {
-    max = 100;
-  } else 
-  if(!config.max){
-    var max = d3.max(data, function (d) {
-      return parseInt(d[config.dataField]);
-    });
-  }
-  var y = d3.scaleLinear().domain([0, max]).range([chartHeight, 0]);
+  console.log('>> min,max', config.min, min, max)
+  var y = d3.scaleLinear().domain([min, max]).range([chartHeight, 0]);
 
   // if perentage, show 100% line
   if (config.max) {
@@ -1153,13 +1157,13 @@ dashboardComponents.visualizeMiniChart = function (
       .attr("y1", y(max))
       .attr("y2", y(max))
       .attr("x1", x(0))
-      .attr("x2", x(data.length - 1))
+      .attr("x2", x(dataSlice.length - 1))
       .attr("class", "chartTopLine");
     g.append("rect")
       .attr("x", x(0))
       .attr("y", y(max))
       .attr("height", Math.abs(y(max) - y(0)))
-      .attr("width", x(data.length - 1) - x(0))
+      .attr("width", x(dataSlice.length - 1) - x(0))
       .attr("class", "chartTopRect");
   }
 
@@ -1168,7 +1172,7 @@ dashboardComponents.visualizeMiniChart = function (
   if (config.cumulative)
   {
     g.append("path")
-      .datum(data)
+      .datum(dataSlice)
       .attr("fill", config.color)
       .style("opacity", 0.4)
       .attr(
@@ -1185,7 +1189,7 @@ dashboardComponents.visualizeMiniChart = function (
       );
 
     g.append("path")
-      .datum(data)
+      .datum(dataSlice)
       .attr("fill", "none")
       .attr("stroke", config.color)
       .attr("stroke-width", 2)
@@ -1204,13 +1208,13 @@ dashboardComponents.visualizeMiniChart = function (
     g.append("circle")
       .attr("fill", config.color)
       .attr("r", 3)
-      .attr("cx", x(data.length - 1))
-      .attr("cy", y(data[data.length - 1][config.dataField]));
+      .attr("cx", x(dataSlice.length - 1))
+      .attr("cy", y(dataSlice[dataSlice.length - 1][config.dataField]));
   } else 
   if(!config.cumulative)
   {
     g.selectAll("bar")
-      .data(data)
+      .data(dataSlice)
       .enter()
       .append("rect")
       .style("fill", function (d, i) {

@@ -85,7 +85,8 @@ export class DashboardMSOA {
             detail: dashboard.DETAIL_HIGH, 
             cumulative: true,
             dateField: 'date', 
-            color: colors.getCaseColor()
+            color: colors.getCaseColor(), 
+            min: 0
           },{
             id: 'newCasesBySpecimenDateRate', 
             title: 'Change in Cases', 
@@ -95,7 +96,8 @@ export class DashboardMSOA {
             detail: dashboard.DETAIL_HIGH, 
             cumulative: false,
             dateField: 'date', 
-            color: colors.getCaseColor()
+            color: colors.getCaseColor(), 
+            min: 0
           }
           ,{
             id: 'newCasesBySpecimenDateChangePercentage', 
@@ -106,7 +108,8 @@ export class DashboardMSOA {
             detail: dashboard.DETAIL_HIGH, 
             cumulative: false,
             dateField: 'date', 
-            color: colors.getCaseColor()
+            color: colors.getCaseColor(), 
+            min: 0
           },{
             id: 'cumVaccinationFirstDoseUptakeByVaccinationDatePercentage', 
             title: 'Change in Cases', 
@@ -117,7 +120,8 @@ export class DashboardMSOA {
             cumulative: true,
             unit: '%',
             dateField: 'date', 
-            color: colors.getCaseColor()
+            color: colors.getCaseColor(), 
+            min: 0
           },{
             id: 'cumVaccinationSecondDoseUptakeByVaccinationDatePercentage', 
             title: 'Change in Cases', 
@@ -128,7 +132,8 @@ export class DashboardMSOA {
             cumulative: true, 
             unit: '%,',
             dateField: 'date', 
-            color: colors.getCaseColor()
+            color: colors.getCaseColor(), 
+            min: 0
           }
         ],
       };

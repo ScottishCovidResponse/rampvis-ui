@@ -123,7 +123,8 @@ export class DashboardNHSEnglandRegion {
             cumulative: true,
             dateField: 'date', 
             abbreviate: true,
-            color: colors.getCaseColor(1)
+            color: colors.getCaseColor(1), 
+            min: 0
           },
           {
             id: 'uniqueCasePositivityBySpecimenDateRollingSum', 
@@ -135,7 +136,8 @@ export class DashboardNHSEnglandRegion {
             cumulative: true,
             dateField: 'date', 
             abbreviate: true,
-            color: colors.getCaseColor(2)
+            color: colors.getCaseColor(2), 
+            min: 0
           },{
             id: 'newCasesBySpecimenDate', 
             title: 'Change in Cases', 
@@ -145,7 +147,8 @@ export class DashboardNHSEnglandRegion {
             detail: dashboard.DETAIL_HIGH, 
             cumulative: false,
             dateField: 'date', 
-            color: colors.getCaseColor(3)
+            color: colors.getCaseColor(3), 
+            min: 0
           },
           {
             id: 'cumDailyNsoDeathsByDeathDate', 
@@ -157,7 +160,8 @@ export class DashboardNHSEnglandRegion {
             cumulative: true,
             dateField: 'date', 
             abbreviate: true,
-            color: colors.getDeathColor()
+            color: colors.getDeathColor(), 
+            min: 0
           },{
             id: 'newDailyNsoDeathsByDeathDate', 
             title: 'Change in deaths', 
@@ -167,7 +171,8 @@ export class DashboardNHSEnglandRegion {
             detail: dashboard.DETAIL_HIGH, 
             cumulative: false,
             dateField: 'date', 
-            color: colors.getDeathColor(2)
+            color: colors.getDeathColor(2), 
+            min: 0
           },{
             id: 'femaleDeaths28Days', 
             title: 'Female deaths within last 28 days', 
@@ -179,7 +184,8 @@ export class DashboardNHSEnglandRegion {
             timeUnit: dashboard.TIMEUNIT_MONTH,
             dateField: 'date', 
             categories: 'age',
-            color: colors.getDeathColor(3)
+            color: colors.getDeathColor(3), 
+            min: 0
           },{
             id: 'maleDeaths28Days', 
             title: 'Male deaths within last 28 days', 
@@ -191,7 +197,8 @@ export class DashboardNHSEnglandRegion {
             timeUnit: dashboard.TIMEUNIT_MONTH,
             dateField: 'date', 
             categories: 'age',
-            color: colors.getDeathColor(3)
+            color: colors.getDeathColor(3), 
+            min: 0
           },{
             id: 'vaccinationsAgeDemographics1', 
             title: '1st dose uptake by age groups', 
@@ -202,7 +209,8 @@ export class DashboardNHSEnglandRegion {
             unit: '%',
             dateField: 'date', 
             categories: 'age',
-            color: colors.getVaccinationColor(1)
+            color: colors.getVaccinationColor(1), 
+            min: 0, max: 100
           },{
             id: 'vaccinationsAgeDemographics2', 
             title: '2nd dose uptake by age groups', 
@@ -213,7 +221,8 @@ export class DashboardNHSEnglandRegion {
             unit: '%',
             dateField: 'date', 
             categories: 'age',
-            color: colors.getVaccinationColor(2)
+            color: colors.getVaccinationColor(2), 
+            min: 0, max: 100
           },
           {
             id: 'cumVaccinationFirstDoseUptakeByVaccinationDatePercentage', 
@@ -224,7 +233,8 @@ export class DashboardNHSEnglandRegion {
             detail: dashboard.DETAIL_MEDIUM, 
             unit: '%',
             dateField: 'date', 
-            color: colors.getVaccinationColor()
+            color: colors.getVaccinationColor(), 
+            min: 0, max: 100
           },{
             id: 'cumVaccinationSecondDoseUptakeByVaccinationDatePercentage', 
             title: 'Total 1st dose uptake', 
@@ -234,7 +244,8 @@ export class DashboardNHSEnglandRegion {
             detail: dashboard.DETAIL_MEDIUM, 
             unit: '%',
             dateField: 'date', 
-            color: colors.getVaccinationColor(2)
+            color: colors.getVaccinationColor(2), 
+            min: 0, max: 100
           }
         ],
       };

@@ -107,6 +107,7 @@ export class DashboardScotlandNHSBoard {
           visualization: "linechart",
           cumulative: false,
           detail: dashboard.DETAIL_HIGH,
+          min: 0
         },
         {
           id: "hospital2",
@@ -121,7 +122,8 @@ export class DashboardScotlandNHSBoard {
           detail: dashboard.DETAIL_HIGH,
           conditions: [
             'index != "2011-01-12"', 
-          ]
+          ],
+          min: 0
         },
         {
           id: "dailyTests",
@@ -133,6 +135,7 @@ export class DashboardScotlandNHSBoard {
           // mode: dashboard.MODE_DAILY,
           cumulative: false,
           detail: dashboard.DETAIL_HIGH,
+          min: 0
         },
         {
           id: "deaths-weekly",
@@ -148,6 +151,7 @@ export class DashboardScotlandNHSBoard {
             "index.length > 4",
             'index.indexOf("-01-01") == -1'
           ],
+          min: 0
         },
         {
           id: "deaths-all",
@@ -160,6 +164,7 @@ export class DashboardScotlandNHSBoard {
           cumulative: false, 
           timeUnit: dashboard.TIMEUNIT_WEEK,
           conditions: ["index.length > 4"],
+          min: 0
         },
         {
           id: "vaccination-total-1st",
@@ -173,7 +178,7 @@ export class DashboardScotlandNHSBoard {
           ),
           cumulative: true, 
           unit: '%',
-          max: 100, 
+          min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -193,7 +198,7 @@ export class DashboardScotlandNHSBoard {
           ),
           // mode: dashboard.MODE_PERCENT,
           cumulative: true, 
-          max: 100, 
+          min: 0, max: 100,
           unit: '%',
           detail: dashboard.DETAIL_LOW,
           conditions: [
@@ -213,7 +218,7 @@ export class DashboardScotlandNHSBoard {
             Data.Fields.HEALTH_BOARD_VACCINE_SEX_AGEGROUP,
           ),
           cumulative: true, 
-          max: 100, 
+          min: 0, max: 100,
           unit: '%',
           detail: dashboard.DETAIL_HIGH,
           categories: "AgeGroup",
@@ -234,7 +239,7 @@ export class DashboardScotlandNHSBoard {
             Data.Fields.HEALTH_BOARD_VACCINE_SEX_AGEGROUP,
           ),
           cumulative: true, 
-          max: 100, 
+          min: 0, max: 100,
           unit: '%',
           detail: dashboard.DETAIL_HIGH,
           categories: "AgeGroup",

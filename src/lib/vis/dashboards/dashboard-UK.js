@@ -23,20 +23,21 @@ import { Data } from '../data'
 import { dashboard } from "./dashboard";
 import { colors } from "../colors";
 
+
 export class DashboardUK {
   CHART_WIDTH = 1200;
   CHART_HEIGHT = 1000;
-
+  
   constructor(options) {
-    // Phong added - to remove
-    // @Ben: please get data this way rather than relying on index in options.data
-    // end Phong added - to remove
+    
+    var UK_POPULATION = 67220000;
+    var PEOPLE_PER_DAY = 500000
 
     // creates the main div. don't touch
     var div = d3
-      .select("#" + options.chartElement)
-      .append("div")
-      .attr("class", "vis-example-container");
+    .select("#" + options.chartElement)
+    .append("div")
+    .attr("class", "vis-example-container");
 
     // test all data are loaded, once every second
     var timeseriesWidget = function (
@@ -61,6 +62,7 @@ export class DashboardUK {
         detail: detail,
         dateField: "date",
         abbreviate: true,
+        min: 0
       };
       return w;
     };
@@ -68,7 +70,7 @@ export class DashboardUK {
     setTimeout(function () {
       // 2. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
       var config = {
-        layout: [["cases", "admissions", "deaths"], "vacc"],
+        layout: [["cases", "admissions", "deaths", "vacc"]],
         groups: [
           {
             id: "admissions",
@@ -160,67 +162,93 @@ export class DashboardUK {
             Data.from(options.data, Data.Fields.PHE_UK_NEW_DEATHS_28_DAYS),
             colors.getDeathColor(),
             dashboard.DETAIL_HIGH,
-          ),
-          timeseriesWidget(
-            "vacc1",
-            "Total 1st Dose Update",
-            "cumPeopleVaccinatedFirstDoseByPublishDate",
-            true,
-            dashboard.TIMEUNIT_DAY,
-            Data.from(options.data, Data.Fields.PHE_UK_CUM_VACC_FIRST),
-            colors.getVaccinationColor(1),
-            dashboard.DETAIL_MEDIUM,
-          ),
-          timeseriesWidget(
-            "vacc1d",
-            "Daily 1st Dose Vaccinations",
-            "newPeopleVaccinatedFirstDoseByPublishDate",
-            false,
-            dashboard.TIMEUNIT_DAY,
-            Data.from(options.data, Data.Fields.PHE_UK_NEW_VACC_FIRST),
-            colors.getVaccinationColor(1),
-            dashboard.DETAIL_MEDIUM
-          ),
-          timeseriesWidget(
-            "vacc2",
-            "Total 2nd Dose Update",
-            "cumPeopleVaccinatedSecondDoseByPublishDate",
-            true,
-            dashboard.TIMEUNIT_DAY,
-            Data.from(options.data, Data.Fields.PHE_UK_CUM_VACC_SECOND),
-            colors.getVaccinationColor(2),
-            dashboard.DETAIL_MEDIUM,
-          ),
-          timeseriesWidget(
-            "vacc2d",
-            "2nd Dose Daily",
-            "newPeopleVaccinatedSecondDoseByPublishDate",
-            false,
-            dashboard.TIMEUNIT_DAY,
-            Data.from(options.data, Data.Fields.PHE_UK_NEW_VACC_SECOND),
-            colors.getVaccinationColor(2),
-            dashboard.DETAIL_MEDIUM
-          ),
-          timeseriesWidget(
-            "vacc3",
-            "Total 3rd Dose Uptake",
-            "cumPeopleVaccinatedThirdInjectionByPublishDate",
-            true,
-            dashboard.TIMEUNIT_DAY,
-            Data.from(options.data, Data.Fields.PHE_UK_CUM_VACC_THIRD),
-            colors.getVaccinationColor(3),
-            dashboard.DETAIL_MEDIUM,
-          ),
-          timeseriesWidget(
-            "vacc3d",
-            "3rd Dose Daily",
-            "newPeopleVaccinatedThirdInjectionByPublishDate",
-            false,
-            dashboard.TIMEUNIT_DAY,
-            Data.from(options.data, Data.Fields.PHE_UK_NEW_VACC_THIRD),
-            colors.getVaccinationColor(3),
-            dashboard.DETAIL_MEDIUM
-          ),
+          ),{
+            id: "vacc1",
+            visualization: "linechart",
+            title: "Total 1st Dose Update",
+            dataField: "cumPeopleVaccinatedFirstDoseByPublishDate",
+            cumulative: true,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: Data.from(options.data, Data.Fields.PHE_UK_CUM_VACC_FIRST),
+            color: colors.getVaccinationColor(1),
+            detail: dashboard.DETAIL_MEDIUM,
+            dateField: "date",
+            abbreviate: true,
+            min: 0, 
+            max: UK_POPULATION
+          },
+          {
+            id: "vacc1d",
+            visualization: "linechart",
+            title: "Daily 1st Dose Vaccinations",
+            dataField: "newPeopleVaccinatedFirstDoseByPublishDate",
+            cumulative: false,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: Data.from(options.data, Data.Fields.PHE_UK_NEW_VACC_FIRST),
+            color: colors.getVaccinationColor(1),
+            detail: dashboard.DETAIL_MEDIUM,
+            dateField: "date",
+            abbreviate: true,
+            min: 0, max: PEOPLE_PER_DAY
+          },
+          {
+            id: "vacc2",
+            title: "Total 2nd Dose Update",
+            visualization: "linechart",
+            dataField: "cumPeopleVaccinatedSecondDoseByPublishDate",
+            cumulative: true,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: Data.from(options.data, Data.Fields.PHE_UK_CUM_VACC_SECOND),
+            color: colors.getVaccinationColor(2),
+            detail: dashboard.DETAIL_MEDIUM,
+            dateField: "date",
+            abbreviate: true,
+            min: 0, 
+            max: UK_POPULATION
+          },
+          {
+            id: "vacc2d",
+            title: "2nd Dose Daily",
+            visualization: "linechart",
+            dataField: "newPeopleVaccinatedSecondDoseByPublishDate",
+            cumulative: false,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: Data.from(options.data, Data.Fields.PHE_UK_NEW_VACC_SECOND),
+            color: colors.getVaccinationColor(2),
+            detail: dashboard.DETAIL_MEDIUM,
+            dateField: "date",
+            abbreviate: true,
+            min: 0, max: PEOPLE_PER_DAY
+          },
+          {
+            id: "vacc3",
+            visualization: "linechart",
+            title: "Total 3rd Dose Uptake",
+            dataField: "cumPeopleVaccinatedThirdInjectionByPublishDate",
+            cumulative: true,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: Data.from(options.data, Data.Fields.PHE_UK_CUM_VACC_THIRD),
+            color: colors.getVaccinationColor(3),
+            detail: dashboard.DETAIL_MEDIUM,
+            dateField: "date",
+            abbreviate: true,
+            min: 0, 
+            max: UK_POPULATION
+          },
+          {
+            id: "vacc3d",
+            visualization: "linechart",
+            title: "3rd Dose Daily",
+            dataField: "newPeopleVaccinatedThirdInjectionByPublishDate",
+            cumulative: false,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: Data.from(options.data, Data.Fields.PHE_UK_NEW_VACC_THIRD),
+            color: colors.getVaccinationColor(3),
+            detail: dashboard.DETAIL_MEDIUM,
+            dateField: "date",
+            abbreviate: true,
+            min: 0, max: PEOPLE_PER_DAY
+          }
         ],
       };
 

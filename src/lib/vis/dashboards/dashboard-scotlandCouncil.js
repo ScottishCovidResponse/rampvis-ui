@@ -104,6 +104,7 @@ export class DashboardScotlandCouncil {
           cumulative: false,
           detail: dashboard.DETAIL_HIGHT,
           conditions: ["index.length > 4"],
+          min: 0
         },
         {
           id: "allDeathData",
@@ -115,6 +116,7 @@ export class DashboardScotlandCouncil {
           detail: dashboard.DETAIL_HIGH,
           cumulative: false,
           conditions: ["index.length > 4"],
+          min: 0
         },
         {
           id: "vaccination-total-1st",
@@ -128,6 +130,7 @@ export class DashboardScotlandCouncil {
           ),
           cumulative: true,
           unit: '%',
+          min: 0, max: 100,
           detail: dashboard.DETAIL_HIGH,
           conditions: [
             'Sex == "Total"',
@@ -146,6 +149,7 @@ export class DashboardScotlandCouncil {
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           cumulative: true,
+          min: 0, max: 100,
           unit: '%',
           detail: dashboard.DETAIL_HIGH,
           conditions: [
@@ -167,6 +171,7 @@ export class DashboardScotlandCouncil {
           ),
           cumulative: true,
           unit: '%',
+          min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -186,6 +191,7 @@ export class DashboardScotlandCouncil {
           ),
           cumulative: true,
           unit: '%',
+          min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -205,6 +211,7 @@ export class DashboardScotlandCouncil {
           ),
           cumulative: true,
           unit: '%',
+          min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -224,6 +231,7 @@ export class DashboardScotlandCouncil {
           ),
           cumulative: true,
           unit: '%',
+          min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -243,6 +251,7 @@ export class DashboardScotlandCouncil {
           ),
           cumulative: true,
           unit: '%',
+          min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -262,6 +271,7 @@ export class DashboardScotlandCouncil {
           ),
           cumulative: true,
           unit: '%',
+          min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -281,6 +291,7 @@ export class DashboardScotlandCouncil {
           ),
           cumulative: true,
           unit: '%',
+          min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -300,6 +311,7 @@ export class DashboardScotlandCouncil {
           ),
           cumulative: true,
           unit: '%',
+          min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -319,6 +331,7 @@ export class DashboardScotlandCouncil {
           ),
           cumulative: true,
           unit: '%',
+          min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -340,6 +353,7 @@ export class DashboardScotlandCouncil {
           detail: dashboard.DETAIL_LOW,
           cumulative: true,
           unit: '%',
+          min: 0, max: 100,
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',
@@ -358,6 +372,7 @@ export class DashboardScotlandCouncil {
           ),
           cumulative: true,
           unit: '%',
+          min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -377,6 +392,7 @@ export class DashboardScotlandCouncil {
           ),
           cumulative: true,
           unit: '%',
+          min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -396,6 +412,7 @@ export class DashboardScotlandCouncil {
           ),
           cumulative: true,
           unit: '%',
+          min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -415,6 +432,7 @@ export class DashboardScotlandCouncil {
           ),
           cumulative: true,
           unit: '%',
+          min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -434,6 +452,7 @@ export class DashboardScotlandCouncil {
           ),
           cumulative: true,
           unit: '%',
+          min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -453,6 +472,7 @@ export class DashboardScotlandCouncil {
           ),
           cumulative: true,
           unit: '%',
+          min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',
@@ -472,6 +492,7 @@ export class DashboardScotlandCouncil {
           ),
           cumulative: true,
           unit: '%',
+          min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
           onditions: [
             'Sex == "Total"',
@@ -491,6 +512,7 @@ export class DashboardScotlandCouncil {
           ),
           cumulative: true,
           unit: '%',
+          min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
           conditions: [
             'Sex == "Total"',

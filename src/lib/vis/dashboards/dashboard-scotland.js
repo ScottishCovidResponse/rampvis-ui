@@ -90,6 +90,7 @@ export class DashboardScotland {
           cumulative: false,
           link: links && links[0],
           detail: dashboard.DETAIL_MEDIUM,
+          min: 0
         },
         {
           id: "vaccinated1",
@@ -105,6 +106,7 @@ export class DashboardScotland {
             'AgeBand == "18 years and over"',
             'Product == "Total"',
           ],
+          min: 0
         },
         {
           id: "vaccinated2",
@@ -116,6 +118,7 @@ export class DashboardScotland {
           cumulative: false,
           detail: dashboard.DETAIL_MEDIUM,
           conditions: ['Dose == "Dose 2"', 'Product == "Total"'],
+          min: 0
         },
         {
           id: "deaths",
@@ -126,6 +129,7 @@ export class DashboardScotland {
           cumulative: true,
           color: colors.getHospitalizedColor(),
           data: Data.from(options.data, Data.Fields.COUNTRY_HOSPITAL),
+          min: 0
         },
         {
           id: "patients",
@@ -136,6 +140,8 @@ export class DashboardScotland {
           detail: dashboard.DETAIL_MEDIUM,
           data: Data.from(options.data, Data.Fields.COUNTRY_ICU),
           cumulative: true,
+          min: 0
+
         },
         {
           data: Data.from(
@@ -147,6 +153,7 @@ export class DashboardScotland {
           visualization: "cartogram",
           color: colors.getTestColor(),
           normalized: true,
+          min: 0
         },
         {
           data: Data.from(
@@ -158,6 +165,7 @@ export class DashboardScotland {
           color: colors.getHospitalizedColor(),
           visualization: "cartogram",
           normalized: true,
+          min: 0
         },
         {
           data: Data.from(

@@ -50,9 +50,9 @@ export class DashboardLowerTierLocalAuthority{
     // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
     var config = {
         layout: [[
-          // "cases", 
-          // "deaths", 
-          // "vacc"
+          "cases", 
+          "deaths", 
+          "vacc"
         ]],
         groups: [
           {
@@ -85,6 +85,8 @@ export class DashboardLowerTierLocalAuthority{
             cumulative: true,
             dateField: "date",
             visualization: "linechart",
+            abbreviate: true,
+            min: 0
           },
           {
             id: "newCases",
@@ -96,6 +98,7 @@ export class DashboardLowerTierLocalAuthority{
             cumulative: false,
             dateField: "date",
             visualization: "linechart",
+            min: 0
           },
           {
             id: "cumDeaths",
@@ -107,6 +110,7 @@ export class DashboardLowerTierLocalAuthority{
             cumulative: true,
             dateField: "date",
             visualization: "linechart",
+            min: 0
           },
           {
             id: "newDeaths",
@@ -117,6 +121,7 @@ export class DashboardLowerTierLocalAuthority{
             detail: dashboard.DETAIL_MEDIUM,
             dateField: "date",
             visualization: "linechart",
+            min: 0
           },
           {
             id: "vacc1",
@@ -130,6 +135,8 @@ export class DashboardLowerTierLocalAuthority{
             cumulative: true,
             dateField: "date",
             visualization: "linechart",
+            min: 0,
+            max: 100
           },
           {
             id: "vacc2",
@@ -143,6 +150,8 @@ export class DashboardLowerTierLocalAuthority{
             cumulative: true,
             dateField: "date",
             visualization: "linechart",
+            min: 0,
+            max: 100
           },
           {
             id: "vacc1Ages",
@@ -157,6 +166,8 @@ export class DashboardLowerTierLocalAuthority{
             dateField: "date",
             visualization: "barchart",
             categories: "age",
+            min: 0,
+            max: 100
           },
           {
             id: "vacc2Ages",
@@ -171,11 +182,13 @@ export class DashboardLowerTierLocalAuthority{
             dateField: "date",
             visualization: "barchart",
             categories: "age",
+            min: 0,
+            max: 100
           },
         ],
       };
 
     // this will interpret the dashboard specifiation
-    // dashboard.createDashboard(div, config);
+    dashboard.createDashboard(div, config);
   }
 }
