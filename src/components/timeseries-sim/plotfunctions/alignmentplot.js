@@ -128,16 +128,16 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
 
   const updateTimeSeriesBag = (d) => {
     const identifier = d.key + " " + d.matchedPeriodEnd
+    console.log(timeSeriesBag)
     if (!timeSeriesBag.includes(identifier) && checkState[identifier]==="false") {
       setTimeSeriesBag((old) => [...old, identifier]);
-
-      //let temp_arr = timeSeriesBag
-      //temp_arr.push(identifier)
-      //setTimeSeriesBag(temp_arr)
-
-      checkState[identifier] = "true"
-      console.log(checkState)
-      console.log(timeSeriesBag)
+      checkState[identifier] = "true";
+      timeSeriesBag.push(identifier);
+      }
+    else if(timeSeriesBag.includes(identifier)&& checkState[identifier]==="true") {
+      setTimeSeriesBag((old) => [...old.filter(item=>item!==identifier)]);
+      checkState[identifier]= "false";
+      timeSeriesBag = timeSeriesBag.filter(item=> item!==identifier);
     }
 
   }

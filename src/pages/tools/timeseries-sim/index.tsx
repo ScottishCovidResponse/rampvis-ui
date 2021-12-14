@@ -1,6 +1,6 @@
 import { useState, ReactElement } from "react";
 import { Helmet } from "react-helmet-async";
-import { Grid, Box, Card, CardContent } from "@mui/material";
+import { Grid, Box, Card, CardContent, Button, TextField } from "@mui/material";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import axios from "axios";
 import FirstForm from "src/components/timeseries-sim/FirstForm";
@@ -151,15 +151,38 @@ const TimeseriesSim = () => {
           <Grid sx={{ width: 300 }}>
             <Card>
               <CardContent>
-                <ul>
-                  {timeSeriesBag.map(
-                    (
-                      series, // time series bag list creation
-                    ) => (
-                      <li key={series}>{series}</li>
-                    ),
-                  )}
-                </ul>
+                <div>
+                  <TextField
+                    type="text"
+                    color="primary"
+                    variant="standard"
+                    name="timeSeries"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+
+                  <Button variant="contained" color="primary">
+                    +
+                  </Button>
+                </div>
+                <div>
+                  <ul>
+                    {timeSeriesBag.map(
+                      (
+                        series, // time series bag list creation
+                      ) => (
+                        <li key={series}>{series}</li>
+                      ),
+                    )}
+                  </ul>
+                </div>
+
+                <div>
+                  <Button variant="contained" color="primary">
+                    Analyze
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </Grid>
