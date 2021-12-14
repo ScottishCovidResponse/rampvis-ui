@@ -87,6 +87,13 @@ export class DashboardTian {
     d3.csv(scotland_newAdmissionsRollingRate).then(function (data) {
       scotland_newAdmissionsRollingRate = data;
     });
+    //d3.csv(aberdeenshire_vacc_rate).then(function (data) {
+    //  aberdeenshire_vacc_rate = data;
+    //});
+    d3.csv(aberdeenshire_vacc_rate).then(function (data) {
+      data[0].percent = data[0].cumVaccinationFirstDoseUptakeByPublishDatePercentage/100
+      aberdeenshire_vacc_rate = data
+    })
 
     console.log("Tian's playground");
 
@@ -97,34 +104,42 @@ export class DashboardTian {
         groups: [
           {
             id: "england",
-            title: "England Data",
-            layout: ["england_newCasesRate", "england_newDeathsRate"],
+            title: "Progress Bars",
+            layout: ["ni_death_rates", "aberdeen_vax_progress"]
           },
         ],
         widgets: [
           {
-            id: "england_newCasesRate",
-            title: "New Daily Cases",
-            dataField: "cumCasesByPublishDateRate",
-            visualization: "linechart",
-            color: colors.getCaseColor(),
-            data: england_newCasesRate,
+            id: "ni_death_rates",
+            title: "Northern Ireland death rate daily uptake",
+            dataField: "newDeaths28DaysByDeathDateRate",
+            visualization: "progress",
+            color: colors.getDeathColor(),
+            data: ni_newDeathsRate,
             mode: dashboard.MODE_DAILY,
+            normalized: false,
+            chartTitle: "daily death rate",
+            //min: 0,
+            //max: 100,
+            timeWindow: 7,
+            timeLabel: dashboard.TIMEUNIT_WEEK,
             detail: dashboard.DETAIL_HIGH,
-            dateVariable: "date",
-            abbreviate: true,
+            abbreviate: true
           },
           {
-            id: "england_newDeathsRate",
-            title: "New Daily Deaths",
-            dataField: "cumDeaths28DaysByDeathDateRate",
-            visualization: "linechart",
-            color: colors.getDeathColor(),
-            data: england_newDeathsRate,
+            id: "aberdeen_vax_progress",
+            title: "Vaccination progress in Aberdeen county",
+            dataField: "cumVaccinationFirstDoseUptakeByPublishDatePercentage",
+            visualization: "progress",
+            color: colors.getVaccinationColor(),
+            data: aberdeenshire_vacc_rate,
             mode: dashboard.MODE_DAILY,
-            detail: dashboard.DETAIL_HIGH,
-            dateVariable: "date",
-            abbreviate: true,
+            normalized: false,
+            chartTitle: "vaccinated population",
+            min: 0,
+            max: 100,
+            detail: dashboard.DETAIL_LOW,
+            abbreviate: true
           },
         ],
       };

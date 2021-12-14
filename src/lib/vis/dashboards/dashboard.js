@@ -205,6 +205,7 @@ var createWidget = function (parentHtmlElementId, id, config) {
   // create convenience variable for 'data' that will be linked back
   // to thw widgetConf before visualizing.
   var data = widgetConfig.data;
+  var dataField = widgetConfig.dataField;
   // check if data is not empty
   if (data.length == 0) {
     console.log("NO DATA FOUND / DATA ARRAY IS EMPTY", id);
@@ -233,10 +234,23 @@ var createWidget = function (parentHtmlElementId, id, config) {
 
   if(!widgetConfig.cumulative)
     widgetConfig.cumulative = false;
+  
+  if(!widgetConfig.timeWindow)
+    widgetConfig.timeWindow = 7;
+
+  if(!widgetConfig.timeLabel)
+    widgetConfig.timeLabel = dashboard.TIMEUNIT_WEEK;
 
   if(!widgetConfig.timeUnit)
     widgetConfig.timeUnit = dashboard.TIMEUNIT_DAY;
   
+  if(!widgetConfig.max)
+    widgetConfig.max = Math.max.apply(Math, widgetConfig.data.map(function(o) {return o[widgetConfig.dataField]; }));
+  console.log("max set");
+  console.log(widgetConfig.max)
+  
+  if(!widgetConfig.min)
+    widgetConfig.min = 0;
 
   // include, once LAYOUT has been implemented as a variable
   // if(!widgetConfig.layout)
@@ -302,18 +316,8 @@ var createWidget = function (parentHtmlElementId, id, config) {
   else if (widgetConfig.visualization == dashboard.VIS_PROGRESS) {
     dashboard.visualizeProgress(
       parentHtmlElementId,
-      title,
-      widgetConfig.dataField,
-      widgetConfig.color,
-      data,
-      widgetConfig.mode,
-      widgetConfig.normalized,
-      widgetConfig.link ? widgetConfig.link : null,
-      widgetConfig.unit,
-      widgetConfig.detail,
-      lastDateUpdated,
-      widgetConfig.bars,
-      widgetConfig.abbreviate,
+      widgetConfig,
+      lastDateUpdated
     );
   } else {
     console.error(
@@ -799,21 +803,200 @@ dashboard.visualizeBarChart = function (
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 dashboard.visualizeProgress = function (
-  id,
-  title,
-  dataField,
-  color,
-  dataStream,
-  mode,
-  normalized,
-  link,
-  unit,
-  detail,
-  lastDate,
-  barField,
-  abbreviate,
-) {
-  // TIAN
+  parentHtmlId,
+  config,
+  lastDate
+  )  {
+
+  var dataObj = {}
+  var datatext = "percent"
+  var format = "~%"
+  var width = 40
+  var timeseries = false
+  if(config.data.length > 1){
+    console.log("restructuring")
+    timeseries = true;
+    datatext = config.dataField;
+    dataObj = config.data[config.data.length - 1];
+    format = ".1f";
+    width = 120;
+  }
+  else{
+    dataObj = config.data;
+  }
+  var random = Math.floor(Math.random() * 1000);
+  var wrapperDiv = d3
+  .select("#" + parentHtmlId)
+  .append("div")
+  .attr("id", "wrapperDiv" + random);
+
+  var svg = wrapperDiv
+  .append("svg")
+  .attr("height", width)
+  .style("margin-bottom", 0)
+  .style("margin-right", 0)
+  .style("z-index", -1);
+
+  dashboardComponents.setVisTitle(svg, config.title, config.link, config.detail, lastDate);
+  console.log(config)
+
+  console.log("data here")
+  console.log(dataObj)
+  if (config.detail == dashboard.DETAIL_HIGH) 
+  {
+    wrapperDiv.append("br");
+    
+    if(timeseries){
+      dashboardComponents.visualizeTrendArrowNew(
+        svg,
+        config,
+        220,
+        40,
+      );
+    }
+    //width - 300
+    svg.attr("width", 350);
+
+    console.log(config.data)
+
+    var vegaProgressChart = {
+      $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+      data: { 
+        values: dataObj,
+      },
+      layer: [{
+        mark: "bar",
+        encoding: {
+          x: {
+            field: config.dataField,
+            type: "quantitative",
+            scale: {"domain": [config.min, config.max]},
+            title: config.chartTitle,
+            tickExtra: true,
+            tickBand: "extent"
+          },
+          color: { value: config.color }
+        },
+      }, {
+        mark: {
+          type: "text",
+          align: "center",
+          baseline: "middle",
+          fontSize: 20,
+          dx: 6
+        },
+        encoding: {
+          text: {
+            fontWeight: 900,
+            field: datatext, 
+            formatType:"number",
+            format: format
+          },
+      }
+      }],
+      config: {
+        axis: {grid: true, tickBand: "extent"}
+      }, 
+    }
+  }
+  else if(config.detail == dashboard.DETAIL_MEDIUM){
+    wrapperDiv.append("br");
+    
+    //width - 300
+    svg.attr("width", 300);
+    svg.attr("background", "black")
+
+    var vegaProgressChart = {
+      $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+      data: { 
+        values: dataObj,
+      },
+      layer: [{
+        mark: "bar",
+        encoding: {
+          x: {
+            field: config.dataField,
+            type: "quantitative",
+            scale: {"domain": [config.min, config.max]},
+            title: config.chartTitle,
+            tickExtra: true,
+            tickBand: "extent"
+          },
+          color: { value: config.color }
+        },
+      }, {
+        mark: {
+          type: "text",
+          align: "center",
+          baseline: "middle",
+          fontSize: 20,
+          dx: 6
+        },
+        encoding: {
+          text: {
+            fontWeight: 900,
+            field: "percent", 
+            formatType:"number",
+            format: "~%"
+          },
+      }
+      }],
+      config: {
+        axis: {grid: true, tickBand: "extent"}
+      }, 
+      
+    };
+  }
+  else if(config.detail == dashboard.DETAIL_LOW){
+    wrapperDiv.append("br");
+    
+    //width - 300
+    svg.attr("width", 300);
+
+    var vegaProgressChart = {
+      $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+      data: { 
+        values: dataObj
+      },
+      layer: [{
+        mark: "bar",
+        encoding: {
+          x: {
+            field: config.dataField,
+            type: "quantitative",
+            scale: {"domain": [config.min, config.max]},
+            title: config.chartTitle,
+            axis: null
+          },
+          color: { value: config.color }
+        },
+      }, {
+        mark: {
+          type: "text",
+          align: "center",
+          baseline: "middle",
+          fontSize: 20,
+          dx: 6
+        },
+        encoding: {
+          text: {
+            fontWeight: 900,
+            field: "percent", 
+            formatType:"number",
+            format: "~%"
+          },
+      }
+      }],
+      config: {
+        axis: {grid: true, tickBand: "extent"}
+      },
+      
+    };
+  }
+
+  wrapperDiv.append("div").attr("id", "vegadiv-" + parentHtmlId + random).style("z-index", 1).style("position", "absolute");
+
+  vegaEmbed("#vegadiv-" + parentHtmlId + random, vegaProgressChart, { actions: false });
 };
 
 
@@ -1043,6 +1226,94 @@ dashboardComponents.visualizeTrendArrow = function (
     .attr("stroke", config.color);
 };
 
+//implement - add timeWindow and timeLabel
+dashboardComponents.visualizeTrendArrowNew = function (
+  svg, config, x, y) {
+  
+  console.log("called trend")
+  
+  var window = config.timeWindow;
+
+  var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
+
+  if (config.timeLabel == dashboard.TIMEUNIT_HOUR)
+    dashboardComponents.setVisLabel(g, "Over the last " + window + " hours", 0, baseline_label); 
+  else if (config.timeLabel == dashboard.TIMEUNIT_DAY)
+  dashboardComponents.setVisLabel(g, "Over the last " + window + " days", 0, baseline_label);
+  else if (config.timeLabel == dashboard.TIMEUNIT_WEEK)
+    dashboardComponents.setVisLabel(g, "Over the last " + window + " weeks", 0, baseline_label);
+  else if (config.timeLabel == dashboard.TIMEUNIT_MONTH)
+    dashboardComponents.setVisLabel(g, "Over the last " + window + " months", 0, baseline_label);
+  else if (config.timeLabel == dashboard.TIMEUNIT_YEAR)
+    dashboardComponents.setVisLabel(g, "Over the last " + window + " years", 0, baseline_label); 
+
+  var baseSample = parseFloat(config.data[config.data.length - (window + 1)][config.dataField]);
+  var last = parseFloat(config.data[config.data.length - 1][config.dataField]).toFixed(3);
+  let trendValue = last - baseSample;
+  let rotation = 0;
+  if (trendValue < 0) rotation = 45;
+  if (trendValue > 0) rotation = -45;
+
+  g.append("text")
+    .text(function () {
+      if (trendValue > 0) {
+        return "up by";
+      } else if (trendValue < 0) {
+        return "down by";
+      } else {
+        return "no ";
+      }
+    })
+    .attr("x", 45)
+    .attr("y", LINE_1)
+    .attr("class", "thin");
+
+  if (trendValue == 0) {
+    g.append("text")
+      .text("change")
+      .attr("x", 45)
+      .attr("y", LINE_2)
+      .attr("class", "thin");
+  } else {
+    g.append("text")
+      .text(function () {
+        trendValue = Math.abs(trendValue);
+        if (config.unit == '%') {
+          trendValue += "% pts.";
+        }
+        return trendValue;
+      })
+      .attr("x", 45)
+      .attr("y", LINE_2)
+      .style("fill", config.color);
+  }
+
+  var g2 = g.append("g").attr("transform", function () {
+    return "translate(17," + 20 + "),rotate(" + rotation + ")";
+  });
+
+  g2.append("line")
+    .attr("x1", -15)
+    .attr("x2", 15)
+    .attr("y1", 0)
+    .attr("y2", 0)
+    .attr("class", "arrow")
+    .attr("stroke", config.color);
+  g2.append("line")
+    .attr("x1", 15)
+    .attr("x2", 0)
+    .attr("y1", 0)
+    .attr("y2", -15)
+    .attr("class", "arrow")
+    .attr("stroke", config.color);
+  g2.append("line")
+    .attr("x1", 15)
+    .attr("x2", 0)
+    .attr("y1", 0)
+    .attr("y2", 15)
+    .attr("class", "arrow")
+    .attr("stroke", config.color);
+};
 
 dashboardComponents.visualizeValue = function (
   svg, 
