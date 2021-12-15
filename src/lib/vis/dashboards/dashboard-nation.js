@@ -64,7 +64,6 @@ export class CountryOverview {
 
 
 
-
     https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=vaccinationsAgeDemographics&format=csv
     // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
     setTimeout(function () {

@@ -48,34 +48,8 @@ h3.dashboard {
   color: #777;
   float: right;
 }
-.thin {
-  margin-top: 0px;
-  font-weight: 200;
-}
 
-text.bigNumber {
-  font-size: 35pt;
-  font-weight: bold;
-}
-text.smallNumber {
-  font-size: 18pt;
-  font-weight: bold;
-}
 
-.arrow {
-  stroke-width: 7;
-  stroke-linecap: round;
-}
-
-.label {
-  font-weight: 200;
-  font-size: 10pt;
-}
-
-.datastream-title {
-  font-weight: bold;
-  font-size: 12pt;
-}
 .datastream-title.hasLink {
   text-decoration: underline;
   cursor: pointer;
