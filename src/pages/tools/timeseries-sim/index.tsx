@@ -1,6 +1,18 @@
 import { useState, ReactElement } from "react";
 import { Helmet } from "react-helmet-async";
-import { Grid, Box, Card, CardContent, Button, TextField } from "@mui/material";
+import {
+  Grid,
+  Box,
+  Card,
+  CardContent,
+  Button,
+  TextField,
+  List,
+  ListItem,
+  ListItemText,
+  IconButton,
+} from "@mui/material";
+import { DeleteOutline } from "@mui/icons-material";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import axios from "axios";
 import FirstForm from "src/components/timeseries-sim/FirstForm";
@@ -59,9 +71,14 @@ const TimeseriesSim = () => {
   };
 
   const [firstRunForm, setFirstRunForm] = useState(initialFirstRunState);
-  const [timeSeriesBag, setTimeSeriesBag] = useState(["A", "B", "C"]);
+  const [timeSeriesBag, setTimeSeriesBag] = useState([]);
+  const [manualCountry, setManualCountry] = useState("");
 
   const [responseData, setResponseData] = useState([]);
+
+  const manualListInput = (event) => {
+    setManualCountry(event.target.value);
+  };
 
   const multipleHandleChange = (event) => {
     if (event.target.type == "checkbox") {
@@ -99,6 +116,16 @@ const TimeseriesSim = () => {
   const handleClick = async () => {
     await fetchData();
     plotSwitch();
+  };
+
+  const addManualCountry = () => {
+    if (manualCountry.length > 0 && !timeSeriesBag.includes(manualCountry)) {
+      setTimeSeriesBag((old) => [...old, manualCountry]);
+    }
+  };
+
+  const removeCountry = (event) => {
+    console.log(event.target);
   };
 
   return (
@@ -151,31 +178,54 @@ const TimeseriesSim = () => {
           <Grid sx={{ width: 300 }}>
             <Card>
               <CardContent>
-                <div>
-                  <TextField
-                    type="text"
-                    color="primary"
-                    variant="standard"
-                    name="timeSeries"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
+                <Grid container spacing={2}>
+                  <Grid item xs={8}>
+                    <TextField
+                      type="text"
+                      color="primary"
+                      variant="standard"
+                      name="timeSeries"
+                      value={manualCountry}
+                      onChange={manualListInput}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={addManualCountry}
+                    >
+                      +
+                    </Button>
+                  </Grid>
+                </Grid>
 
-                  <Button variant="contained" color="primary">
-                    +
-                  </Button>
-                </div>
                 <div>
-                  <ul>
+                  <List>
                     {timeSeriesBag.map(
                       (
                         series, // time series bag list creation
                       ) => (
-                        <li key={series}>{series}</li>
+                        <ListItem
+                          key={series}
+                          secondaryAction={
+                            <IconButton
+                              edge="end"
+                              aria-label="delete"
+                              onClick={removeCountry}
+                            >
+                              <DeleteOutline />
+                            </IconButton>
+                          }
+                        >
+                          <ListItemText primary={series} />
+                        </ListItem>
                       ),
                     )}
-                  </ul>
+                  </List>
                 </div>
 
                 <div>

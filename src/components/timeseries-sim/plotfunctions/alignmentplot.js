@@ -1,6 +1,5 @@
-import { CollectionsBookmarkOutlined, StreamSharp } from "@mui/icons-material";
+
 import * as d3 from "d3";
-import { times } from "lodash";
 
 export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
   //------ DATA and Graph Functions ------//
