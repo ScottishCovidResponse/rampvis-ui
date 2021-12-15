@@ -1,18 +1,6 @@
 import { useState, ReactElement } from "react";
 import { Helmet } from "react-helmet-async";
-import {
-  Grid,
-  Box,
-  Card,
-  CardContent,
-  Button,
-  TextField,
-  List,
-  ListItem,
-  ListItemText,
-  IconButton,
-} from "@mui/material";
-import { DeleteOutline } from "@mui/icons-material";
+import { Grid, Box, Card, CardContent, CardHeader } from "@mui/material";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import axios from "axios";
 import FirstForm from "src/components/timeseries-sim/FirstForm";
@@ -28,6 +16,7 @@ import { useStyles } from "src/components/timeseries-sim/style/style";
 import GraphArea from "src/components/timeseries-sim/GraphArea";
 import GraphTitle from "src/components/timeseries-sim/GraphTitle";
 import { alignmentPlot } from "src/components/timeseries-sim/plotfunctions/alignmentplot";
+import BenchmarkCountryList from "src/components/timeseries-sim/BenchmarkCountryList";
 const API = process.env.NEXT_PUBLIC_API_PY;
 
 //first run object initalization
@@ -58,6 +47,13 @@ const initialFirstRunState = {
   },
 };
 
+const defaultBenchmarkCountries = [
+  "France",
+  "Germany",
+  "Switzerland",
+  "Belgium",
+];
+
 const TimeseriesSim = () => {
   //const { settings } = useSettings();
   const classes = useStyles();
@@ -73,6 +69,9 @@ const TimeseriesSim = () => {
   const [firstRunForm, setFirstRunForm] = useState(initialFirstRunState);
   const [timeSeriesBag, setTimeSeriesBag] = useState([]);
   const [manualCountry, setManualCountry] = useState("");
+  const [benchmarkCountries, setBenchmarkCountries] = useState(
+    defaultBenchmarkCountries,
+  );
 
   const [responseData, setResponseData] = useState([]);
 
@@ -119,13 +118,20 @@ const TimeseriesSim = () => {
   };
 
   const addManualCountry = () => {
-    if (manualCountry.length > 0 && !timeSeriesBag.includes(manualCountry)) {
-      setTimeSeriesBag((old) => [...old, manualCountry]);
+    if (
+      manualCountry.length > 0 &&
+      !benchmarkCountries.includes(manualCountry) &&
+      benchmarkCountries.length < 5
+    ) {
+      setBenchmarkCountries((old) => [...old, manualCountry]);
     }
   };
 
   const removeCountry = (event) => {
-    console.log(event.target);
+    let listNode = event.target;
+    while (listNode.nodeName !== "li") {
+      listNode = listNode.parentNode;
+    }
   };
 
   return (
@@ -134,8 +140,8 @@ const TimeseriesSim = () => {
         <title>Timeseries Similarity</title>
       </Helmet>
       <Box>
-        <Grid>
-          <Grid sx={{ width: 300 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={3}>
             <Card>
               <CardContent>
                 <FirstForm
@@ -162,80 +168,41 @@ const TimeseriesSim = () => {
             </Card>
           </Grid>
 
-          <Grid>
-            <Card id="segmentedcard" sx={{ visibility: "hidden" }}>
-              <GraphTitle />
-              <GraphArea />
-            </Card>
-          </Grid>
-          <Grid>
-            <Card id="alignmentcard" sx={{ width: 1, visibility: "hidden" }}>
-              <CardContent>
-                <div id="alignmentchart" />
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid sx={{ width: 300 }}>
+          <Grid item xs={3}>
             <Card>
+              <CardHeader title="Benchmark Country List" />
               <CardContent>
-                <Grid container spacing={2}>
-                  <Grid item xs={8}>
-                    <TextField
-                      type="text"
-                      color="primary"
-                      variant="standard"
-                      name="timeSeries"
-                      value={manualCountry}
-                      onChange={manualListInput}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={addManualCountry}
-                    >
-                      +
-                    </Button>
-                  </Grid>
-                </Grid>
-
-                <div>
-                  <List>
-                    {timeSeriesBag.map(
-                      (
-                        series, // time series bag list creation
-                      ) => (
-                        <ListItem
-                          key={series}
-                          secondaryAction={
-                            <IconButton
-                              edge="end"
-                              aria-label="delete"
-                              onClick={removeCountry}
-                            >
-                              <DeleteOutline />
-                            </IconButton>
-                          }
-                        >
-                          <ListItemText primary={series} />
-                        </ListItem>
-                      ),
-                    )}
-                  </List>
-                </div>
-
-                <div>
-                  <Button variant="contained" color="primary">
-                    Analyze
-                  </Button>
-                </div>
+                <BenchmarkCountryList
+                  list={benchmarkCountries}
+                  manualValue={manualCountry}
+                  manualValueChange={manualListInput}
+                  manualValueAdd={addManualCountry}
+                  removeFromList={removeCountry}
+                />
               </CardContent>
             </Card>
           </Grid>
+
+          <Grid item xs={3}>
+            <Card>
+              <CardHeader title="Timeseries Bag" />
+              <CardContent></CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+
+        <Grid>
+          <Card id="segmentedcard" sx={{ visibility: "hidden" }}>
+            <GraphTitle />
+            <GraphArea />
+          </Card>
+        </Grid>
+        <Grid>
+          <Card id="alignmentcard" sx={{ width: 1, visibility: "hidden" }}>
+            <CardContent>
+              <div id="alignmentchart" />
+            </CardContent>
+          </Card>
         </Grid>
       </Box>
     </>
