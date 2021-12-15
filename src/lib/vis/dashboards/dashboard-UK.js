@@ -70,7 +70,10 @@ export class DashboardUK {
     setTimeout(function () {
       // 2. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
       var config = {
-        layout: [["cases", "admissions", "deaths", "vacc"]],
+        layout: [["cases", 
+        "admissions", 
+        "deaths", 
+        "vacc"]],
         groups: [
           {
             id: "admissions",

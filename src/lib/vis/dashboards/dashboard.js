@@ -37,17 +37,21 @@ author: Benjamin Bach, bbach@ed.ac.uk
 export const dashboard = {};
 export const dashboardComponents = {}
 
-var baseline_title = 20;
-var baseline_label = 55;
+
+
+var FONT_SIZE_BIG = 27;
+var FONT_SIZE_MEDIUM = 20
+var FONT_SIZE_LABELS = 10
+var BASELINE_WIDGET_TITLE = 10;
+var BASELINE_LARGE_NUMBER = BASELINE_WIDGET_TITLE + 17;
+var BASELINE_LABELS = BASELINE_LARGE_NUMBER + FONT_SIZE_BIG-10;
+var LINE_1 = 12;
+var LINE_2 = LINE_1 + 17;
+
+var COLOR_LABELS = '#ccc'
 
 dashboard.LINE_HIGHT = 20;
 let LINE_HIGHT = 20;
-
-// dashboard.MODE_DAILY = 0;
-// dashboard.MODE_CURRENT = 1;
-// dashboard.MODE_CUMULATIVE = 2;
-// dashboard.MODE_WEEKLY = 3;
-// dashboard.MODE_PERCENT = 4;
 
 dashboard.DETAIL_HIGH = "high";
 dashboard.DETAIL_LOW = "low";
@@ -66,9 +70,15 @@ dashboard.TIMEUNIT_WEEK = 'week';
 dashboard.TIMEUNIT_MONTH = 'month';
 dashboard.TIMEUNIT_YEAR = 'year';
 
+var WIDTH_HIGH = 400;
+var HIGHT_HIGH = 250;
 
-var LINE_1 = 10;
-var LINE_2 = 34;
+var WIDTH_MEDIUM = 300;
+var HIGHT_MEDIUM = 80;
+
+var WIDTH_LOW = 200;
+
+
 
 // Cartogram/Tilemap
 var TILE_WIDTH = 40;
@@ -205,6 +215,7 @@ var createWidget = function (parentHtmlElementId, id, config) {
   // create convenience variable for 'data' that will be linked back
   // to thw widgetConf before visualizing.
   var data = widgetConfig.data;
+  var dataField = widgetConfig.dataField;
   // check if data is not empty
   if (data.length == 0) {
     console.log("NO DATA FOUND / DATA ARRAY IS EMPTY", id);
@@ -233,10 +244,23 @@ var createWidget = function (parentHtmlElementId, id, config) {
 
   if(!widgetConfig.cumulative)
     widgetConfig.cumulative = false;
+  
+  if(!widgetConfig.timeWindow)
+    widgetConfig.timeWindow = 7;
+
+  if(!widgetConfig.timeLabel)
+    widgetConfig.timeLabel = dashboard.TIMEUNIT_WEEK;
 
   if(!widgetConfig.timeUnit)
     widgetConfig.timeUnit = dashboard.TIMEUNIT_DAY;
   
+  if(!widgetConfig.max)
+    widgetConfig.max = Math.max.apply(Math, widgetConfig.data.map(function(o) {return o[widgetConfig.dataField]; }));
+  console.log("max set");
+  console.log(widgetConfig.max)
+  
+  if(!widgetConfig.min)
+    widgetConfig.min = 0;
 
   // include, once LAYOUT has been implemented as a variable
   // if(!widgetConfig.layout)
@@ -302,18 +326,8 @@ var createWidget = function (parentHtmlElementId, id, config) {
   else if (widgetConfig.visualization == dashboard.VIS_PROGRESS) {
     dashboard.visualizeProgress(
       parentHtmlElementId,
-      title,
-      widgetConfig.dataField,
-      widgetConfig.color,
-      data,
-      widgetConfig.mode,
-      widgetConfig.normalized,
-      widgetConfig.link ? widgetConfig.link : null,
-      widgetConfig.unit,
-      widgetConfig.detail,
-      lastDateUpdated,
-      widgetConfig.bars,
-      widgetConfig.abbreviate,
+      widgetConfig,
+      lastDateUpdated
     );
   } else {
     console.error(
@@ -386,6 +400,7 @@ dashboard.visualizeTimeSeries = function (
   }
   console.log('min.max', domain[0], domain[1])
 
+  // DETAIL HIGH
   if (config.detail == dashboard.DETAIL_HIGH) 
   {
     var random = Math.floor(Math.random() * 1000);
@@ -394,28 +409,29 @@ dashboard.visualizeTimeSeries = function (
       .append("div")
       .attr("id", "wrapperDiv" + random);
 
-    const WIDTH = 500;
-    const HEIGHT = 200;
+    const WIDTH = WIDTH_HIGH;
+    const HEIGHT = 150;
 
     var svg = wrapperDiv
       .append("svg")
       .attr("width", WIDTH)
-      .attr("height", 120)
+      .attr("height", BASELINE_LABELS + 40)
       .style("margin-bottom", 0);
 
-    dashboardComponents.setVisTitle(svg, config.title, config.link, config.detail, lastDate);
+    dashboardComponents.setWidgetTitle(svg, config.title, config.link, config.detail, lastDate);
 
     dashboardComponents.visualizeNumber(
       svg,
       config,
       0,
-      baseline_title + 25,
+      BASELINE_LARGE_NUMBER,
+      FONT_SIZE_BIG
     );
     dashboardComponents.visualizeTrendArrow(
       svg,
       config,
-      WIDTH - 120,
-      baseline_title + 25,
+      WIDTH - 100,
+      BASELINE_LARGE_NUMBER,
     );
 
     // showing the highest value doesn't make sense 
@@ -427,8 +443,8 @@ dashboard.visualizeTimeSeries = function (
         max, 
         maxDate,
         config.unit,
-        WIDTH - 270,
-        baseline_title + 25,
+        WIDTH - 210,
+        BASELINE_LARGE_NUMBER,
         config.color, 
         config.abbreviate, 
         'max', 
@@ -439,8 +455,8 @@ dashboard.visualizeTimeSeries = function (
         min, 
         minDate,
         config.unit,
-        WIDTH - 270,
-        baseline_title + 25,
+        WIDTH - 210,
+        BASELINE_LARGE_NUMBER,
         config.color, 
         config.abbreviate, 
         'min', 
@@ -463,8 +479,8 @@ dashboard.visualizeTimeSeries = function (
         values: config.data,
       },
       mark: mark,
-      width: WIDTH - 100,
-      height: HEIGHT - 100,
+      width: WIDTH - 65,
+      height:HIGHT_HIGH - HEIGHT,
       encoding: {
         y: {
           field: config.dataField,
@@ -486,33 +502,36 @@ dashboard.visualizeTimeSeries = function (
     vegaEmbed("#vegadiv-" + parentHtmlId + random, vegaLinechart, { actions: false });
   } 
 
-  // MEDIUM 
+  //////////////// MEDIUM 
   else if (config.detail == dashboard.DETAIL_MEDIUM) 
   {
     var svg = d3.select("#" + parentHtmlId).append("svg");
-    dashboardComponents.setVisTitle(svg, config.title, config.link, config.detail, lastDate);
+    dashboardComponents.setWidgetTitle(svg, config.title, config.link, config.detail, lastDate);
 
-    svg.attr("width", 400).attr("height", 110);
+    svg
+      .attr("width", WIDTH_MEDIUM)
+      .attr("height", HIGHT_MEDIUM);
 
     dashboardComponents.visualizeNumber(
       svg,
       config,
       0,
-      baseline_title + 25,
+      BASELINE_LARGE_NUMBER,
+      FONT_SIZE_BIG
     );
     dashboardComponents.visualizeTrendArrow(
       svg,
       config,
-      150,
-      baseline_title + 25,
+      WIDTH_MEDIUM - 200,
+      BASELINE_LARGE_NUMBER,
     );
     dashboardComponents.visualizeMiniChart(
       svg,
       config,
-      300,
-      baseline_title + 25,
+      WIDTH_MEDIUM - 90,
+      BASELINE_LARGE_NUMBER,
       35,
-      100, 
+      90, 
     );
   } 
   // LOW
@@ -520,23 +539,24 @@ dashboard.visualizeTimeSeries = function (
   {
 
     var svg = d3.select("#" + parentHtmlId).append("svg");
-    dashboardComponents.setVisTitle(svg, config.title, config.link, config.detail, lastDate);
+    dashboardComponents.setWidgetTitle(svg, config.title, config.link, config.detail, lastDate);
 
     svg.attr("width", 180).attr("height", 70);
 
-    dashboardComponents.visualizeNumberSmall(
+    dashboardComponents.visualizeNumber(
       svg,
       config,
       0,
-      baseline_title + 25,
+      BASELINE_LARGE_NUMBER,
+      FONT_SIZE_MEDIUM
     );
     dashboardComponents.visualizeMiniChart(
       svg,
       config,
       100,
-      baseline_title + 25,
+      BASELINE_LARGE_NUMBER,
       18,
-      70,
+      100,
     );
   }
   // else if (detail == dashboard.DETAIL_MEDIUM) {
@@ -597,12 +617,12 @@ dashboard.visulizeScotlandNHSBoardCartogram = function (
     .attr("width", TILE_WIDTH * 4)
     .attr("height", 100 + TILE_HEIGHT * 7);
 
-    dashboardComponents.setVisTitle(svg, widgetConfig.title, null, widgetConfig.detail, lastDateUpdated);
+    dashboardComponents.setWidgetTitle(svg, widgetConfig.title, null, widgetConfig.detail, lastDateUpdated);
 
   svg
     .append("text")
     .attr("x", 0)
-    .attr("y", baseline_title + 30)
+    .attr("y", BASELINE_WIDGET_TITLE + 30)
     .attr("class", "thin")
     .text("per NHS Board");
 
@@ -736,7 +756,7 @@ dashboard.visualizeBarChart = function (
     .attr("height", 40)
     .style("margin-bottom", 0);
 
-  dashboardComponents.setVisTitle(svg, widgetConfig.title, widgetConfig.link, widgetConfig.detail, lastDateUpdated);
+  dashboardComponents.setWidgetTitle(svg, widgetConfig.title, widgetConfig.link, widgetConfig.detail, lastDateUpdated);
 
   wrapperDiv.append("br");
 
@@ -799,21 +819,198 @@ dashboard.visualizeBarChart = function (
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 dashboard.visualizeProgress = function (
-  id,
-  title,
-  dataField,
-  color,
-  dataStream,
-  mode,
-  normalized,
-  link,
-  unit,
-  detail,
-  lastDate,
-  barField,
-  abbreviate,
-) {
-  // TIAN
+  parentHtmlId,
+  config,
+  lastDate
+  )  {
+
+  var dataObj = {}
+  var width = 40
+  var isTimeseries = false
+
+  if(config.data.length > 1)
+  {
+    console.log("restructuring")
+    isTimeseries = true;
+    dataObj = config.data[config.data.length - 1];
+    width = 120;
+  }else{
+    dataObj = config.data;
+  }
+  var random = Math.floor(Math.random() * 1000);
+  var wrapperDiv = d3
+  .select("#" + parentHtmlId)
+  .append("div")
+  .attr("id", "wrapperDiv" + random);
+
+  var svg = wrapperDiv
+  .append("svg")
+  .attr("height", 100)
+  .attr('width',WIDTH_HIGH)
+  .style("margin-bottom", 0)
+  .style("margin-right", 0)
+  .style("z-index", -1);
+
+  dashboardComponents.setWidgetTitle(svg, config.title, config.link, config.detail, lastDate);
+  console.log(config)
+
+  console.log("data here")
+  console.log(dataObj)
+  var forignObject;
+
+  if (config.detail == dashboard.DETAIL_HIGH) 
+  {
+    wrapperDiv.append("br");
+    
+    if(isTimeseries)
+    {
+      dashboardComponents.visualizeTrendArrow(
+        svg,
+        config,
+        WIDTH_HIGH-100,
+        BASELINE_LARGE_NUMBER,
+      );
+    }
+
+    dashboardComponents.visualizeNumber(
+      svg,
+      config,
+      0,
+      BASELINE_LARGE_NUMBER,
+      FONT_SIZE_BIG
+    );  
+
+    console.log('data', dataObj, config.data)
+
+    var vegaProgressChart = {
+      $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+      data: { 
+        values: dataObj,
+      },
+      width: WIDTH_HIGH - 100 - 100,
+      layer: [{
+        mark: "bar",
+        encoding: {
+          x: {
+            field: config.dataField,
+            type: "quantitative",
+            scale: {"domain": [config.min, config.max]},
+            tickExtra: true,
+            tickBand: "extent",
+            title: null
+          },
+          color: { value: config.color }
+        },
+      }, 
+    ],
+      config: {
+        axis: {grid: true, tickBand: "extent"}
+      }, 
+    }
+
+    forignObject = svg.append('foreignObject')
+    .attr('width', 220).attr('height', 100)
+    .attr('x', 80)
+    .attr('y', BASELINE_LARGE_NUMBER)
+      
+  }
+  else 
+  if(config.detail == dashboard.DETAIL_MEDIUM){
+    wrapperDiv.append("br");
+    
+    //width - 300
+    svg.attr("width", WIDTH_MEDIUM);
+    svg.attr("height", 100);
+
+    dashboardComponents.visualizeNumber(
+      svg,
+      config,
+      0,
+      BASELINE_WIDGET_TITLE + 22,
+      FONT_SIZE_MEDIUM
+    );
+  
+    var vegaProgressChart = {
+      $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+      data: { 
+        values: dataObj,
+      },
+      width: WIDTH_MEDIUM -100 -10,
+      layer: [{
+        mark: "bar",
+        encoding: {
+          x: {
+            field: config.dataField,
+            type: "quantitative",
+            scale: {"domain": [config.min, config.max]},
+            tickExtra: true,
+            tickBand: "extent",
+            title: null
+          },
+          color: { value: config.color }
+        },
+      }
+    ],
+      config: {
+        axis: {grid: true, tickBand: "extent"}
+      }, 
+    };
+
+    forignObject = svg.append('foreignObject')
+    .attr('width', 300).attr('height', 200)
+    .attr('x', 80)
+    .attr('y', BASELINE_LARGE_NUMBER)
+  }
+  /////////// DETAIL LOW
+  else if(config.detail == dashboard.DETAIL_LOW){
+    wrapperDiv.append("br");
+    
+    svg.attr("width", WIDTH_LOW);
+    svg.attr("height", 80);
+
+    dashboardComponents.visualizeNumber(
+      svg,
+      config,
+      0,
+      BASELINE_LARGE_NUMBER,
+      FONT_SIZE_MEDIUM
+    );
+
+    var vegaProgressChart = {
+      $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+      data: { 
+        values: dataObj
+      },
+      "width": WIDTH_LOW - 100-10,
+      layer: [{
+        mark: "bar",
+        encoding: {
+          x: {
+            field: config.dataField,
+            type: "quantitative",
+            scale: {"domain": [config.min, config.max]},
+            axis: null
+          },
+          color: { value: config.color }
+        },
+      }, 
+    ],
+      config: {
+        axis: {grid: true, tickBand: "extent"}
+      },
+    };
+
+    forignObject = svg.append('foreignObject')
+    .attr('width', WIDTH_LOW-100)
+    .attr('height', 70)
+    .attr('x', 80)
+    .attr('y', BASELINE_LARGE_NUMBER)
+  }
+
+  forignObject.append("xhtml:div").attr("id", "vegadiv-" + parentHtmlId + random)
+  .style("position", "absolute");
+  
+  vegaEmbed("#vegadiv-" + parentHtmlId + random, vegaProgressChart, { actions: false, renderer: "svg"});
 };
 
 
@@ -861,21 +1058,21 @@ dashboardComponents.visualizeNumber = function (
   config,
   x,
   y,
+  fontSize
 ) {
   var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
 
   if (config.cumulative){
-    dashboardComponents.setVisLabel(g,"Total", 0, baseline_label);
+    dashboardComponents.setLabel(g,"Total", 0, BASELINE_LABELS);
   }else{
     if (config.timeUnit == dashboard.TIMEUNIT_DAY)
-        dashboardComponents.setVisLabel(g, "New today", 0, baseline_label);
+        dashboardComponents.setLabel(g, "New today", 0, BASELINE_LABELS);
     if (config.timeUnit == dashboard.TIMEUNIT_WEEK)
-        dashboardComponents.setVisLabel(g, "New this week", 0, baseline_label);
+        dashboardComponents.setLabel(g, "New this week", 0, BASELINE_LABELS);
     if (config.timeUnit == dashboard.TIMEUNIT_MONTH)
-        dashboardComponents.setVisLabel(g, "New this month", 0, baseline_label);
+        dashboardComponents.setLabel(g, "New this month", 0, BASELINE_LABELS);
   }
 
-  
 
   var val = config.data[config.data.length - 1][config.dataField];
   
@@ -899,70 +1096,13 @@ dashboardComponents.visualizeNumber = function (
   var t = g
     .append("text")
     .text(val)
-    .attr("y", 33)
-    .attr("class", "bigNumber")
+    .attr("y", fontSize)
+    .style('font-weight', 'bold')
+    .style('font-size', fontSize)
     .style("fill", config.color)
     .each(function () {
       bigNumber.width = this.getBBox().width;
     });
-
-  // // if (config.) {
-  //   g.append("text")
-  //     .text(config.unit)
-  //     .attr("x", bigNumber.width + 10)
-  //     .attr("y", y + LINE_1)
-  //     .attr("class", "thin");
-  // //   g.append("text")
-  // //     .text("100,000")
-  // //     .attr("x", bigNumber.width + 10)
-  // //     .attr("y", y + LINE_2)
-  // //     .attr("class", "thin");
-  // // }
-};
-
-dashboardComponents.visualizeNumberSmall = function (
-  svg,
-  config,
-  x,
-  y,
-) {
-  // var g = svg.append("g")
-  //     .attr("transform", "translate(" + xOffset + ",0)")
-
-  // if (mode == dashboard.MODE_DAILY) {
-  //     setVisLabel(g, 'Today')
-  // } else if (mode == dashboard.MODE_CURRENT) {
-  //     setVisLabel(g, 'Current')
-  // } else if (mode == dashboard.MODE_WEEKLY) {
-  //     setVisLabel(g, 'This week')
-  // } else {
-  //     setVisLabel(g, 'Total')
-  // }
-
-  var val = Math.round(config.data[config.data.length - 1][config.dataField] * 10) / 10;
-  val = val.toLocaleString(undefined) + ' ' + config.unit ;
-
-  // var bigNumber = {};
-  svg
-    .append("text")
-    .text(val)
-    .attr("y", y + 18)
-    .attr("x", x)
-    .attr("class", "smallNumber")
-    .style("fill", config.color);
-
-  // if (normalized) {
-  //     g.append('text')
-  //         .text('per')
-  //         .attr('x', bigNumber.width + 10)
-  //         .attr('y', top_content + LINE_1)
-  //         .attr('class', 'thin')
-  //     g.append('text')
-  //         .text('100,000')
-  //         .attr('x', bigNumber.width + 10)
-  //         .attr('y', top_content + LINE_2)
-  //         .attr('class', 'thin')
-  // }
 };
 
 dashboardComponents.visualizeTrendArrow = function (
@@ -971,9 +1111,9 @@ dashboardComponents.visualizeTrendArrow = function (
   var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
 
   if (config.timeUnit == dashboard.TIMEUNIT_WEEK)
-    dashboardComponents.setVisLabel(g, "since last week", 0, baseline_label);
+    dashboardComponents.setLabel(g, "since last week", 0, BASELINE_LABELS);
   if (config.timeUnit == dashboard.TIMEUNIT_DAY)
-    dashboardComponents.setVisLabel(g, "since yesterday", 0, baseline_label);
+    dashboardComponents.setLabel(g, "since yesterday", 0, BASELINE_LABELS);
 
   var secondLast = parseInt(config.data[config.data.length - 2][config.dataField]);
   var last = parseInt(config.data[config.data.length - 1][config.dataField]);
@@ -994,7 +1134,7 @@ dashboardComponents.visualizeTrendArrow = function (
     })
     .attr("x", 45)
     .attr("y", LINE_1)
-    .attr("class", "thin");
+    .attr("font-size", FONT_SIZE_LABELS );
 
   if (trendValue == 0) {
     g.append("text")
@@ -1020,6 +1160,108 @@ dashboardComponents.visualizeTrendArrow = function (
     return "translate(17," + 20 + "),rotate(" + rotation + ")";
   });
 
+  var arrowSize = 12
+  var arrowThickness = 5;
+  g2.append("line")
+    .attr("x1", -arrowSize)
+    .attr("x2", arrowSize)
+    .attr("y1", 0)
+    .attr("y2", 0)
+    .attr("class", "arrow")
+    .attr("stroke", config.color)
+    .style('stroke-width', arrowThickness)
+    .style('stroke-linecap', 'round')
+  
+  g2.append("line")
+    .attr("x1", arrowSize)
+    .attr("x2", 0)
+    .attr("y1", 0)
+    .attr("y2", -arrowSize)
+    .attr("class", "arrow")
+    .attr("stroke", config.color)
+    .style('stroke-width', arrowThickness)
+    .style('stroke-linecap', 'round')
+
+  g2.append("line")
+    .attr("x1", arrowSize)
+    .attr("x2", 0)
+    .attr("y1", 0)
+    .attr("y2", arrowSize)
+    .attr("class", "arrow")
+    .attr("stroke", config.color)
+    .style('stroke-width', arrowThickness)
+    .style('stroke-linecap', 'round')    
+
+};
+
+//implement - add timeWindow and timeLabel
+dashboardComponents.visualizeTrendArrowNew = function (
+  svg, config, x, y) {
+  
+  console.log("called trend")
+  
+  var window = config.timeWindow;
+
+  var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
+
+  if (config.timeLabel == dashboard.TIMEUNIT_HOUR)
+    dashboardComponents.setLabel(g, "Over the last " + window + " hours", 0, BASELINE_LABELS); 
+  else if (config.timeLabel == dashboard.TIMEUNIT_DAY)
+  dashboardComponents.setLabel(g, "Over the last " + window + " days", 0, BASELINE_LABELS);
+  else if (config.timeLabel == dashboard.TIMEUNIT_WEEK)
+    dashboardComponents.setLabel(g, "Over the last " + window + " weeks", 0, BASELINE_LABELS);
+  else if (config.timeLabel == dashboard.TIMEUNIT_MONTH)
+    dashboardComponents.setLabel(g, "Over the last " + window + " months", 0, BASELINE_LABELS);
+  else if (config.timeLabel == dashboard.TIMEUNIT_YEAR)
+    dashboardComponents.setLabel(g, "Over the last " + window + " years", 0, BASELINE_LABELS); 
+
+  var baseSample = parseFloat(config.data[config.data.length - (window + 1)][config.dataField]);
+  var last = parseFloat(config.data[config.data.length - 1][config.dataField]).toFixed(3);
+  let trendValue = last - baseSample;
+  let rotation = 0;
+  if (trendValue < 0) rotation = 45;
+  if (trendValue > 0) rotation = -45;
+
+  trendValue = Math.round(trendValue * 100) / 100
+
+  g.append("text")
+    .text(function () {
+      if (trendValue > 0) {
+        return "up by";
+      } else if (trendValue < 0) {
+        return "down by";
+      } else {
+        return "no ";
+      }
+    })
+    .attr("x", 45)
+    .attr("y", LINE_1)
+
+  if (trendValue == 0) {
+    g.append("text")
+      .text("change")
+      .attr("x", 45)
+      .attr("y", LINE_2)
+      .attr('text-anchor','end')
+  } else {
+    g.append("text")
+      .text(function () {
+        trendValue = Math.abs(trendValue);
+        if (config.unit == '%') {
+          trendValue += "% pts.";
+        }
+        return trendValue;
+      })
+      .attr("x", 45)
+      .attr("y", LINE_2)
+      .style("fill", config.color)
+      .attr('text-anchor','end')
+  }
+
+  var g2 = g.append("g").attr("transform", function () {
+    return "translate(0," + 20 + "),rotate(" + rotation + ")";
+  });
+
   g2.append("line")
     .attr("x1", -15)
     .attr("x2", 15)
@@ -1043,7 +1285,6 @@ dashboardComponents.visualizeTrendArrow = function (
     .attr("stroke", config.color);
 };
 
-
 dashboardComponents.visualizeValue = function (
   svg, 
   val, 
@@ -1060,10 +1301,10 @@ dashboardComponents.visualizeValue = function (
     // abbreviate if required
     if (val > 1000000 && abbreviate) {
       val = val / 1000000;
-      unit = "M " + unit;
+      // unit = "M " + unit;
     } else if (val > 1000 && abbreviate) {
       val = val / 1000;
-      unit = "k " + unit;
+      // unit = "k " + unit;
     }
 
     val = Math.round(val * 10) / 10;
@@ -1076,19 +1317,23 @@ dashboardComponents.visualizeValue = function (
       .attr("x", 0)
       .attr("y", line)
       .style('text-anchor', 'end')
-      .attr("class", "thin")
+      .style("fill", '#000')
+      .style('font-size', FONT_SIZE_LABELS)
+
     var valText = g.append("text")
       .text(val + unit)
       .attr("x", 5)
       .attr("y", line)
       .style('fill', color)
-      .style('font-weight', '300')
-      .attr("class", "thin");
+      .style('font-weight', 'bold')
+      .style('font-size', FONT_SIZE_LABELS)
+
     g.append("text")
       .text(valDate)
       .attr("x", valText.node().getBBox().width + 7)
       .attr("y", line)
-      .attr("class", "thin");
+      .style("fill", COLOR_LABELS)
+      .style('font-size', FONT_SIZE_LABELS)
 
 };
 
@@ -1112,9 +1357,9 @@ dashboardComponents.visualizeMiniChart = function (
     var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
     
     if (config.timeUnit == dashboard.TIMEUNIT_WEEK)
-    dashboardComponents.setVisLabel(g, "Last " + trendWindow + " weeks", 0, baseline_label);
+    dashboardComponents.setLabel(g, "Last " + trendWindow + " weeks", 0, BASELINE_LABELS);
     if (config.timeUnit == dashboard.TIMEUNIT_DAY)
-    dashboardComponents.setVisLabel(g, "Last " + trendWindow + " days", 0, baseline_label);
+    dashboardComponents.setLabel(g, "Last " + trendWindow + " days", 0, BASELINE_LABELS);
     
     var x = d3
     .scaleLinear()
@@ -1244,12 +1489,12 @@ dashboardComponents.visualizeMiniChart = function (
   }
 };
 
-dashboardComponents.setVisTitle = function (g, text, link, detail, lastDate) {
+dashboardComponents.setWidgetTitle = function (g, text, link, detail, lastDate) {
   g.append("line")
     .attr("x1", 0)
     .attr("x2", 10000)
-    .attr("y1", baseline_title + 5)
-    .attr("y2", baseline_title + 5)
+    .attr("y1", BASELINE_WIDGET_TITLE + 5)
+    .attr("y2", BASELINE_WIDGET_TITLE + 5)
     .attr("class", "separator");
 
   if (link) {
@@ -1258,9 +1503,10 @@ dashboardComponents.setVisTitle = function (g, text, link, detail, lastDate) {
 
   var text = g
     .append("text")
+    .style('font-size', FONT_SIZE_LABELS)
+    .style('font-weight', 'bold')
     .text(text)
-    .attr("class", "datastream-title")
-    .attr("y", baseline_title);
+    .attr("y", BASELINE_WIDGET_TITLE);
 
   if (detail == dashboard.DETAIL_LOW || dashboard.DETAIL_MEDIUM) {
     text.style("font-size", "9pt");
@@ -1269,8 +1515,9 @@ dashboardComponents.setVisTitle = function (g, text, link, detail, lastDate) {
   if (lastDate) {
     g.append("text")
       .text(lastDate.format("MMM DD, YYYY"))
-      .attr("class", "datastream-date")
-      .attr("y", baseline_title + 15);
+      .style('font-size', FONT_SIZE_LABELS)
+      .style('fill', COLOR_LABELS)
+      .attr("y", BASELINE_WIDGET_TITLE + 15);
   }
 
   if (link) {
@@ -1287,15 +1534,20 @@ dashboardComponents.setVisTitle = function (g, text, link, detail, lastDate) {
   }
 };
 
-dashboardComponents.setVisLabel = function (g, text, x, y) {
-  g.append("text").text(text).attr("class", "label").attr("x", x).attr("y", y);
+dashboardComponents.setLabel = function (g, text, x, y) {
+  g.append("text").text(text)
+  .attr("font-size", FONT_SIZE_LABELS)
+  .style('fill', COLOR_LABELS)
+  .attr("x", x)
+  .attr("y", y);
 };
 
-dashboardComponents.setVisLabelRow2 = function (g, text, x, y) {
+dashboardComponents.setLabelRow2 = function (g, text, x, y) {
   g.append("text")
     .text(text)
-    .attr("class", "label")
+    .attr("font-size", FONT_SIZE_LABELS)
     .attr("x", x)
+    .style('color', '#888')
     .attr("y", y + 15);
 };
 
