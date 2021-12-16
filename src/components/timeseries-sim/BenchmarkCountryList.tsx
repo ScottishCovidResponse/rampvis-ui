@@ -37,11 +37,12 @@ function BenchmarkCountryList(props) {
                 key={series}
                 secondaryAction={
                   <IconButton
-                    children={<DeleteOutline />}
                     edge="end"
                     aria-label="delete"
                     onClick={props.removeFromList}
-                  />
+                  >
+                    <DeleteOutline />
+                  </IconButton>
                 }
               >
                 <ListItemText primary={series} />
