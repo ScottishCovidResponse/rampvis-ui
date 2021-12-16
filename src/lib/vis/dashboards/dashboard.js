@@ -57,6 +57,10 @@ dashboard.DETAIL_HIGH = "high";
 dashboard.DETAIL_LOW = "low";
 dashboard.DETAIL_MEDIUM = "medium";
 
+dashboard.LAYOUT_HORIZONTAL = "horizontal";
+dashboard.LAYOUT_VERTICAL = "vertical";
+dashboard.LAYOUT_COMPACT = "compact";
+
 dashboard.VIS_LINECHART = "linechart";
 dashboard.VIS_CARTOGRAM = "cartogram";
 dashboard.VIS_BARCHART = "barchart";
@@ -85,22 +89,6 @@ var TILE_WIDTH = 40;
 var TILE_HEIGHT = 40;
 var TILE_GAP = 4;
 
-// var TILEMAP_LAYOUT_SCOTLAND = {
-//   "Ayrshire and Arran": [5, 1],
-//   Borders: [6, 3],
-//   "Dumfries and Galloway": [6, 1],
-//   Fife: [4, 2],
-//   "Forth Valley": [4, 1],
-//   Grampian: [3, 2],
-//   "Greater Glasgow and Clyde": [5, 2],
-//   Highland: [2, 1],
-//   Lanarkshire: [6, 2],
-//   Lothian: [5, 3],
-//   Orkney: [1, 2],
-//   Shetland: [0, 2],
-//   Tayside: [3, 1],
-//   "Western Isles": [2, 0],
-// };
 var TILEMAP_LAYOUT_SCOTLAND = {
   "Ayrshire and Arran": [6, 0],
   Borders: [6, 2],
@@ -222,6 +210,14 @@ var createWidget = function (parentHtmlElementId, id, config) {
     return;
   }
 
+  // check for filter conditions on data
+  if (widgetConfig.conditions && widgetConfig.conditions.length > 0) {
+    for (var i in widgetConfig.conditions) {
+      data = executeCondition(data, widgetConfig.conditions[i]);
+    }
+  }
+  console.log('>>> data', data)
+
   // SET WIDGET DEFAULT VALUES
   if (!widgetConfig.dateField) 
     widgetConfig.dateField = "index";
@@ -290,12 +286,6 @@ var createWidget = function (parentHtmlElementId, id, config) {
   // find last date in data set, i.e., when data has been updated last.
   var lastDateUpdated = moment(data[data.length - 1][widgetConfig.dateField], ["YYYY-MM-DD"]);
   
-  // check for filter conditions on data
-  if (widgetConfig.conditions && widgetConfig.conditions.length > 0) {
-    for (var i in widgetConfig.conditions) {
-      data = executeCondition(data, widgetConfig.conditions[i]);
-    }
-  }
   
   var title = widgetConfig.title;
   
@@ -340,6 +330,9 @@ var createWidget = function (parentHtmlElementId, id, config) {
 
 var executeCondition = function (data, c) {
   c = "d." + c;
+    console.log('>>> data', data)
+
+  console.log('c', c)
   var size = data.length;
   return data.filter(function (d) {
     return eval(c);
@@ -541,53 +534,48 @@ dashboard.visualizeTimeSeries = function (
     var svg = d3.select("#" + parentHtmlId).append("svg");
     dashboardComponents.setWidgetTitle(svg, config.title, config.link, config.detail, lastDate);
 
-    svg.attr("width", 180).attr("height", 70);
+    if(config.layout == dashboard.LAYOUT_HORIZONTAL)
+    {
+    
+      svg.attr("width", 180).attr("height", 70);
 
-    dashboardComponents.visualizeNumber(
-      svg,
-      config,
-      0,
-      BASELINE_LARGE_NUMBER,
-      FONT_SIZE_MEDIUM
-    );
-    dashboardComponents.visualizeMiniChart(
-      svg,
-      config,
-      100,
-      BASELINE_LARGE_NUMBER,
-      18,
-      100,
-    );
-  }
-  // else if (detail == dashboard.DETAIL_MEDIUM) {
-  //   var w = 100,
-  //     h = 100;
-  //   svg.attr("width", w).attr("height", h);
+      dashboardComponents.visualizeNumber(
+        svg,
+        config,
+        0,
+        BASELINE_LARGE_NUMBER,
+        FONT_SIZE_MEDIUM
+      );
+      dashboardComponents.visualizeMiniChart(
+        svg,
+        config,
+        100,
+        BASELINE_LARGE_NUMBER,
+        18,
+        100
+      );
+    }else 
+    if(config.layout == dashboard.LAYOUT_VERTICAL)
+    {
+      svg.attr("width", 70).attr("height", 200);
+      dashboardComponents.visualizeNumber(
+        svg,
+        config,
+        0,
+        BASELINE_LARGE_NUMBER,
+        FONT_SIZE_MEDIUM
+      );
+      dashboardComponents.visualizeMiniChart(
+        svg,
+        config,
+        0,
+        100,
+        50,
+        60
+      );
+    }
+  } 
 
-  //   visualizeNumberSmall(
-  //     svg,
-  //     dataStream,
-  //     0,
-  //     baseline_title + 25,
-  //     field,
-  //     color,
-  //     mode,
-  //     normalized,
-  //     unit,
-  //   );
-  //   visualizeMiniChart(
-  //     svg,
-  //     dataStream,
-  //     0,
-  //     baseline_title + 55,
-  //     18,
-  //     w,
-  //     field,
-  //     color,
-  //     mode,
-  //     true,
-  //   );
-  // }
 };
 
 ////////////////////////////////////////////////////////
@@ -1343,24 +1331,34 @@ dashboardComponents.visualizeMiniChart = function (
   x,
   y,
   chartHeight,
-  chartWidth) {
+  chartWidth) 
+  {
+    var trendWindow
+    if(config.trendWindow == 'all')
+    {
+      trendWindow = config.data.length;
+    }
+    else
+    {
+      if (config.timeUnit == dashboard.TIMEUNIT_WEEK) {
+        trendWindow = 8;
+      }
+      if (config.timeUnit == dashboard.TIMEUNIT_DAY) {
+        trendWindow = 14;
+      }
+    }
 
-    
-    var trendWindow = 1;
-    if (config.timeUnit == dashboard.TIMEUNIT_WEEK) 
-    trendWindow = 8;
-    if (config.timeUnit == dashboard.TIMEUNIT_DAY) 
-    trendWindow = 14;
+    var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
+    if (config.timeUnit == dashboard.TIMEUNIT_WEEK) {
+      dashboardComponents.setLabel(g, "Last " + trendWindow + " weeks", 0, BASELINE_LABELS);
+    }
+    if (config.timeUnit == dashboard.TIMEUNIT_DAY) {
+      dashboardComponents.setLabel(g, "Last " + trendWindow + " days", 0, BASELINE_LABELS);
+    }
     
     var barWidth = (chartWidth - 10) / trendWindow;
     
-    var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
-    
-    if (config.timeUnit == dashboard.TIMEUNIT_WEEK)
-    dashboardComponents.setLabel(g, "Last " + trendWindow + " weeks", 0, BASELINE_LABELS);
-    if (config.timeUnit == dashboard.TIMEUNIT_DAY)
-    dashboardComponents.setLabel(g, "Last " + trendWindow + " days", 0, BASELINE_LABELS);
-    
+
     var x = d3
     .scaleLinear()
     .domain([0, trendWindow - 1])
@@ -1490,6 +1488,7 @@ dashboardComponents.visualizeMiniChart = function (
 };
 
 dashboardComponents.setWidgetTitle = function (g, text, link, detail, lastDate) {
+
   g.append("line")
     .attr("x1", 0)
     .attr("x2", 10000)
