@@ -1,7 +1,10 @@
+
 import * as d3 from "d3";
 
-export function alignmentPlot(response, firstRunForm) {
+export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
   //------ DATA and Graph Functions ------//
+
+  console.log("alignmentPlot: data = ", data);
 
   const parseTime = d3.timeParse("%Y-%m-%d"); // date parser (str to date)
   const formatTime = d3.timeFormat("%b %d"); // date formatter (date to str)
@@ -21,8 +24,15 @@ export function alignmentPlot(response, firstRunForm) {
 
   // create individual containers for individual charts <div> <svg/> </div>
 
-  const GraphData = [...response.data];
+  const GraphData = data;
+  
+  let checkState = {}
+  GraphData.forEach((streams)=>{
+    const identifier = streams.key + " " + streams.matchedPeriodEnd
+    checkState[identifier] = "false" 
+  });
 
+  console.log(checkState)
   const dateRange = GraphData
     .filter((streams) => streams.isQuery)[0]
     .values.map((values) => values.date)
@@ -113,6 +123,24 @@ export function alignmentPlot(response, firstRunForm) {
     .attr("class", "highlightArea")
     .attr("id", (d, i) => "highlightArea" + i);
 
+
+
+  const updateTimeSeriesBag = (d) => {
+    const identifier = d.key + " " + d.matchedPeriodEnd
+    console.log(timeSeriesBag)
+    if (!timeSeriesBag.includes(identifier) && checkState[identifier]==="false") {
+      setTimeSeriesBag((old) => [...old, identifier]);
+      checkState[identifier] = "true";
+      timeSeriesBag.push(identifier);
+      }
+    else if(timeSeriesBag.includes(identifier)&& checkState[identifier]==="true") {
+      setTimeSeriesBag((old) => [...old.filter(item=>item!==identifier)]);
+      checkState[identifier]= "false";
+      timeSeriesBag = timeSeriesBag.filter(item=> item!==identifier);
+    }
+
+  }
+
   GraphData.map(function (streams, i) {
     d3.select("#xaxis" + i).call(xAxis); // call individual xaxis properties
     d3.select("#yaxis" + i).call(yAxis); // call individual yaxis properties
@@ -152,7 +180,11 @@ export function alignmentPlot(response, firstRunForm) {
         return d.name;
       });
 
+    d3.select("#alignmentContainer" + i)
+    .on("click",updateTimeSeriesBag)
+
   });
+
 
 
   let dataFiltered = Array.from(GraphData);
