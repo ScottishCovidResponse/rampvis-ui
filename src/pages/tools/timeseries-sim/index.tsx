@@ -1,6 +1,16 @@
 import { useState, ReactElement } from "react";
 import { Helmet } from "react-helmet-async";
-import { Grid, Box, Card, CardContent, CardHeader } from "@mui/material";
+import {
+  Grid,
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  List,
+  ListItem,
+  ListItemText,
+  IconButton,
+} from "@mui/material";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import axios from "axios";
 import FirstForm from "src/components/timeseries-sim/FirstForm";
@@ -17,6 +27,8 @@ import GraphArea from "src/components/timeseries-sim/GraphArea";
 import GraphTitle from "src/components/timeseries-sim/GraphTitle";
 import { alignmentPlot } from "src/components/timeseries-sim/plotfunctions/alignmentplot";
 import BenchmarkCountryList from "src/components/timeseries-sim/BenchmarkCountryList";
+import TimeSeriesBag from "src/components/timeseries-sim/TimeSeriesBag";
+import { DeleteOutline } from "@mui/icons-material";
 const API = process.env.NEXT_PUBLIC_API_PY;
 
 const today = new Date();
@@ -54,6 +66,8 @@ const defaultBenchmarkCountries = [
   "Belgium",
 ];
 
+const defaultTimeSeriesBag = ["A", "B", "C"];
+
 const TimeseriesSim = () => {
   //const { settings } = useSettings();
   const classes = useStyles();
@@ -70,7 +84,7 @@ const TimeseriesSim = () => {
   };
 
   const [firstRunForm, setFirstRunForm] = useState(initialFirstRunState); // time series search state control
-  const [timeSeriesBag, setTimeSeriesBag] = useState([]); // time series selection by results state control
+  const [timeSeriesBag, setTimeSeriesBag] = useState(defaultTimeSeriesBag); // time series selection by results state control
 
   const [benchmarkCountries, setBenchmarkCountries] = useState(
     // benchmark countries for comparison state control
@@ -104,6 +118,22 @@ const TimeseriesSim = () => {
     }
     const country = listNode.innerText;
     setBenchmarkCountries((old) => [...old.filter((item) => item !== country)]);
+  };
+
+  const removeTimeSeries = (event) => {
+    console.log(event);
+    // remove selected benchmark country from the list
+    let listNode = event.target;
+    while (listNode.localName !== "li") {
+      // icon button click fix to move up to parent until list is found
+      listNode = listNode.parentNode;
+    }
+    const timeSeries = listNode.innerText;
+    setTimeSeriesBag((old) => [...old.filter((item) => item !== timeSeries)]);
+  };
+
+  const setBenchMarkToDefault = () => {
+    setBenchmarkCountries(() => defaultBenchmarkCountries);
   };
 
   const multipleHandleChange = (event) => {
@@ -194,6 +224,7 @@ const TimeseriesSim = () => {
                   manualValueChange={manualListInput}
                   manualValueAdd={addManualCountry}
                   removeFromList={removeCountry}
+                  setToDefault={setBenchMarkToDefault}
                 />
               </CardContent>
             </Card>
@@ -202,7 +233,12 @@ const TimeseriesSim = () => {
           <Grid item xs={3}>
             <Card>
               <CardHeader title="Timeseries Bag" />
-              <CardContent></CardContent>
+              <CardContent>
+                <TimeSeriesBag
+                  list={timeSeriesBag}
+                  removeFromList={removeTimeSeries}
+                />
+              </CardContent>
             </Card>
           </Grid>
         </Grid>
