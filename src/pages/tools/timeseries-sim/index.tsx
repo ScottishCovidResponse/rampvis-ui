@@ -19,10 +19,10 @@ import { alignmentPlot } from "src/components/timeseries-sim/plotfunctions/align
 import BenchmarkCountryList from "src/components/timeseries-sim/BenchmarkCountryList";
 const API = process.env.NEXT_PUBLIC_API_PY;
 
-//first run object initalization
 const today = new Date();
 
 const initialFirstRunState = {
+  // default user parameters for timeseries search
   targetCountry: "France",
   firstDate: "2021-10-01",
   lastDate: "2021-12-01",
@@ -58,28 +58,56 @@ const TimeseriesSim = () => {
   //const { settings } = useSettings();
   const classes = useStyles();
 
-  const [advancedFilterPopup, setAdvancedFilterPopup] = useState(false);
+  const [advancedFilterPopup, setAdvancedFilterPopup] = useState(false); // advanced filter popup state control
+
   const advancedFilterClickOpen = () => {
+    // sets popup state to true
     setAdvancedFilterPopup(true);
   };
   const advancedFilterClickClose = () => {
+    // sets popup state to false
     setAdvancedFilterPopup(false);
   };
 
-  const [firstRunForm, setFirstRunForm] = useState(initialFirstRunState);
-  const [timeSeriesBag, setTimeSeriesBag] = useState([]);
-  const [manualCountry, setManualCountry] = useState("");
+  const [firstRunForm, setFirstRunForm] = useState(initialFirstRunState); // time series search state control
+  const [timeSeriesBag, setTimeSeriesBag] = useState([]); // time series selection by results state control
+
   const [benchmarkCountries, setBenchmarkCountries] = useState(
+    // benchmark countries for comparison state control
     defaultBenchmarkCountries,
   );
 
-  const [responseData, setResponseData] = useState([]);
+  const [manualCountry, setManualCountry] = useState(""); // manual user input for benchmark countries state control
 
   const manualListInput = (event) => {
+    // follows the manual user input on change for benchmark countries
     setManualCountry(event.target.value);
   };
 
+  const addManualCountry = () => {
+    // add followed manual country input to benchmark list
+    if (
+      manualCountry.length > 0 &&
+      !benchmarkCountries.includes(manualCountry) &&
+      benchmarkCountries.length < 5
+    ) {
+      setBenchmarkCountries((old) => [...old, manualCountry]);
+    }
+  };
+
+  const removeCountry = (event) => {
+    // remove selected benchmark country from the list
+    let listNode = event.target;
+    while (listNode.localName !== "li") {
+      // icon button click fix to move up to parent until list is found
+      listNode = listNode.parentNode;
+    }
+    const country = listNode.innerText;
+    setBenchmarkCountries((old) => [...old.filter((item) => item !== country)]);
+  };
+
   const multipleHandleChange = (event) => {
+    // changes user form for timeseries search
     if (event.target.type == "checkbox") {
       const temp_obj = { ...firstRunForm };
       const temp_state = temp_obj.continentCheck;
@@ -95,7 +123,10 @@ const TimeseriesSim = () => {
     }
   };
 
+  const [responseData, setResponseData] = useState([]); // timeseries comparison response from API state control
+
   const plotSwitch = () => {
+    // summons segmented and aligment plots on response back from API
     if (responseData.length > 0) {
       alignmentPlot(responseData, timeSeriesBag, setTimeSeriesBag);
       SegmentedMultiLinePlot(responseData, firstRunForm);
@@ -103,6 +134,7 @@ const TimeseriesSim = () => {
   };
 
   const fetchData = async () => {
+    // post request to get similar timeseries back from API
     const apiUrl = `${API}/timeseries-sim-search/`;
     const response = await axios.post(apiUrl, firstRunForm);
     console.log("response = ", response);
@@ -113,25 +145,9 @@ const TimeseriesSim = () => {
   };
 
   const handleClick = async () => {
+    // on clicking search button, fetch data , wait response and summon plots
     await fetchData();
     plotSwitch();
-  };
-
-  const addManualCountry = () => {
-    if (
-      manualCountry.length > 0 &&
-      !benchmarkCountries.includes(manualCountry) &&
-      benchmarkCountries.length < 5
-    ) {
-      setBenchmarkCountries((old) => [...old, manualCountry]);
-    }
-  };
-
-  const removeCountry = (event) => {
-    let listNode = event.target;
-    while (listNode.nodeName !== "li") {
-      listNode = listNode.parentNode;
-    }
   };
 
   return (
