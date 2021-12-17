@@ -21,6 +21,7 @@ import * as d3 from "d3";
 import { Data } from "../data";
 import { dashboard } from "./dashboard";
 import { colors, DEATHS } from "../colors.js";
+import { AdminUnitsHierarchy } from './hierarchy';
 
 // 1. Give class a name
 export class DashboardNation {
@@ -30,8 +31,6 @@ export class DashboardNation {
   constructor(options) {
     
     var MAX_DAILY_VACC = 700000;
-    
-    
     
     // creates the main div. don't touch
     var div = d3
@@ -106,6 +105,8 @@ export class DashboardNation {
     d3.csv(newPeopleVaccinatedThirdInjectionByVaccinationDate).then(function (data) {
       newPeopleVaccinatedThirdInjectionByVaccinationDate = data;
     });
+
+    
    
 
     https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=vaccinationsAgeDemographics&format=csv
