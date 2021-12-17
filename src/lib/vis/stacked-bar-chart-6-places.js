@@ -88,7 +88,7 @@ export class StackedBarChartWith6Places {
 
     // d.links is an array of {pageId, visFunction, url}
     // I just want to select the first url and set to undefined if none is available
-    newData.urls = orgData.map(d => d.links.length > 0 ? d.links[0].url : undefined);
+    newData.urls = orgData.map(d => d.links[0]?.url);
 
     const parseWeek = d3.timeParse("%Y-%m-%d");
     newData.forEach((d) => {
