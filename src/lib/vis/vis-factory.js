@@ -50,9 +50,9 @@ export const visFactory = (type, args) => {
     return new UncertaintyClusterSampleAndMean(args);
     
   // Dashboards
-  if (type === "CouncilOverview") return new DashboardScotlandCouncil(args);
-  if (type === "HealthBoardOverview") return new DashboardScotlandNHSBoard(args);
-  if (type === "CountryOverview") return new DashboardScotland(args);
+  if (type === "DashboardScotlandCouncil") return new DashboardScotlandCouncil(args);
+  if (type === "DashboardScotlandNHSBoard") return new DashboardScotlandNHSBoard(args);
+  if (type === "DashboardScotland") return new DashboardScotland(args);
   //if (type === "CountryOverviewNew") return new DashboardScotlandNew(args);
   if (type === "CountryOverviewNew") return new DashboardTian(args);
   // if (type === "VaccineOverview") return new DashboardScotlandVaccination(args);
@@ -60,7 +60,7 @@ export const visFactory = (type, args) => {
   if (type === "DashboardLTLA") return new DashboardLowerTierLocalAuthority(args);
   // if (type === "VaccineOverview") return new DashboardMSOA(args);
   if (type === "VaccineOverview") return new DashboardNation(args);
-  if (type === "RiskMonitoring") return new DashboardRiskMonitoring(args);
+  if (type === "DashboardRiskMonitoring") return new DashboardRiskMonitoring(args);
 
   return null;
 };
