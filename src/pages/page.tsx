@@ -69,7 +69,7 @@ const PropagatedPage = () => {
         `/template/page/${pageId}`,
       );
       // eslint-disable-next-line no-console -- VIS developers need....
-      console.log("[TEMPLATE] VIS Function = ", ontoPageTemplate.ontoVis);
+      console.log("[TEMPLATE] Page data structure = ", ontoPageTemplate);
       // eslint-disable-next-line no-console -- VIS developers need....
       console.log("[TEMPLATE] Data = ", ontoPageTemplate.ontoData);
 
