@@ -21,7 +21,6 @@ import * as d3 from "d3";
 import { Data } from "../data";
 import { dashboard } from "./dashboard";
 import { colors, DEATHS } from "../colors.js";
-import { AdminUnitsHierarchy } from './hierarchy';
 
 // 1. Give class a name
 export class DashboardNation {
