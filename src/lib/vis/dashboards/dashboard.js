@@ -107,9 +107,44 @@ var TILEMAP_LAYOUT_SCOTLAND = {
 };
 
 dashboard.createDashboard = function (div, config) {
-  var layout = config.layout;
-
+  
+  // CREATE RELATED LINKS   
+  var globalLinks = config.links; 
+  if(globalLinks != undefined && globalLinks.length > 1){
+    div.append('span')
+      .text('[WIP] Related Dashboards:')
+      .style('font-weight', 'bold')
+  }
+  // if(globalLinks.length < 2)
+  // {
+    for(var i in globalLinks){
+      div.append('a')
+        .attr('href', globalLinks[i].url)
+        .attr('target',"_blank")
+        .text(globalLinks[i].name)
+        .style('margin-left', '10px')
+    }
+  // }else{
+  //   var select = div.append('select')
+  //     .style('margin-left', '10px')
+  //   var visitLink = div.append('a').text('Visit')
+  //     .style('margin-left', '10px')
+    
+  //   select.on('change', function(e){
+  //     console.log('elem', e)
+  //     // visitLink.attr(href,elem)
+  //   })
+    
+  //     for(var i in globalLinks){
+  //     select.append('option').append('a')
+  //       .attr('href', globalLinks[i].url)
+  //       .attr('target',"_blank")
+  //       .text(globalLinks[i].name)
+  //   }
+  // }
+  
   // CREATE GROUP LAYOUT
+  var layout = config.layout;
   createLayoutTable(div, layout, config, addGroup);
 };
 

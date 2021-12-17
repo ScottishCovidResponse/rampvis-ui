@@ -56,6 +56,8 @@ export class DashboardUK {
     });
 
     
+
+    
     // creates the main div. don't touch
     var div = d3
     .select("#" + options.chartElement)
@@ -93,6 +95,7 @@ export class DashboardUK {
     setTimeout(function () {
       // 2. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
       var config = {
+        // links: []
         layout: [[
           "cases", 
           "admissions", 

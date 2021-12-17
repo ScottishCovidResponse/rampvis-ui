@@ -112,7 +112,25 @@ export class DashboardNation {
     // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
     setTimeout(function () {
       var config = {
-        layout: [[
+        links: [
+          {
+            name: "UK", 
+            url: "http://localhost:3000/page?id=61b5e06d224b6283197d3a82"
+          },{
+            name: "Ayrshire and Arran", 
+            url: "http://localhost:3000/page?id=60aea734592fa23aea1c8c2d"
+          },
+          {
+            name: "Orkney", 
+            url: "http://localhost:3000/page?id=60aea7208839aa3ae916e22f"
+          },
+          {
+            name: "Tayside", 
+            url: "http://localhost:3000/page?id=60aea629da3d623ac9941f39"
+          }
+        ],
+        layout: [
+          [
           "cases", 
           "admissions", 
           "deaths"], 
