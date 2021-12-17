@@ -24,7 +24,7 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
   const queryStrokeWidth = 8;
   const otherStrokeWidth = 4;
 
-  const dataSegmented = Array.from(response.data); // data including all values from 01-01-2021 for the data stream
+  const dataSegmented = Array.from(response); // data including all values from 01-01-2021 for the data stream
 
   let dataFiltered = Array.from(dataSegmented);
   dataFiltered = dataFiltered.map(function (streams) {
