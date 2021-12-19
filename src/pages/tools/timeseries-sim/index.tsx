@@ -31,14 +31,25 @@ import TimeSeriesBag from "src/components/timeseries-sim/TimeSeriesBag";
 import { DeleteOutline } from "@mui/icons-material";
 const API = process.env.NEXT_PUBLIC_API_PY;
 
-const today = new Date();
+var today = new Date();
+today.setDate(today.getDate() - 3);
 
 const initialFirstRunState = {
   // default user parameters for timeseries search
   targetCountry: "France",
-  firstDate: "2021-10-01",
-  lastDate: "2021-12-01",
-  indicator: "new_cases",
+  firstDate:
+    String(today.getFullYear()) +
+    "-" +
+    String(today.getMonth()).padStart(2, "0") +
+    "-" +
+    String(today.getDate()).padStart(2, "0"),
+  lastDate:
+    String(today.getFullYear()) +
+    "-" +
+    String(today.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(today.getDate()).padStart(2, "0"),
+  indicator: "biweekly_cases_per_million",
   method: "euclidean",
   numberOfResults: 10,
   minPopulation: 600000,
@@ -51,7 +62,7 @@ const initialFirstRunState = {
     String(today.getDate()).padStart(2, "0"),
   continentCheck: {
     Africa: false,
-    Asia: true,
+    Asia: false,
     Australia: false,
     Europe: true,
     "North America": false,
@@ -60,6 +71,7 @@ const initialFirstRunState = {
 };
 
 const defaultBenchmarkCountries = [
+  // default benchmark countries
   "France",
   "Germany",
   "Switzerland",
@@ -134,6 +146,10 @@ const TimeseriesSim = () => {
 
   const setBenchMarkToDefault = () => {
     setBenchmarkCountries(() => defaultBenchmarkCountries);
+  };
+
+  const setTimeSeriesToDefault = () => {
+    setTimeSeriesBag(() => defaultTimeSeriesBag);
   };
 
   const multipleHandleChange = (event) => {

@@ -36,11 +36,6 @@ function TimeSeriesBag(props) {
         </List>
       </h2>
       <h2>
-        <Button variant="outlined" color="primary">
-          Set to default
-        </Button>
-      </h2>
-      <h2>
         <Button variant="contained" color="primary">
           Predict
         </Button>
