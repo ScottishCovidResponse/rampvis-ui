@@ -5,4 +5,5 @@ module.exports = {
     require("prettier-plugin-packagejson"),
     require("prettier-plugin-sh"),
   ],
+  "printWidth": 120
 };
