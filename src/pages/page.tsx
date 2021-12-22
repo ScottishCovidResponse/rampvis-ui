@@ -1,6 +1,16 @@
 import { ReactElement, useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Avatar, Box, CardContent, CardHeader, Container, Grid, Card, Fade, CircularProgress } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  CardContent,
+  CardHeader,
+  Container,
+  Grid,
+  Card,
+  Fade,
+  CircularProgress,
+} from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { blue } from "@mui/material/colors";
 import axios from "axios";
@@ -42,7 +52,8 @@ const PropagatedPage = () => {
   const { settings } = useSettings();
   const classes = useStyles();
   const router = useRouter();
-  const pageId = typeof router.query.id === "string" ? router.query.id : undefined;
+  const pageId =
+    typeof router.query.id === "string" ? router.query.id : undefined;
   const [title, setTitle] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
@@ -54,7 +65,9 @@ const PropagatedPage = () => {
     try {
       setLoading(true);
 
-      const ontoPageTemplate: IOntoPageTemplate = await apiService.get(`/template/page/${pageId}`);
+      const ontoPageTemplate: IOntoPageTemplate = await apiService.get(
+        `/template/page/${pageId}`,
+      );
       // eslint-disable-next-line no-console -- VIS developers need....
       console.log("[TEMPLATE] Page data structure = ", ontoPageTemplate);
       // eslint-disable-next-line no-console -- VIS developers need....
@@ -65,7 +78,9 @@ const PropagatedPage = () => {
       // fetch data stream values
       const ontoData = await Promise.all(
         ontoPageTemplate?.ontoData?.map(async (d: IOntoData) => {
-          const endpoint = API[d.urlCode] ? `${API[d.urlCode]}${d.endpoint}` : d.endpoint;
+          const endpoint = API[d.urlCode]
+            ? `${API[d.urlCode]}${d.endpoint}`
+            : d.endpoint;
           let values;
           try {
             values = (await axios.get(endpoint)).data;
