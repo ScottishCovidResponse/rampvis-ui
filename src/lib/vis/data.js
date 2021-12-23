@@ -56,8 +56,9 @@ export class Data {
     PHE_LTLA_NEW_VACCINATION: ["product=phe/ltla/", "component=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&"],
     PHE_LTLA_NEW_VACC_AGE_DEMOGRAPHICS: ["product=phe/ltla/", "component=vaccinationsAgeDemographics&"],
 
+    PHE_MSOA_ALL: "areaType=msoa"
   };
-
+  
   static from(data, field) {
     let x;
     if (typeof(field) == 'string') {
@@ -66,9 +67,13 @@ export class Data {
       // Array of AND conditions
       x = data.find((d) => field.every((f) => d.endpoint.includes(f)));
     }
+
+    console.log('x', x)
     
     if (x) {
-      return x.values;
+      // PHE: the data has 'body' field
+      console.log('data from data.js', x)
+      return x.values.body ? x.values.body : x.values;
     } else {
       console.error('Data stream not found with' + field);
       return undefined;

@@ -58,7 +58,7 @@ export const visFactory = (type, args) => {
   // if (type === "VaccineOverview") return new DashboardScotlandVaccination(args);
   if (type === "DashboardUK") return new DashboardUK(args);
   if (type === "DashboardLTLA") return new DashboardLowerTierLocalAuthority(args);
-  // if (type === "VaccineOverview") return new DashboardMSOA(args);
+  if (type === "DashboardMSOA") return new DashboardMSOA(args);
   if (type === "VaccineOverview") return new DashboardNation(args);
   if (type === "DashboardRiskMonitoring") return new DashboardRiskMonitoring(args);
 

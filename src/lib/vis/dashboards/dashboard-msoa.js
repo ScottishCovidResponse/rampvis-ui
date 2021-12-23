@@ -28,6 +28,10 @@ export class DashboardMSOA {
   CHART_HEIGHT = 400;
 
   constructor(options) {
+    // Phong
+    console.log('data')
+    console.log(Data.from(options.data, Data.Fields.PHE_MSOA_ALL));
+
     // creates the main div. don't touch
     var div = d3
       .select("#" + options.chartElement)
