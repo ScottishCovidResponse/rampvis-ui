@@ -68,11 +68,8 @@ export class Data {
       x = data.find((d) => field.every((f) => d.endpoint.includes(f)));
     }
 
-    console.log('x', x)
-    
     if (x) {
       // PHE: the data has 'body' field
-      console.log('data from data.js', x)
       return x.values.body ? x.values.body : x.values;
     } else {
       console.error('Data stream not found with' + field);

@@ -29,7 +29,7 @@ export class DashboardMSOA {
 
   constructor(options) {
     // Phong
-    console.log('data')
+    console.log('data including all 5 metrics')
     console.log(Data.from(options.data, Data.Fields.PHE_MSOA_ALL));
 
     // creates the main div. don't touch
