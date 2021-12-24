@@ -31,8 +31,6 @@ export class DashboardNation {
     
     var MAX_DAILY_VACC = 700000;
     
-    
-    
     // creates the main div. don't touch
     var div = d3
     .select("#" + options.chartElement)
@@ -106,13 +104,33 @@ export class DashboardNation {
     d3.csv(newPeopleVaccinatedThirdInjectionByVaccinationDate).then(function (data) {
       newPeopleVaccinatedThirdInjectionByVaccinationDate = data;
     });
+
+    
    
 
     https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=vaccinationsAgeDemographics&format=csv
     // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
     setTimeout(function () {
       var config = {
-        layout: [[
+        links: [
+          {
+            name: "UK", 
+            url: "http://localhost:3000/page?id=61b5e06d224b6283197d3a82"
+          },{
+            name: "Ayrshire and Arran", 
+            url: "http://localhost:3000/page?id=60aea734592fa23aea1c8c2d"
+          },
+          {
+            name: "Orkney", 
+            url: "http://localhost:3000/page?id=60aea7208839aa3ae916e22f"
+          },
+          {
+            name: "Tayside", 
+            url: "http://localhost:3000/page?id=60aea629da3d623ac9941f39"
+          }
+        ],
+        layout: [
+          [
           "cases", 
           "admissions", 
           "deaths"], 

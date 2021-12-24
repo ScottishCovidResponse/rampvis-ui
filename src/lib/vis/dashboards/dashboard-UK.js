@@ -36,10 +36,13 @@ export class DashboardUK {
     var RATE_DEATHS_MAX = 1000;
     var RATE_ADMISSIONS_MAX = 6000;
 
+    var DETAIL_DAILY = dashboard.DETAIL_HIGH;
+    var DETAIL_NATIONS = dashboard.DETAIL_HIGH; 
+
     var newCasesBySpecimenDate_all = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&metric=newCasesBySpecimenDate&format=csv"    
     var newAdmissionsRollingSum = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&metric=newAdmissionsRollingSum&format=csv"
     var newOnsDeathsByRegistrationDate_all= "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&metric=newOnsDeathsByRegistrationDate&format=csv"
-    
+    var newCasesBySpecimenDateChangePercentage_councils = "https://api.coronavirus.data.gov.uk/v2/data?areaType=ltla&metric=newCasesBySpecimenDateChangePercentage&format=csv"
     var newCasesBySpecimenDateChangePercentage_all = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&metric=newCasesBySpecimenDateChangePercentage&format=csv"
 
     d3.csv(newCasesBySpecimenDate_all).then(function (data) {
@@ -54,6 +57,11 @@ export class DashboardUK {
     d3.csv(newCasesBySpecimenDateChangePercentage_all).then(function (data) {
       newCasesBySpecimenDateChangePercentage_all = data;
     });
+
+    d3.csv(newCasesBySpecimenDateChangePercentage_councils).then(function (data) {
+      newCasesBySpecimenDateChangePercentage_councils = data;
+    });
+
 
     
     // creates the main div. don't touch
@@ -93,11 +101,17 @@ export class DashboardUK {
     setTimeout(function () {
       // 2. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
       var config = {
-        layout: [[
+        // links: []
+        layout: [
+          [
           "cases", 
           "admissions", 
-          "deaths"], 
-          "vacc"
+          "deaths"
+        ], 
+          [
+            "vacc",
+            "ltla"
+          ] 
         ],
         groups: [
           {
@@ -106,12 +120,13 @@ export class DashboardUK {
             layout: [
               "cumAdmissions", 
               "newAdmissions",
-              [
-                "newAdmissions_eng", 
-                "newAdmissions_sco", 
-                "newAdmissions_ni", 
-                "newAdmissions_wales",              
-              ]
+              "admissionsNations"
+              // [
+              //   "newAdmissions_eng", 
+              //   "newAdmissions_sco", 
+              //   "newAdmissions_ni", 
+              //   "newAdmissions_wales",              
+              // ]
             ],
           },
           {
@@ -120,12 +135,14 @@ export class DashboardUK {
             layout: [
               "cumCasesBySpecimenDate", 
               "newCasesBySpecimenDate",
-              [
-                "newCasesBySpecimenDate_eng", 
-                "newCasesBySpecimenDate_sco", 
-                "newCasesBySpecimenDate_ni", 
-                "newCasesBySpecimenDate_wales",                 
-              ]
+              "casesNations",
+              // "cases_ltlas"
+              // [
+              //   "newCasesBySpecimenDate_eng", 
+              //   "newCasesBySpecimenDate_sco", 
+              //   "newCasesBySpecimenDate_ni", 
+              //   "newCasesBySpecimenDate_wales",                 
+              // ]
             ],
           },
           {
@@ -134,12 +151,13 @@ export class DashboardUK {
             layout: [
               "cumDeaths28DaysByDeathDate",
               "newDeaths28DaysByDeathDate",
-              [
-                "newOnsDeathsByRegistrationDate_eng", 
-                "newOnsDeathsByRegistrationDate_sco", 
-                "newOnsDeathsByRegistrationDate_ni", 
-                "newOnsDeathsByRegistrationDate_wales",                 
-              ]
+              "deathsNations"
+              // [
+              //   "newOnsDeathsByRegistrationDate_eng", 
+              //   "newOnsDeathsByRegistrationDate_sco", 
+              //   "newOnsDeathsByRegistrationDate_ni", 
+              //   "newOnsDeathsByRegistrationDate_wales",                 
+              // ]
             ],
           },
           {
@@ -153,13 +171,20 @@ export class DashboardUK {
               ],
             ],
           },
+          {
+            id: "ltla", 
+            title: "Councils", 
+            layout: [
+              'cases_ltlas'
+            ]
+          }
         ],
         widgets: [
 
           // ADMISSIONS
           {
             id:"cumAdmissions",
-            title: "Cumulative Admissions",
+            title: "Cumulative",
             dataField: "cumAdmissions",
             cumulative: true,
             timeUnit: dashboard.TIMEUNIT_DAY,
@@ -180,81 +205,95 @@ export class DashboardUK {
             dashboard.TIMEUNIT_DAY,
             Data.from(options.data, Data.Fields.PHE_UK_NEW_AMISSIONS),
             colors.getHospitalizedColor(),
-            dashboard.DETAIL_HIGH,
+            DETAIL_DAILY,
           ),
           {
-            id:"newAdmissions_eng",
-            title: "England (Last 7 days)",
+            id:"admissionsNations",
+            title: "New admissions per nation today",
             dataField: "newAdmissionsRollingSum",
             cumulative: true,
             timeUnit: dashboard.TIMEUNIT_DAY,
             data: newAdmissionsRollingSum,
             color: colors.getHospitalizedColor(),
-            detail: dashboard.DETAIL_LOW,
-            visualization: 'progress',
+            detail: DETAIL_NATIONS,
+            visualization: 'barchart',
             dateField: "date",
-            abbreviate: true,
-            conditions:[
-              "areaName == 'England'"
-            ],
-            max: RATE_ADMISSIONS_MAX            
+            categories: "areaName",             
+            filter: ['latest'], 
           },
-          {
-            id:"newAdmissions_sco",
-            title: "Scotland (Last 7 days)",
-            dataField: "newAdmissionsRollingSum",
-            cumulative: true,
-            timeUnit: dashboard.TIMEUNIT_DAY,
-            data: newAdmissionsRollingSum,
-            color: colors.getHospitalizedColor(),
-            detail: dashboard.DETAIL_LOW,
-            visualization: 'progress',
-            dateField: "date",
-            abbreviate: true,
-            conditions:[
-              "areaName == 'Scotland'"
-            ],
-            max: RATE_ADMISSIONS_MAX            
-          },
-          {
-            id:"newAdmissions_ni",
-            title: "Ireland (Last 7 days)",
-            dataField: "newAdmissionsRollingSum",
-            cumulative: true,
-            timeUnit: dashboard.TIMEUNIT_DAY,
-            data: newAdmissionsRollingSum,
-            color: colors.getHospitalizedColor(),
-            detail: dashboard.DETAIL_LOW,
-            visualization: 'progress',
-            dateField: "date",
-            abbreviate: true,
-            conditions:[
-              "areaName == 'Northern Ireland'"
-            ],
-            max: RATE_ADMISSIONS_MAX            
-          },
-          {
-            id:"newAdmissions_wales",
-            title: "Wales (Last 7 days)",
-            dataField: "newAdmissionsRollingSum",
-            cumulative: true,
-            timeUnit: dashboard.TIMEUNIT_DAY,
-            data: newAdmissionsRollingSum,
-            color: colors.getHospitalizedColor(),
-            detail: dashboard.DETAIL_LOW,
-            visualization: 'progress',
-            dateField: "date",
-            abbreviate: true,
-            conditions:[
-              "areaName== 'Wales'"
-            ],
-            max: RATE_ADMISSIONS_MAX            
-          },
+          // {
+          //   id:"newAdmissions_eng",
+          //   title: "England (Last 7 days)",
+          //   dataField: "newAdmissionsRollingSum",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newAdmissionsRollingSum,
+          //   color: colors.getHospitalizedColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName == 'England'"
+          //   ],
+          //   max: RATE_ADMISSIONS_MAX            
+          // },
+          // {
+          //   id:"newAdmissions_sco",
+          //   title: "Scotland (Last 7 days)",
+          //   dataField: "newAdmissionsRollingSum",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newAdmissionsRollingSum,
+          //   color: colors.getHospitalizedColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName == 'Scotland'"
+          //   ],
+          //   max: RATE_ADMISSIONS_MAX            
+          // },
+          // {
+          //   id:"newAdmissions_ni",
+          //   title: "Ireland (Last 7 days)",
+          //   dataField: "newAdmissionsRollingSum",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newAdmissionsRollingSum,
+          //   color: colors.getHospitalizedColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName == 'Northern Ireland'"
+          //   ],
+          //   max: RATE_ADMISSIONS_MAX            
+          // },
+          // {
+          //   id:"newAdmissions_wales",
+          //   title: "Wales (Last 7 days)",
+          //   dataField: "newAdmissionsRollingSum",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newAdmissionsRollingSum,
+          //   color: colors.getHospitalizedColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName== 'Wales'"
+          //   ],
+          //   max: RATE_ADMISSIONS_MAX            
+          // },
 
           // CASES
           {
             id:"cumCasesBySpecimenDate",
-            title: "Cumulative Cases",
+            title: "Cumulative",
             dataField: "cumCasesBySpecimenDate",
             cumulative: true,
             timeUnit: dashboard.TIMEUNIT_DAY,
@@ -275,84 +314,98 @@ export class DashboardUK {
             timeUnit: dashboard.TIMEUNIT_DAY,
             data: Data.from(options.data, Data.Fields.PHE_UK_NEW_CASES),
             color: colors.getCaseColor(),
-            detail: dashboard.DETAIL_HIGH,
+            detail: DETAIL_DAILY,
             visualization: 'linechart',
             dateField: "date",
             abbreviate: true
           },
           {
-            id:"newCasesBySpecimenDate_eng",
-            title: "New Cases England",
-            dataField: "newCasesBySpecimenDate",
+            id:"casesNations",
+            title: "Cases change per nation",
+            dataField: "newCasesBySpecimenDateChangePercentage",
             cumulative: true,
             timeUnit: dashboard.TIMEUNIT_DAY,
-            data: newCasesBySpecimenDate_all,
+            data: newCasesBySpecimenDateChangePercentage_all,
             color: colors.getCaseColor(),
-            detail: dashboard.DETAIL_LOW,
-            visualization: 'progress',
+            detail: DETAIL_NATIONS,
+            visualization: 'barchart',
             dateField: "date",
-            abbreviate: true,
-            conditions:[
-              "areaName == 'England'"
-            ],
-            max: RATE_CASES_MAX            
+            categories: "areaName", 
+            filter: ['latest'], 
           },
-          {
-            id:"newCasesBySpecimenDate_sco",
-            title: "New Cases Scotland",
-            dataField: "newCasesBySpecimenDate",
-            cumulative: true,
-            timeUnit: dashboard.TIMEUNIT_DAY,
-            data: newCasesBySpecimenDate_all,
-            color: colors.getCaseColor(),
-            detail: dashboard.DETAIL_LOW,
-            visualization: 'progress',
-            dateField: "date",
-            abbreviate: true,
-            conditions:[
-              "areaName == 'Scotland'"
-            ],
-            max: RATE_CASES_MAX            
-          },
-          {
-            id:"newCasesBySpecimenDate_ni",
-            title: "New Cases Northern Ireland",
-            dataField: "newCasesBySpecimenDate",
-            cumulative: true,
-            timeUnit: dashboard.TIMEUNIT_DAY,
-            data: newCasesBySpecimenDate_all,
-            color: colors.getCaseColor(),
-            detail: dashboard.DETAIL_LOW,
-            visualization: 'progress',
-            dateField: "date",
-            abbreviate: true,
-            conditions:[
-              "areaName == 'Northern Ireland'"
-            ],
-            max: RATE_CASES_MAX            
-          },
-          {
-            id:"newCasesBySpecimenDate_wales",
-            title: "New Cases Wales",
-            dataField: "newCasesBySpecimenDate",
-            cumulative: true,
-            timeUnit: dashboard.TIMEUNIT_DAY,
-            data: newCasesBySpecimenDate_all,
-            color: colors.getCaseColor(),
-            detail: dashboard.DETAIL_LOW,
-            visualization: 'progress',
-            dateField: "date",
-            abbreviate: true,
-            conditions:[
-              "areaName== 'Wales'"
-            ],
-            max: RATE_CASES_MAX            
-          },
+          // {
+          //   id:"newCasesBySpecimenDate_eng",
+          //   title: "New Cases England",
+          //   dataField: "newCasesBySpecimenDate",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newCasesBySpecimenDate_all,
+          //   color: colors.getCaseColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName == 'England'"
+          //   ],
+          //   max: RATE_CASES_MAX            
+          // },
+          // {
+          //   id:"newCasesBySpecimenDate_sco",
+          //   title: "New Cases Scotland",
+          //   dataField: "newCasesBySpecimenDate",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newCasesBySpecimenDate_all,
+          //   color: colors.getCaseColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName == 'Scotland'"
+          //   ],
+          //   max: RATE_CASES_MAX            
+          // },
+          // {
+          //   id:"newCasesBySpecimenDate_ni",
+          //   title: "New Cases Northern Ireland",
+          //   dataField: "newCasesBySpecimenDate",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newCasesBySpecimenDate_all,
+          //   color: colors.getCaseColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName == 'Northern Ireland'"
+          //   ],
+          //   max: RATE_CASES_MAX            
+          // },
+          // {
+          //   id:"newCasesBySpecimenDate_wales",
+          //   title: "New Cases Wales",
+          //   dataField: "newCasesBySpecimenDate",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newCasesBySpecimenDate_all,
+          //   color: colors.getCaseColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName== 'Wales'"
+          //   ],
+          //   max: RATE_CASES_MAX            
+          // },
 
           // DEATHS
           {
             id:"cumDeaths28DaysByDeathDate",
-            title: "Cumulative Deaths",
+            title: "Cumulative",
             dataField: "cumDeaths28DaysByDeathDate",
             cumulative: true,
             timeUnit: dashboard.TIMEUNIT_DAY,
@@ -373,76 +426,89 @@ export class DashboardUK {
             dashboard.TIMEUNIT_DAY,
             Data.from(options.data, Data.Fields.PHE_UK_NEW_DEATHS_28_DAYS),
             colors.getDeathColor(),
-            dashboard.DETAIL_HIGH,
+            DETAIL_DAILY,
           ),
           {
-            id:"newOnsDeathsByRegistrationDate_eng",
-            title: "New Cases England",
+            id:"deathsNations",
+            title: "New deaths per nation (this week)",
             dataField: "newOnsDeathsByRegistrationDate",
-            cumulative: true,
             timeUnit: dashboard.TIMEUNIT_DAY,
             data: newOnsDeathsByRegistrationDate_all,
             color: colors.getDeathColor(),
-            detail: dashboard.DETAIL_LOW,
-            visualization: 'progress',
+            detail: DETAIL_NATIONS,
+            visualization: 'barchart',
             dateField: "date",
-            abbreviate: true,
-            conditions:[
-              "areaName == 'England'"
-            ],
-            max: RATE_DEATHS_MAX            
-          },
-          {
-            id:"newOnsDeathsByRegistrationDate_sco",
-            title: "New Cases Scotland",
-            dataField: "newOnsDeathsByRegistrationDate",
-            cumulative: true,
-            timeUnit: dashboard.TIMEUNIT_DAY,
-            data: newOnsDeathsByRegistrationDate_all,
-            color: colors.getDeathColor(),
-            detail: dashboard.DETAIL_LOW,
-            visualization: 'progress',
-            dateField: "date",
-            abbreviate: true,
-            conditions:[
-              "areaName == 'Scotland'"
-            ],
-            max: RATE_DEATHS_MAX            
-          },
-          {
-            id:"newOnsDeathsByRegistrationDate_ni",
-            title: "New Cases Northern Ireland",
-            dataField: "newOnsDeathsByRegistrationDate",
-            cumulative: true,
-            timeUnit: dashboard.TIMEUNIT_DAY,
-            data: newOnsDeathsByRegistrationDate_all,
-            color: colors.getDeathColor(),
-            detail: dashboard.DETAIL_LOW,
-            visualization: 'progress',
-            dateField: "date",
-            abbreviate: true,
-            conditions:[
-              "areaName == 'Northern Ireland'"
-            ],
-            max: RATE_DEATHS_MAX            
-          },
-          {
-            id:"newOnsDeathsByRegistrationDate_wales",
-            title: "New Cases Wales",
-            dataField: "newOnsDeathsByRegistrationDate",
-            cumulative: true,
-            timeUnit: dashboard.TIMEUNIT_DAY,
-            data: newOnsDeathsByRegistrationDate_all,
-            color: colors.getDeathColor(),
-            detail: dashboard.DETAIL_LOW,
-            visualization: 'progress',
-            dateField: "date",
-            abbreviate: true,
-            conditions:[
-              "areaName== 'Wales'"
-            ],
-            max: RATE_DEATHS_MAX            
-          },
+            filter: ['latest'],
+            categories: "areaName", 
+         },
+          // {
+          //   id:"newOnsDeathsByRegistrationDate_eng",
+          //   title: "New Cases England",
+          //   dataField: "newOnsDeathsByRegistrationDate",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newOnsDeathsByRegistrationDate_all,
+          //   color: colors.getDeathColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName == 'England'"
+          //   ],
+          //   max: RATE_DEATHS_MAX            
+          // },
+          // {
+          //   id:"newOnsDeathsByRegistrationDate_sco",
+          //   title: "New Cases Scotland",
+          //   dataField: "newOnsDeathsByRegistrationDate",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newOnsDeathsByRegistrationDate_all,
+          //   color: colors.getDeathColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName == 'Scotland'"
+          //   ],
+          //   max: RATE_DEATHS_MAX            
+          // },
+          // {
+          //   id:"newOnsDeathsByRegistrationDate_ni",
+          //   title: "New Cases Northern Ireland",
+          //   dataField: "newOnsDeathsByRegistrationDate",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newOnsDeathsByRegistrationDate_all,
+          //   color: colors.getDeathColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName == 'Northern Ireland'"
+          //   ],
+          //   max: RATE_DEATHS_MAX            
+          // },
+          // {
+          //   id:"newOnsDeathsByRegistrationDate_wales",
+          //   title: "New Cases Wales",
+          //   dataField: "newOnsDeathsByRegistrationDate",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newOnsDeathsByRegistrationDate_all,
+          //   color: colors.getDeathColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName== 'Wales'"
+          //   ],
+          //   max: RATE_DEATHS_MAX            
+          // },
           // VACC
           {
             id: "vacc1",
@@ -530,7 +596,23 @@ export class DashboardUK {
             dateField: "date",
             abbreviate: true,
             min: 0, max: PEOPLE_PER_DAY
-          }
+          },
+          // LTLAs
+          {
+            id:"cases_ltlas",
+            title: "Case rate (per 1,000,000?)",
+            dataField: "newCasesBySpecimenDateChangePercentage",
+            cumulative: true,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: newCasesBySpecimenDateChangePercentage_councils,
+            color: colors.getCaseColor(),
+            detail: dashboard.DETAIL_LOW,
+            visualization: 'cartogram',
+            map: "uk_ltla",
+            dateField: "date",
+            categories: "areaName", 
+            filter: ['latest'], 
+          },
         ],
       };
 

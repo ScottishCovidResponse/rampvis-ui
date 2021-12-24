@@ -69,7 +69,7 @@ const PropagatedPage = () => {
         `/template/page/${pageId}`,
       );
       // eslint-disable-next-line no-console -- VIS developers need....
-      console.log("[TEMPLATE] VIS Function = ", ontoPageTemplate.ontoVis);
+      console.log("[TEMPLATE] Page data structure = ", ontoPageTemplate);
       // eslint-disable-next-line no-console -- VIS developers need....
       console.log("[TEMPLATE] Data = ", ontoPageTemplate.ontoData);
 
@@ -78,8 +78,17 @@ const PropagatedPage = () => {
       // fetch data stream values
       const ontoData = await Promise.all(
         ontoPageTemplate?.ontoData?.map(async (d: IOntoData) => {
-          const endpoint = `${API[d.urlCode]}${d.endpoint}`;
-          const values = (await axios.get(endpoint)).data;
+          const endpoint = API[d.urlCode]
+            ? `${API[d.urlCode]}${d.endpoint}`
+            : d.endpoint;
+          let values;
+          try {
+            values = (await axios.get(endpoint)).data;
+          } catch (e) {
+            console.error("[TEMPLATE]: Error fetching data. Error = ", e);
+            return;
+          }
+
           const links = d.links.map((l: ILink) => {
             return {
               ...l,
