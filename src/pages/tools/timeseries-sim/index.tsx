@@ -1,16 +1,6 @@
 import { useState, ReactElement } from "react";
 import { Helmet } from "react-helmet-async";
-import {
-  Grid,
-  Box,
-  Card,
-  CardContent,
-  CardHeader,
-  List,
-  ListItem,
-  ListItemText,
-  IconButton,
-} from "@mui/material";
+import { Grid, Box, Card, CardContent, CardHeader } from "@mui/material";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import axios from "axios";
 import FirstForm from "src/components/timeseries-sim/FirstForm";
@@ -28,7 +18,7 @@ import GraphTitle from "src/components/timeseries-sim/GraphTitle";
 import { alignmentPlot } from "src/components/timeseries-sim/plotfunctions/alignmentplot";
 import BenchmarkCountryList from "src/components/timeseries-sim/BenchmarkCountryList";
 import TimeSeriesBag from "src/components/timeseries-sim/TimeSeriesBag";
-import { DeleteOutline } from "@mui/icons-material";
+
 const API = process.env.NEXT_PUBLIC_API_PY;
 
 var today = new Date();
@@ -146,10 +136,6 @@ const TimeseriesSim = () => {
 
   const setBenchMarkToDefault = () => {
     setBenchmarkCountries(() => defaultBenchmarkCountries);
-  };
-
-  const setTimeSeriesToDefault = () => {
-    setTimeSeriesBag(() => defaultTimeSeriesBag);
   };
 
   const multipleHandleChange = (event) => {
