@@ -1278,10 +1278,10 @@ dashboard.visualizeProgressGrid = function (
       console.log(proportion)
       console.log(grid_width)
       grid.append("rect")
-      .attr("width", grid_size_num * proportion + "px")
-      .attr("height",grid_size_num * proportion + "px")
-      .attr("x", 1)
-      .attr("y", 31)
+      .attr("width", grid_size_num * 0.8 + "px")
+      .attr("height",grid_size_num * 0.8 + "px")
+      .attr("x", 1.5)
+      .attr("y", 31.5)
       .style("fill", config.color);
     }
     if(config.detail!=dashboard.DETAIL_HIGH){
