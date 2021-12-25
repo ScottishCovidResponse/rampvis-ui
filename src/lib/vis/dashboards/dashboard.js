@@ -24,7 +24,9 @@
 /* eslint-disable prefer-spread */
 /* eslint-disable @typescript-eslint/lines-between-class-members */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { color } from "@mui/system";
 import * as d3 from "d3";
+import { zip } from "lodash";
 import moment from "moment";
 // import "./css/dashboard.css";
 // import "./css/default-dashboard.css";
@@ -65,6 +67,7 @@ dashboard.VIS_LINECHART = "linechart";
 dashboard.VIS_CARTOGRAM = "cartogram";
 dashboard.VIS_BARCHART = "barchart";
 dashboard.VIS_PROGRESS = "progress";
+dashboard.VIS_PROGRESS_GRID = "progress_grid"
 
 dashboard.TIMEUNIT_SECOND = 'second';
 dashboard.TIMEUNIT_MINUTE = 'minute';
@@ -81,6 +84,9 @@ var WIDTH_MEDIUM = 300;
 var HIGHT_MEDIUM = 80;
 
 var WIDTH_LOW = 200;
+
+var WIDTH_VERTICAL = 100;
+var HEIGHT_VERTICAL = 400;
 
 
 
@@ -315,6 +321,13 @@ var createWidget = function (parentHtmlElementId, id, config) {
   } 
   else if (widgetConfig.visualization == dashboard.VIS_PROGRESS) {
     dashboard.visualizeProgress(
+      parentHtmlElementId,
+      widgetConfig,
+      lastDateUpdated
+    );
+  }
+  else if (widgetConfig.visualization == dashboard.VIS_PROGRESS_GRID) {
+    dashboard.visualizeProgressGrid(
       parentHtmlElementId,
       widgetConfig,
       lastDateUpdated
@@ -825,32 +838,44 @@ dashboard.visualizeProgress = function (
   }else{
     dataObj = config.data;
   }
+
   var random = Math.floor(Math.random() * 1000);
   var wrapperDiv = d3
   .select("#" + parentHtmlId)
   .append("div")
   .attr("id", "wrapperDiv" + random);
 
-  var svg = wrapperDiv
-  .append("svg")
-  .attr("height", 100)
-  .attr('width',WIDTH_HIGH)
-  .style("margin-bottom", 0)
-  .style("margin-right", 0)
-  .style("z-index", -1);
+  if(config.layout == dashboard.LAYOUT_HORIZONTAL){
+    var svg = wrapperDiv
+    .append("svg")
+    .attr("height", 100)
+    .attr('width',WIDTH_HIGH)
+    .style("margin-bottom", 0)
+    .style("margin-right", 0)
+    .style("z-index", -1);
+  }
+  else if(config.layout == dashboard.LAYOUT_VERTICAL){
+    var svg = wrapperDiv
+    .append("svg")
+    .attr("height", HEIGHT_VERTICAL)
+    .attr('width',WIDTH_HIGH)
+    .style("margin-bottom", 0)
+    .style("margin-right", 0)
+    .style("z-index", -1);
+  }
+
 
   dashboardComponents.setWidgetTitle(svg, config.title, config.link, config.detail, lastDate);
-  console.log(config)
-
-  console.log("data here")
-  console.log(dataObj)
   var forignObject;
 
   if (config.detail == dashboard.DETAIL_HIGH) 
   {
     wrapperDiv.append("br");
+
     
-    if(isTimeseries)
+    if(config.layout == dashboard.LAYOUT_HORIZONTAL)
+    {
+      if(isTimeseries)
     {
       dashboardComponents.visualizeTrendArrow(
         svg,
@@ -901,98 +926,246 @@ dashboard.visualizeProgress = function (
     .attr('x', 80)
     .attr('y', BASELINE_LARGE_NUMBER)
       
+    }
+    else if(config.layout == dashboard.LAYOUT_VERTICAL)
+    {
+      svg.attr("width", WIDTH_VERTICAL);
+      svg.attr("height", HEIGHT_VERTICAL);
+            
+      if(isTimeseries)
+      {
+        dashboardComponents.visualizeTrendArrow(
+          svg,
+          config,
+          WIDTH_VERTICAL-100,
+          BASELINE_LARGE_NUMBER,
+        );
+      }
+
+      dashboardComponents.visualizeNumber(
+        svg,
+        config,
+        0,
+        HEIGHT_VERTICAL - 100,
+        FONT_SIZE_BIG
+      );  
+
+      console.log('data', dataObj, config.data)
+
+      var vegaProgressChart = {
+        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+        data: { 
+          values: dataObj,
+        },
+        width: WIDTH_VERTICAL - 100,
+        layer: [{
+          mark: "bar",
+          encoding: {
+            y: {
+              field: config.dataField,
+              type: "quantitative",
+              scale: {"domain": [config.min, config.max]},
+              tickExtra: true,
+              tickBand: "extent",
+              title: null
+            },
+            color: { value: config.color }
+          },
+        }, 
+      ],
+        config: {
+          axis: {grid: true, tickBand: "extent"}
+        }, 
+      }
+
+      forignObject = svg.append('foreignObject')
+      .attr('width', 60).attr('height', 220)
+      . attr('x', 5)
+      .attr('y', BASELINE_LARGE_NUMBER + 47)
+      
+    }
   }
-  else 
-  if(config.detail == dashboard.DETAIL_MEDIUM){
+  else if(config.detail == dashboard.DETAIL_MEDIUM){
     wrapperDiv.append("br");
     
     //width - 300
-    svg.attr("width", WIDTH_MEDIUM);
-    svg.attr("height", 100);
+    if(config.layout == dashboard.LAYOUT_HORIZONTAL){
+      svg.attr("width", WIDTH_MEDIUM);
+      svg.attr("height", 100);
 
-    dashboardComponents.visualizeNumber(
-      svg,
-      config,
-      0,
-      BASELINE_WIDGET_TITLE + 22,
-      FONT_SIZE_MEDIUM
-    );
-  
-    var vegaProgressChart = {
-      $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-      data: { 
-        values: dataObj,
-      },
-      width: WIDTH_MEDIUM -100 -10,
-      layer: [{
-        mark: "bar",
-        encoding: {
-          x: {
-            field: config.dataField,
-            type: "quantitative",
-            scale: {"domain": [config.min, config.max]},
-            tickExtra: true,
-            tickBand: "extent",
-            title: null
-          },
-          color: { value: config.color }
+      dashboardComponents.visualizeNumber(
+        svg,
+        config,
+        0,
+        BASELINE_WIDGET_TITLE + 22,
+        FONT_SIZE_MEDIUM
+      );
+    
+      var vegaProgressChart = {
+        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+        data: { 
+          values: dataObj,
         },
-      }
-    ],
-      config: {
-        axis: {grid: true, tickBand: "extent"}
-      }, 
-    };
+        width: WIDTH_MEDIUM -100 -10,
+        layer: [{
+          mark: "bar",
+          encoding: {
+            x: {
+              field: config.dataField,
+              type: "quantitative",
+              scale: {"domain": [config.min, config.max]},
+              tickExtra: true,
+              tickBand: "extent",
+              title: null
+            },
+            color: { value: config.color }
+          },
+        }
+      ],
+        config: {
+          axis: {grid: true, tickBand: "extent"}
+        }, 
+      };
 
-    forignObject = svg.append('foreignObject')
-    .attr('width', 300).attr('height', 200)
-    .attr('x', 80)
-    .attr('y', BASELINE_LARGE_NUMBER)
+      forignObject = svg.append('foreignObject')
+      .attr('width', 220).attr('height', 100)
+      .attr('x', 80)
+      .attr('y', BASELINE_LARGE_NUMBER)
+      
+    }
+    else if(config.layout == dashboard.LAYOUT_VERTICAL){
+      svg.attr("width", WIDTH_VERTICAL);
+      svg.attr("height", HEIGHT_VERTICAL);
+      
+      dashboardComponents.visualizeNumber(
+        svg,
+        config,
+        0,
+        HEIGHT_VERTICAL - 145,
+        FONT_SIZE_BIG
+      );  
+    
+      var vegaProgressChart = {
+        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+        data: { 
+          values: dataObj,
+        },
+        width: WIDTH_VERTICAL - 100,
+        layer: [{
+          mark: "bar",
+          encoding: {
+            y: {
+              field: config.dataField,
+              type: "quantitative",
+              scale: {"domain": [config.min, config.max]},
+              tickExtra: true,
+              tickBand: "extent",
+              title: null
+            },
+            color: { value: config.color }
+          },
+        }
+      ],
+        config: {
+          axis: {grid: true, tickBand: "extent"}
+        }, 
+      };  
+
+      forignObject = svg.append('foreignObject')
+      .attr('width', 60).attr('height', 220)
+      . attr('x', 5)
+      .attr('y', BASELINE_LARGE_NUMBER + 5)
+    }
   }
   /////////// DETAIL LOW
   else if(config.detail == dashboard.DETAIL_LOW){
     wrapperDiv.append("br");
     
-    svg.attr("width", WIDTH_LOW);
-    svg.attr("height", 80);
-
-    dashboardComponents.visualizeNumber(
-      svg,
-      config,
-      0,
-      BASELINE_LARGE_NUMBER,
-      FONT_SIZE_MEDIUM
-    );
-
-    var vegaProgressChart = {
-      $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-      data: { 
-        values: dataObj
-      },
-      "width": WIDTH_LOW - 100-10,
-      layer: [{
-        mark: "bar",
-        encoding: {
-          x: {
-            field: config.dataField,
-            type: "quantitative",
-            scale: {"domain": [config.min, config.max]},
-            axis: null
-          },
-          color: { value: config.color }
+    if(config.layout == dashboard.LAYOUT_VERTICAL){
+      svg.attr("width", WIDTH_VERTICAL);
+      svg.attr("height", HEIGHT_VERTICAL);
+  
+      dashboardComponents.visualizeNumber(
+        svg,
+        config,
+        0,
+        BASELINE_LARGE_NUMBER + 80,
+        FONT_SIZE_MEDIUM
+      );
+  
+      var vegaProgressChart = {
+        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+        data: { 
+          values: dataObj
         },
-      }, 
-    ],
-      config: {
-        axis: {grid: true, tickBand: "extent"}
-      },
-    };
+        width: WIDTH_VERTICAL - 100,
+        layer: [{
+          mark: "bar",
+          encoding: {
+            y: {
+              field: config.dataField,
+              type: "quantitative",
+              scale: {"domain": [config.min, config.max]},
+              axis: null
+            },
+            color: { value: config.color }
+          },
+        }, 
+      ],
+        config: {
+          axis: {grid: true, tickBand: "extent"}
+        },
+      };
+  
+      forignObject = svg.append('foreignObject')
+      .attr('width', WIDTH_LOW-100)
+      .attr('height', 70)
+      .attr('x', 5)
+      .attr('y', BASELINE_LARGE_NUMBER + 4)
+    }
+    else if(config.layout == dashboard.LAYOUT_HORIZONTAL){
+      svg.attr("width", WIDTH_LOW);
+      svg.attr("height", 80);
+  
+      dashboardComponents.visualizeNumber(
+        svg,
+        config,
+        0,
+        BASELINE_LARGE_NUMBER,
+        FONT_SIZE_MEDIUM
+      );
+  
+      var vegaProgressChart = {
+        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+        data: { 
+          values: dataObj
+        },
+        width: WIDTH_LOW - 100-10,
+        layer: [{
+          mark: "bar",
+          encoding: {
+            x: {
+              field: config.dataField,
+              type: "quantitative",
+              scale: {"domain": [config.min, config.max]},
+              axis: null
+            },
+            color: { value: config.color }
+          },
+        }, 
+      ],
+        config: {
+          axis: {grid: true, tickBand: "extent"}
+        },
+      };
+  
+      forignObject = svg.append('foreignObject')
+      .attr('width', WIDTH_LOW-100)
+      .attr('height', 70)
+      .attr('x', 80)
+      .attr('y', BASELINE_LARGE_NUMBER)
+    }
 
-    forignObject = svg.append('foreignObject')
-    .attr('width', WIDTH_LOW-100)
-    .attr('height', 70)
-    .attr('x', 80)
-    .attr('y', BASELINE_LARGE_NUMBER)
   }
 
   forignObject.append("xhtml:div").attr("id", "vegadiv-" + parentHtmlId + random)
@@ -1001,6 +1174,178 @@ dashboard.visualizeProgress = function (
   vegaEmbed("#vegadiv-" + parentHtmlId + random, vegaProgressChart, { actions: false, renderer: "svg"});
 };
 
+dashboard.visualizeProgressGrid = function (
+  parentHtmlId,
+  config,
+  lastDate
+  )  {
+    var dataObj = {}
+    var width = 40
+    var isTimeseries = false
+    var proportion = 0
+    var currentValue = 0
+    var format = ".1f"
+    var upto_index = 0
+
+    if(config.data.length > 1)
+    {
+      console.log("restructuring")
+      isTimeseries = true;
+      dataObj = config.data[config.data.length - 1];
+      currentValue = config.data[config.data.length - 1][config.dataField]/config.max * 100;
+      proportion = config.data[config.data.length - 1][config.dataField]/config.max;
+      upto_index = parseInt(currentValue)
+      width = 120;
+    }else{
+      dataObj = config.data;
+      proportion = config.data[config.data.length - 1][config.dataField]/config.max
+      upto_index = parseInt(proportion * 100)
+      format = ".1%"
+    }
+    const f = d3.format(format);
+
+    if(config.detail == dashboard.DETAIL_HIGH){
+      var cell_side = 20
+      var cell_nr = 10
+      var grid_width = "250px"
+      var grid_height = "280px"
+      var text_dx = 55
+      var text_dy = 180
+      var cell_displace_x = 0
+      var cell_displace_y = 80
+    }
+    else if(config.detail == dashboard.DETAIL_MEDIUM){
+      var cell_side = 10
+      var cell_nr = 10
+      var grid_width = "110px"
+      var grid_height = "140px"
+      var text_dx = 55
+      var text_dy = 80
+      var cell_displace_x = 0
+      var cell_displace_y = 30
+    }
+    else if(config.detail == dashboard.DETAIL_LOW){
+      var cell_side = 50
+      var cell_nr = 1
+      var grid_width = "50px"
+      var grid_height = "100px"
+      var grid_size_num = 50
+      var text_dx = 25
+      var text_dy = 55
+      var cell_displace_x = 0
+      var cell_displace_y = 30
+      upto_index = 0
+    }
+    var gridData = makeGridStructure(cell_nr, cell_side, cell_side);
+
+    var random = Math.floor(Math.random() * 1000);
+    var wrapperDiv = d3
+    .select("#" + parentHtmlId)
+    .append("div")
+    .attr("id", "wrapperDiv" + random);
+
+    var grid = wrapperDiv
+    .append("svg")
+    .attr("width",grid_width)
+    .attr("height",grid_height);
+
+    dashboardComponents.setWidgetTitle(grid, config.title, config.link, config.detail, lastDate);
+
+    var row = grid.selectAll(".row")
+    .data(gridData)
+    .enter().append("g")
+    .attr("class", "row");
+
+    var column = row.selectAll(".square")
+    .data(function(d) { return d; })
+    .enter().append("rect")
+    .attr("class","square")
+    .attr("x", function(d) { return d.x + cell_displace_x; })
+    .attr("y", function(d) { return d.y + cell_displace_y; })
+    .attr("width", function(d) { return d.width; })
+    .attr("height", function(d) { return d.height; })
+    .style("fill", function(d) {
+      if(d.index < upto_index){
+        return config.color;
+      }
+      else{
+        return "#DCDCDC";
+      }
+    })
+    .style("stroke", "#fff");
+
+    if(config.detail==dashboard.DETAIL_LOW){
+      console.log(proportion)
+      console.log(grid_width)
+      grid.append("rect")
+      .attr("width", grid_size_num * 0.9 + "px")
+      .attr("height",grid_size_num * 0.9 + "px")
+      .attr("x", 1)
+      .attr("y", 31)
+      .style("fill", config.color);
+    }
+    if(config.detail!=dashboard.DETAIL_HIGH){
+      grid.append('text')
+      .text(f(proportion.toString()))
+      .attr('fill', config.color)
+      .attr('dx', text_dx)
+      .attr('dy', text_dy)
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "central")
+      .style("font-weight", "bold")
+      .style("stroke", "#fff")
+      .style("stroke-width", 0.7);
+    }
+
+    if(config.detail==dashboard.DETAIL_HIGH){
+      dashboardComponents.visualizeNumber(
+        grid,
+        config,
+        0,
+        30,
+        FONT_SIZE_BIG
+      );  
+  
+      dashboardComponents.visualizeTrendArrow(
+        grid,
+        config,
+        115,
+        30,
+      );
+    }
+  }
+
+
+function makeGridStructure(cell_count, width, height) {
+  var data = new Array();
+  var xpos = 1; //starting xpos and ypos at 1 so the stroke will show when we make the grid below
+  var ypos = 1;
+  var width = width;
+  var height = height;
+  // iterate for rows 
+  var count = 0;
+  for (var row = 0; row < cell_count; row++) {
+      data.push( new Array() );
+      // iterate for cells/columns inside rows
+      for (var column = 0; column < cell_count; column++) {
+          data[row].push({
+              x: xpos,
+              y: ypos,
+              width: width,
+              height: height,
+              index: count
+          })
+          count += 1;
+          // increment the x position. I.e. move it over by 50 (width variable)
+          xpos += width;
+      }
+      // reset the x position after a row is complete
+      xpos = 1;
+      // increment the y position for the next row. Move it down 50 (height variable)
+      ypos += height; 
+  }
+  return data;
+}
 
 
 
@@ -1096,16 +1441,26 @@ dashboardComponents.visualizeNumber = function (
 dashboardComponents.visualizeTrendArrow = function (
   svg, config, x, y) {
 
+  var window = config.timeWindow;
+
   var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
 
-  if (config.timeUnit == dashboard.TIMEUNIT_WEEK)
-    dashboardComponents.setLabel(g, "since last week", 0, BASELINE_LABELS);
-  if (config.timeUnit == dashboard.TIMEUNIT_DAY)
-    dashboardComponents.setLabel(g, "since yesterday", 0, BASELINE_LABELS);
+  if (config.timeLabel == dashboard.TIMEUNIT_HOUR)
+    dashboardComponents.setLabel(g, "Over the last " + window + " hours", 0, BASELINE_LABELS); 
+  else if (config.timeLabel == dashboard.TIMEUNIT_DAY)
+  dashboardComponents.setLabel(g, "Over the last " + window + " days", 0, BASELINE_LABELS);
+  else if (config.timeLabel == dashboard.TIMEUNIT_WEEK)
+    dashboardComponents.setLabel(g, "Over the last " + window + " weeks", 0, BASELINE_LABELS);
+  else if (config.timeLabel == dashboard.TIMEUNIT_MONTH)
+    dashboardComponents.setLabel(g, "Over the last " + window + " months", 0, BASELINE_LABELS);
+  else if (config.timeLabel == dashboard.TIMEUNIT_YEAR)
+    dashboardComponents.setLabel(g, "Over the last " + window + " years", 0, BASELINE_LABELS); 
 
-  var secondLast = parseInt(config.data[config.data.length - 2][config.dataField]);
-  var last = parseInt(config.data[config.data.length - 1][config.dataField]);
-  let trendValue = last - secondLast;
+  var baseSample = parseFloat(config.data[config.data.length - (window + 1)][config.dataField]);
+  var last = parseFloat(config.data[config.data.length - 1][config.dataField]).toFixed(3);
+  let trendValue = last - baseSample;
+  console.log("trend")
+  console.log(trendValue)
   let rotation = 0;
   if (trendValue < 0) rotation = 45;
   if (trendValue > 0) rotation = -45;
@@ -1133,7 +1488,7 @@ dashboardComponents.visualizeTrendArrow = function (
   } else {
     g.append("text")
       .text(function () {
-        trendValue = Math.abs(trendValue);
+        trendValue = Math.abs(trendValue.toFixed(3));
         if (config.unit == '%') {
           trendValue += "% pts";
         }
@@ -1211,6 +1566,8 @@ dashboardComponents.visualizeTrendArrowNew = function (
   if (trendValue > 0) rotation = -45;
 
   trendValue = Math.round(trendValue * 100) / 100
+  console.log("trend value:")
+  console.log(trendValue)
 
   g.append("text")
     .text(function () {

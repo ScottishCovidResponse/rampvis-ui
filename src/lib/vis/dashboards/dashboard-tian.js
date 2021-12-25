@@ -105,11 +105,12 @@ export class DashboardTian {
           {
             id: "england",
             title: "Progress Bars",
-            layout: [[
-              "ni_death_rates", 
-              "aberdeen_vax_progress", 
-              "aberdeen_vax_progress2"
-            ]]
+            // layout: [[
+            //   "ni_death_rates", 
+            //   "aberdeen_vax_progress", 
+            //   "aberdeen_vax_progress2"
+            // ], ["ni_death_rates_v"],["aberdeen_vax_progress_v"]]
+            layout:["aberdeen_vax_progress2", "ni_death_rates", "ni_death_rates_v"]
           },
         ],
         widgets: [
@@ -117,15 +118,16 @@ export class DashboardTian {
             id: "ni_death_rates",
             title: "Northern Ireland death rate daily uptake",
             dataField: "newDeaths28DaysByDeathDateRate",
-            visualization: "progress",
+            visualization: "progress_grid",
             color: colors.getDeathColor(),
             data: ni_newDeathsRate,
             timeUnit: dashboard.TIMEUNIT_MONTH,
             min: 0,
             max: 1,
-            timeWindow: 1,
-            timeLabel: dashboard.TIMEUNIT_MONTH,
-            detail: dashboard.DETAIL_HIGH,
+            timeWindow: 7,
+            timeLabel: dashboard.TIMEUNIT_DAY,
+            detail: dashboard.DETAIL_LOW,
+            layout: dashboard.LAYOUT_HORIZONTAL,
             abbreviate: true
           },
           {
@@ -140,10 +142,42 @@ export class DashboardTian {
             max: 100,
             unit: '%',
             detail: dashboard.DETAIL_MEDIUM,
+            layout: dashboard.LAYOUT_HORIZONTAL,
             abbreviate: true
           },
           {
             id: "aberdeen_vax_progress2",
+            title: "Vaccination progress in Aberdeen county",
+            dataField: "cumVaccinationFirstDoseUptakeByPublishDatePercentage",
+            visualization: "progress_grid",
+            color: colors.getVaccinationColor(),
+            data: aberdeenshire_vacc_rate,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            min: 0,
+            max: 100,
+            unit: '%',
+            detail: dashboard.DETAIL_MEDIUM,
+            layout: dashboard.LAYOUT_HORIZONTAL,
+            abbreviate: true
+          },
+          {
+            id: "ni_death_rates_v",
+            title: "Northern Ireland death rate daily uptake",
+            dataField: "newDeaths28DaysByDeathDateRate",
+            visualization: "progress_grid",
+            color: colors.getDeathColor(),
+            data: ni_newDeathsRate,
+            timeUnit: dashboard.TIMEUNIT_MONTH,
+            min: 0,
+            max: 1,
+            timeWindow: 7,
+            timeLabel: dashboard.TIMEUNIT_DAY,
+            detail: dashboard.DETAIL_HIGH,
+            layout: dashboard.LAYOUT_HORIZONTAL,
+            abbreviate: true
+          },
+          {
+            id: "aberdeen_vax_progress_v",
             title: "Vaccination progress in Aberdeen county",
             dataField: "cumVaccinationFirstDoseUptakeByPublishDatePercentage",
             visualization: "progress",
@@ -153,7 +187,8 @@ export class DashboardTian {
             min: 0,
             max: 100,
             unit: '%',
-            detail: dashboard.DETAIL_LOW,
+            detail: dashboard.DETAIL_MEDIUM,
+            layout: dashboard.LAYOUT_VERTICAL,
             abbreviate: true
           },
         ],
