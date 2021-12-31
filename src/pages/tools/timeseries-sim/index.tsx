@@ -21,7 +21,7 @@ import TimeSeriesBag from "src/components/timeseries-sim/TimeSeriesBag";
 
 const API = process.env.NEXT_PUBLIC_API_PY;
 
-var today = new Date();
+const today = new Date();
 today.setDate(today.getDate() - 3);
 
 const initialFirstRunState = {
@@ -165,9 +165,11 @@ const TimeseriesSim = () => {
     }
   };
 
-  const fetchData = async () => {
+  const searchPost = async () => {
     // post request to get similar timeseries back from API
-    const apiUrl = `${API}/timeseries-sim-search/`;
+    const apiUrl =
+      "http://127.0.0.1:4010/stat/v1/timeseries-sim-search/search/";
+    //const apiUrl = `${API}/timeseries-sim-search/`;
     const response = await axios.post(apiUrl, firstRunForm);
     console.log("response = ", response);
     if (response.data?.length > 0) {
@@ -176,9 +178,30 @@ const TimeseriesSim = () => {
     }
   };
 
-  const handleClick = async () => {
+  const comparePost = async () => {
+    const apiUrl =
+      "http://127.0.0.1:4010/stat/v1/timeseries-sim-search/compare/";
+    //const apiUrl = `${API}/timeseries-sim-search/`;
+    console.log({ countries: benchmarkCountries });
+    const response = await axios.post(apiUrl, {
+      countries: benchmarkCountries,
+    });
+    console.log("response = ", response);
+    if (response.data?.length > 0) {
+      setResponseData(response.data);
+      console.log("response.data = ", response.data);
+    }
+  };
+
+  const compareClick = async () => {
     // on clicking search button, fetch data , wait response and summon plots
-    await fetchData();
+    await comparePost();
+    plotSwitch();
+  };
+
+  const searchClick = async () => {
+    // on clicking search button, fetch data , wait response and summon plots
+    await searchPost();
     plotSwitch();
   };
 
@@ -210,7 +233,7 @@ const TimeseriesSim = () => {
                 />
                 <SearchButton
                   className={classes.searchButton}
-                  onClick={handleClick}
+                  onClick={searchClick}
                 />
               </CardContent>
             </Card>
@@ -227,6 +250,7 @@ const TimeseriesSim = () => {
                   manualValueAdd={addManualCountry}
                   removeFromList={removeCountry}
                   setToDefault={setBenchMarkToDefault}
+                  onClick={compareClick}
                 />
               </CardContent>
             </Card>
