@@ -22,23 +22,23 @@ import TimeSeriesBag from "src/components/timeseries-sim/TimeSeriesBag";
 const API = process.env.NEXT_PUBLIC_API_PY;
 
 const today = new Date();
-today.setDate(today.getDate() - 3);
-
+const lastDate = new Date(today.setDate(today.getDate() - 3));
+const firstDate = new Date(today.setDate(today.getDate() - 33));
 const initialFirstRunState = {
   // default user parameters for timeseries search
   targetCountry: "France",
   firstDate:
-    String(today.getFullYear()) +
+    String(firstDate.getFullYear()) +
     "-" +
-    String(today.getMonth()).padStart(2, "0") +
+    String(firstDate.getMonth() + 1).padStart(2, "0") +
     "-" +
-    String(today.getDate()).padStart(2, "0"),
+    String(firstDate.getDate()).padStart(2, "0"),
   lastDate:
-    String(today.getFullYear()) +
+    String(lastDate.getFullYear()) +
     "-" +
-    String(today.getMonth() + 1).padStart(2, "0") +
+    String(lastDate.getMonth() + 1).padStart(2, "0") +
     "-" +
-    String(today.getDate()).padStart(2, "0"),
+    String(lastDate.getDate()).padStart(2, "0"),
   indicator: "biweekly_cases_per_million",
   method: "euclidean",
   numberOfResults: 10,
@@ -157,7 +157,7 @@ const TimeseriesSim = () => {
 
   const [responseData, setResponseData] = useState([]); // timeseries comparison response from API state control
 
-  const plotSwitch = () => {
+  const plotSwitch = async () => {
     // summons segmented and aligment plots on response back from API
     if (responseData.length > 0) {
       alignmentPlot(responseData, timeSeriesBag, setTimeSeriesBag);
