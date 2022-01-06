@@ -18,6 +18,7 @@ import GraphTitle from "src/components/timeseries-sim/GraphTitle";
 import { alignmentPlot } from "src/components/timeseries-sim/plotfunctions/alignmentplot";
 import BenchmarkCountryList from "src/components/timeseries-sim/BenchmarkCountryList";
 import TimeSeriesBag from "src/components/timeseries-sim/TimeSeriesBag";
+import ComparePopUp from "src/components/timeseries-sim/ComparePopUp";
 
 const API = process.env.NEXT_PUBLIC_API_PY;
 
@@ -73,6 +74,16 @@ const defaultTimeSeriesBag = ["A", "B", "C"];
 const TimeseriesSim = () => {
   //const { settings } = useSettings();
   const classes = useStyles();
+
+  const [comparePopUp, setComparePopUp] = useState(false);
+
+  const comparePopUpOpen = () => {
+    setComparePopUp(true);
+  };
+
+  const comparePopUpClose = () => {
+    setComparePopUp(false);
+  };
 
   const [advancedFilterPopup, setAdvancedFilterPopup] = useState(false); // advanced filter popup state control
 
@@ -155,13 +166,14 @@ const TimeseriesSim = () => {
     }
   };
 
-  const [responseData, setResponseData] = useState([]); // timeseries comparison response from API state control
+  const [responseDataSearch, setResponseDataSearch] = useState([]); // timeseries comparison response from API state control
+  const [responseDataCompare, setResponseDataCompare] = useState([]); // benchmark country comparison response  from API state control
 
   const plotSwitch = async () => {
     // summons segmented and aligment plots on response back from API
-    if (responseData.length > 0) {
-      alignmentPlot(responseData, timeSeriesBag, setTimeSeriesBag);
-      SegmentedMultiLinePlot(responseData, firstRunForm);
+    if (responseDataSearch.length > 0) {
+      alignmentPlot(responseDataSearch, timeSeriesBag, setTimeSeriesBag);
+      SegmentedMultiLinePlot(responseDataSearch, firstRunForm);
     }
   };
 
@@ -173,7 +185,7 @@ const TimeseriesSim = () => {
     const response = await axios.post(apiUrl, firstRunForm);
     console.log("response = ", response);
     if (response.data?.length > 0) {
-      setResponseData(response.data);
+      setResponseDataSearch(response.data);
       console.log("response.data = ", response.data);
     }
   };
@@ -188,7 +200,7 @@ const TimeseriesSim = () => {
     });
     console.log("response = ", response);
     if (response.data?.length > 0) {
-      setResponseData(response.data);
+      setResponseDataCompare(response.data);
       console.log("response.data = ", response.data);
     }
   };
@@ -196,7 +208,7 @@ const TimeseriesSim = () => {
   const compareClick = async () => {
     // on clicking search button, fetch data , wait response and summon plots
     await comparePost();
-    plotSwitch();
+    comparePopUpOpen();
   };
 
   const searchClick = async () => {
@@ -252,6 +264,7 @@ const TimeseriesSim = () => {
                   setToDefault={setBenchMarkToDefault}
                   onClick={compareClick}
                 />
+                <ComparePopUp state={comparePopUp} close={comparePopUpClose} />
               </CardContent>
             </Card>
           </Grid>
