@@ -19,6 +19,7 @@ import { alignmentPlot } from "src/components/timeseries-sim/plotfunctions/align
 import BenchmarkCountryList from "src/components/timeseries-sim/BenchmarkCountryList";
 import TimeSeriesBag from "src/components/timeseries-sim/TimeSeriesBag";
 import ComparePopUp from "src/components/timeseries-sim/ComparePopUp";
+import { benchmarkPlot } from "src/components/timeseries-sim/plotfunctions/benchmarkplot";
 
 const API = process.env.NEXT_PUBLIC_API_PY;
 
@@ -167,8 +168,6 @@ const TimeseriesSim = () => {
   };
 
   const [responseDataSearch, setResponseDataSearch] = useState([]); // timeseries comparison response from API state control
-  const [responseDataCompare, setResponseDataCompare] = useState([]); // benchmark country comparison response  from API state control
-
   const plotSwitch = async () => {
     // summons segmented and aligment plots on response back from API
     if (responseDataSearch.length > 0) {
@@ -200,15 +199,15 @@ const TimeseriesSim = () => {
     });
     console.log("response = ", response);
     if (response.data?.length > 0) {
-      setResponseDataCompare(response.data);
       console.log("response.data = ", response.data);
+      benchmarkPlot(response.data);
     }
   };
 
   const compareClick = async () => {
     // on clicking search button, fetch data , wait response and summon plots
+    comparePopUpOpen(); // in order to make d3 queries, have to open pop-up first before filling with d3 graphs
     await comparePost();
-    comparePopUpOpen();
   };
 
   const searchClick = async () => {
@@ -227,6 +226,7 @@ const TimeseriesSim = () => {
           <Grid item xs={3}>
             <Card>
               <CardContent>
+                <CardHeader title="Time Series Similarity Search" />
                 <FirstForm
                   className={classes.firstRunForm}
                   form={firstRunForm}
@@ -253,8 +253,8 @@ const TimeseriesSim = () => {
 
           <Grid item xs={3}>
             <Card>
-              <CardHeader title="Benchmark Country List" />
               <CardContent>
+                <CardHeader title="Benchmark Country Comparison" />
                 <BenchmarkCountryList
                   list={benchmarkCountries}
                   manualValue={manualCountry}
@@ -271,8 +271,8 @@ const TimeseriesSim = () => {
 
           <Grid item xs={3}>
             <Card>
-              <CardHeader title="Timeseries Bag" />
               <CardContent>
+                <CardHeader title="Timeseries Uncertainty Analysis" />
                 <TimeSeriesBag
                   list={timeSeriesBag}
                   removeFromList={removeTimeSeries}

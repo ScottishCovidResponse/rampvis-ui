@@ -13,11 +13,17 @@ import {
 function ComparePopUp(props) {
   return (
     <div>
-      <Dialog open={props.state} onClose={props.close}>
-        <DialogTitle>Advanced Filters</DialogTitle>
+      <Dialog fullScreen open={props.state} onClose={props.close}>
+        <DialogTitle>Benchmark Country Comparison Screen</DialogTitle>
+
         <DialogContent>
-          <DialogContentText></DialogContentText>
+          <div id="countryCompare" />
         </DialogContent>
+        <DialogActions>
+          <Button onClick={props.close} color="primary">
+            Close
+          </Button>
+        </DialogActions>
       </Dialog>
     </div>
   );
