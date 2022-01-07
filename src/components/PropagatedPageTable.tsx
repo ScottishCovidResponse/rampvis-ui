@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Paper from "@mui/material/Paper";
@@ -12,8 +12,8 @@ import TableRow from "@mui/material/TableRow";
 import { blue } from "@mui/material/colors";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useRouter } from "next/router";
-import Router from "next/router";
-import useSettings from "src/hooks/useSettings";
+import moment from "moment";
+import { apiService } from "src/utils/ApiService";
 
 interface Column {
   id: "title" | "function" | "type" | "pageType" | "date";
@@ -38,8 +38,7 @@ interface Data {
 }
 
 interface PropagatedPageTableProps {
-  loading: boolean;
-  data: Data[];
+  visType: string;
 }
 
 const useStyles = makeStyles({
@@ -58,71 +57,117 @@ const useStyles = makeStyles({
 });
 
 const PropagatedPageTable: FC<PropagatedPageTableProps> = (props) => {
-  const { settings } = useSettings();
   const classes = useStyles();
   const router = useRouter();
-  const rows = props.data;
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(100);
+  const PAGE_SIZE = 100;
 
-  const handleChangePage = (_event: unknown, newPage: number) => {
-    setPage(newPage);
-    Router.push(`/?page=${newPage}`);
-    console.log("PropagatedPageTable: newPage = ", newPage);
+  const [visType, setVisType] = useState(props.visType);
+  const [pages, setPages] = useState(undefined);
+  const [loading, setLoading] = useState(true);
+  const [pageIndex, setPageIndex] = useState(0);
+  const [pageSize, setPageSize] = useState(PAGE_SIZE);
+  const [totalCount, setTotalCount] = useState(0);
+  const url = `${process.env.NEXT_PUBLIC_API_JS}/template/pages/all/${visType}/?pageIndex=${pageIndex}&pageSize=${pageSize}`;
+
+  const fetchPages = useCallback(async () => {
+    try {
+      // prettier-ignore
+      // console.log(`PropagatedPageTable:fetchPages: pageIndex = ${pageIndex}, pageSize = ${pageSize}, url = ${url}`);
+      setLoading(true);
+      const res = await apiService.get(url);
+
+      const _pages = res?.data.map((d) => {
+        const { id, date } = d;
+        return {
+          id,
+          function: d?.vis?.function,
+          type: d?.vis?.type,
+          title: d?.title,
+          pageType: d?.pageType,
+          date: moment(date).format("DD-MM-YYYY"),
+        };
+      });
+
+      setPages(_pages);
+      setTotalCount(res?.totalCount);
+      setLoading(false);
+    } catch (err) {
+      // prettier-ignore
+      console.error(`PropagatedPageTable:fetchPages: error fetching API ${url}, error = ${err}`);
+      setLoading(false);
+    }
+  }, [url]);
+
+  useEffect(() => {
+    // prettier-ignore
+    // console.log(`PropagatedPageTable:useEffect: 1: props.visType = ${props.visType}`);
+    setVisType(props.visType);
+    setPageIndex(0);
+    setPageSize(PAGE_SIZE);
+  }, [props.visType]);
+
+  useEffect(() => {
+    // console.log(`PropagatedPageTable:useEffect: 2`);
+    fetchPages && fetchPages();
+  }, [fetchPages, pageIndex, pageSize, visType]);
+
+  const handleChangePage = (event: any, newPage: number) => {
+    setPageIndex(newPage);
   };
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-    console.log("PropagatedPageTable: setRowsPerPage = ", event.target.value);
+    setPageSize(+event.target.value);
   };
 
   return (
     <Paper className={classes.root}>
-      <TableContainer className={classes.container}>
-        <Table stickyHeader size="small" aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          {props?.loading ? (
-            <Box
-              sx={{
-                display: "flex",
-                width: "100%",
-                height: 80,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <CircularProgress
-                variant="indeterminate"
-                color="primary"
-              ></CircularProgress>
-            </Box>
-          ) : (
-            <TableBody>
-              {props.data
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
+      {loading ? (
+        <Box
+          sx={{
+            display: "flex",
+            width: "100%",
+            height: 80,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <CircularProgress
+            variant="indeterminate"
+            color="primary"
+          ></CircularProgress>
+        </Box>
+      ) : (
+        <div>
+          <TableContainer className={classes.container}>
+            <Table stickyHeader size="small" aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {columns.map((column) => (
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={{ minWidth: column.minWidth }}
+                    >
+                      {column.label}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+
+              <TableBody>
+                {pages?.map((row) => (
                   <TableRow
                     hover
                     role="checkbox"
                     tabIndex={-1}
                     key={row.id}
                     onClick={() =>
-                      router.push({ pathname: "/page", query: { id: row.id } })
+                      router.push({
+                        pathname: "/page",
+                        query: { id: row.id },
+                      })
                     }
                   >
                     {columns.map((column) => {
@@ -134,19 +179,20 @@ const PropagatedPageTable: FC<PropagatedPageTableProps> = (props) => {
                     })}
                   </TableRow>
                 ))}
-            </TableBody>
-          )}
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 100, 200, 300]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[100, 200, 300]}
+            component="div"
+            count={totalCount}
+            rowsPerPage={pageSize}
+            page={pageIndex}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </div>
+      )}
     </Paper>
   );
 };
