@@ -1,5 +1,5 @@
 export interface ILink {
-  visFunction: string;
+  name: string; // VIS function or keyword
   pageId?: string;
   url?: string;
 }
