@@ -67,7 +67,7 @@ const PropagatedPageTable: FC<PropagatedPageTableProps> = (props) => {
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(PAGE_SIZE);
   const [totalCount, setTotalCount] = useState(0);
-  let url = `${process.env.NEXT_PUBLIC_API_JS}/template/pages/all/${visType}/?pageIndex=${pageIndex}&pageSize=${pageSize}`;
+  const url = `${process.env.NEXT_PUBLIC_API_JS}/template/pages/all/${visType}/?pageIndex=${pageIndex}&pageSize=${pageSize}`;
 
   const fetchPages = useCallback(async () => {
     try {

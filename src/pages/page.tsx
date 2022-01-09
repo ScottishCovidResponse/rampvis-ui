@@ -1,5 +1,4 @@
 import { ReactElement, useCallback, useEffect, useState } from "react";
-import { Helmet } from "react-helmet-async";
 import {
   Avatar,
   Box,
@@ -16,6 +15,7 @@ import { blue } from "@mui/material/colors";
 import axios from "axios";
 import InsertChartIcon from "@mui/icons-material/InsertChart";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 import useSettings from "src/hooks/useSettings";
 import { visFactory } from "src/lib/vis/vis-factory";
@@ -23,7 +23,6 @@ import Bookmark from "src/components/Bookmark";
 import { apiService } from "src/utils/ApiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import { ILink } from "src/models/ILink";
-import { getLinks } from "src/utils/LinkService";
 import { IOntoPageTemplate } from "src/models/IOntoPageTemplate";
 import { IOntoData } from "src/models/IOntoData";
 
@@ -57,6 +56,24 @@ const PropagatedPage = () => {
   const [title, setTitle] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
+  const resolveLinksUrl = (links) => {
+    if (links && Array.isArray(links)) {
+      return links.map((d: ILink) => {
+        return {
+          ...d,
+          url: `${window.location.origin}/page/?id=${d.pageId}`,
+        };
+      });
+    }
+
+    if (links) {
+      return {
+        ...links,
+        url: `${window.location.origin}/page/?id=${links.pageId}`,
+      };
+    }
+  };
+
   const fetchOntoPage = useCallback(async () => {
     if (!pageId) {
       return;
@@ -69,15 +86,15 @@ const PropagatedPage = () => {
         `/template/page/${pageId}`,
       );
       // eslint-disable-next-line no-console -- VIS developers need....
-      console.log("[TEMPLATE] Page data structure = ", ontoPageTemplate);
+      console.log("[TEMPLATE] Page template data = ", ontoPageTemplate);
       // eslint-disable-next-line no-console -- VIS developers need....
-      console.log("[TEMPLATE] Data = ", ontoPageTemplate.ontoData);
+      console.log("[TEMPLATE] Datastreams = ", ontoPageTemplate.data);
 
       setTitle(ontoPageTemplate?.title);
 
       // fetch data stream values
       const ontoData = await Promise.all(
-        ontoPageTemplate?.ontoData?.map(async (d: IOntoData) => {
+        ontoPageTemplate?.data?.map(async (d: IOntoData) => {
           const endpoint = API[d.urlCode]
             ? `${API[d.urlCode]}${d.endpoint}`
             : d.endpoint;
@@ -89,40 +106,41 @@ const PropagatedPage = () => {
             return;
           }
 
-          const links = d.links.map((l: ILink) => {
-            return {
-              ...l,
-              url: `${window.location.origin}/page/?id=${l.pageId}`,
-            };
-          });
-          return { ...d, endpoint, values, links } as IOntoData;
+          return {
+            ...d,
+            endpoint,
+            values,
+            links: resolveLinksUrl(d.links),
+          } as IOntoData;
         }),
       );
-
-      // eslint-disable-next-line no-console -- VIS developers need....
-      console.log("[TEMPLATE] Data and its values = ", ontoData);
-      // eslint-disable-next-line no-console -- VIS developers need....
-      console.log("[TEMPLATE] Propagated links = ", ontoPageTemplate?.links);
 
       const visFactoryArg: any = {
         chartElement: "charts",
         data: ontoData,
       };
 
-      if (ontoPageTemplate.links) {
-        const links = ontoPageTemplate.links.map((l: ILink) => {
-          return {
-            ...l,
-            url: `${window.location.origin}/page/?id=${l.pageId}`,
-          };
-        });
-        visFactoryArg.links = links;
+      if (ontoPageTemplate.propagatedLinks) {
+        visFactoryArg.propagatedLinks = resolveLinksUrl(
+          ontoPageTemplate.propagatedLinks,
+        );
+      }
+      if (ontoPageTemplate.parentLink) {
+        visFactoryArg.parentLink = resolveLinksUrl(ontoPageTemplate.parentLink);
+      }
+      if (ontoPageTemplate.childrenLinks) {
+        visFactoryArg.childrenLinks = resolveLinksUrl(
+          ontoPageTemplate.childrenLinks,
+        );
       }
 
-      visFactory(ontoPageTemplate?.ontoVis?.function, visFactoryArg);
+      // eslint-disable-next-line no-console -- VIS developers need....
+      // prettier-ignore
+      console.log("[TEMPLATE] VIS function = ", ontoPageTemplate.vis.function, "input = ", visFactoryArg,);
+
+      visFactory(ontoPageTemplate.vis.function, visFactoryArg);
       setLoading(false);
     } catch (err) {
-      // prettier-ignore
       console.error(`PropagatedPage: Fetching data error = ${err}`);
       setLoading(false);
     }
@@ -134,9 +152,9 @@ const PropagatedPage = () => {
 
   return (
     <>
-      <Helmet>
+      <Head>
         <title>Page</title>
-      </Helmet>
+      </Head>
 
       <Box
         sx={{
@@ -146,45 +164,41 @@ const PropagatedPage = () => {
         }}
       >
         <Container maxWidth={settings.compact ? "xl" : false}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Card>
-                <CardHeader
-                  // TODO:
-                  // action={
-                  //   <IconButton aria-label="settings">
-                  //     { user?.id ? (<MoreVertIcon />) : (<TimelineIcon />)}
-                  //   </IconButton>
-                  //   <Bookmark pageId={pageId} />
-                  // }
-                  avatar={
-                    <Avatar className={classes.avatar}>
-                      <InsertChartIcon />
-                    </Avatar>
-                  }
-                  title={title}
-                  subheader=""
-                />
+          <Card sx={{ minWidth: 1600 }}>
+            <CardHeader
+              // TODO:
+              // action={
+              //   <IconButton aria-label="settings">
+              //     { user?.id ? (<MoreVertIcon />) : (<TimelineIcon />)}
+              //   </IconButton>
+              //   <Bookmark pageId={pageId} />
+              // }
+              avatar={
+                <Avatar className={classes.avatar}>
+                  <InsertChartIcon />
+                </Avatar>
+              }
+              title={title}
+              subheader=""
+            />
 
-                <CardContent sx={{ pt: "8px" }}>
-                  {loading && (
-                    <Box sx={{ height: 40 }}>
-                      <Fade
-                        in={loading}
-                        style={{
-                          transitionDelay: loading ? "800ms" : "0ms",
-                        }}
-                        unmountOnExit
-                      >
-                        <CircularProgress />
-                      </Fade>
-                    </Box>
-                  )}
-                  <div id="charts" />
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid>
+            <CardContent sx={{ pt: "8px" }}>
+              {loading && (
+                <Box sx={{ height: 40 }}>
+                  <Fade
+                    in={loading}
+                    style={{
+                      transitionDelay: loading ? "800ms" : "0ms",
+                    }}
+                    unmountOnExit
+                  >
+                    <CircularProgress />
+                  </Fade>
+                </Box>
+              )}
+              <div id="charts" />
+            </CardContent>
+          </Card>
         </Container>
       </Box>
     </>
