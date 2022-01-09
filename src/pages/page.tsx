@@ -19,7 +19,7 @@ import Head from "next/head";
 
 import useSettings from "src/hooks/useSettings";
 import { visFactory } from "src/lib/vis/vis-factory";
-import Bookmark from "src/components/Bookmark";
+import Bookmark from "src/components/propagated-page/Bookmark";
 import { apiService } from "src/utils/ApiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import { ILink } from "src/models/ILink";

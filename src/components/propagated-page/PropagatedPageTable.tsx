@@ -16,7 +16,7 @@ import moment from "moment";
 import { apiService } from "src/utils/ApiService";
 
 interface Column {
-  id: "title" | "function" | "type" | "pageType" | "date";
+  id: "title" | "function" | "numDataStreams" | "pageType" | "date";
   label: string;
   minWidth?: number;
   align?: "right";
@@ -24,10 +24,10 @@ interface Column {
 }
 
 const columns: Column[] = [
-  { id: "title", label: "Page Title", minWidth: 100 },
-  { id: "function", label: "VIS Function", minWidth: 100 },
-  { id: "type", label: "Type", minWidth: 100 },
-  { id: "pageType", label: "Page Type", minWidth: 100 },
+  { id: "title", label: "Title", minWidth: 100 },
+  { id: "function", label: "VIS function", minWidth: 50 },
+  { id: "numDataStreams", label: "Num. data st.", minWidth: 10 },
+  { id: "pageType", label: "Page flag", minWidth: 20 },
   { id: "date", label: "Date", minWidth: 100 },
 ];
 
@@ -81,7 +81,7 @@ const PropagatedPageTable: FC<PropagatedPageTableProps> = (props) => {
         return {
           id,
           function: d?.vis?.function,
-          type: d?.vis?.type,
+          numDataStreams: d?.data?.length,
           title: d?.title,
           pageType: d?.pageType,
           date: moment(date).format("DD-MM-YYYY"),
