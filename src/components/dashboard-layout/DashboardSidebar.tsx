@@ -70,7 +70,7 @@ const sections = [
     items: [
       {
         title: "Public",
-        path: "/public",
+        path: "/story-boards",
         icon: <PublicIcon fontSize="small" />,
       },
     ],

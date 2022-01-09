@@ -6,7 +6,7 @@ const Public = () => {
   return (
     <>
       <Head>
-        <title>Public</title>
+        <title>Storyboards</title>
       </Head>
       <DashboardLayout>
         <div
