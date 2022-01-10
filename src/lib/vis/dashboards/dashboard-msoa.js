@@ -28,6 +28,10 @@ export class DashboardMSOA {
   CHART_HEIGHT = 400;
 
   constructor(options) {
+    // Phong
+    console.log('data including all 5 metrics')
+    console.log(Data.from(options.data, Data.Fields.PHE_MSOA_ALL));
+
     // creates the main div. don't touch
     var div = d3
       .select("#" + options.chartElement)
@@ -83,9 +87,10 @@ export class DashboardMSOA {
             dataField: 'newCasesBySpecimenDateRollingSum', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_HIGH, 
-            mode: dashboard.MODE_CUMULATIVE,
+            cumulative: true,
             dateField: 'date', 
-            color: colors.getCaseColor()
+            color: colors.getCaseColor(), 
+            min: 0
           },{
             id: 'newCasesBySpecimenDateRate', 
             title: 'Change in Cases', 
@@ -93,9 +98,10 @@ export class DashboardMSOA {
             dataField: 'newCasesBySpecimenDateRollingRate', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_HIGH, 
-            mode: dashboard.MODE_DAILY,
+            cumulative: false,
             dateField: 'date', 
-            color: colors.getCaseColor()
+            color: colors.getCaseColor(), 
+            min: 0
           }
           ,{
             id: 'newCasesBySpecimenDateChangePercentage', 
@@ -104,9 +110,10 @@ export class DashboardMSOA {
             dataField: 'newCasesBySpecimenDateChangePercentage', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_HIGH, 
-            mode: dashboard.MODE_DAILY,
+            cumulative: false,
             dateField: 'date', 
-            color: colors.getCaseColor()
+            color: colors.getCaseColor(), 
+            min: 0
           },{
             id: 'cumVaccinationFirstDoseUptakeByVaccinationDatePercentage', 
             title: 'Change in Cases', 
@@ -114,9 +121,11 @@ export class DashboardMSOA {
             dataField: 'cumVaccinationFirstDoseUptakeByVaccinationDatePercentage', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_MEDIUM, 
-            mode: dashboard.MODE_PERCENT,
+            cumulative: true,
+            unit: '%',
             dateField: 'date', 
-            color: colors.getCaseColor()
+            color: colors.getCaseColor(), 
+            min: 0
           },{
             id: 'cumVaccinationSecondDoseUptakeByVaccinationDatePercentage', 
             title: 'Change in Cases', 
@@ -124,9 +133,11 @@ export class DashboardMSOA {
             dataField: 'cumVaccinationSecondDoseUptakeByVaccinationDatePercentage', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_HIGH, 
-            mode: dashboard.DETAIL_MEDIUM,
+            cumulative: true, 
+            unit: '%,',
             dateField: 'date', 
-            color: colors.getCaseColor()
+            color: colors.getCaseColor(), 
+            min: 0
           }
         ],
       };

@@ -3,7 +3,7 @@ import * as d3 from "d3";
 export function SegmentedMultiLinePlot(response, firstRunForm) {
   // align labels
 
-  d3.select("#chart").html(""); //clear charts
+  d3.select("#segmentedchart").html(""); //clear charts
   d3.select("#chartTitle").html(""); //clear charts title
   d3.select("#vis-example-container").html("");
   const parseTime = d3.timeParse("%Y-%m-%d"); // date parser (str to date)
@@ -24,7 +24,7 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
   const queryStrokeWidth = 8;
   const otherStrokeWidth = 4;
 
-  const dataSegmented = Array.from(response.data); // data including all values from 01-01-2021 for the data stream
+  const dataSegmented = Array.from(response); // data including all values from 01-01-2021 for the data stream
 
   let dataFiltered = Array.from(dataSegmented);
   dataFiltered = dataFiltered.map(function (streams) {
@@ -85,12 +85,12 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
 
   //chart AREA
 
-  d3.select("#chart")
+  d3.select("#segmentedchart")
     .append("div")
     .attr("class", "vis-example-container")
     .attr("id", "vis-example-container")
-    .style("width", width + "px")
-    .style("height", height + "px")
+    .style("width", "100%")
+    .style("height", "100%")
     .style("margin", margin);
 
   let canvas = document.getElementById("vis-example-container");

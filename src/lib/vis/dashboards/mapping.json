@@ -1,0 +1,8 @@
+{
+  "type-mappings": {
+    "toplevel": "DashboardUK",
+    "nation": "DashboardNation",
+    "nhsregion_scotland": "DashboardScotlandNHSBoard",
+    "council_scotland": "DashboardScotlandCouncil"
+  }
+}

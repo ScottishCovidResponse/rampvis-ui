@@ -21,21 +21,14 @@
 import * as d3 from "d3";
 import Common from "./common";
 import { pv } from "./pv";
-import { getLinks } from "src/utils/LinkService";
 
 export class StackedBarChartWith6Places {
   CHART_WIDTH = 1000;
   CHART_HEIGHT = 400;
 
   constructor(options) {
-
-    console.log(`StackedBarChartWith6Places: options.data = `, options.data);
-    for (let d of options.data) {
-       getLinks().then(link => {
-        console.log(`StackedBarChartWith6Places: data id = ${d.id}, link = ${link}`);
-      })
-    }
-
+    console.log(`StackedBarChartWith6Places: options = `, options);
+ 
     const data = this.processData(options.data);
     const container = d3.select("#" + options.chartElement);
     container.innerHTML = "";
@@ -61,8 +54,8 @@ export class StackedBarChartWith6Places {
     legendContainer.datum(data.columns).call(legend);
   }
 
-  processData(data) {
-    data = data.map((d) => d.values);
+  processData(orgData) {
+    const data = orgData.map((d) => d.values);
 
     // Correct field names: Adur___Hospice -> Hospice
     data.forEach((list) => {
@@ -92,6 +85,10 @@ export class StackedBarChartWith6Places {
 
     newData.columns = Object.keys(newData[0]);
     newData.columns.splice(newData.columns.indexOf("index"), 1);
+
+    // d.links is an array of {pageId, visFunction, url}
+    // I just want to select the first url and set to undefined if none is available
+    newData.urls = orgData.map(d => d.links[0]?.url);
 
     const parseWeek = d3.timeParse("%Y-%m-%d");
     newData.forEach((d) => {

@@ -12,8 +12,10 @@ import AssessmentIcon from "@mui/icons-material/Assessment";
 import DonutSmallIcon from "@mui/icons-material/DonutSmall";
 import SearchIcon from "@mui/icons-material/Search";
 import AllInboxIcon from "@mui/icons-material/AllInbox";
-import Filter2Icon from "@mui/icons-material/Filter2";
 import Filter1Icon from "@mui/icons-material/Filter1";
+import Filter2Icon from "@mui/icons-material/Filter2";
+import Filter3Icon from "@mui/icons-material/Filter3";
+import PublicIcon from "@mui/icons-material/Public";
 import Logo from "src/components/Logo";
 import NavSection from "src/components/dashboard-layout/NavSection";
 import Scrollbar from "src/components/Scrollbar";
@@ -67,24 +69,9 @@ const sections = [
     title: "",
     items: [
       {
-        title: "Scotland",
-        path: "/country/scotland",
-        icon: <PlaceIcon fontSize="small" />,
-      },
-      {
-        title: "England",
-        path: "/country/england",
-        icon: <PlaceIcon fontSize="small" />,
-      },
-      {
-        title: "N. ireland",
-        path: "/country/northern-ireland",
-        icon: <PlaceIcon fontSize="small" />,
-      },
-      {
-        title: "Wales",
-        path: "/country/wales",
-        icon: <PlaceIcon fontSize="small" />,
+        title: "Public",
+        path: "/story-boards",
+        icon: <PublicIcon fontSize="small" />,
       },
     ],
   },
@@ -106,37 +93,40 @@ const sections = [
             path: "/tools/ensemble",
             icon: <Filter2Icon fontSize="small" />,
           },
+          {
+            title: "Gridded Glyphs",
+            path: "/tools/gridded-glyphs",
+            icon: <Filter3Icon fontSize="small" />,
+          },
         ],
       },
     ],
   },
-  /*{
+  {
     title: "",
     items: [
       {
-        title: "Propagated Pages",
-        path: "/propagated/release",
-        icon: <KeyboardArrowRightIcon fontSize="small" />,
-        children: [
-          {
-            title: "Example",
-            path: "/propagated/example",
-            icon: <KeyboardArrowRightIcon fontSize="small" />,
-          },
-          {
-            title: "Review",
-            path: "/propagated/review",
-            icon: <KeyboardArrowRightIcon fontSize="small" />,
-          },
-          {
-            title: "Released",
-            path: "/propagated/release",
-            icon: <KeyboardArrowRightIcon fontSize="small" />,
-          },
-        ],
+        title: "Scotland",
+        path: "/country/scotland",
+        icon: <PlaceIcon fontSize="small" />,
+      },
+      {
+        title: "England",
+        path: "/country/england",
+        icon: <PlaceIcon fontSize="small" />,
+      },
+      {
+        title: "N. ireland",
+        path: "/country/northern-ireland",
+        icon: <PlaceIcon fontSize="small" />,
+      },
+      {
+        title: "Wales",
+        path: "/country/wales",
+        icon: <PlaceIcon fontSize="small" />,
       },
     ],
-  },*/
+  },
 ];
 
 const DashboardSidebar: FC<DashboardSidebarProps> = ({
@@ -185,7 +175,7 @@ const DashboardSidebar: FC<DashboardSidebarProps> = ({
                 RAMPVIS
               </Typography>
               <Typography color="primary" alignItems="center" variant="body2">
-                v.0.9
+                v.1.0
               </Typography>
             </Box>
           </Box>

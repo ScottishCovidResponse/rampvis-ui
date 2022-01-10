@@ -16,153 +16,67 @@
 // This is a dashboard template file. Copy this file and start scripting a new dashboard //
 // by linking to data URLS and specifying the config variable below.                     //
 ///////////////////////////////////////////////////////////////////////////////////////////
+// http://localhost:3000/page?id=619d00017d01359c29937ed9
 
 import * as d3 from "d3";
-import { Data } from "../data";
+import { Data } from '../data'
 import { dashboard } from "./dashboard";
-import { colors, DEATHS } from "../colors.js";
+import { colors } from "../colors";
+
 
 export class DashboardUK {
-  CHART_WIDTH = 1000;
-  CHART_HEIGHT = 400;
-
+  CHART_WIDTH = 1200;
+  CHART_HEIGHT = 1000;
+  
   constructor(options) {
-    // Phong added - to remove
-    // @Ben: please get data this way rather than relying on index in options.data
-    console.log('PHE_CUM_ADMISSIONS', Data.from(options.data, Data.Fields.PHE_CUM_ADMISSIONS));
-    // end Phong added - to remove
+    
+    var UK_POPULATION = 67220000;
+    var PEOPLE_PER_DAY = 500000
+    var RATE_CASES_MAX = 30000;
+    var RATE_DEATHS_MAX = 1000;
+    var RATE_ADMISSIONS_MAX = 6000;
+
+    var DETAIL_DAILY = dashboard.DETAIL_HIGH;
+    var DETAIL_NATIONS = dashboard.DETAIL_HIGH; 
+
+    var newCasesBySpecimenDate_all = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&metric=newCasesBySpecimenDate&format=csv"    
+    var newAdmissionsRollingSum = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&metric=newAdmissionsRollingSum&format=csv"
+    var newOnsDeathsByRegistrationDate_all= "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&metric=newOnsDeathsByRegistrationDate&format=csv"
+    var newCasesBySpecimenDateChangePercentage_councils = "https://api.coronavirus.data.gov.uk/v2/data?areaType=ltla&metric=newCasesBySpecimenDateChangePercentage&format=csv"
+    var newCasesBySpecimenDateChangePercentage_all = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&metric=newCasesBySpecimenDateChangePercentage&format=csv"
+
+    d3.csv(newCasesBySpecimenDate_all).then(function (data) {
+      newCasesBySpecimenDate_all = data;
+    });
+    d3.csv(newAdmissionsRollingSum).then(function (data) {
+      newAdmissionsRollingSum = data;
+    });
+    d3.csv(newOnsDeathsByRegistrationDate_all).then(function (data) {
+      newOnsDeathsByRegistrationDate_all = data;
+    });
+    d3.csv(newCasesBySpecimenDateChangePercentage_all).then(function (data) {
+      newCasesBySpecimenDateChangePercentage_all = data;
+    });
+
+    d3.csv(newCasesBySpecimenDateChangePercentage_councils).then(function (data) {
+      newCasesBySpecimenDateChangePercentage_councils = data;
+    });
 
 
-
-
-
-
+    
     // creates the main div. don't touch
     var div = d3
-      .select("#" + options.chartElement)
-      .append("div")
-      .attr("class", "vis-example-container");
-
-    // 1. specify data URLs here...
-    var cumAdmissions =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=cumAdmissions&format=csv";
-    var cumCasesBySpecimenDate =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=cumCasesBySpecimenDate&format=csv";
-    var cumDeaths28DaysByDeathDate =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=cumDeaths28DaysByDeathDate&format=csv";
-    var cumPeopleVaccinatedFirstDoseByPublishDate =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=cumPeopleVaccinatedFirstDoseByPublishDate&format=csv";
-    var cumPeopleVaccinatedSecondDoseByPublishDate =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=cumPeopleVaccinatedSecondDoseByPublishDate&format=csv";
-    var cumPeopleVaccinatedThirdInjectionByPublishDate =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=cumPeopleVaccinatedThirdInjectionByPublishDate&format=csv";
-
-    var newAdmissions =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=newAdmissions&metric=newAdmissionsChange&format=csv";
-    var newCasesBySpecimenDate =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=newCasesBySpecimenDate&format=csv";
-    var newDeaths28DaysByDeathDate =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=newDeaths28DaysByDeathDate&metric=newDeaths28DaysByPublishDateChange&format=csv";
-    var newPeopleVaccinatedFirstDoseByPublishDate =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=newPeopleVaccinatedFirstDoseByPublishDate&format=csv";
-    var newPeopleVaccinatedSecondDoseByPublishDate =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=newPeopleVaccinatedSecondDoseByPublishDate&format=csv";
-    var newPeopleVaccinatedThirdInjectionByPublishDate =
-      "https://api.coronavirus.data.gov.uk/v2/data?areaType=overview&metric=newPeopleVaccinatedThirdInjectionByPublishDate&format=csv";
-
-    // var england_newCasesRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumCasesByPublishDateRate&format=csv"
-    // var england_newDeathsRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumDeaths28DaysByDeathDateRate&format=csv"
-    // var england_newAdmissionsRollingRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=newAdmissionsRollingRate&format=csv"
-    // var ni_newCasesRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=N92000002&metric=newCasesBySpecimenDateRollingRate&format=csv"
-    // var ni_newDeathsRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=N92000002&metric=newDeaths28DaysByDeathDateRate&format=csv"
-    // var ni_newAdmissionsRollingRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=N92000002&metric=newAdmissionsRollingRate&format=csv"
-    // var scotland_newCasesRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=S92000003&metric=newCasesBySpecimenDateRollingRate&format=csv"
-    // var scotland_newDeathsRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=S92000003&metric=newDeaths28DaysByDeathDateRollingRate&format=csv"
-    // var scotland_newAdmissionsRollingRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=S92000003&metric=newAdmissionsRollingRate&format=csv"
-
-    // // Load data
-    // d3.csv(england_newCasesRate).then(function (data) {
-    //   england_newCasesRate = data;
-    // });
-    // d3.csv(england_newDeathsRate).then(function (data) {
-    //   england_newDeathsRate = data;
-    // });
-    // d3.csv(england_newAdmissionsRollingRate).then(function (data) {
-    //   england_newAdmissionsRollingRate = data;
-    // });
-
-    // d3.csv(ni_newCasesRate).then(function (data) {
-    //   ni_newCasesRate = data;
-    // });
-    // d3.csv(ni_newDeathsRate).then(function (data) {
-    //   ni_newDeathsRate = data;
-    // });
-    // d3.csv(ni_newAdmissionsRollingRate).then(function (data) {
-    //   ni_newAdmissionsRollingRate = data;
-    // });
-
-    // d3.csv(scotland_newCasesRate).then(function (data) {
-    //   scotland_newCasesRate = data;
-    // });
-    // d3.csv(scotland_newDeathsRate).then(function (data) {
-    //   scotland_newDeathsRate = data;
-    // });
-    // d3.csv(scotland_newAdmissionsRollingRate).then(function (data) {
-    //   scotland_newAdmissionsRollingRate = data;
-    // });
-
-    d3.csv(cumAdmissions).then(function (data) {
-      cumAdmissions = data;
-    });
-    d3.csv(newAdmissions).then(function (data) {
-      newAdmissions = data;
-    });
-
-    d3.csv(cumCasesBySpecimenDate).then(function (data) {
-      cumCasesBySpecimenDate = data;
-    });
-    d3.csv(newCasesBySpecimenDate).then(function (data) {
-      newCasesBySpecimenDate = data;
-    });
-
-    d3.csv(cumDeaths28DaysByDeathDate).then(function (data) {
-      cumDeaths28DaysByDeathDate = data;
-    });
-    d3.csv(newDeaths28DaysByDeathDate).then(function (data) {
-      newDeaths28DaysByDeathDate = data;
-    });
-
-    d3.csv(cumPeopleVaccinatedFirstDoseByPublishDate).then(function (data) {
-      cumPeopleVaccinatedFirstDoseByPublishDate = data;
-    });
-    d3.csv(newPeopleVaccinatedFirstDoseByPublishDate).then(function (data) {
-      newPeopleVaccinatedFirstDoseByPublishDate = data;
-    });
-
-    d3.csv(cumPeopleVaccinatedSecondDoseByPublishDate).then(function (data) {
-      cumPeopleVaccinatedSecondDoseByPublishDate = data;
-    });
-    d3.csv(newPeopleVaccinatedSecondDoseByPublishDate).then(function (data) {
-      newPeopleVaccinatedSecondDoseByPublishDate = data;
-    });
-
-    d3.csv(cumPeopleVaccinatedThirdInjectionByPublishDate).then(function (
-      data,
-    ) {
-      cumPeopleVaccinatedThirdInjectionByPublishDate = data;
-    });
-    d3.csv(newPeopleVaccinatedThirdInjectionByPublishDate).then(function (
-      data,
-    ) {
-      newPeopleVaccinatedThirdInjectionByPublishDate = data;
-    });
+    .select("#" + options.chartElement)
+    .append("div")
+    .attr("class", "vis-example-container");
 
     // test all data are loaded, once every second
     var timeseriesWidget = function (
       id,
       title,
       dataField,
-      mode,
+      cumulative,
+      timeUnit,
       data,
       color,
       detail,
@@ -174,10 +88,12 @@ export class DashboardUK {
         visualization: "linechart",
         color: color,
         data: data,
-        mode: mode,
+        cumulative: cumulative,
+        timeUnit: timeUnit,
         detail: detail,
         dateField: "date",
         abbreviate: true,
+        min: 0
       };
       return w;
     };
@@ -185,17 +101,49 @@ export class DashboardUK {
     setTimeout(function () {
       // 2. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
       var config = {
-        layout: [["cases", "admissions", "deaths"], "vacc"],
+        // links: []
+        layout: [
+          [
+          "cases", 
+          "admissions", 
+          "deaths"
+        ], 
+          [
+            "vacc",
+            "ltla"
+          ] 
+        ],
         groups: [
           {
             id: "admissions",
             title: "Admissions",
-            layout: ["cumAdmissions", "newAdmissions"],
+            layout: [
+              "cumAdmissions", 
+              "newAdmissions",
+              "admissionsNations"
+              // [
+              //   "newAdmissions_eng", 
+              //   "newAdmissions_sco", 
+              //   "newAdmissions_ni", 
+              //   "newAdmissions_wales",              
+              // ]
+            ],
           },
           {
             id: "cases",
             title: "Cases",
-            layout: ["cumCasesBySpecimenDate", "newCasesBySpecimenDate"],
+            layout: [
+              "cumCasesBySpecimenDate", 
+              "newCasesBySpecimenDate",
+              "casesNations",
+              // "cases_ltlas"
+              // [
+              //   "newCasesBySpecimenDate_eng", 
+              //   "newCasesBySpecimenDate_sco", 
+              //   "newCasesBySpecimenDate_ni", 
+              //   "newCasesBySpecimenDate_wales",                 
+              // ]
+            ],
           },
           {
             id: "deaths",
@@ -203,6 +151,13 @@ export class DashboardUK {
             layout: [
               "cumDeaths28DaysByDeathDate",
               "newDeaths28DaysByDeathDate",
+              "deathsNations"
+              // [
+              //   "newOnsDeathsByRegistrationDate_eng", 
+              //   "newOnsDeathsByRegistrationDate_sco", 
+              //   "newOnsDeathsByRegistrationDate_ni", 
+              //   "newOnsDeathsByRegistrationDate_wales",                 
+              // ]
             ],
           },
           {
@@ -216,121 +171,453 @@ export class DashboardUK {
               ],
             ],
           },
+          {
+            id: "ltla", 
+            title: "Councils", 
+            layout: [
+              'cases_ltlas'
+            ]
+          }
         ],
         widgets: [
-          timeseriesWidget(
-            "cumAdmissions",
-            "Cumulative Admissions",
-            "cumAdmissions",
-            dashboard.MODE_CUMULATIVE,
-            cumAdmissions,
-            colors.getHospitalizedColor(),
-            dashboard.DETAIL_HIGH,
-          ),
+
+          // ADMISSIONS
+          {
+            id:"cumAdmissions",
+            title: "Cumulative",
+            dataField: "cumAdmissions",
+            cumulative: true,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: Data.from(options.data, Data.Fields.PHE_UK_CUM_ADMISSIONS),
+            color: colors.getHospitalizedColor(),
+            detail: dashboard.DETAIL_LOW,
+            visualization: 'linechart',
+            layout: 'vertical',
+            dateField: "date",
+            abbreviate: true,
+            trendWindow: 'all'
+          },
           timeseriesWidget(
             "newAdmissions",
             "New Daily Admissions",
             "newAdmissions",
-            dashboard.MODE_DAILY,
-            newAdmissions,
+            false,
+            dashboard.TIMEUNIT_DAY,
+            Data.from(options.data, Data.Fields.PHE_UK_NEW_AMISSIONS),
             colors.getHospitalizedColor(),
-            dashboard.DETAIL_HIGH,
+            DETAIL_DAILY,
           ),
-          timeseriesWidget(
-            "cumCasesBySpecimenDate",
-            "Cumulative Cases",
-            "cumCasesBySpecimenDate",
-            dashboard.MODE_CUMULATIVE,
-            cumCasesBySpecimenDate,
-            colors.getCaseColor(),
-            dashboard.DETAIL_HIGH,
-          ),
-          timeseriesWidget(
-            "newCasesBySpecimenDate",
-            "New Daily Cases",
-            "newCasesBySpecimenDate",
-            dashboard.MODE_DAILY,
-            newCasesBySpecimenDate,
-            colors.getCaseColor(),
-            dashboard.DETAIL_HIGH,
-          ),
-          timeseriesWidget(
-            "cumDeaths28DaysByDeathDate",
-            "Cumulative Deaths",
-            "cumDeaths28DaysByDeathDate",
-            dashboard.MODE_CUMULATIVE,
-            cumDeaths28DaysByDeathDate,
-            colors.getDeathColor(),
-            dashboard.DETAIL_HIGH,
-          ),
+          {
+            id:"admissionsNations",
+            title: "New admissions per nation today",
+            dataField: "newAdmissionsRollingSum",
+            cumulative: true,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: newAdmissionsRollingSum,
+            color: colors.getHospitalizedColor(),
+            detail: DETAIL_NATIONS,
+            visualization: 'barchart',
+            dateField: "date",
+            categories: "areaName",             
+            filter: ['latest'], 
+          },
+          // {
+          //   id:"newAdmissions_eng",
+          //   title: "England (Last 7 days)",
+          //   dataField: "newAdmissionsRollingSum",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newAdmissionsRollingSum,
+          //   color: colors.getHospitalizedColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName == 'England'"
+          //   ],
+          //   max: RATE_ADMISSIONS_MAX            
+          // },
+          // {
+          //   id:"newAdmissions_sco",
+          //   title: "Scotland (Last 7 days)",
+          //   dataField: "newAdmissionsRollingSum",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newAdmissionsRollingSum,
+          //   color: colors.getHospitalizedColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName == 'Scotland'"
+          //   ],
+          //   max: RATE_ADMISSIONS_MAX            
+          // },
+          // {
+          //   id:"newAdmissions_ni",
+          //   title: "Ireland (Last 7 days)",
+          //   dataField: "newAdmissionsRollingSum",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newAdmissionsRollingSum,
+          //   color: colors.getHospitalizedColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName == 'Northern Ireland'"
+          //   ],
+          //   max: RATE_ADMISSIONS_MAX            
+          // },
+          // {
+          //   id:"newAdmissions_wales",
+          //   title: "Wales (Last 7 days)",
+          //   dataField: "newAdmissionsRollingSum",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newAdmissionsRollingSum,
+          //   color: colors.getHospitalizedColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName== 'Wales'"
+          //   ],
+          //   max: RATE_ADMISSIONS_MAX            
+          // },
+
+          // CASES
+          {
+            id:"cumCasesBySpecimenDate",
+            title: "Cumulative",
+            dataField: "cumCasesBySpecimenDate",
+            cumulative: true,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: Data.from(options.data, Data.Fields.PHE_UK_CUM_CASES),
+            color: colors.getCaseColor(),
+            detail: dashboard.DETAIL_LOW,
+            visualization: 'linechart',
+            layout: 'vertical',
+            dateField: "date",
+            abbreviate: true,
+            trendWindow: 'all'
+          },
+          {
+            id:"newCasesBySpecimenDate",
+            title: "Daily Cases",
+            dataField: "newCasesBySpecimenDate",
+            cumulative: false,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: Data.from(options.data, Data.Fields.PHE_UK_NEW_CASES),
+            color: colors.getCaseColor(),
+            detail: DETAIL_DAILY,
+            visualization: 'linechart',
+            dateField: "date",
+            abbreviate: true
+          },
+          {
+            id:"casesNations",
+            title: "Cases change per nation",
+            dataField: "newCasesBySpecimenDateChangePercentage",
+            cumulative: true,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: newCasesBySpecimenDateChangePercentage_all,
+            color: colors.getCaseColor(),
+            detail: DETAIL_NATIONS,
+            visualization: 'barchart',
+            dateField: "date",
+            categories: "areaName", 
+            filter: ['latest'], 
+          },
+          // {
+          //   id:"newCasesBySpecimenDate_eng",
+          //   title: "New Cases England",
+          //   dataField: "newCasesBySpecimenDate",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newCasesBySpecimenDate_all,
+          //   color: colors.getCaseColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName == 'England'"
+          //   ],
+          //   max: RATE_CASES_MAX            
+          // },
+          // {
+          //   id:"newCasesBySpecimenDate_sco",
+          //   title: "New Cases Scotland",
+          //   dataField: "newCasesBySpecimenDate",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newCasesBySpecimenDate_all,
+          //   color: colors.getCaseColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName == 'Scotland'"
+          //   ],
+          //   max: RATE_CASES_MAX            
+          // },
+          // {
+          //   id:"newCasesBySpecimenDate_ni",
+          //   title: "New Cases Northern Ireland",
+          //   dataField: "newCasesBySpecimenDate",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newCasesBySpecimenDate_all,
+          //   color: colors.getCaseColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName == 'Northern Ireland'"
+          //   ],
+          //   max: RATE_CASES_MAX            
+          // },
+          // {
+          //   id:"newCasesBySpecimenDate_wales",
+          //   title: "New Cases Wales",
+          //   dataField: "newCasesBySpecimenDate",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newCasesBySpecimenDate_all,
+          //   color: colors.getCaseColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName== 'Wales'"
+          //   ],
+          //   max: RATE_CASES_MAX            
+          // },
+
+          // DEATHS
+          {
+            id:"cumDeaths28DaysByDeathDate",
+            title: "Cumulative",
+            dataField: "cumDeaths28DaysByDeathDate",
+            cumulative: true,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: Data.from(options.data, Data.Fields.PHE_UK_CUM_DEATHS_28_DAYS),
+            color: colors.getDeathColor(),
+            detail: dashboard.DETAIL_LOW,
+            visualization: 'linechart',
+            layout: 'vertical',
+            dateField: "date",
+            abbreviate: true,
+            trendWindow: 'all'
+          },
           timeseriesWidget(
             "newDeaths28DaysByDeathDate",
             "New Weekly Deaths ",
             "newDeaths28DaysByDeathDate",
-            dashboard.MODE_WEEKLY,
-            newDeaths28DaysByDeathDate,
+            false,
+            dashboard.TIMEUNIT_DAY,
+            Data.from(options.data, Data.Fields.PHE_UK_NEW_DEATHS_28_DAYS),
             colors.getDeathColor(),
-            dashboard.DETAIL_HIGH,
+            DETAIL_DAILY,
           ),
-          timeseriesWidget(
-            "vacc1",
-            "Total 1st Dose Update",
-            "cumPeopleVaccinatedFirstDoseByPublishDate",
-            dashboard.MODE_CUMULATIVE,
-            cumPeopleVaccinatedFirstDoseByPublishDate,
-            colors.getVaccinationColor(1),
-            dashboard.DETAIL_MEDIUM,
-          ),
-          timeseriesWidget(
-            "vacc1d",
-            "Daily 1st Dose Vaccinations",
-            "newPeopleVaccinatedFirstDoseByPublishDate",
-            dashboard.MODE_DAILY,
-            newPeopleVaccinatedFirstDoseByPublishDate,
-            colors.getVaccinationColor(1),
-            dashboard.DETAIL_MEDIUM
-          ),
-          timeseriesWidget(
-            "vacc2",
-            "Total 2nd Dose Update",
-            "cumPeopleVaccinatedSecondDoseByPublishDate",
-            dashboard.MODE_CUMULATIVE,
-            cumPeopleVaccinatedSecondDoseByPublishDate,
-            colors.getVaccinationColor(2),
-            dashboard.DETAIL_MEDIUM,
-          ),
-          timeseriesWidget(
-            "vacc2d",
-            "2nd Dose Daily",
-            "newPeopleVaccinatedSecondDoseByPublishDate",
-            dashboard.MODE_DAILY,
-            newPeopleVaccinatedSecondDoseByPublishDate,
-            colors.getVaccinationColor(2),
-            dashboard.DETAIL_MEDIUM
-          ),
-          timeseriesWidget(
-            "vacc3",
-            "Total 3rd Dose Uptake",
-            "cumPeopleVaccinatedThirdInjectionByPublishDate",
-            dashboard.MODE_CUMULATIVE,
-            cumPeopleVaccinatedThirdInjectionByPublishDate,
-            colors.getVaccinationColor(3),
-            dashboard.DETAIL_MEDIUM,
-          ),
-          timeseriesWidget(
-            "vacc3d",
-            "3rd Dose Daily",
-            "newPeopleVaccinatedThirdInjectionByPublishDate",
-            dashboard.MODE_DAILY,
-            newPeopleVaccinatedThirdInjectionByPublishDate,
-            colors.getVaccinationColor(3),
-            dashboard.DETAIL_MEDIUM
-          ),
+          {
+            id:"deathsNations",
+            title: "New deaths per nation (this week)",
+            dataField: "newOnsDeathsByRegistrationDate",
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: newOnsDeathsByRegistrationDate_all,
+            color: colors.getDeathColor(),
+            detail: DETAIL_NATIONS,
+            visualization: 'barchart',
+            dateField: "date",
+            filter: ['latest'],
+            categories: "areaName", 
+         },
+          // {
+          //   id:"newOnsDeathsByRegistrationDate_eng",
+          //   title: "New Cases England",
+          //   dataField: "newOnsDeathsByRegistrationDate",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newOnsDeathsByRegistrationDate_all,
+          //   color: colors.getDeathColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName == 'England'"
+          //   ],
+          //   max: RATE_DEATHS_MAX            
+          // },
+          // {
+          //   id:"newOnsDeathsByRegistrationDate_sco",
+          //   title: "New Cases Scotland",
+          //   dataField: "newOnsDeathsByRegistrationDate",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newOnsDeathsByRegistrationDate_all,
+          //   color: colors.getDeathColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName == 'Scotland'"
+          //   ],
+          //   max: RATE_DEATHS_MAX            
+          // },
+          // {
+          //   id:"newOnsDeathsByRegistrationDate_ni",
+          //   title: "New Cases Northern Ireland",
+          //   dataField: "newOnsDeathsByRegistrationDate",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newOnsDeathsByRegistrationDate_all,
+          //   color: colors.getDeathColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName == 'Northern Ireland'"
+          //   ],
+          //   max: RATE_DEATHS_MAX            
+          // },
+          // {
+          //   id:"newOnsDeathsByRegistrationDate_wales",
+          //   title: "New Cases Wales",
+          //   dataField: "newOnsDeathsByRegistrationDate",
+          //   cumulative: true,
+          //   timeUnit: dashboard.TIMEUNIT_DAY,
+          //   data: newOnsDeathsByRegistrationDate_all,
+          //   color: colors.getDeathColor(),
+          //   detail: dashboard.DETAIL_LOW,
+          //   visualization: 'progress',
+          //   dateField: "date",
+          //   abbreviate: true,
+          //   conditions:[
+          //     "areaName== 'Wales'"
+          //   ],
+          //   max: RATE_DEATHS_MAX            
+          // },
+          // VACC
+          {
+            id: "vacc1",
+            visualization: "progress",
+            title: "Total 1st Dose Update",
+            dataField: "cumPeopleVaccinatedFirstDoseByPublishDate",
+            cumulative: true,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: Data.from(options.data, Data.Fields.PHE_UK_CUM_VACC_FIRST),
+            color: colors.getVaccinationColor(1),
+            detail: dashboard.DETAIL_LOW,
+            dateField: "date",
+            abbreviate: true,
+            min: 0, 
+            max: UK_POPULATION
+          },
+          {
+            id: "vacc1d",
+            visualization: "linechart",
+            title: "Daily 1st Dose Vaccinations",
+            dataField: "newPeopleVaccinatedFirstDoseByPublishDate",
+            cumulative: false,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: Data.from(options.data, Data.Fields.PHE_UK_NEW_VACC_FIRST),
+            color: colors.getVaccinationColor(1),
+            detail: dashboard.DETAIL_MEDIUM,
+            dateField: "date",
+            abbreviate: true,
+            min: 0, max: PEOPLE_PER_DAY
+          },
+          {
+            id: "vacc2",
+            title: "Total 2nd Dose Update",
+            visualization: "progress",
+            dataField: "cumPeopleVaccinatedSecondDoseByPublishDate",
+            cumulative: true,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: Data.from(options.data, Data.Fields.PHE_UK_CUM_VACC_SECOND),
+            color: colors.getVaccinationColor(2),
+            detail: dashboard.DETAIL_LOW,
+            dateField: "date",
+            abbreviate: true,
+            min: 0, 
+            max: UK_POPULATION
+          },
+          {
+            id: "vacc2d",
+            title: "2nd Dose Daily",
+            visualization: "linechart",
+            dataField: "newPeopleVaccinatedSecondDoseByPublishDate",
+            cumulative: false,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: Data.from(options.data, Data.Fields.PHE_UK_NEW_VACC_SECOND),
+            color: colors.getVaccinationColor(2),
+            detail: dashboard.DETAIL_MEDIUM,
+            dateField: "date",
+            abbreviate: true,
+            min: 0, max: PEOPLE_PER_DAY
+          },
+          {
+            id: "vacc3",
+            visualization: "progress",
+            title: "Total 3rd Dose Uptake",
+            dataField: "cumPeopleVaccinatedThirdInjectionByPublishDate",
+            cumulative: true,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: Data.from(options.data, Data.Fields.PHE_UK_CUM_VACC_THIRD),
+            color: colors.getVaccinationColor(3),
+            detail: dashboard.DETAIL_LOW,
+            dateField: "date",
+            abbreviate: true,
+            min: 0, 
+            max: UK_POPULATION
+          },
+          {
+            id: "vacc3d",
+            visualization: "linechart",
+            title: "3rd Dose Daily",
+            dataField: "newPeopleVaccinatedThirdInjectionByPublishDate",
+            cumulative: false,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: Data.from(options.data, Data.Fields.PHE_UK_NEW_VACC_THIRD),
+            color: colors.getVaccinationColor(3),
+            detail: dashboard.DETAIL_MEDIUM,
+            dateField: "date",
+            abbreviate: true,
+            min: 0, max: PEOPLE_PER_DAY
+          },
+          // LTLAs
+          {
+            id:"cases_ltlas",
+            title: "Case rate (per 1,000,000?)",
+            dataField: "newCasesBySpecimenDateChangePercentage",
+            cumulative: true,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: newCasesBySpecimenDateChangePercentage_councils,
+            color: colors.getCaseColor(),
+            detail: dashboard.DETAIL_LOW,
+            visualization: 'cartogram',
+            map: "uk_ltla",
+            dateField: "date",
+            categories: "areaName", 
+            filter: ['latest'], 
+          },
         ],
       };
 
       // this will interpret the dashboard specifiation
       dashboard.createDashboard(div, config);
-    }, 5000);
+    }, 3000);
   }
 }
