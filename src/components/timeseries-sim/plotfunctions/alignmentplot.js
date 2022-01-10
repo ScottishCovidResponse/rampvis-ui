@@ -6,6 +6,16 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
 
   console.log("alignmentPlot: data = ", data);
 
+
+  const spaceRemove = (key) => {
+    if (key.split(" ").length == 1) {
+      return key
+    }
+    else {
+      return key.split(" ").join("")
+    }
+  }
+
   const parseTime = d3.timeParse("%Y-%m-%d"); // date parser (str to date)
   const formatTime = d3.timeFormat("%b %d"); // date formatter (date to str)
 
@@ -67,13 +77,13 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
     .enter()
 
     .append("div")
-    .attr("id", (d) => "alignmentContainer" + d.key)
+    .attr("id", (d) => "alignmentContainer" + spaceRemove(d.key))
     .style("width", "100%")
     .style("height", height*2 + "px")
     .style("margin", margin) // add divs for individual alignment plots
 
     .append("svg")
-    .attr("id", (d) => "graph" + d.key)
+    .attr("id", (d) => "graph" + spaceRemove(d.key))
     .attr("preserveAspectRatio", "xMidYMin")
     .attr(
       "viewBox",
@@ -91,37 +101,37 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
   layout // add x-axis region to call xAxis func
     .append("g")
     .attr("class", "xaxis")
-    .attr("id", (d) => "xaxis" + d.key)
+    .attr("id", (d) => "xaxis" + spaceRemove(d.key))
     .attr("transform", "translate(0," + height + ")")
     .style("font-size", "20px")
 
   layout // add y-axis region to call yAxis func
     .append("g")
     .attr("class", "yaxis")
-    .attr("id", (d) => "yaxis" + d.key)
+    .attr("id", (d) => "yaxis" + spaceRemove(d.key))
     .style("font-size", "20px");
 
   layout // add path to each subplot for line drawing
     .append("path")
     .attr("class", "myline")
-    .attr("id", (d) => "path" + d.key);
+    .attr("id", (d) => "path" + spaceRemove(d.key));
 
   layout
     .append("g")
     .attr("class", "label")
-    .attr("id", (d) => "label" + d.key)
+    .attr("id", (d) => "label" + spaceRemove(d.key))
     .style("font-size", "20px");
 
   layout
     .append("path")
     .attr("class", "highlightLine")
-    .attr("id", (d) => "highlightLine" + d.key);
+    .attr("id", (d) => "highlightLine" + spaceRemove(d.key));
 
 
   layout
     .append("path")
     .attr("class", "highlightArea")
-    .attr("id", (d) => "highlightArea" + d.key);
+    .attr("id", (d) => "highlightArea" + spaceRemove(d.key));
 
 
 
@@ -132,21 +142,21 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
       setTimeSeriesBag((old) => [...old, identifier]);
       checkState[identifier] = "true";
       timeSeriesBag.push(identifier);
-      d3.select("#alignmentContainer" + d.key).attr("style", "outline: thin solid red;") 
+      d3.select("#alignmentContainer" + spaceRemove(d.key)).attr("style", "outline: thin solid red;") 
     }
     else if (timeSeriesBag.includes(identifier) && checkState[identifier] === "true") {
       setTimeSeriesBag((old) => [...old.filter(item => item !== identifier)]);
       checkState[identifier] = "false";
       timeSeriesBag = timeSeriesBag.filter(item => item !== identifier);
-      d3.select("#alignmentContainer" + d.key).attr("style", "outline: none;") 
+      d3.select("#alignmentContainer" + spaceRemove(d.key)).attr("style", "outline: none;") 
     }
 
   }
 
   GraphData.map(function (streams) {
-    d3.select("#xaxis" + streams.key).call(xAxis); // call individual xaxis properties
-    d3.select("#yaxis" + streams.key).call(yAxis); // call individual yaxis properties
-    d3.select("#path" + streams.key) // add lines
+    d3.select("#xaxis" + spaceRemove(streams.key)).call(xAxis); // call individual xaxis properties
+    d3.select("#yaxis" + spaceRemove(streams.key)).call(yAxis); // call individual yaxis properties
+    d3.select("#path" + spaceRemove(streams.key)) // add lines
       .datum(streams.values)
       .attr("fill", "none")
       .attr("stroke", otherColor)
@@ -162,7 +172,7 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
             return yScale(d.value);
           }),
       );
-    d3.select("#label" + streams.key) // add labels at the end of the lines
+    d3.select("#label" + spaceRemove(streams.key)) // add labels at the end of the lines
       .append("text")
       .attr("id", "labeltext" + streams.key)
       .datum(function (d) {
@@ -182,7 +192,7 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
         return d.name;
       });
 
-    d3.select("#alignmentContainer" + streams.key)
+    d3.select("#alignmentContainer" + spaceRemove(streams.key))
       .on("click", updateTimeSeriesBag)
 
   });
@@ -205,7 +215,7 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
 
 
   dataFiltered.map(function (streams) {
-    d3.select("#highlightLine" + streams.key)
+    d3.select("#highlightLine" + spaceRemove(streams.key))
       .datum(streams.values)
       .attr("fill", "none")
       .attr("stroke", queryColor)
@@ -223,7 +233,7 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
 
       );
 
-    d3.select("#highlightArea" + streams.key)
+    d3.select("#highlightArea" + spaceRemove(streams.key))
       .datum(streams.values)
       .attr("fill", "lightsteelblue")
       .attr("opacity", "0.2")
