@@ -8,7 +8,7 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
 
 
   const spaceRemove = (key) => {
-    if (key.split(" ").length == 1) {
+    if (key.split(" ").length === 1) {
       return key
     }
     else {

@@ -19,7 +19,7 @@ export function benchmarkPlot(data) {
   const adj = 50;
 
   const spaceRemove = (key) => {
-    if (key.split(" ").length == 1) {
+    if (key.split(" ").length === 1) {
       return key
     }
     else {
@@ -68,16 +68,6 @@ export function benchmarkPlot(data) {
     .attr("id", (d) => "yaxis" + spaceRemove(d.key))
     .style("font-size", "15px");
 
-  layout // add path to each subplot for line drawing
-    .append("path")
-    .attr("class", "myline")
-    .attr("id", (d) => "path" + spaceRemove(d.key));
-
-  layout
-    .append("g")
-    .attr("class", "label")
-    .attr("id", (d) => "label" + spaceRemove(d.key))
-    .style("font-size", "15px");
 
 
   const queryColor = "#FF6600";
@@ -112,7 +102,59 @@ export function benchmarkPlot(data) {
   dataTime.map((streams, i) => {
     d3.select("#xaxis" + spaceRemove(streams.key)).call(xAxes[i]);
     d3.select("#yaxis" + spaceRemove(streams.key)).call(yAxes[i]);
+
+    const linedata = streams.value
+    const countries = Object.keys(linedata)
+    
+    const graphObj = countries.map((country)=>{
+      
+      const linedatum = linedata[country]
+      const dates = Object.keys(linedatum)
+      const values = Object.values(linedatum)
+      const d3Obj = dates.map((date,i)=>{
+        return {date:date,value:values[i]}
+      })
+
+      return {key: country, data: d3Obj}
+
+
+
+    })
+
+    console.log(graphObj)
+
+    const xScale =  xScales[i]
+    const yScale = yScales[i]
+
+    d3.select("#graph"+streams.key)
+      .selectAll(".line")
+      .data(graphObj)
+      .enter()
+      .append("path")
+      .attr("class", "multiline")
+      .attr("id", (d) => streams.key + spaceRemove(d.key))  
+      .attr("fill", "none")
+      .attr("stroke", otherColor )
+      .attr("stroke-width",otherStrokeWidth)
+      .attr("d", (d) =>  
+      d3
+        .line()
+        .x((d) => 
+          xScale(parseTime(d.date)))
+        .y((d) => 
+          yScale(d.value))(d.data)
+
+      );  
+
   })
+
+
+
+
+
+
+
+
 
 
 }
