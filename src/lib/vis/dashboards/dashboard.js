@@ -24,6 +24,7 @@
 /* eslint-disable prefer-spread */
 /* eslint-disable @typescript-eslint/lines-between-class-members */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { height } from "@mui/system";
 import * as d3 from "d3";
 import moment from "moment";
 // import "./css/dashboard.css";
@@ -85,8 +86,8 @@ var WIDTH_LOW = 200;
 
 
 // Cartogram/Tilemap
-var TILE_WIDTH = 40;
-var TILE_HEIGHT = 40;
+var TILE_WIDTH = 10;
+var TILE_HEIGHT = 10;
 var TILE_GAP = 4;
 
 var TILEMAP_LAYOUT_SCOTLAND = {
@@ -105,6 +106,399 @@ var TILEMAP_LAYOUT_SCOTLAND = {
   Tayside: [3, 2],
   "Western Isles": [1, 0],
 };
+
+
+var TILEMAP_LAYOUT_LTLAS = {
+  Redcar_and_Cleveland: [],
+  East_Devon: [],
+  Havant: [],
+  Surrey_Heath: [],
+  Worthing: [],
+  Bolton: [],
+  Trafford: [],
+  Barnsley: [],
+  Bradford: [],
+  Barnet: [],
+  Hounslow: [],
+  Wandsworth: [],
+  Westminster: [],
+  East_Dunbartonshire: [],
+  Powys: [],
+  South_Bucks: [],
+  Braintree: [],
+  Winchester: [],
+  Rossendale: [],
+  South_Northamptonshire: [],
+  Selby: [],
+  Mendip: [],
+  Mid_Suffolk: [],
+  Bromsgrove: [],
+  Gateshead: [],
+  Merton: [],
+  West_Dunbartonshire: [],
+  Gwynedd: [],
+  Pembrokeshire: [],
+  Reading: [],
+  Fenland: [],
+  South_Lakeland: [],
+  Cotswold: [],
+  Dacorum: [],
+  North_Hertfordshire: [],
+  Great_Yarmouth: [],
+  South_Somerset: [],
+  Malvern_Hills: [],
+  Wirral: [],
+  Newcastle_upon_Tyne: [],
+  Derry_City_and_Strabane: [],
+  Moray: [],
+  Scottish_Borders: [],
+  Merthyr_Tydfil: [],
+  Stockton_on_Tees: [],
+  Stoke_on_Trent: [],
+  Swindon: [],
+  Allerdale: [],
+  Amber_Valley: [],
+  Castle_Point: [],
+  Fylde: [],
+  South_Holland: [],
+  Scarborough: [],
+  Runnymede: [],
+  Knowsley: [],
+  Kensington_and_Chelsea: [],
+  Redbridge: [],
+  Mid_and_East_Antrim: [],
+  North_Ayrshire: [],
+  Darlington: [],
+  Shropshire: [],
+  Epping_Forest: [],
+  Maldon: [],
+  Gosport: [],
+  Broxbourne: [],
+  Northampton: [],
+  Stratford_on_Avon: [],
+  Wychavon: [],
+  Wyre_Forest: [],
+  St_Albans: [],
+  Havering: [],
+  Islington: [],
+  Inverclyde: [],
+  Renfrewshire: [],
+  Wiltshire: [],
+  South_Cambridgeshire: [],
+  Chesterfield: [],
+  Derbyshire_Dales: [],
+  Forest_of_Dean: [],
+  Maidstone: [],
+  Charnwood: [],
+  Kings_Lynn_and_West_Norfolk: [],
+  Bassetlaw: [],
+  Staffordshire_Moorlands: [],
+  Walsall: [],
+  Camden: [],
+  Hammersmith_and_Fulham: [],
+  Argyll_and_Bute: [],
+  West_Lothian: [],
+  North_Lincolnshire: [],
+  South_Gloucestershire: [],
+  Plymouth: [],
+  Windsor_and_Maidenhead: [],
+  Dorset: [],
+  Barrow_in_Furness: [],
+  Lewes: [],
+  Uttlesford: [],
+  Eastleigh: [],
+  Pendle: [],
+  Babergh: [],
+  Dudley: [],
+  Solihull: [],
+  Bridgend: [],
+  Herefordshire: [],
+  County_of: [],
+  Cheshire_East: [],
+  South_Derbyshire: [],
+  Tendring: [],
+  Three_Rivers: [],
+  Oadby_and_Wigston: [],
+  Ryedale: [],
+  Vale_of_White_Horse: [],
+  Rotherham: [],
+  Coventry: [],
+  Kirklees: [],
+  Tower_Hamlets: [],
+  East_Renfrewshire: [],
+  Ceredigion: [],
+  Carmarthenshire: [],
+  Blackburn_with_Darwen: [],
+  Slough: [],
+  Cambridge: [],
+  Eden: [],
+  East_Lindsey: [],
+  West_Lindsey: [],
+  Tamworth: [],
+  Arun: [],
+  Somerset_West_and_Taunton: [],
+  Sefton: [],
+  Barking_and_Dagenham: [],
+  Brent: [],
+  Greenwich: [],
+  Flintshire: [],
+  Torfaen: [],
+  Isle_of_Wight: [],
+  Cornwall_and_Isles_of_Scilly: [],
+  Mid_Devon: [],
+  East_Hampshire: [],
+  Test_Valley: [],
+  Dover: [],
+  Sevenoaks: [],
+  Thanet: [],
+  Ribble_Valley: [],
+  East_Staffordshire: [],
+  Reigate_and_Banstead: [],
+  Rugby: [],
+  Redditch: [],
+  North_Tyneside: [],
+  Sunderland: [],
+  Blackpool: [],
+  Bath_and_North_East_Somerset: [],
+  Bedford: [],
+  Bolsover: [],
+  North_East_Derbyshire: [],
+  Rother: [],
+  Preston: [],
+  Stafford: [],
+  Elmbridge: [],
+  Liverpool: [],
+  Southwark: [],
+  Waltham_Forest: [],
+  Fermanagh_and_Omagh: [],
+  Midlothian: [],
+  Rhondda_Cynon_Taf: [],
+  Brighton_and_Hove: [],
+  Northumberland: [],
+  Huntingdonshire: [],
+  Hart: [],
+  Hyndburn: [],
+  South_Kesteven: [],
+  Oxford: [],
+  Guildford: [],
+  Enfield: [],
+  Armagh_City: [],
+  Banbridge_and_Craigavon: [],
+  Highland: [],
+  Aberdeen_City: [],
+  Fife: [],
+  Cardiff: [],
+  Monmouthshire: [],
+  Middlesbrough: [],
+  Telford_and_Wrekin: [],
+  Aylesbury_Vale: [],
+  Erewash: [],
+  Lancaster: [],
+  Harborough: [],
+  Nuneaton_and_Bedworth: [],
+  East_Suffolk: [],
+  West_Suffolk: [],
+  Oldham: [],
+  Kingston_upon_Thames: [],
+  Newham: [],
+  East_Lothian: [],
+  Shetland_Islands: [],
+  Blaenau_Gwent: [],
+  East_Riding_of_Yorkshire: [],
+  Bracknell_Forest: [],
+  Wokingham: [],
+  Milton_Keynes: [],
+  Fareham: [],
+  Watford: [],
+  Boston: [],
+  East_Northamptonshire: [],
+  Ipswich: [],
+  Spelthorne: [],
+  Adur: [],
+  Newry: [],
+  Mourne_and_Down: [],
+  Ards_and_North_Down: [],
+  Denbighshire: [],
+  Caerphilly: [],
+  York: [],
+  Carlisle: [],
+  Copeland: [],
+  Hastings: [],
+  Wealden: [],
+  Rochford: [],
+  Swale: [],
+  Wellingborough: [],
+  Richmondshire: [],
+  Sedgemoor: [],
+  Mole_Valley: [],
+  Worcester: [],
+  Leeds: [],
+  Comhairle_nan_Eilean_Siar: [],
+  South_Lanarkshire: [],
+  Bristol: [],
+  City_of: [],
+  Cheshire_West_and_Chester: [],
+  Eastbourne: [],
+  Chelmsford: [],
+  Chorley: [],
+  North_Kesteven: [],
+  South_Oxfordshire: [],
+  West_Oxfordshire: [],
+  South_Staffordshire: [],
+  Stockport: [],
+  South_Tyneside: [],
+  Wolverhampton: [],
+  Haringey: [],
+  South_Ayrshire: [],
+  North_Lanarkshire: [],
+  Derby: [],
+  Chiltern: [],
+  Torridge: [],
+  Gloucester: [],
+  Hertsmere: [],
+  Breckland: [],
+  Broadland: [],
+  Corby: [],
+  Broxtowe: [],
+  Mansfield: [],
+  Bury: [],
+  Richmond_upon_Thames: [],
+  Dumfries_and_Galloway: [],
+  Vale_of_Glamorgan: [],
+  Newport: [],
+  Leicester: [],
+  North_Somerset: [],
+  Torbay: [],
+  Bournemouth: [],
+  Christchurch_and_Poole: [],
+  High_Peak: [],
+  Canterbury: [],
+  Dartford: [],
+  Melton: [],
+  Craven: [],
+  Waverley: [],
+  Welwyn_Hatfield: [],
+  Doncaster: [],
+  Hackney_and_City_of_London: [],
+  Aberdeenshire: [],
+  Wrexham: [],
+  North_East_Lincolnshire: [],
+  Southend_on_Sea: [],
+  Exeter: [],
+  North_Devon: [],
+  Folkestone_and_Hythe: [],
+  Burnley: [],
+  Hinckley_and_Bosworth: [],
+  Harrogate: [],
+  Warwick: [],
+  Manchester: [],
+  Antrim_and_Newtownabbey: [],
+  East_Ayrshire: [],
+  Falkirk: [],
+  Stirling: [],
+  Dundee_City: [],
+  Southampton: [],
+  Wycombe: [],
+  Blaby: [],
+  Daventry: [],
+  Ashfield: [],
+  Woking: [],
+  Salford: [],
+  Sheffield: [],
+  Calderdale: [],
+  Croydon: [],
+  Lambeth: [],
+  Sutton: [],
+  Causeway_Coast_and_Glens: [],
+  Mid_Ulster: [],
+  Neath_Port_Talbot: [],
+  Central_Bedfordshire: [],
+  Cheltenham: [],
+  Stroud: [],
+  Ashford: [],
+  South_Ribble: [],
+  Lincoln: [],
+  Norwich: [],
+  South_Norfolk: [],
+  Cherwell: [],
+  Chichester: [],
+  Horsham: [],
+  Birmingham: [],
+  Sandwell: [],
+  Wakefield: [],
+  Belfast: [],
+  Hartlepool: [],
+  Kingston_upon_Hull: [],
+  City_of: [],
+  Rutland: [],
+  West_Devon: [],
+  Basildon: [],
+  Brentwood: [],
+  New_Forest: [],
+  Rushmoor: [],
+  Kettering: [],
+  Hambleton: [],
+  Wigan: [],
+  Bromley: [],
+  Harrow: [],
+  Angus: [],
+  Conwy: [],
+  Luton: [],
+  Portsmouth: [],
+  Harlow: [],
+  Gedling: [],
+  Newark_and_Sherwood: [],
+  Cannock_Chase: [],
+  Newcastle_under_Lyme: [],
+  Mid_Sussex: [],
+  East_Hertfordshire: [],
+  Bexley: [],
+  Lewisham: [],
+  Lisburn_and_Castlereagh: [],
+  Orkney_Islands: [],
+  City_of_Edinburgh: [],
+  Isle_of_Anglesey: [],
+  Halton: [],
+  Thurrock: [],
+  Gravesham: [],
+  Tonbridge_and_Malling: [],
+  West_Lancashire: [],
+  North_West_Leicestershire: [],
+  North_Norfolk: [],
+  Lichfield: [],
+  Epsom_and_Ewell: [],
+  Crawley: [],
+  Rochdale: [],
+  Tameside: [],
+  Ealing: [],
+  Glasgow_City: [],
+  Warrington: [],
+  Nottingham: [],
+  Peterborough: [],
+  Medway: [],
+  East_Cambridgeshire: [],
+  Teignbridge: [],
+  Tewkesbury: [],
+  Wyre: [],
+  Tandridge: [],
+  North_Warwickshire: [],
+  Stevenage: [],
+  St_Helens: [],
+  Clackmannanshire: [],
+  Perth_and_Kinross: [],
+  Swansea: [],
+  West_Berkshire: [],
+  County_Durham: [],
+  South_Hams: [],
+  Colchester: [],
+  Basingstoke_and_Deane: [],
+  Tunbridge_Wells: [],
+  Rushcliffe: [],
+  Hillingdon: []
+}
+
+var LTLAS = [
+]
 
 dashboard.createDashboard = function (div, config) {
   
@@ -233,6 +627,7 @@ var createWidget = function (parentHtmlElementId, id, config) {
     return;
   }
 
+  
   var widgetConfig = widgets[0];
 
   // create convenience variable for 'data' that will be linked back
@@ -245,12 +640,22 @@ var createWidget = function (parentHtmlElementId, id, config) {
     return;
   }
 
+
+  // if(widgetConfig.visualization == dashboard.VIS_CARTOGRAM){
+  //   console.log('data[0]', data[0])
+  //   data = data.slice(0,10000);
+  //   console.log('data sliced', data.length)
+  // }
+
+
+
   // check for filter conditions on data
   if (widgetConfig.conditions && widgetConfig.conditions.length > 0) {
-    for (var i in widgetConfig.conditions) {
+    for (var i=0 ; i< widgetConfig.conditions.length ; i++) {
       data = executeCondition(data, widgetConfig.conditions[i]);
     }
   }
+
   console.log('>>> data', data)
 
   // SET WIDGET DEFAULT VALUES
@@ -285,11 +690,11 @@ var createWidget = function (parentHtmlElementId, id, config) {
   if(!widgetConfig.timeUnit)
     widgetConfig.timeUnit = dashboard.TIMEUNIT_DAY;
   
-  if(!widgetConfig.max)
-    widgetConfig.max = Math.max.apply(Math, widgetConfig.data.map(function(o) {return o[widgetConfig.dataField]; }));
-  console.log("max set");
-  console.log(widgetConfig.max)
-  
+    // ben: this seems to cause an error when too many elements are shown inside a barchart..
+  // if(!widgetConfig.max)
+  //   widgetConfig.max = Math.max.apply(Math, 
+  //     widgetConfig.data.map(function(o) {return o[widgetConfig.dataField]; }));
+
   if(!widgetConfig.min)
     widgetConfig.min = 0;
 
@@ -308,6 +713,7 @@ var createWidget = function (parentHtmlElementId, id, config) {
     return -1;
   }
 
+
   // convert all dates in to YYYY-MM-DD
   for (var i in data) {
     data[i][widgetConfig.dateField] = moment(data[i][widgetConfig.dateField], [
@@ -317,6 +723,18 @@ var createWidget = function (parentHtmlElementId, id, config) {
   }
   // sort array by date, first/earliest to last/most recent
   data.sort(byDate);
+  var latestDate = data[data.length-1][widgetConfig.dateField]
+
+  if (widgetConfig.filter && widgetConfig.filter.length > 0) {
+    for (var i=0 ; i< widgetConfig.filter.length ; i++) {
+      let filter = widgetConfig.filter[i]
+      if(filter == 'latest'){
+        data = data.filter(function(d){
+          return d[widgetConfig.dateField] == latestDate;
+        })
+      }
+    }
+  }
   
   // find last date in data set, i.e., when data has been updated last.
   var lastDateUpdated = moment(data[data.length - 1][widgetConfig.dateField], ["YYYY-MM-DD"]);
@@ -327,8 +745,10 @@ var createWidget = function (parentHtmlElementId, id, config) {
   // link data var back to widget
   widgetConfig.data = data;
 
+  console.log('> data', data)
+
   if (widgetConfig.visualization == dashboard.VIS_CARTOGRAM) {
-    dashboard.visulizeScotlandNHSBoardCartogram(
+    dashboard.visualizeMap(
       parentHtmlElementId, 
       widgetConfig,
       lastDateUpdated
@@ -621,26 +1041,28 @@ dashboard.visualizeTimeSeries = function (
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
 
-dashboard.visulizeScotlandNHSBoardCartogram = function (
+dashboard.visualizeMap = function (
   parentHtmlElementId, 
-  widgetConfig,
+  config,
   lastDateUpdated
-  //   id,
-  // title,
-  // color,
-  // data,
-  // normalized,
-  // detail,
-  // lastDate,
 ) {
-  // data comes in JSON
+  var loc = config.categories;
+  var dataField = config.dataField;
+
+  var width = 400;
+  var height = 400;
+
+  TILE_HEIGHT = 400 / 20;
+  TILE_WIDTH = 400 / 20;
+
+
   var svg = d3
     .select("#" + parentHtmlElementId)
     .append("svg")
-    .attr("width", TILE_WIDTH * 4)
-    .attr("height", 100 + TILE_HEIGHT * 7);
+    .attr("width", width)
+    .attr("height", height);
 
-    dashboardComponents.setWidgetTitle(svg, widgetConfig.title, null, widgetConfig.detail, lastDateUpdated);
+  dashboardComponents.setWidgetTitle(svg, config.title, null, config.detail, lastDateUpdated);
 
   svg
     .append("text")
@@ -649,107 +1071,138 @@ dashboard.visulizeScotlandNHSBoardCartogram = function (
     .attr("class", "thin")
     .text("per NHS Board");
 
-  // if (normalized) {
-  //   svg
-  //     .append("text")
-  //     .attr("x", 0)
-  //     .attr("y", baseline_title + 30 + LINE_HIGHT)
-  //     .attr("class", "thin")
-  //     .text("per 1000 people");
-  // }
-  let data = widgetConfig.data;
-  var current = data[data.length - 1];
-  var dataArray = [];
+  var data = config.data;
+  // var dataArray = [];
   var max = 0;
-  var min = 10000000;
+  var min = 999999999;
 
-  for (let r in current) {
-    if (!(r == "week commencing" || r == "date" || r == "index")) {
-      dataArray.push({ name: r, value: current[r] });
-      max = Math.max(max, current[r]);
-      min = Math.min(min, current[r]);
-    }
+  var notFound = []
+  for (let i = 0 ; i < data.length; i++) {
+      max = Math.max(max, data[i][dataField]);
+      min = Math.min(min, data[i][dataField]);
   }
-  console.log('>> dataArray', dataArray);
 
   var valueScale = d3.scaleLinear().domain([0, max]).range([0, 1]);
 
-  svg
-    .selectAll("rect")
-    .data(dataArray)
-    .enter()
-    .append("rect")
-    .style("stroke", "#ccc")
-    .style("fill", "#fff")
-    .attr("x", function (d) {
-      return TILEMAP_LAYOUT_SCOTLAND[d.name][1] * TILE_WIDTH;
-    })
-    .attr("y", function (d) {
-      return 100 + TILEMAP_LAYOUT_SCOTLAND[d.name][0] * TILE_HEIGHT;
-    })
-    .attr("width", TILE_WIDTH - TILE_GAP)
-    .attr("height", TILE_HEIGHT - TILE_GAP)
-    .on("mouseclick", function (d) {
-      window.open(PATH_NHSBOARD + d.name + ".html");
-    });
+  var map = TILEMAP_LAYOUT_SCOTLAND;
+  if(config.map == "uk_ltla"){
+    map = TILEMAP_LAYOUT_LTLAS;
+  } 
 
+  data.sort(function(d1,d2){
+    return d2[dataField] - d1[dataField]
+  })
+
+  var iCount = 0; 
+  var jCount = 0;
+  // svg
+  //   .selectAll("rect")
+  //   .data(data)
+  //   .enter()
+  //   .append("rect")
+  //   .style("stroke", "#ccc")
+  //   .style("fill", "#fff")
+  //   .attr("x", function (d) {
+  //     // console.log('d', d)
+  //     // var i = map[d[loc]][1];
+  //     // if(i==undefined){
+  //     var i = Math.round(iCount / 20);
+  //     console.log('i',i)
+  //     iCount++;
+  //     return i * TILE_WIDTH;
+  //   })
+  //   .attr("y", function (d) {
+  //     // console.log('d', d)
+  //     // var j = map[d[loc]][0];
+  //     // if(j==undefined) 
+  //     var j = jCount % 20;
+  //     jCount++
+  //     console.log('j',j)
+  //     return 100 + j * TILE_HEIGHT;
+  //   })
+  //   .attr("width", TILE_WIDTH - TILE_GAP)
+  //   .attr("height", TILE_HEIGHT - TILE_GAP)
+
+  iCount = 0;
+  jCount = 0;
   svg
     .selectAll(".rect")
-    .data(dataArray)
+    .data(data)
     .enter()
     .append("rect")
     .style("opacity", function (d) {
-      return valueScale(d.value);
+      return valueScale(d[dataField]);
     })
-    .style("fill", widgetConfig.color)
+    .style("fill", function(d){
+      var c = config.color;
+      // console.log(d[dataField])
+      // if (d[dataField] < 0){
+      //   c = '#777'
+      // }
+      return c;
+    }
+    )
     .attr("x", function (d) {
-      return TILEMAP_LAYOUT_SCOTLAND[d.name][1] * TILE_WIDTH;
+      // var i = map[d[loc]][1];
+      var i = Math.floor(iCount / 20);
+      iCount++
+      return i * TILE_WIDTH;
     })
     .attr("y", function (d) {
-      return 100 + TILEMAP_LAYOUT_SCOTLAND[d.name][0] * TILE_HEIGHT;
+      // var j = map[d[loc]][0];
+      var j = jCount % 20;
+      jCount++
+      return 100 + j * TILE_HEIGHT;
     })
     .attr("width", TILE_WIDTH - TILE_GAP)
     .attr("height", TILE_HEIGHT - TILE_GAP);
   svg.selectAll("rect");
 
-  svg
-    .selectAll(".cartogramLabel")
-    .data(dataArray)
-    .enter()
-    .append("text")
-    // .filter(function (d) {
-    //     return d.value == max
-    //         || d.value == min;
-    // })
-    .attr("class", "cartogramLabel")
-    .style("fill", function (d) {
-      return valueScale(d.value) >= 0.6 ? "#fff" : "#000";
-    })
-    .attr("x", function (d) {
-      return (
-        TILEMAP_LAYOUT_SCOTLAND[d.name][1] * TILE_WIDTH + TILE_HEIGHT * 0.05
-      );
-    })
-    .attr("y", function (d) {
-      return (
-        100 +
-        TILEMAP_LAYOUT_SCOTLAND[d.name][0] * TILE_HEIGHT +
-        TILE_HEIGHT * 0.8
-      );
-    })
-    .text(function (d) {
-      if (d.value < 9) {
-        return Math.round(d.value * 10) / 10;
-      } else if (d.value < 999) {
-        return Math.round(d.value);
-      } else {
-        return Math.round(Math.round(d.value) / 1000) + "k";
-      }
-    })
-    .filter(function (d) {
-      return !(d.value == max || d.value == min);
-    })
-    .attr("class", "cartogramLabel-nonextremes");
+  // waiting for Jason's cartogram map
+  // svg
+  //   .selectAll(".cartogramLabel")
+  //   .data(dataArray)
+  //   .enter()
+  //   .append("text")
+  //   // .filter(function (d) {
+  //   //     return d.value == max
+  //   //         || d.value == min;
+  //   // })
+  //   .attr("class", "cartogramLabel")
+  //   .style("fill", function (d) {
+  //     return valueScale(d.value) >= 0.6 ? "#fff" : "#000";
+  //   })
+  //   .attr("x", function (d) {
+  //     // return (
+  //     //   TILEMAP_LAYOUT_SCOTLAND[d.name][1] * TILE_WIDTH + TILE_HEIGHT * 0.05
+  //     // );
+  //     var j = jCount % 20;
+  //     jCount++
+  //     return 100 + j * TILE_HEIGHT;
+  //   })
+  //   .attr("y", function (d) {
+  //     // return (
+  //     //   100 +
+  //     //   TILEMAP_LAYOUT_SCOTLAND[d.name][0] * TILE_HEIGHT +
+  //     //   TILE_HEIGHT * 0.8
+  //     // );
+  //     var j = jCount % 20;
+  //     jCount++
+  //     return 100 + j * TILE_HEIGHT;
+  //   })
+  //   .text(function (d) {
+  //     if (d[dataField] < 9) {
+  //       return Math.round(d[dataField] * 10) / 10;
+  //     } else if (d[dataField] < 999) {
+  //       return Math.round(d[dataField]);
+  //     } else {
+  //       return Math.round(Math.round(d[dataField]) / 1000) + "k";
+  //     }
+  //   })
+  //   .filter(function (d) {
+  //     return !(d[dataField] == max || d[dataField] == min);
+  //   })
+  //   .attr("class", "cartogramLabel-nonextremes");
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -768,11 +1221,14 @@ dashboard.visualizeBarChart = function (
   widgetConfig,
   lastDateUpdated
 ) {
+  console.log('>> VISUALIZE BARCHART')
   var random = Math.floor(Math.random() * 1000);
   var wrapperDiv = d3
     .select("#" + parentHtmlElementId)
     .append("div")
     .attr("id", "wrapperDiv" + random);
+
+  console.log('data')
 
   var svg = wrapperDiv
     .append("svg")
@@ -819,6 +1275,7 @@ dashboard.visualizeBarChart = function (
         field: widgetConfig.categories,
         type: "nominal",
         title: "",
+        sort: widgetConfig.sort
       },
       x: {
         field: widgetConfig.dataField,

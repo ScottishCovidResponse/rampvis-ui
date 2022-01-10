@@ -15,13 +15,11 @@ import {
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import TableViewIcon from "@mui/icons-material/TableView";
 import { blue } from "@mui/material/colors";
-import moment from "moment";
 import _ from "lodash";
 import { GetStaticPaths, GetStaticProps } from "next";
 import useSettings from "src/hooks/useSettings";
-import { apiService } from "src/utils/ApiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
-import PropagatedPageTable from "src/components/PropagatedPageTable";
+import PropagatedPageTable from "src/components/propagated-page/PropagatedPageTable";
 
 const useStyles = makeStyles({
   root: {
@@ -39,51 +37,11 @@ const useStyles = makeStyles({
 });
 
 const PropagatedPageList = () => {
-  // const mounted = useMounted();
   const { settings } = useSettings();
   const classes = useStyles();
   const router = useRouter();
   const visType =
     typeof router.query.visType === "string" ? router.query.visType : undefined;
-  const [pages, setPages] = useState<any>([]);
-  const [loading, setLoading] = useState(false);
-
-  const pageType = "all";
-  const url = `${process.env.NEXT_PUBLIC_API_JS}/template/pages/${pageType}/${visType}`;
-  console.log("PageListTemplate: visType = ", visType, ", API url = ", url);
-
-  const fetchOntoPages = useCallback(async () => {
-    try {
-      setLoading(true);
-      const res = await apiService.get(url);
-      console.log("PageListTemplate: fetched data = ", res);
-
-      const pages = res.data.map((d) => {
-        const { id, date } = d;
-        return {
-          id,
-          function: d?.vis?.function,
-          type: d?.vis?.type,
-          title: d?.title,
-          pageType: d?.pageType,
-          date: moment(date).format("DD-MM-YYYY"),
-        };
-      });
-
-      console.log("rows = ", pages);
-      setPages(pages);
-      setLoading(false);
-    } catch (err) {
-      // prettier-ignore
-      console.error(`PageListTemplate: Fetching API ${url}, error = ${err}`);
-      setLoading(false);
-    }
-  }, [url]);
-
-  useEffect(() => {
-    console.log("PageListTemplate: useEffect:");
-    fetchOntoPages();
-  }, [fetchOntoPages]);
 
   return (
     <>
@@ -113,12 +71,12 @@ const PropagatedPageList = () => {
                       <TableViewIcon />
                     </Avatar>
                   }
-                  title={visType ? _.startCase(visType) : _.startCase(pageType)}
+                  title={visType && _.startCase(visType)}
                   subheader={`List of propagated ${visType} visualizations`}
                 />
 
                 <CardContent sx={{ pt: "8px" }}>
-                  <PropagatedPageTable loading={loading} data={pages} />
+                  <PropagatedPageTable visType={visType} />
                 </CardContent>
               </Card>
             </Grid>

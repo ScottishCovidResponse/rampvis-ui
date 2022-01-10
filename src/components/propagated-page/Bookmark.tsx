@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { FC, useCallback, useState, useEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import { createStyles, IconButton, Theme } from "@mui/material";

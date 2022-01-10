@@ -8,5 +8,5 @@ export interface IOntoData {
   date: Date;
   keywords: string[];
   links?: ILink[];
-  values: any;
+  values?: any;
 }
