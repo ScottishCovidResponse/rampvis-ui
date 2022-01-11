@@ -8,7 +8,7 @@ import { LookupTable } from "src/components/story-boards/LookupTable";
 import { SemanticEvent } from "src/components/story-boards/SemanticEvent";
 import { Peak } from "src/components/story-boards/Peak";
 
-const Public = () => {
+const StoryBoards = () => {
   useEffect(() => {
     async function readCSVData() {
       const response = await fetch(
@@ -43,7 +43,7 @@ const Public = () => {
         .setHeight(100);
 
       // Use the table to lookup Peak event and generate output
-      let output = table.generateOutput(peak);
+      const output = table.generateOutput(peak);
 
       console.log(output);
     }
@@ -79,4 +79,4 @@ const Public = () => {
   );
 };
 
-export default Public;
+export default StoryBoards;
