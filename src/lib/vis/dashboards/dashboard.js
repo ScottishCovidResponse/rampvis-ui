@@ -271,6 +271,7 @@ var createWidget = function (parentHtmlElementId, id, config) {
 
   // order data by date:
   function byDate(a, b) {
+    console.log("ordering by date")
     var ma = moment(a[widgetConfig.dateField], ["YYYYMMDD", "YYYY-MM-DD"]);
     var mb = moment(b[widgetConfig.dateField], ["YYYYMMDD", "YYYY-MM-DD"]);
     if (ma.isAfter(mb)) {
@@ -876,22 +877,22 @@ dashboard.visualizeProgress = function (
     if(config.layout == dashboard.LAYOUT_HORIZONTAL)
     {
       if(isTimeseries)
-    {
+      {
       dashboardComponents.visualizeTrendArrow(
         svg,
         config,
         WIDTH_HIGH-100,
         BASELINE_LARGE_NUMBER,
       );
-    }
+      }
 
-    dashboardComponents.visualizeNumber(
-      svg,
-      config,
-      0,
-      BASELINE_LARGE_NUMBER,
-      FONT_SIZE_BIG
-    );  
+      dashboardComponents.visualizeNumber(
+        svg,
+        config,
+        0,
+        BASELINE_LARGE_NUMBER,
+        FONT_SIZE_BIG
+      );  
 
     console.log('data', dataObj, config.data)
 
@@ -1194,7 +1195,7 @@ dashboard.visualizeProgressGrid = function (
       dataObj = config.data[config.data.length - 1];
       currentValue = config.data[config.data.length - 1][config.dataField]/config.max * 100;
       proportion = config.data[config.data.length - 1][config.dataField]/config.max;
-      upto_index = parseInt(currentValue)
+      upto_index = parseInt(proportion * 100)
       width = 120;
     }else{
       dataObj = config.data;
@@ -1406,8 +1407,12 @@ dashboardComponents.visualizeNumber = function (
         dashboardComponents.setLabel(g, "New this month", 0, BASELINE_LABELS);
   }
 
-
   var val = config.data[config.data.length - 1][config.dataField];
+  // console.log("WORK")
+  // console.log(config.data)
+  // console.log(config.data[config.data.length - 1])
+  // console.log(config.layout)
+  // console.log(val)
   
   // abbreviate if required
   if (val > 1000000 && config.abbreviate) {
