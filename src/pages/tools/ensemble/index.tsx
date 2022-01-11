@@ -135,6 +135,23 @@ const Ensemble = () => {
     const scatter = visFactory("HeatMap", options);
   }, []);
 
+  const stackedBarChart = useCallback(async () => {
+    const metadata = await controller.getMetaData();
+    const table_data = metadata.posterior_parameters;
+
+    const table_keys = Object.keys(table_data[0]);
+
+    const options = {
+      chartElement: "stacked_chart",
+      data: table_data,
+      columns: table_keys,
+      retainedDimensions: ["Index"],
+      controller: controller,
+    };
+
+    const stacked = visFactory("StackedChart", options);
+  }, []);
+
   const datasetList = useCallback(async () => {
     const datasetNames = await controller.getDatasetList();
     const datasetListElement = document.getElementById("dataset_list");
@@ -155,6 +172,7 @@ const Ensemble = () => {
     scatterPlot();
     tablePlot();
     heatMap();
+    stackedBarChart();
   }, [
     datasetList,
     lineChart,
@@ -163,6 +181,7 @@ const Ensemble = () => {
     scatterPlot,
     tablePlot,
     heatMap,
+    stackedBarChart,
   ]);
 
   const setDatasetName = useCallback(async (event) => {
@@ -211,6 +230,7 @@ const Ensemble = () => {
                   <div id="table_plot" />
                 </div>
               </div>
+              <div id="stacked_chart" />
               <div id="heatmap_chart" />
             </CardContent>
           </Card>

@@ -16,7 +16,6 @@ import * as d3 from "d3";
 import { Data } from "../data";
 import { dashboard } from "./dashboard";
 import { colors } from "../colors.js";
-import { getLinks } from "src/utils/LinkService";
 
 // import "./css/dashboard.css";
 // import "./css/default-dashboard.css";
@@ -31,15 +30,6 @@ export class DashboardScotland {
   CHART_HEIGHT = 400;
 
   constructor(options) {
-    console.log("Input data", options.data);
-
-    console.log(`CouncilOverview: options.data = `, options.data);
-    for (let d of options.data) {
-       getLinks(d.id).then(link => {
-        console.log(`CouncilOverview: data id = ${d.id}, link = ${link}`);
-      })
-    }
-
 
     var div = d3
       .select("#" + options.chartElement)
