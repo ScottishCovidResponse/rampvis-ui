@@ -98,19 +98,22 @@ export class DashboardUK {
       return w;
     };
 
+    console.log('>> options', options)
+
+    // create links array
     setTimeout(function () {
       // 2. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
       var config = {
-        // links: []
+        links: options.childrenLinks,
         layout: [
           [
           "cases", 
           "admissions", 
           "deaths"
-        ], 
+          ], 
           [
             "vacc",
-            "ltla"
+            // "ltla"
           ] 
         ],
         groups: [

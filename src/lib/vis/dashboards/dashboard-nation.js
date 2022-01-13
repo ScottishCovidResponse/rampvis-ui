@@ -41,30 +41,31 @@ export class DashboardNation {
   
     var cumAdmissions = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumAdmissions&format=csv'
     var cumCasesBySpecimenDate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumCasesBySpecimenDate&format=csv"
-    // var cumDeaths28DaysByDeathDateRate ="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumDeaths28DaysByDeathDateRate&format=csv"
     var cumOnsDeathsByRegistrationDate="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumOnsDeathsByRegistrationDate&format=csv"
+    var cumVaccinationFirstDoseUptakeByVaccinationDatePercentage="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&format=csv"
+    var cumVaccinationSecondDoseUptakeByVaccinationDatePercentage ="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&format=csv"
+    var cumVaccinationThirdInjectionUptakeByPublishDatePercentage="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumVaccinationThirdInjectionUptakeByPublishDatePercentage&format=csv"
+    // var hospitalCases="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=hospitalCases&format=csv"
+    // var transmissionRateMax="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=transmissionRateMax&format=csv"
+    // var transmissionRateMin="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=transmissionRateMin&format=csv"
+    // var cumDeaths28DaysByDeathDateRate ="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumDeaths28DaysByDeathDateRate&format=csv"
     // var cumOnsDeathsByRegistrationDateRate="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumOnsDeathsByRegistrationDateRate&format=csv"
     // var cumVaccinationFirstDoseUptakeByPublishDatePercentage="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumVaccinationFirstDoseUptakeByPublishDatePercentage&format=csv"
     // var cumVaccinationSecondDoseUptakeByPublishDatePercentage="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumVaccinationSecondDoseUptakeByPublishDatePercentage&format=csv"
     // var cumVaccinationThirdDoseUptakeByPublishDatePercentage="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumVaccinationThirdDoseUptakeByPublishDatePercentage&format=csv"
-    var cumVaccinationFirstDoseUptakeByVaccinationDatePercentage="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&format=csv"
-    var cumVaccinationSecondDoseUptakeByVaccinationDatePercentage ="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&format=csv"
-    var cumVaccinationThirdInjectionUptakeByPublishDatePercentage="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumVaccinationThirdInjectionUptakeByPublishDatePercentage&format=csv"
-    var hospitalCases="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=hospitalCases&format=csv"
-    var transmissionRateMax="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=transmissionRateMax&format=csv"
-    var transmissionRateMin="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=transmissionRateMin&format=csv"
-
+    
     var newAdmissions = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=newAdmissions&format=csv'
     var newCasesBySpecimenDate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=newCasesBySpecimenDate&format=csv"
-    // var newDeaths28DaysByDeathDateRate ="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumDeaths28DaysByDeathDateRate&format=csv"
     var newOnsDeathsByRegistrationDate="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=newOnsDeathsByRegistrationDate&format=csv"
+    var newPeopleVaccinatedFirstDoseByVaccinationDate="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=newPeopleVaccinatedFirstDoseByVaccinationDate&format=csv"
+    var newPeopleVaccinatedSecondDoseByVaccinationDate ="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=newPeopleVaccinatedSecondDoseByVaccinationDate&format=csv"
+    var newPeopleVaccinatedThirdInjectionByVaccinationDate="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=newPeopleVaccinatedThirdInjectionByVaccinationDate&format=csv"
+  
+    // var newDeaths28DaysByDeathDateRate ="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumDeaths28DaysByDeathDateRate&format=csv"
     // var newOnsDeathsByRegistrationDateRate="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumOnsDeathsByRegistrationDateRate&format=csv"
     // var newVaccinationFirstDoseUptakeByPublishDatePercentage="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumVaccinationFirstDoseUptakeByPublishDatePercentage&format=csv"
     // var newVaccinationSecondDoseUptakeByPublishDatePercentage="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumVaccinationSecondDoseUptakeByPublishDatePercentage&format=csv"
     // var newVaccinationThirdDoseUptakeByPublishDatePercentage="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumVaccinationThirdDoseUptakeByPublishDatePercentage&format=csv"
-    var newPeopleVaccinatedFirstDoseByVaccinationDate="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=newPeopleVaccinatedFirstDoseByVaccinationDate&format=csv"
-    var newPeopleVaccinatedSecondDoseByVaccinationDate ="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=newPeopleVaccinatedSecondDoseByVaccinationDate&format=csv"
-    var newPeopleVaccinatedThirdInjectionByVaccinationDate="https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=newPeopleVaccinatedThirdInjectionByVaccinationDate&format=csv"
 
     d3.csv(cumAdmissions).then(function (data) {
       cumAdmissions = data;
@@ -106,29 +107,15 @@ export class DashboardNation {
     });
 
     
+    
+    console.log('>> options', options)
    
 
     https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=vaccinationsAgeDemographics&format=csv
     // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
     setTimeout(function () {
       var config = {
-        links: [
-          {
-            name: "UK", 
-            url: "http://localhost:3000/page?id=61b5e06d224b6283197d3a82"
-          },{
-            name: "Ayrshire and Arran", 
-            url: "http://localhost:3000/page?id=60aea734592fa23aea1c8c2d"
-          },
-          {
-            name: "Orkney", 
-            url: "http://localhost:3000/page?id=60aea7208839aa3ae916e22f"
-          },
-          {
-            name: "Tayside", 
-            url: "http://localhost:3000/page?id=60aea629da3d623ac9941f39"
-          }
-        ],
+        links: options.childrenLinks,
         layout: [
           [
           "cases", 

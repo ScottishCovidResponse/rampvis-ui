@@ -38,6 +38,7 @@ export class Data {
     HEALTH_BOARD_VACCINE_SEX_AGEGROUP_ALL:
       "vaccination&component=daily_health_boards",
 
+    // UK DATA
     PHE_UK_CUM_ADMISSIONS: "product=phe/overview&component=cumAdmissions&",
     PHE_UK_CUM_CASES: "product=phe/overview&component=cumCasesBySpecimenDate&",
     PHE_UK_CUM_DEATHS_28_DAYS: "product=phe/overview&component=cumDeaths28DaysByDeathDate&",
@@ -51,11 +52,34 @@ export class Data {
     PHE_UK_NEW_VACC_SECOND: "product=phe/overview&component=newPeopleVaccinatedSecondDoseByPublishDate&",
     PHE_UK_NEW_VACC_THIRD: "product=phe/overview&component=newPeopleVaccinatedThirdInjectionByPublishDate&",
 
+    // NATION DATA
+    // Phong...
+    PHE_NATION_NEW_ADMISSIONS: [],
+    PHE_NATION_NEW_CASES: [],
+    PHE_NATION_NEW_DEATHS: [],
+    PHE_NATION_NEW_VACC_1: [],
+    PHE_NATION_NEW_VACC_2: [],
+    PHE_NATION_NEW_VACC_3: [],
+
+    PHE_NATION_CUM_ADMISSIONS: [],
+    PHE_NATION_CUM_CASES: [],
+    PHE_NATION_CUM_DEATHS: [],
+    PHE_NATION_CUM_VACC_1: [],
+    PHE_NATION_CUM_VACC_2: [],
+    PHE_NATION_CUM_VACC_3: [],
+
+    // UTLA DATA
+    // Phong...
+
+
+    // LTLA DATA
     PHE_LTLA_NEW_CASES: ["product=phe/ltla/", "component=newCasesBySpecimenDate&"],
     PHE_LTLA_NEW_DEATHS: ["product=phe/ltla/", "component=newWeeklyNsoDeathsByRegDate&"],
     PHE_LTLA_NEW_VACCINATION: ["product=phe/ltla/", "component=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&"],
     PHE_LTLA_NEW_VACC_AGE_DEMOGRAPHICS: ["product=phe/ltla/", "component=vaccinationsAgeDemographics&"],
 
+    // MSOA DATA
+    // Phong...
     PHE_MSOA_ALL: "areaType=msoa"
   };
   

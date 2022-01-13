@@ -25,9 +25,9 @@ import { DashboardScotlandNew } from "./dashboards/dashboard-scotlandNew";
 import { DashboardScotlandVaccination } from "./dashboards/dashboard-scotlandVaccination";
 import { DashboardUK } from "./dashboards/dashboard-UK";
 import { DashboardTian } from "./dashboards/dashboard-tian";
-import { DashboardLowerTierLocalAuthority } from "./dashboards/dashboard-lowerTierLocalAuthority";
+import { DashboardUpperTierLocalAuthority } from "./dashboards/dashboard-UTLA";
 import { DashboardMSOA } from "./dashboards/dashboard-msoa";
-import { DashboardNHSEnglandRegion } from "./dashboards/dashboard-nhsEnglandRegion"
+import { DashboardEnglandNHSRegion } from "./dashboards/dashboard-englandNHSRegion"
 import { DashboardNation } from "./dashboards/dashboard-nation"
 
 
@@ -69,9 +69,10 @@ export const visFactory = (type, args) => {
   if (type === "CountryOverviewNew") return new DashboardTian(args);
   // if (type === "VaccineOverview") return new DashboardScotlandVaccination(args);
   if (type === "DashboardUK") return new DashboardUK(args);
-  if (type === "DashboardLTLA") return new DashboardLowerTierLocalAuthority(args);
+  if (type === "DashboardNation") return new DashboardNation(args);
+  if (type === "DashboardEnglandNHSRegion") return new DashboardEnglandNHSRegion(args);
+  if (type === "DashboardUTLA") return new DashboardUpperTierLocalAuthority(args);
   if (type === "DashboardMSOA") return new DashboardMSOA(args);
-  if (type === "VaccineOverview") return new DashboardNation(args);
   if (type === "DashboardRiskMonitoring") return new DashboardRiskMonitoring(args);
 
   return null;

@@ -23,7 +23,7 @@ import { dashboard } from "./dashboard";
 import { colors} from "../colors.js";
 
 // 1. Give class a name
-export class DashboardLowerTierLocalAuthority{
+export class DashboardUpperTierLocalAuthority{
   CHART_WIDTH = 1000;
   CHART_HEIGHT = 400;
 
@@ -47,6 +47,24 @@ export class DashboardLowerTierLocalAuthority{
     // cumVaccinationCompleteCoverageByVaccinationDatePercentage
     // cumVaccinationSecondDoseUptakeByVaccinationDatePercentage
 
+    // cumCases = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=cumCasesBySpecimenDate&format=csv'
+    // newCases = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=newCasesBySpecimenDate&format=csv'
+
+    // cumDeaths = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=cumDeaths28DaysByDeathDate&format=csv'
+    // newDeaths = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=newDeaths28DaysByDeathDate&format=csv'
+
+    // cumVaccOnePerc = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&format=csv'
+    // cumVaccTwoPerc = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&format=csv'
+    // cumVaccThreePerc = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=cumVaccinationThirdInjectionUptakeByVaccinationDatePercentage&format=csv'
+
+    // newVaccOne = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=newPeopleVaccinatedFirstDoseByVaccinationDate&format=csv'
+    // newVaccTwo = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=newPeopleVaccinatedSecondDoseByVaccinationDate&format=csv'
+    // newVaccThird = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=newPeopleVaccinatedThirdInjectionByVaccinationDate&format=csv'
+
+
+    console.log(':: options', options)
+
+    
     // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
     var config = {
         layout: [[

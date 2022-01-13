@@ -24,7 +24,7 @@
 /* eslint-disable prefer-spread */
 /* eslint-disable @typescript-eslint/lines-between-class-members */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { height } from "@mui/system";
+// import { height } from "@mui/system";
 import * as d3 from "d3";
 import moment from "moment";
 // import "./css/dashboard.css";
@@ -504,20 +504,24 @@ dashboard.createDashboard = function (div, config) {
   
   // CREATE RELATED LINKS   
   var globalLinks = config.links; 
-  if(globalLinks != undefined && globalLinks.length > 1){
+
+  if(globalLinks != undefined && globalLinks.length > 0)
+  {
     div.append('span')
-      .text('[WIP] Related Dashboards:')
+      .text('Related Dashboards:')
       .style('font-weight', 'bold')
-  }
-  // if(globalLinks.length < 2)
-  // {
-    for(var i in globalLinks){
-      div.append('a')
-        .attr('href', globalLinks[i].url)
-        .attr('target',"_blank")
-        .text(globalLinks[i].name)
-        .style('margin-left', '10px')
+      
+    for(var i in globalLinks)
+    {
+        div.append('a')
+          .attr('href', globalLinks[i].url)
+          .attr('target',"_blank")
+          .text(globalLinks[i].name)
+          .style('margin-left', '10px')
     }
+  }
+
+
   // }else{
   //   var select = div.append('select')
   //     .style('margin-left', '10px')
@@ -1053,7 +1057,7 @@ dashboard.visualizeMap = function (
   var height = 400;
 
   TILE_HEIGHT = 400 / 20;
-  TILE_WIDTH = 400 / 20;
+  TILE_WIDTH = (400 - 40) / 20;
 
 
   var svg = d3
@@ -1203,6 +1207,24 @@ dashboard.visualizeMap = function (
   //     return !(d[dataField] == max || d[dataField] == min);
   //   })
   //   .attr("class", "cartogramLabel-nonextremes");
+
+  // Create map legend
+  
+  svg.selectAll('.legendCircles') 
+    .data([
+      min,
+      (max-min)/2,
+      max
+    ])
+    .enter()
+    .append('circle')
+      .attr('r', 5)
+      .attr('cx', 0)
+      .attr('cy', function(d,i){
+        return width - 20 + i*30
+      })
+      .style('fill', function(d){return valueScale(d);})
+    
 };
 
 ////////////////////////////////////////////////////////////////////////

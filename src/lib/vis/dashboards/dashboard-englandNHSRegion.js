@@ -23,7 +23,7 @@ import { dashboard } from "./dashboard";
 import { colors, DEATHS } from "../colors.js";
 
 // 1. Give class a name
-export class DashboardNHSEnglandRegion {
+export class DashboardEnglandNHSRegion {
   CHART_WIDTH = 1000;
   CHART_HEIGHT = 400;
 
@@ -89,10 +89,12 @@ export class DashboardNHSEnglandRegion {
       uniqueCasePositivityBySpecimenDateRollingSum = data;
     });
     
+    console.log(':: options', options)
 
     // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
     setTimeout(function () {
       var config = {
+        links: options.childrenLinks,
         layout: [['cases',['vaccinations','deaths']]],
         groups: [
           {

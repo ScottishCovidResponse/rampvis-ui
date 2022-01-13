@@ -42,6 +42,7 @@ export class DashboardScotlandCouncil {
     );
 
     var config = {
+      links: [options.parentLink],
       layout: [
         ["council", "vaccinations-total"],
         "vaccinations-agegroup",
