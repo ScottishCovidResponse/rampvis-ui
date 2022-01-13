@@ -12,6 +12,10 @@ import { SensitivityStackedBarChart } from "./sensitivity-stacked-bar-chart";
 import { DashboardRiskMonitoring } from "./dashboards/dashboard-riskMonitoring";
 import { UncertaintySampleAndMean } from "./uncertainty-sample-and-mean";
 import { UncertaintyClusterSampleAndMean } from "./uncertainty-cluster-sample-and-mean";
+import { SensitivityParameterRangeChart } from  "./sensitivity-parameter-range-chart";
+import { SensitivityParameterRangeSampleMean } from "./sensitivity-parameter-range-mean-sample";
+import { SensitivityParameterRangeTickChart } from  "./sensitivity-parameter-range-tick-chart";
+import { SensitivityParameterRangeTickSampleMean } from "./sensitivity-parameter-range-tick-mean-sample";
 
 // Dashboards
 import { DashboardScotlandCouncil } from "./dashboards/dashboard-scotlandCouncil";
@@ -48,6 +52,14 @@ export const visFactory = (type, args) => {
     return new UncertaintySampleAndMean(args);
   if (type == "UncertaintyClusterSampleAndMean")
     return new UncertaintyClusterSampleAndMean(args);
+  if (type == "SensitivityParameterRangeChart")
+    return new SensitivityParameterRangeChart(args);
+  if (type == "SensitivityParameterRangeSampleMean")
+    return new SensitivityParameterRangeSampleMean(args);
+  if (type == "SensitivityParameterRangeTickChart")
+    return new SensitivityParameterRangeTickChart(args);
+  if (type == "SensitivityParameterRangeTickSampleMean")
+    return new SensitivityParameterRangeTickSampleMean(args);
     
   // Dashboards
   if (type === "DashboardScotlandCouncil") return new DashboardScotlandCouncil(args);

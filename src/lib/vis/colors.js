@@ -24,6 +24,21 @@ colors.get = function (dataType, value) {
       return this.getCaseColor();
     case "cases":
       return this.getCaseColor();
+    // ensemble colors
+    case "susceptible":
+      return this.getSusceptibleColor();
+    case "exposed":
+      return this.getExposedColor();
+    case "hospitalized":
+      return this.getHospitalizedColor();
+    case "recovered":
+      return this.getRecoveredColor();
+    case "death":
+      return this.getDeathColor();
+    case "asymptomatic":
+      return this.getAsymptomaticColor();
+    case "symptomatic":
+      return this.getSymptomaticColor();
   }
 };
 
