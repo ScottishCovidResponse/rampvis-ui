@@ -4,6 +4,8 @@
 
 import * as d3 from "d3";
 import { Fall } from "./Fall";
+import minIndex from "./min-index";
+import maxIndex from "./max-index";
 import { Peak } from "./Peak";
 import { Rise } from "./Raise";
 
@@ -46,7 +48,7 @@ export const detectPeakEnd = (peakIdx, norm) => {
 
   // Extract line segment
   const segment = norm.slice(peakIdx, i + 1);
-  const minIdx = peakIdx + d3.minIndex(segment);
+  const minIdx = peakIdx + minIndex(segment);
 
   return Math.min(Math.min(i, minIdx), norm.length - 1);
 };
@@ -72,7 +74,7 @@ export const detectPeakStart = (peakIdx, norm) => {
 
   // Extract line segment
   let segment = norm.slice(i, peakIdx);
-  let minIdx = i + d3.minIndex(segment);
+  let minIdx = i + minIndex(segment);
 
   return Math.max(Math.max(i, minIdx), 0);
 };
@@ -203,8 +205,8 @@ export const detectFalls = (timeSeriesData, metric = undefined) => {
 
     // Extract line segment
     segment = norm.slice(start, end + 1);
-    maxIdx = start + d3.maxIndex(segment);
-    minIdx = start + d3.minIndex(segment);
+    maxIdx = start + maxIndex(segment);
+    minIdx = start + minIndex(segment);
 
     // Trim line so no overflowing segements
     start = Math.max(maxIdx, start); // Should start at the highest point
@@ -285,8 +287,8 @@ export const detectRises = (timeSeriesData, metric = undefined) => {
 
     // Extract line segment
     segment = norm.slice(start, end + 1);
-    maxIdx = start + d3.maxIndex(segment);
-    minIdx = start + d3.minIndex(segment);
+    maxIdx = start + maxIndex(segment);
+    minIdx = start + minIndex(segment);
 
     // Trim line so no overflowing segements
     start = Math.max(minIdx, start); // Should start at the minimum point
@@ -326,12 +328,27 @@ export const detectRises = (timeSeriesData, metric = undefined) => {
   From this selection we will return an array data events representing detected features in the data.
 */
 export const detectFeatures = function (timeSeriesData, options) {
+  // let a = detectRises(timeSeriesData);
+  // a = detectFalls(timeSeriesData);
+  // a = detectPeaks(timeSeriesData);
+
   const features = []
     .concat(options.rises ? detectRises(timeSeriesData) : [])
     .concat(options.falls ? detectFalls(timeSeriesData) : [])
     .concat(options.peaks ? detectPeaks(timeSeriesData) : []);
 
-  if (options.metric) features.forEach((f) => f.setMetric(options.metric));
+  // console.log("features 1 = ", features);
+
+  if (options.metric) {
+    features.forEach((f) => f.setMetric(options.metric));
+  }
+
+  // console.log("features 2 = ", features);
+
+  // console.log(
+  //   "features 3 = ",
+  //   features.sort((e1, e2) => e1.rank - e2.rank),
+  // );
 
   return features.sort((e1, e2) => e1.rank - e2.rank);
 };

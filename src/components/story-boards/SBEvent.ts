@@ -6,7 +6,7 @@ export class SBEvent {
   protected _rank;
   protected _type;
 
-  constructor(date, start = 0, end = 0) {
+  constructor(date, start = undefined, end = undefined) {
     this._date = date;
     this._start = start;
     this._end = end;

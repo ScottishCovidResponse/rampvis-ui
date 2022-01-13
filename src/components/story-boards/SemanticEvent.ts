@@ -13,7 +13,12 @@ export class SemanticEvent extends SBEvent {
     };
   }
 
-  constructor(date, rank, description, type = SemanticEvent.TYPES.DEFAULT) {
+  constructor(
+    date,
+    rank = undefined,
+    description = undefined,
+    type = SemanticEvent.TYPES.DEFAULT,
+  ) {
     super(date);
     this._type = type;
     this._rank = rank;

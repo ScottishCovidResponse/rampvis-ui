@@ -2,6 +2,8 @@
 // Ported from https://observablehq.com/@scottwjones/ranked-time-series-aggregation-and-segmentation
 //
 
+import { detectPeaks } from "./utils-feature-detection";
+
 export const splitDataAndEvents = (events, splits, timeSeriesData) => {
   const segNum = splits.length + 1;
 
@@ -40,7 +42,7 @@ export const peakSegment = (
   );
 
   // Copy important properties and calculate peak position/index
-  export const peaksCpy = peaks.map((o) => {
+  const peaksCpy = peaks.map((o) => {
     return {
       idx: findDateIdx(o._date, timeSeriesData),
       h: o._normHeight,
