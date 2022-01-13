@@ -46,7 +46,7 @@ export class StackedChart {
         const indices = [];
         const arrayValues = [];
 
-        for (var i = 1; i < options.data.length; i++) {
+        for (var i = 0; i < options.data.length; i++) {
             var row = (options.data)[i];
             var index = row["Index"];
 
@@ -54,7 +54,7 @@ export class StackedChart {
             var arrayValue = {};
             arrayValue["index"] = index;
 
-            for (var j = 0; j < columns.length; j++) {
+            for (var j = 1; j < columns.length; j++) {
                 var column = columns[j]
                 var value = row[column]
                 var scaledValue = ((value - minValues[j]) / (maxValues[j] - minValues[j])) * 30;
@@ -109,8 +109,7 @@ export class StackedChart {
             .selectAll("text")
             .style("text-anchor", "end")
             .attr("dx", "-.8em")
-            .attr("dy", ".15em")
-            .attr("transform", "rotate(-65)");
+            .attr("transform", "rotate(-15)");
 
         
         // Show the bars
