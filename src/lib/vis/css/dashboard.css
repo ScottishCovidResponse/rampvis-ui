@@ -16,15 +16,6 @@ table.dashboardLayout td * {
   text-align: left;
 }
 
-table.dashboardLayout td {
-  padding-right: 50px;
-  width: 0px;
-}
-
-table.dashboardLayout svg {
-  margin-right: 20px;
-  margin-bottom: 20px;
-}
 
 .separator {
   stroke: #ddd;

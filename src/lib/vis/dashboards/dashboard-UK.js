@@ -212,7 +212,7 @@ export class DashboardUK {
           ),
           {
             id:"admissionsNations",
-            title: "New admissions per nation today",
+            title: "New admissions today",
             dataField: "newAdmissionsRollingSum",
             cumulative: true,
             timeUnit: dashboard.TIMEUNIT_DAY,
@@ -324,7 +324,7 @@ export class DashboardUK {
           },
           {
             id:"casesNations",
-            title: "Cases change per nation",
+            title: "Change in cases from yesterday",
             dataField: "newCasesBySpecimenDateChangePercentage",
             cumulative: true,
             timeUnit: dashboard.TIMEUNIT_DAY,
