@@ -6,7 +6,13 @@ export class Peak extends DataEvent {
   _normWidth;
   _normDuration;
 
-  constructor(date, start, end, metric = 0, height = 0) {
+  constructor(
+    date = undefined,
+    start = undefined,
+    end = undefined,
+    metric = 0,
+    height = 0,
+  ) {
     super(date, start, end, metric);
     this._type = DataEvent.TYPES.PEAK;
     this._height = height;

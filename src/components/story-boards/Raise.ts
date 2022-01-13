@@ -5,7 +5,14 @@ export class Rise extends DataEvent {
   _grad;
   _normGrad;
 
-  constructor(date, start, end, metric, height, grad) {
+  constructor(
+    date = undefined,
+    start = undefined,
+    end = undefined,
+    metric = undefined,
+    height = undefined,
+    grad = undefined,
+  ) {
     super(date, start, end, metric);
     this._type = DataEvent.TYPES.RISE;
     this._height = height;

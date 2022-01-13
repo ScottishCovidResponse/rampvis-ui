@@ -6,7 +6,14 @@ export class Fall extends DataEvent {
   _normGrad;
   _rank;
 
-  constructor(date, start, end, metric, height, grad) {
+  constructor(
+    date = undefined,
+    start = undefined,
+    end = undefined,
+    metric = undefined,
+    height = undefined,
+    grad = undefined,
+  ) {
     super(date, start, end, metric);
     this._type = DataEvent.TYPES.FALL;
     this._height = height;
