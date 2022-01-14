@@ -54,33 +54,33 @@ export class Data {
 
     // NATION DATA
     // Phong...
-    PHE_NATION_NEW_ADMISSIONS: [],
-    PHE_NATION_NEW_CASES: [],
-    PHE_NATION_NEW_DEATHS: [],
-    PHE_NATION_NEW_VACC_1: [],
-    PHE_NATION_NEW_VACC_2: [],
-    PHE_NATION_NEW_VACC_3: [],
+    PHE_NATION_ADMISSIONS: [], // cum + new, each 
+    PHE_NATION_CASES: [],
+    PHE_NATION_DEATHS: [],
 
-    PHE_NATION_CUM_ADMISSIONS: [],
-    PHE_NATION_CUM_CASES: [],
-    PHE_NATION_CUM_DEATHS: [],
-    PHE_NATION_CUM_VACC_1: [],
-    PHE_NATION_CUM_VACC_2: [],
-    PHE_NATION_CUM_VACC_3: [],
+    PHE_NATION_VACC_1: [],
+    PHE_NATION_VACC_2: [],
+    PHE_NATION_VACC_3: [],
+
+    // ENGLAND NHS REGION
+    PHE_ENGNHS_CASES: [],
+    PHE_ENGNHS_CASES_UNIQUE: [],
+    PHE_ENGNHS_DEATHS: [],
+    PHE_ENGNHS_VACC: [],
 
     // UTLA DATA
     // Phong...
+    // See UTLA dashboard
 
-
-    // LTLA DATA
+    // LTLA DATA (discarded)
     PHE_LTLA_NEW_CASES: ["product=phe/ltla/", "component=newCasesBySpecimenDate&"],
     PHE_LTLA_NEW_DEATHS: ["product=phe/ltla/", "component=newWeeklyNsoDeathsByRegDate&"],
     PHE_LTLA_NEW_VACCINATION: ["product=phe/ltla/", "component=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&"],
     PHE_LTLA_NEW_VACC_AGE_DEMOGRAPHICS: ["product=phe/ltla/", "component=vaccinationsAgeDemographics&"],
 
     // MSOA DATA
-    // Phong...
     PHE_MSOA_ALL: "areaType=msoa"
+
   };
   
   static from(data, field) {

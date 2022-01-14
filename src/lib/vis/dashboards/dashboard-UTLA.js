@@ -54,12 +54,13 @@ export class DashboardUpperTierLocalAuthority{
     // newDeaths = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=newDeaths28DaysByDeathDate&format=csv'
 
     // cumVaccOnePerc = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&format=csv'
-    // cumVaccTwoPerc = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&format=csv'
-    // cumVaccThreePerc = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=cumVaccinationThirdInjectionUptakeByVaccinationDatePercentage&format=csv'
-
     // newVaccOne = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=newPeopleVaccinatedFirstDoseByVaccinationDate&format=csv'
+
+    // cumVaccTwoPerc = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&format=csv'
     // newVaccTwo = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=newPeopleVaccinatedSecondDoseByVaccinationDate&format=csv'
+    
     // newVaccThird = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=newPeopleVaccinatedThirdInjectionByVaccinationDate&format=csv'
+    // cumVaccThreePerc = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=cumVaccinationThirdInjectionUptakeByVaccinationDatePercentage&format=csv'
 
 
     console.log(':: options', options)
