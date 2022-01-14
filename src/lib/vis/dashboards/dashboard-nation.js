@@ -168,7 +168,7 @@ export class DashboardNation {
           // ADMISSIONS
           {
             id:"cumAdmissions",
-            title: "Cumulative Admissions",
+            title: "Cumulative<br/>Admissions",
             dataField: "cumAdmissions",
             cumulative: true,
             timeUnit: dashboard.TIMEUNIT_DAY,
@@ -198,7 +198,7 @@ export class DashboardNation {
           // CASES
           {
             id:"cumCasesBySpecimenDate",
-            title: "Cumulative Cases",
+            title: "Cumulative<br/>Cases",
             dataField: "cumCasesBySpecimenDate",
             cumulative: true,
             timeUnit: dashboard.TIMEUNIT_DAY,
@@ -229,7 +229,7 @@ export class DashboardNation {
           // DEATHS
           {
             id:"cumOnsDeathsByRegistrationDate",
-            title: "Cumulative Deaths",
+            title: "Cumulative<br/>Deaths",
             dataField: "cumOnsDeathsByRegistrationDate",
             cumulative: true,
             timeUnit: dashboard.TIMEUNIT_DAY,

@@ -1046,7 +1046,7 @@ dashboard.visualizeTimeSeries = function (
     }else 
     if(config.layout == dashboard.LAYOUT_VERTICAL)
     {
-      svg.attr("width", 70).attr("height", 200);
+      svg.attr("width", 70).attr("height", 130);
       dashboardComponents.visualizeNumber(
         svg,
         config,
@@ -1480,7 +1480,7 @@ dashboard.visualizeProgress = function (
     wrapperDiv.append("br");
     
     svg.attr("width", WIDTH_LOW);
-    svg.attr("height", 80);
+    svg.attr("height", 50);
 
     dashboardComponents.visualizeNumber(
       svg,
