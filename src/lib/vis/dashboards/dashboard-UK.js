@@ -569,7 +569,7 @@ export class DashboardUK {
             timeUnit: dashboard.TIMEUNIT_DAY,
             data: Data.from(options.data, Data.Fields.PHE_UK_NEW_VACC_SECOND),
             color: colors.getVaccinationColor(2),
-            detail: dashboard.DETAIL_LOW,
+            detail: dashboard.DETAIL_MEDIUM,
             dateField: "date",
             abbreviate: true,
             min: 0, max: PEOPLE_PER_DAY

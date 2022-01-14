@@ -738,11 +738,14 @@ var createWidget = function (parentHtmlElementId, id, config) {
   data.sort(byDate);
   var latestDate = data[data.length-1][widgetConfig.dateField]
 
-  if (widgetConfig.filter && widgetConfig.filter.length > 0) {
-    for (var i=0 ; i< widgetConfig.filter.length ; i++) {
+  if (widgetConfig.filter && widgetConfig.filter.length > 0) 
+  {
+    for (var i=0 ; i< widgetConfig.filter.length ; i++) 
+    {
       let filter = widgetConfig.filter[i]
       if(filter == 'latest'){
-        data = data.filter(function(d){
+        data = data.filter(function(d)
+        {
           return d[widgetConfig.dateField] == latestDate;
         })
       }
@@ -986,11 +989,10 @@ dashboard.visualizeTimeSeries = function (
   else if (config.detail == dashboard.DETAIL_MEDIUM) 
   {
     var svg = parent.append("svg");
-    // dashboardComponents.setWidgetTitle(d3.select("#" + parentHtmlId), config.title, config.link, config.detail, lastDate);
 
     svg
       .attr("width", WIDTH_MEDIUM)
-      .attr("height", HIGHT_MEDIUM);
+      .attr("height", 50);
 
     dashboardComponents.visualizeNumber(
       svg,

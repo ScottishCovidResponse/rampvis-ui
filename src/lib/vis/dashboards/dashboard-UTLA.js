@@ -136,8 +136,10 @@ export class DashboardUpperTierLocalAuthority{
             color: colors.getDeathColor(),
             data: Data.from(options.data, Data.Fields.PHE_LTLA_NEW_DEATHS),
             dataField: "newWeeklyNsoDeathsByRegDate",
+            timeUnit: dashboard.TIMEUNIT_WEEK,
             detail: dashboard.DETAIL_MEDIUM,
             dateField: "date",
+
             visualization: "linechart",
             min: 0
           },
@@ -176,13 +178,12 @@ export class DashboardUpperTierLocalAuthority{
             title: "1st Dose by Age Group",
             color: colors.getVaccinationColor(1),
             data:  Data.from(options.data, Data.Fields.PHE_LTLA_NEW_VACC_AGE_DEMOGRAPHICS),
-            dataField:
-              "cumVaccinationFirstDoseUptakeByVaccinationDatePercentage",
-            detail: dashboard.DETAIL_HIGH,
+            dataField: "cumVaccinationFirstDoseUptakeByVaccinationDatePercentage",
+            detail: dashboard.DETAIL_MEDIUM,
             unit: '%',
             cumulative: true,
             dateField: "date",
-            visualization: "barchart",
+            visualization: dashboard.VIS_BARCHART,
             categories: "age",
             min: 0,
             max: 100
