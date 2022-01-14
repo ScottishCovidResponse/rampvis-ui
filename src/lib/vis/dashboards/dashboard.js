@@ -49,7 +49,7 @@ var BASELINE_LABELS = BASELINE_LARGE_NUMBER + FONT_SIZE_BIG + 13;
 var LINE_1 = 12;
 var LINE_2 = LINE_1 + 17;
 
-var COLOR_LABELS = '#ccc'
+var COLOR_LABELS = '#aaa'
 
 dashboard.LINE_HIGHT = 20;
 let LINE_HIGHT = 20;
@@ -511,6 +511,7 @@ dashboard.createDashboard = function (div, config) {
     div.append('span')
       .text('Related Dashboards:')
       .style('font-weight', 'bold')
+      .style('margin-bottom', '10px' )
       
     for(var i in globalLinks)
     {
@@ -762,12 +763,12 @@ var createWidget = function (parentHtmlElementId, id, config) {
     .append('div')
     .style('background-color', '#fff')
     .style('border-radius', '3px')
-    .style('margin', '1px')
-    .style('padding', '5px')
+    .style('margin', '2px')
+    .style('padding', '10px')
     .style('border', '1px solid #ddd')
     
 
-  dashboardComponents.setWidgetTitle(widgetDiv, widgetConfig);
+  dashboardComponents.setWidgetTitle(widgetDiv, widgetConfig, lastDateUpdated);
 
   if (widgetConfig.visualization == dashboard.VIS_CARTOGRAM) {
     dashboard.visualizeMap(
@@ -807,7 +808,7 @@ var createWidget = function (parentHtmlElementId, id, config) {
 
 var executeCondition = function (data, c) {
   c = "d." + c;
-    console.log('>>> data', data)
+    // console.log('>>> data', data)
 
   console.log('c', c)
   var size = data.length;
@@ -883,7 +884,7 @@ dashboard.visualizeTimeSeries = function (
     var svg = wrapperDiv
       .append("svg")
       .attr("width", WIDTH)
-      .attr("height", BASELINE_LABELS + 40)
+      .attr("height", BASELINE_LABELS + 10)
       .style("margin-bottom", 0);
 
     // dashboardComponents.setWidgetTitle(wrapperDiv, config.title, config.link, config.detail, lastDate);
@@ -935,11 +936,24 @@ dashboard.visualizeTimeSeries = function (
     wrapperDiv.append("br");
 
 
-    var mark = "bar";
-    if (config.cumulative)
-      mark = "line";
+    var mark = "line";
+    var x = {
+      field: config.dateField,
+      type: "ordinal",
+      title: "",
+    }
+    if (!config.cumulative)
+    {
+      mark = "bar";
+      x['timeUnit'] = "yearmonthdate"
+      x['formatType'] =  "time"
+      x['axis'] = { "labelAngle": 45, format: "%b %Y"}
+    }
 
     var scale = { domain: domain};
+
+    var step = WIDTH / config.data.length;
+    console.log('>> step', step)
 
     var vegaLinechart = {
       $schema: "https://vega.github.io/schema/vega-lite/v5.json",
@@ -948,7 +962,7 @@ dashboard.visualizeTimeSeries = function (
       },
       mark: mark,
       width: WIDTH - 65,
-      height:HIGHT_HIGH - HEIGHT,
+      height: HIGHT_HIGH - HEIGHT,
       encoding: {
         y: {
           field: config.dataField,
@@ -956,18 +970,14 @@ dashboard.visualizeTimeSeries = function (
           title: "",
           scale: scale,
         },
-        x: {
-          field: config.dateField,
-          type: "temporal",
-          title: "",
-        },
+        x: x,
         color: { value: config.color },
       },
     };
 
     wrapperDiv.append("div").attr("id", "vegadiv-" + parent.attr('id') + random);
 
-    vegaEmbed("#vegadiv-" + parent.attr('id') + random, vegaLinechart, { actions: false });
+    vegaEmbed("#vegadiv-" + parent.attr('id') + random, vegaLinechart, { actions: false, renderer: "svg" });
   } 
 
   //////////////// MEDIUM 
@@ -1999,7 +2009,10 @@ dashboardComponents.visualizeMiniChart = function (
   }
 };
 
-dashboardComponents.setWidgetTitle = function (div, config) {
+dashboardComponents.setWidgetTitle = function (div, config, lastDateUpdated) {
+
+
+
 
   div.append('p')
     .html(config.title)
@@ -2009,51 +2022,13 @@ dashboardComponents.setWidgetTitle = function (div, config) {
   div.append('hr')
     .style('border', '.5px solid #ccc')
     .style('margin-top', '2px')
-
-
-
-  // g.append("line")
-  //   .attr("x1", 0)
-  //   .attr("x2", 10000)
-  //   .attr("y1", BASELINE_WIDGET_TITLE + 5)
-  //   .attr("y2", BASELINE_WIDGET_TITLE + 5)
-  //   .attr("class", "separator");
-
-  // if (link) {
-  //   text = text + " [details available]";
-  // }
-
-  // var text = g
-  //   .append("text")
-  //   .style('font-size', FONT_SIZE_LABELS)
-  //   .style('font-weight', 'bold')
-  //   .text(text)
-  //   .attr("y", BASELINE_WIDGET_TITLE);
-
-  // if (detail == dashboard.DETAIL_LOW || dashboard.DETAIL_MEDIUM) {
-  //   text.style("font-size", "9pt");
-  // }
-
-  // if (lastDate) {
-  //   g.append("text")
-  //     .text(lastDate.format("MMM DD, YYYY"))
-  //     .style('font-size', FONT_SIZE_LABELS)
-  //     .style('fill', COLOR_LABELS)
-  //     .attr("y", BASELINE_WIDGET_TITLE + 15);
-  // }
-
-  // if (link) {
-  //   text.classed("hasLink", true);
-  //   text.on("click", function () {
-  //     window.open(link);
-  //   });
-  //   text.on("mouseover", function () {
-  //     d3.select(this).classed("hover", true);
-  //   });
-  //   text.on("mouseout", function () {
-  //     d3.select(this).classed("hover", false);
-  //   });
-  // }
+    .style('margin-bottom', '2px')
+  div.append('p')
+    .html(lastDateUpdated.format("MMM DD, YYYY"))
+    .style('margin', '0px')
+    .style('font-weight', '100')
+    .style('font-size', '.8em')
+    .style('margin-bottom', '2px')
 };
 
 dashboardComponents.setLabel = function (g, text, x, y) {
@@ -2069,7 +2044,7 @@ dashboardComponents.setLabelRow2 = function (g, text, x, y) {
     .text(text)
     .attr("font-size", FONT_SIZE_LABELS)
     .attr("x", x)
-    .style('color', '#888')
+    .style('color', '#666')
     .attr("y", y + 15);
 };
 
