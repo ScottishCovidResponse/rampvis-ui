@@ -56,12 +56,12 @@ export class DashboardScotlandCouncil {
         },
         {
           id: "vaccinations-total",
-          title: "Vaccinations Total",
+          title: "Covid-19 Vaccinations Total %",
           layout: [["vaccination-total-1st", "vaccination-total-2nd"]],
         },
         {
           id: "vaccinations-agegroup",
-          title: "Vaccination by Age (Dose 1)",
+          title: "Dose 1 by age group",
           layout: [
             [
               "vaccination-1",
@@ -78,7 +78,7 @@ export class DashboardScotlandCouncil {
         },
         {
           id: "vaccinations-agegroup-2",
-          title: "Vaccination by Age (Dose 2)",
+          title: "Dose 2 by age group",
           layout: [
             [
               "vaccination-2-1",
@@ -97,25 +97,13 @@ export class DashboardScotlandCouncil {
       widgets: [
         {
           id: "covidDeathData",
-          title: "Covid Deaths",
+          title: "Daily Covid Deaths",
           dataField: council,
           visualization: "linechart",
           color: colors.getDeathColor(),
           data: Data.from(options.data, Data.Fields.COUNCIL_COVID_DEATHS),
           cumulative: false,
           detail: dashboard.DETAIL_HIGHT,
-          conditions: ["index.length > 4"],
-          min: 0
-        },
-        {
-          id: "allDeathData",
-          title: "All Deaths",
-          dataField: council,
-          visualization: "linechart",
-          color: colors.getDeathColor(),
-          data: Data.from(options.data, Data.Fields.COUNCIL_ALL_DEATHS),
-          detail: dashboard.DETAIL_HIGH,
-          cumulative: false,
           conditions: ["index.length > 4"],
           min: 0
         },
@@ -174,6 +162,7 @@ export class DashboardScotlandCouncil {
           unit: '%',
           min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
+          layout: 'horizontal',
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -194,6 +183,7 @@ export class DashboardScotlandCouncil {
           unit: '%',
           min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
+          layout: 'horizontal',
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -214,6 +204,7 @@ export class DashboardScotlandCouncil {
           unit: '%',
           min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
+          layout: 'horizontal',
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -234,6 +225,7 @@ export class DashboardScotlandCouncil {
           unit: '%',
           min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
+          layout: 'horizontal',
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -254,6 +246,7 @@ export class DashboardScotlandCouncil {
           unit: '%',
           min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
+          layout: 'horizontal',
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -274,6 +267,7 @@ export class DashboardScotlandCouncil {
           unit: '%',
           min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
+          layout: 'horizontal',
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -294,6 +288,7 @@ export class DashboardScotlandCouncil {
           unit: '%',
           min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
+          layout: 'horizontal',
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -314,6 +309,7 @@ export class DashboardScotlandCouncil {
           unit: '%',
           min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
+          layout: 'horizontal',
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -334,6 +330,7 @@ export class DashboardScotlandCouncil {
           unit: '%',
           min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
+          layout: 'horizontal',
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -352,6 +349,7 @@ export class DashboardScotlandCouncil {
             Data.Fields.COUNCIL_VACCINE_SEX_AGEGROUP,
           ),
           detail: dashboard.DETAIL_LOW,
+          layout: 'horizontal',
           cumulative: true,
           unit: '%',
           min: 0, max: 100,
@@ -375,6 +373,7 @@ export class DashboardScotlandCouncil {
           unit: '%',
           min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
+          layout: 'horizontal',
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',
@@ -395,6 +394,7 @@ export class DashboardScotlandCouncil {
           unit: '%',
           min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
+          layout: 'horizontal',
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',
@@ -415,6 +415,7 @@ export class DashboardScotlandCouncil {
           unit: '%',
           min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
+          layout: 'horizontal',
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',
@@ -435,6 +436,7 @@ export class DashboardScotlandCouncil {
           unit: '%',
           min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
+          layout: 'horizontal',
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',
@@ -455,6 +457,7 @@ export class DashboardScotlandCouncil {
           unit: '%',
           min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
+          layout: 'horizontal',
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',
@@ -475,6 +478,7 @@ export class DashboardScotlandCouncil {
           unit: '%',
           min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
+          layout: 'horizontal',
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',
@@ -495,7 +499,8 @@ export class DashboardScotlandCouncil {
           unit: '%',
           min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
-          onditions: [
+          layout: 'horizontal',
+          conditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',
             'AgeGroup == "75 - 79"',
@@ -515,6 +520,7 @@ export class DashboardScotlandCouncil {
           unit: '%',
           min: 0, max: 100,
           detail: dashboard.DETAIL_LOW,
+          layout: 'horizontal',
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',

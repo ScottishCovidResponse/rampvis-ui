@@ -44,12 +44,12 @@ var FONT_SIZE_BIG = 27;
 var FONT_SIZE_MEDIUM = 20
 var FONT_SIZE_LABELS = 10
 var BASELINE_LARGE_NUMBER = 0;
-var BASELINE_LABELS = BASELINE_LARGE_NUMBER + FONT_SIZE_BIG + 13;
+var BASELINE_LABELS = BASELINE_LARGE_NUMBER + FONT_SIZE_BIG + 15;
 // var BASELINE VIS = 
 var LINE_1 = 12;
 var LINE_2 = LINE_1 + 17;
 
-var COLOR_LABELS = '#aaa'
+var COLOR_LABELS = '#888'
 
 dashboard.LINE_HIGHT = 20;
 let LINE_HIGHT = 20;
@@ -810,7 +810,7 @@ var executeCondition = function (data, c) {
   c = "d." + c;
     // console.log('>>> data', data)
 
-  console.log('c', c)
+  // console.log('c', c)
   var size = data.length;
   return data.filter(function (d) {
     return eval(c);
@@ -869,6 +869,7 @@ dashboard.visualizeTimeSeries = function (
   if (config.max){
     domain[1] = config.max;
   }
+
   console.log('min.max', domain[0], domain[1])
 
   // DETAIL HIGH
@@ -939,12 +940,13 @@ dashboard.visualizeTimeSeries = function (
     var mark = "line";
     var x = {
       field: config.dateField,
-      type: "ordinal",
+      type: "temporal",
       title: "",
     }
     if (!config.cumulative)
     {
       mark = "bar";
+      x['type'] = "ordinal",
       x['timeUnit'] = "yearmonthdate"
       x['formatType'] =  "time"
       x['axis'] = { "labelAngle": 45, format: "%b %Y"}
@@ -1022,7 +1024,7 @@ dashboard.visualizeTimeSeries = function (
     if(config.layout == dashboard.LAYOUT_HORIZONTAL)
     {
     
-      svg.attr("width", 180).attr("height", 70);
+      svg.attr("width", 180).attr("height", 40);
 
       dashboardComponents.visualizeNumber(
         svg,
@@ -1667,10 +1669,10 @@ dashboardComponents.visualizeTrendArrow = function (
   }
 
   var g2 = g.append("g").attr("transform", function () {
-    return "translate(17," + 20 + "),rotate(" + rotation + ")";
+    return "translate(17," + 18 + "),rotate(" + rotation + ")";
   });
 
-  var arrowSize = 12
+  var arrowSize = 10
   var arrowThickness = 5;
   g2.append("line")
     .attr("x1", -arrowSize)

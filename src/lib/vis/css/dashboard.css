@@ -10,6 +10,7 @@ div#main {
 }
 
 /* DASHBOARD TABLE AND LAYOUT */
+
 table.dashboardLayout td,
 table.dashboardLayout td * {
   vertical-align: top;
