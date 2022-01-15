@@ -54,13 +54,13 @@ export class Data {
 
     // NATION DATA
     // Phong...
-    PHE_NATION_ADMISSIONS: [], // cum + new, each 
-    PHE_NATION_CASES: [],
-    PHE_NATION_DEATHS: [],
+    PHE_NATION_ADMISSIONS: "areaType=nation&metric=cumAdmissions&",
+    PHE_NATION_CASES: "areaType=nation&metric=cumCasesBySpecimenDate&",
+    PHE_NATION_DEATHS: "areaType=nation&metric=cumOnsDeathsByRegistrationDate&",
 
-    PHE_NATION_VACC_1: [],
-    PHE_NATION_VACC_2: [],
-    PHE_NATION_VACC_3: [],
+    PHE_NATION_VACC_1: "areaType=nation&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&",
+    PHE_NATION_VACC_2: "areaType=nation&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&",
+    PHE_NATION_VACC_3: "areaType=nation&metric=cumVaccinationThirdInjectionUptakeByPublishDatePercentage&",
 
     // ENGLAND NHS REGION
     PHE_ENGNHS_CASES: [],
