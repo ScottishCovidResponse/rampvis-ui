@@ -38,6 +38,14 @@ export class DashboardNation {
     .attr("class", "vis-example-container");
 
     // 2. specify data URLs here...
+    // Phong
+    console.log('***live data')
+    console.log('PHE_NATION_ADMISSIONS', Data.from(options.data, Data.Fields.PHE_NATION_ADMISSIONS));
+    console.log('PHE_NATION_CASES', Data.from(options.data, Data.Fields.PHE_NATION_CASES));
+    console.log('PHE_NATION_DEATHS', Data.from(options.data, Data.Fields.PHE_NATION_DEATHS));
+    console.log('PHE_NATION_VACC_1', Data.from(options.data, Data.Fields.PHE_NATION_VACC_1));
+    console.log('PHE_NATION_VACC_2', Data.from(options.data, Data.Fields.PHE_NATION_VACC_2));
+    console.log('PHE_NATION_VACC_3', Data.from(options.data, Data.Fields.PHE_NATION_VACC_3));
   
     var cumAdmissions = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumAdmissions&format=csv'
     var cumCasesBySpecimenDate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumCasesBySpecimenDate&format=csv"
