@@ -5,10 +5,10 @@ import {
   CardContent,
   CardHeader,
   Container,
-  Grid,
   Card,
   Fade,
   CircularProgress,
+  IconButton,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { blue } from "@mui/material/colors";
@@ -25,6 +25,7 @@ import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import { ILink } from "src/models/ILink";
 import { IOntoPageTemplate } from "src/models/IOntoPageTemplate";
 import { IOntoData } from "src/models/IOntoData";
+import useAuth from "src/hooks/useAuth";
 
 const API = {
   API_PY: process.env.NEXT_PUBLIC_API_PY,
@@ -48,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PropagatedPage = () => {
+  const { user } = useAuth();
   const { settings } = useSettings();
   const classes = useStyles();
   const router = useRouter();
@@ -166,13 +168,11 @@ const PropagatedPage = () => {
         <Container maxWidth={settings.compact ? "xl" : false}>
           <Card sx={{ minWidth: 1600 }}>
             <CardHeader
-              // TODO:
-              // action={
-              //   <IconButton aria-label="settings">
-              //     { user?.id ? (<MoreVertIcon />) : (<TimelineIcon />)}
-              //   </IconButton>
-              //   <Bookmark pageId={pageId} />
-              // }
+              action={
+                <IconButton aria-label="settings">
+                  <Bookmark pageId={pageId} />
+                </IconButton>
+              }
               avatar={
                 <Avatar className={classes.avatar}>
                   <InsertChartIcon />
