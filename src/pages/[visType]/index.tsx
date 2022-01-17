@@ -19,7 +19,7 @@ import _ from "lodash";
 import { GetStaticPaths, GetStaticProps } from "next";
 import useSettings from "src/hooks/useSettings";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
-import PropagatedPageTable from "src/components/PropagatedPageTable";
+import PropagatedPageTable from "src/components/propagated-page/PropagatedPageTable";
 
 const useStyles = makeStyles({
   root: {

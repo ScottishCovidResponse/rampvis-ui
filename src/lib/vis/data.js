@@ -38,6 +38,7 @@ export class Data {
     HEALTH_BOARD_VACCINE_SEX_AGEGROUP_ALL:
       "vaccination&component=daily_health_boards",
 
+    // UK DATA
     PHE_UK_CUM_ADMISSIONS: "product=phe/overview&component=cumAdmissions&",
     PHE_UK_CUM_CASES: "product=phe/overview&component=cumCasesBySpecimenDate&",
     PHE_UK_CUM_DEATHS_28_DAYS: "product=phe/overview&component=cumDeaths28DaysByDeathDate&",
@@ -51,12 +52,28 @@ export class Data {
     PHE_UK_NEW_VACC_SECOND: "product=phe/overview&component=newPeopleVaccinatedSecondDoseByPublishDate&",
     PHE_UK_NEW_VACC_THIRD: "product=phe/overview&component=newPeopleVaccinatedThirdInjectionByPublishDate&",
 
-    PHE_LTLA_NEW_CASES: ["product=phe/ltla/", "component=newCasesBySpecimenDate&"],
-    PHE_LTLA_NEW_DEATHS: ["product=phe/ltla/", "component=newWeeklyNsoDeathsByRegDate&"],
-    PHE_LTLA_NEW_VACCINATION: ["product=phe/ltla/", "component=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&"],
-    PHE_LTLA_NEW_VACC_AGE_DEMOGRAPHICS: ["product=phe/ltla/", "component=vaccinationsAgeDemographics&"],
+    // NATION DATA
+    PHE_NATION_ADMISSIONS: "areaType=nation&metric=cumAdmissions&",
+    PHE_NATION_CASES: "areaType=nation&metric=cumCasesBySpecimenDate&",
+    PHE_NATION_DEATHS: "areaType=nation&metric=cumOnsDeathsByRegistrationDate&",
 
+    PHE_NATION_VACC_1: "areaType=nation&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&",
+    PHE_NATION_VACC_2: "areaType=nation&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&",
+    PHE_NATION_VACC_3: "areaType=nation&metric=cumVaccinationThirdInjectionUptakeByPublishDatePercentage&",
+
+    // ENGLAND NHS REGION
+    PHE_ENGNHS_CASES: [],
+    PHE_ENGNHS_CASES_UNIQUE: [],
+    PHE_ENGNHS_DEATHS: [],
+    PHE_ENGNHS_VACC: [],
+
+    // UTLA DATA
+    PHE_UTLA_NEW: "areaType=utla&metric=newCasesBySpecimenDate&",
+    PHE_UTLA_CUM: "areaType=utla&metric=cumCasesBySpecimenDate&",
+
+    // MSOA DATA
     PHE_MSOA_ALL: "areaType=msoa"
+
   };
   
   static from(data, field) {

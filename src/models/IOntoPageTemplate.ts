@@ -9,9 +9,11 @@ export interface IOntoPageTemplate {
   date: Date;
   visId: string;
   dataIds: string[];
-  pageIds?: string[];
-  ontoData: IOntoData[];
-  ontoVis: IOntoVis;
-  title: string;
-  links?: ILink[];
+  vis: IOntoVis;
+  data: IOntoData[];
+  title?: string;
+  propagatedLinks?: ILink[];
+  parentLink?: ILink;
+  childrenLinks?: ILink[];
+  neighborLinks?: ILink[];
 }

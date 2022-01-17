@@ -70,7 +70,7 @@ const sections = [
     items: [
       {
         title: "Public",
-        path: "/public",
+        path: "/story-boards",
         icon: <PublicIcon fontSize="small" />,
       },
     ],
@@ -175,7 +175,7 @@ const DashboardSidebar: FC<DashboardSidebarProps> = ({
                 RAMPVIS
               </Typography>
               <Typography color="primary" alignItems="center" variant="body2">
-                v.0.9
+                v.1.0
               </Typography>
             </Box>
           </Box>

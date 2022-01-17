@@ -98,19 +98,22 @@ export class DashboardUK {
       return w;
     };
 
+    console.log('>> options', options)
+
+    // create links array
     setTimeout(function () {
       // 2. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
       var config = {
-        // links: []
+        links: options.childrenLinks,
         layout: [
           [
           "cases", 
           "admissions", 
           "deaths"
-        ], 
+          ], 
           [
             "vacc",
-            "ltla"
+            // "ltla"
           ] 
         ],
         groups: [
@@ -197,19 +200,22 @@ export class DashboardUK {
             abbreviate: true,
             trendWindow: 'all'
           },
-          timeseriesWidget(
-            "newAdmissions",
-            "New Daily Admissions",
-            "newAdmissions",
-            false,
-            dashboard.TIMEUNIT_DAY,
-            Data.from(options.data, Data.Fields.PHE_UK_NEW_AMISSIONS),
-            colors.getHospitalizedColor(),
-            DETAIL_DAILY,
-          ),
+          {
+            id:"newAdmissions",
+            title: "New Daily Admissions",
+            dataField: "newAdmissions",
+            cumulative: false,
+            timeUnit: dashboard.TIMEUNIT_DAY,
+            data: Data.from(options.data, Data.Fields.PHE_UK_NEW_AMISSIONS),
+            color: colors.getHospitalizedColor(),
+            detail: dashboard.DETAIL_HIGH,
+            visualization: 'linechart',
+            dateField: "date",
+            abbreviate: true,
+          },
           {
             id:"admissionsNations",
-            title: "New admissions per nation today",
+            title: "New admissions today",
             dataField: "newAdmissionsRollingSum",
             cumulative: true,
             timeUnit: dashboard.TIMEUNIT_DAY,
@@ -321,7 +327,7 @@ export class DashboardUK {
           },
           {
             id:"casesNations",
-            title: "Cases change per nation",
+            title: "Change in cases from yesterday",
             dataField: "newCasesBySpecimenDateChangePercentage",
             cumulative: true,
             timeUnit: dashboard.TIMEUNIT_DAY,
@@ -513,7 +519,7 @@ export class DashboardUK {
           {
             id: "vacc1",
             visualization: "progress",
-            title: "Total 1st Dose Update",
+            title: "Total 1st Dose Uptake",
             dataField: "cumPeopleVaccinatedFirstDoseByPublishDate",
             cumulative: true,
             timeUnit: dashboard.TIMEUNIT_DAY,
@@ -541,7 +547,7 @@ export class DashboardUK {
           },
           {
             id: "vacc2",
-            title: "Total 2nd Dose Update",
+            title: "Total 2nd Dose Uptake",
             visualization: "progress",
             dataField: "cumPeopleVaccinatedSecondDoseByPublishDate",
             cumulative: true,
@@ -556,7 +562,7 @@ export class DashboardUK {
           },
           {
             id: "vacc2d",
-            title: "2nd Dose Daily",
+            title: "Daily 2nd Dose",
             visualization: "linechart",
             dataField: "newPeopleVaccinatedSecondDoseByPublishDate",
             cumulative: false,
@@ -571,7 +577,7 @@ export class DashboardUK {
           {
             id: "vacc3",
             visualization: "progress",
-            title: "Total 3rd Dose Uptake",
+            title: "Total 3rd Dose  / Booster",
             dataField: "cumPeopleVaccinatedThirdInjectionByPublishDate",
             cumulative: true,
             timeUnit: dashboard.TIMEUNIT_DAY,
@@ -586,7 +592,7 @@ export class DashboardUK {
           {
             id: "vacc3d",
             visualization: "linechart",
-            title: "3rd Dose Daily",
+            title: "Daily 3rd Dose / Boosters",
             dataField: "newPeopleVaccinatedThirdInjectionByPublishDate",
             cumulative: false,
             timeUnit: dashboard.TIMEUNIT_DAY,
