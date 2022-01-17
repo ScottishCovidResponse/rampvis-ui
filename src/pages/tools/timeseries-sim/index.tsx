@@ -48,11 +48,11 @@ const initialFirstRunState = {
   minPopulation: 600000,
   startDate: "2021-01-01",
   endDate:
-    String(today.getFullYear()) +
+    String(lastDate.getFullYear()) +
     "-" +
-    String(today.getMonth() + 1).padStart(2, "0") +
+    String(lastDate.getMonth() + 1).padStart(2, "0") +
     "-" +
-    String(today.getDate()).padStart(2, "0"),
+    String(lastDate.getDate()).padStart(2, "0"),
   continentCheck: {
     Africa: false,
     Asia: false,
