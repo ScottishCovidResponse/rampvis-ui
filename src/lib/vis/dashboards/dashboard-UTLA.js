@@ -35,6 +35,11 @@ export class DashboardUpperTierLocalAuthority{
       .append("div")
       .attr("class", "vis-example-container");
 
+    // Phong
+    console.log('***live data')
+    console.log('PHE_UTLA_NEW', Data.from(options.data, Data.Fields.PHE_UTLA_NEW));
+    console.log('PHE_UTLA_CUM', Data.from(options.data, Data.Fields.PHE_UTLA_CUM));
+
     // for any age range:
     // VaccineRegisterPopulationByVaccinationDate
     // cumPeopleVaccinatedCompleteByVaccinationDate
