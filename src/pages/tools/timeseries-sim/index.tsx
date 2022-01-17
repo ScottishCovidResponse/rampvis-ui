@@ -20,12 +20,13 @@ import BenchmarkCountryList from "src/components/timeseries-sim/BenchmarkCountry
 import TimeSeriesBag from "src/components/timeseries-sim/TimeSeriesBag";
 import ComparePopUp from "src/components/timeseries-sim/ComparePopUp";
 import { benchmarkPlot } from "src/components/timeseries-sim/plotfunctions/benchmarkplot";
+import { last } from "lodash";
 
 const API = process.env.NEXT_PUBLIC_API_PY;
 
 const today = new Date();
 const lastDate = new Date(today.setDate(today.getDate() - 3));
-const firstDate = new Date(today.setDate(today.getDate() - 33));
+const firstDate = new Date(today.setDate(today.getDate() - 30));
 const initialFirstRunState = {
   // default user parameters for timeseries search
   targetCountry: "France",
@@ -68,6 +69,10 @@ const defaultBenchmarkCountries = [
   "Germany",
   "Switzerland",
   "Belgium",
+  "Spain",
+  "Italy",
+  "United Kingdom",
+  "Netherlands",
 ];
 
 const defaultTimeSeriesBag = ["A", "B", "C"];
@@ -117,7 +122,7 @@ const TimeseriesSim = () => {
     if (
       manualCountry.length > 0 &&
       !benchmarkCountries.includes(manualCountry) &&
-      benchmarkCountries.length < 5
+      benchmarkCountries.length <= 10
     ) {
       setBenchmarkCountries((old) => [...old, manualCountry]);
     }

@@ -14,7 +14,7 @@ export function benchmarkPlot(data) {
   const dataCat = data.filter((item) => item.key == "categorical_variables");
 
   const width = 1275.5;
-  const height = 150;
+  const height = 400;
   const margin = 5;
   const adj = 50;
 
@@ -69,12 +69,17 @@ export function benchmarkPlot(data) {
     .style("font-size", "15px");
 
 
-
+  
+  const colorRange = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']
+  const countries =  Object.keys(dataTime[0].value)
+  const color = d3.scaleOrdinal().domain(countries).range(colorRange)
   const queryColor = "#FF6600";
   const otherColor = "#9ea2a5";
 
   const queryStrokeWidth = 8;
   const otherStrokeWidth = 4;
+
+  console.log(countries)
 
   const dateRanges = dataTime.map((item) => item.value)
     .map((item) => Object.entries(item))
@@ -99,6 +104,7 @@ export function benchmarkPlot(data) {
 
   const yAxes = yScales.map(yScale => d3.axisLeft(yScale).ticks(3));
 
+
   dataTime.map((streams, i) => {
     d3.select("#xaxis" + spaceRemove(streams.key)).call(xAxes[i]);
     d3.select("#yaxis" + spaceRemove(streams.key)).call(yAxes[i]);
@@ -121,8 +127,6 @@ export function benchmarkPlot(data) {
 
     })
 
-    console.log(graphObj)
-
     const xScale =  xScales[i]
     const yScale = yScales[i]
 
@@ -132,9 +136,9 @@ export function benchmarkPlot(data) {
       .enter()
       .append("path")
       .attr("class", "multiline")
-      .attr("id", (d) => streams.key + spaceRemove(d.key))  
+      .attr("id", (d) => streams.key +'/'+ spaceRemove(d.key))  
       .attr("fill", "none")
-      .attr("stroke", otherColor )
+      .attr("stroke", (d) => color(d.key) )
       .attr("stroke-width",otherStrokeWidth)
       .attr("d", (d) =>  
       d3
@@ -144,7 +148,66 @@ export function benchmarkPlot(data) {
         .y((d) => 
           yScale(d.value))(d.data)
 
-      );  
+      );
+    d3.select("#graph"+streams.key)
+      .append("text")
+      .attr("x", (width / 2))             
+      .attr("y", 0 - (margin))
+      .attr("text-anchor", "middle")  
+      .style("font-size", "16px") 
+      .text(streams.key.split("_")
+      .map((str) => str.charAt(0).toUpperCase() + str.slice(1))
+      .join(" "));
+    
+    d3.select("#graph"+streams.key)
+      .selectAll("myLabels")
+      .data(graphObj)
+      .enter()
+      .append("g")
+      .append("text")
+      .attr("class", "myLabels")
+      .attr("id", (d) => d.key)
+      .datum(function (d) {
+        return { name: d.key, value: d.data[d.data.length - 1] };
+      }) // keep only the last value of each time series
+      .attr("transform", function (d) {
+        return (
+          "translate(" +
+          xScale(dateRanges[0][dateRanges[0].length - 1]) +
+          "," +
+          yScale(d.value.value) +
+          ")"
+        );
+      })
+      .text(function (d) {
+        return d.name;
+      })
+      .style("fill", function (d) {
+        return color(d.name);
+      })
+      .style("font-size", "20px");
+
+      d3.select("#graph"+streams.key).selectAll(".multiline")
+      .on("mouseenter", function(d){
+       const [stream,country] = d3.select(this)["_groups"][0][0]["attributes"]["id"]["nodeValue"].split("/");
+      
+       d3.select("#graph"+stream).selectAll(".multiline")
+       .filter(function () {
+         return (
+           d3.select(this).attr("id") == country
+         );
+       })
+       .attr("visibility", "visible");
+
+      })
+      
+
+
+    
+      
+
+
+    
 
   })
 
