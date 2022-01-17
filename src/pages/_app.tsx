@@ -60,7 +60,6 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout =
     Component.getLayout ??
     ((page) => {
-      console.log("App:getLayout: page = ", page);
       return page;
     });
 

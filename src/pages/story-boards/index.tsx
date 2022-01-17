@@ -1,55 +1,23 @@
 import React, { useEffect } from "react";
 import Head from "next/head";
-import { Box, Card, CardContent, Container, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  Container,
+  Grid,
+  Paper,
+  Typography,
+} from "@mui/material";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
+import { experimentalStyled as styled } from "@mui/material/styles";
+import Link from "next/link";
 
-import Papa from "papaparse";
-import { LookupTable } from "src/components/story-boards/LookupTable";
-import { SemanticEvent } from "src/components/story-boards/SemanticEvent";
-import { Peak } from "src/components/story-boards/Peak";
+import styles from "src/components/story-boards/StoryBoards.module.css";
+
+// https://ssvg.io/examples
 
 const StoryBoards = () => {
-  useEffect(() => {
-    async function readCSVData() {
-      const response = await fetch(
-        "/static/mock/story-boards-data/Lookup Table Output - Sheet1 (4).csv",
-      );
-      const reader = response.body.getReader();
-      const result = await reader.read(); // raw array
-      const decoder = new TextDecoder("utf-8");
-      const csv = decoder.decode(result.value); // the csv text
-      const parsed = Papa.parse(csv, { header: true }); // object with { data, errors, meta }
-      const csvTableOutputs = parsed.data; // array of objects
-      console.log(csvTableOutputs);
-
-      let table = new LookupTable(csvTableOutputs);
-      const vax_u = new SemanticEvent(
-        new Date("08/12/20"),
-        3,
-        "Some event has happened",
-      );
-      console.log(table.generateOutput(vax_u));
-
-      // Create lookup table from csv
-      table = new LookupTable(csvTableOutputs);
-
-      // Create Peak event
-      const peak = new Peak(
-        new Date("08/12/19"),
-        new Date("08/12/20"),
-        new Date("08/12/21"),
-      )
-        .setMetric("deaths")
-        .setHeight(100);
-
-      // Use the table to lookup Peak event and generate output
-      const output = table.generateOutput(peak);
-
-      console.log(output);
-    }
-    readCSVData();
-  }, []); // [] means just do this once, after initial render
-
   return (
     <>
       <Head>
@@ -64,12 +32,66 @@ const StoryBoards = () => {
           }}
         >
           <Container>
-            <Card sx={{ minWidth: 275 }}>
+            <Card sx={{ minWidth: 1200 }}>
               <CardContent>
-                <Typography variant="body2">
-                  This page is under development
-                </Typography>
-                <br />
+                <Grid
+                  container
+                  rowSpacing={1}
+                  columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                >
+                  <Grid item xs={6}>
+                    <Link href="/story-boards/story-1" passHref>
+                      <div className={styles.container}>
+                        <img
+                          src="/static/story-boards/story-1.png"
+                          className={styles.image}
+                        ></img>
+                        <div className={styles.overlay}>
+                          <div className={styles.text}>Story-1</div>
+                        </div>
+                      </div>
+                    </Link>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Link href="/story-boards/story-2" passHref>
+                      <div className={styles.container}>
+                        <img
+                          src="/static/story-boards/story-1.png"
+                          className={styles.image}
+                        ></img>
+                        <div className={styles.overlay}>
+                          <div className={styles.text}>Story-2</div>
+                        </div>
+                      </div>
+                    </Link>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Link href="/story-boards/story-3" passHref>
+                      <div className={styles.container}>
+                        <img
+                          src="/static/story-boards/story-1.png"
+                          className={styles.image}
+                        ></img>
+                        <div className={styles.overlay}>
+                          <div className={styles.text}>Story-3</div>
+                        </div>
+                      </div>
+                    </Link>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Link href="/story-boards/story-4" passHref>
+                      <div className={styles.container}>
+                        <img
+                          src="/static/story-boards/story-1.png"
+                          className={styles.image}
+                        ></img>
+                        <div className={styles.overlay}>
+                          <div className={styles.text}>Story-4</div>
+                        </div>
+                      </div>
+                    </Link>
+                  </Grid>
+                </Grid>
               </CardContent>
             </Card>
           </Container>
