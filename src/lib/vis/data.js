@@ -53,7 +53,6 @@ export class Data {
     PHE_UK_NEW_VACC_THIRD: "product=phe/overview&component=newPeopleVaccinatedThirdInjectionByPublishDate&",
 
     // NATION DATA
-    // Phong...
     PHE_NATION_ADMISSIONS: "areaType=nation&metric=cumAdmissions&",
     PHE_NATION_CASES: "areaType=nation&metric=cumCasesBySpecimenDate&",
     PHE_NATION_DEATHS: "areaType=nation&metric=cumOnsDeathsByRegistrationDate&",
@@ -69,14 +68,8 @@ export class Data {
     PHE_ENGNHS_VACC: [],
 
     // UTLA DATA
-    // Phong...
-    // See UTLA dashboard
-
-    // LTLA DATA (discarded)
-    PHE_LTLA_NEW_CASES: ["product=phe/ltla/", "component=newCasesBySpecimenDate&"],
-    PHE_LTLA_NEW_DEATHS: ["product=phe/ltla/", "component=newWeeklyNsoDeathsByRegDate&"],
-    PHE_LTLA_NEW_VACCINATION: ["product=phe/ltla/", "component=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&"],
-    PHE_LTLA_NEW_VACC_AGE_DEMOGRAPHICS: ["product=phe/ltla/", "component=vaccinationsAgeDemographics&"],
+    PHE_UTLA_NEW: "areaType=utla&metric=newCasesBySpecimenDate&",
+    PHE_UTLA_CUM: "areaType=utla&metric=cumCasesBySpecimenDate&",
 
     // MSOA DATA
     PHE_MSOA_ALL: "areaType=msoa"
