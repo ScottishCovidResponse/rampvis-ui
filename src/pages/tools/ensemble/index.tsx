@@ -229,7 +229,7 @@ const Ensemble = () => {
                   <div id="parallel_chart" />
                 </div>
                 <div id="scatter-plot">
-                  <p className="scattertitle">This is a scatter chart</p>
+                  <p className="scattertitle">This is a scatter plot</p>
                   <div id="scatter_plot" />
                 </div>
                 <div id="table"></div>

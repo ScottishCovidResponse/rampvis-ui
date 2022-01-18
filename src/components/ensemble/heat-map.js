@@ -70,13 +70,13 @@ export class HeatMap {
             .padding(0.01);
 
         svg.append("g")
-            .attr("transform", `translate(0, ${height})`)
-            .call(d3.axisBottom(x))
+            .attr("transform", `translate(0, 0)`)
+            .call(d3.axisTop(x))
             .selectAll("text")
             .style("text-anchor", "end")
-            .attr("dx", "-.8em")
-            .attr("dy", ".15em")
-            .attr("transform", "rotate(-65)");
+            .attr("dx", ".8em")
+            .attr("dy", "-.15em")
+            .attr("transform", "rotate(30)");
 
 
         const y = d3.scaleBand()
