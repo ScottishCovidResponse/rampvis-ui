@@ -11,7 +11,7 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable no-undef */
-/* eslint-disable prefer-destructuring */
+/* eslint-disable prefer-desvisualizeMiniCharttructuring */
 /* eslint-disable vars-on-top */
 /* eslint-disable no-var */
 /* eslint-disable spaced-comment */
@@ -24,7 +24,7 @@
 /* eslint-disable prefer-spread */
 /* eslint-disable @typescript-eslint/lines-between-class-members */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { height } from "@mui/system";
+// import { height } from "@mui/system";
 import * as d3 from "d3";
 import moment from "moment";
 // import "./css/dashboard.css";
@@ -43,13 +43,13 @@ export const dashboardComponents = {}
 var FONT_SIZE_BIG = 27;
 var FONT_SIZE_MEDIUM = 20
 var FONT_SIZE_LABELS = 10
-var BASELINE_WIDGET_TITLE = 10;
-var BASELINE_LARGE_NUMBER = BASELINE_WIDGET_TITLE + 17;
-var BASELINE_LABELS = BASELINE_LARGE_NUMBER + FONT_SIZE_BIG-10;
+var BASELINE_LARGE_NUMBER = 0;
+var BASELINE_LABELS = BASELINE_LARGE_NUMBER + FONT_SIZE_BIG + 11;
+// var BASELINE VIS = 
 var LINE_1 = 12;
 var LINE_2 = LINE_1 + 17;
 
-var COLOR_LABELS = '#ccc'
+var COLOR_LABELS = '#888'
 
 dashboard.LINE_HIGHT = 20;
 let LINE_HIGHT = 20;
@@ -502,22 +502,28 @@ var LTLAS = [
 
 dashboard.createDashboard = function (div, config) {
   
+  
   // CREATE RELATED LINKS   
   var globalLinks = config.links; 
-  if(globalLinks != undefined && globalLinks.length > 1){
+
+  if(globalLinks != undefined && globalLinks.length > 0)
+  {
     div.append('span')
-      .text('[WIP] Related Dashboards:')
+      .text('Related Dashboards:')
       .style('font-weight', 'bold')
-  }
-  // if(globalLinks.length < 2)
-  // {
-    for(var i in globalLinks){
-      div.append('a')
-        .attr('href', globalLinks[i].url)
-        .attr('target',"_blank")
-        .text(globalLinks[i].name)
-        .style('margin-left', '10px')
+      .style('margin-bottom', '10px' )
+      
+    for(var i in globalLinks)
+    {
+        div.append('a')
+          .attr('href', globalLinks[i].url)
+          .attr('target',"_blank")
+          .text(globalLinks[i].name)
+          .style('margin-left', '10px')
     }
+  }
+
+
   // }else{
   //   var select = div.append('select')
   //     .style('margin-left', '10px')
@@ -572,7 +578,6 @@ var createLayoutTable = function (parentElement, layout, config, func) {
 };
 
 var addGroup = function (parentHTMLElementId, id, config) {
-  // console.log('\tAttach Group', id, '--> ', parentHTMLElementId)
   var group = config.groups.filter(function (el) {
     return el.id == id;
   })[0];
@@ -582,10 +587,18 @@ var addGroup = function (parentHTMLElementId, id, config) {
     .select("#" + parentHTMLElementId)
     .append("div")
     .attr("id", divId)
+    .style('background-color', '#f0f0f0')
+    .style('border-radius', '5px')
+    .style('margin', '10px' )
     .attr("class", "dashboard");
 
   // show group title
-  div.append("h3").attr("class", "dashboard").text(group?.title);
+  div.append("h3")
+    .text(group?.title)
+    .style('padding', '5px' )
+    .style('padding-left', '10px' )
+    .style('margin', '0px' )
+    
 
   var layout = group?.layout;
   createLayoutTable(div, layout, config, createWidget);
@@ -656,7 +669,7 @@ var createWidget = function (parentHtmlElementId, id, config) {
     }
   }
 
-  console.log('>>> data', data)
+  // console.log('>>> data', data)
 
   // SET WIDGET DEFAULT VALUES
   if (!widgetConfig.dateField) 
@@ -725,11 +738,14 @@ var createWidget = function (parentHtmlElementId, id, config) {
   data.sort(byDate);
   var latestDate = data[data.length-1][widgetConfig.dateField]
 
-  if (widgetConfig.filter && widgetConfig.filter.length > 0) {
-    for (var i=0 ; i< widgetConfig.filter.length ; i++) {
+  if (widgetConfig.filter && widgetConfig.filter.length > 0) 
+  {
+    for (var i=0 ; i< widgetConfig.filter.length ; i++) 
+    {
       let filter = widgetConfig.filter[i]
       if(filter == 'latest'){
-        data = data.filter(function(d){
+        data = data.filter(function(d)
+        {
           return d[widgetConfig.dateField] == latestDate;
         })
       }
@@ -740,37 +756,47 @@ var createWidget = function (parentHtmlElementId, id, config) {
   var lastDateUpdated = moment(data[data.length - 1][widgetConfig.dateField], ["YYYY-MM-DD"]);
   
   
-  var title = widgetConfig.title;
-  
   // link data var back to widget
   widgetConfig.data = data;
 
-  console.log('> data', data)
+  // console.log('> data', data)
+
+  // Set widget title: 
+  var widgetDiv = d3.select('#'+parentHtmlElementId)
+    .append('div')
+    .style('background-color', '#fff')
+    .style('border-radius', '3px')
+    .style('margin', '2px')
+    .style('padding', '10px')
+    .style('border', '1px solid #ddd')
+    
+
+  dashboardComponents.setWidgetTitle(widgetDiv, widgetConfig, lastDateUpdated);
 
   if (widgetConfig.visualization == dashboard.VIS_CARTOGRAM) {
     dashboard.visualizeMap(
-      parentHtmlElementId, 
+      widgetDiv, 
       widgetConfig,
       lastDateUpdated
     );
   } 
   else if (widgetConfig.visualization == dashboard.VIS_LINECHART) {
     dashboard.visualizeTimeSeries(
-      parentHtmlElementId, 
+      widgetDiv, 
       widgetConfig,
       lastDateUpdated
       );
   } 
   else if (widgetConfig.visualization == dashboard.VIS_BARCHART) {
     dashboard.visualizeBarChart(
-      parentHtmlElementId, 
+      widgetDiv, 
       widgetConfig,
       lastDateUpdated
     );
   } 
   else if (widgetConfig.visualization == dashboard.VIS_PROGRESS) {
     dashboard.visualizeProgress(
-      parentHtmlElementId,
+      widgetDiv,
       widgetConfig,
       lastDateUpdated
     );
@@ -785,9 +811,9 @@ var createWidget = function (parentHtmlElementId, id, config) {
 
 var executeCondition = function (data, c) {
   c = "d." + c;
-    console.log('>>> data', data)
+    // console.log('>>> data', data)
 
-  console.log('c', c)
+  // console.log('c', c)
   var size = data.length;
   return data.filter(function (d) {
     return eval(c);
@@ -811,7 +837,7 @@ var canonizeNames = function (s) {
 ////////////////////////////////////////////////////////
 
 dashboard.visualizeTimeSeries = function (
-  parentHtmlId,
+  parent,
   config,
   lastDate
   ) 
@@ -846,15 +872,14 @@ dashboard.visualizeTimeSeries = function (
   if (config.max){
     domain[1] = config.max;
   }
+
   console.log('min.max', domain[0], domain[1])
 
   // DETAIL HIGH
   if (config.detail == dashboard.DETAIL_HIGH) 
   {
     var random = Math.floor(Math.random() * 1000);
-    var wrapperDiv = d3
-      .select("#" + parentHtmlId)
-      .append("div")
+    var wrapperDiv = parent.append("div")
       .attr("id", "wrapperDiv" + random);
 
     const WIDTH = WIDTH_HIGH;
@@ -863,10 +888,10 @@ dashboard.visualizeTimeSeries = function (
     var svg = wrapperDiv
       .append("svg")
       .attr("width", WIDTH)
-      .attr("height", BASELINE_LABELS + 40)
+      .attr("height", BASELINE_LABELS + 10)
       .style("margin-bottom", 0);
 
-    dashboardComponents.setWidgetTitle(svg, config.title, config.link, config.detail, lastDate);
+    // dashboardComponents.setWidgetTitle(wrapperDiv, config.title, config.link, config.detail, lastDate);
 
     dashboardComponents.visualizeNumber(
       svg,
@@ -915,11 +940,25 @@ dashboard.visualizeTimeSeries = function (
     wrapperDiv.append("br");
 
 
-    var mark = "bar";
-    if (config.cumulative)
-      mark = "line";
+    var mark = "line";
+    var x = {
+      field: config.dateField,
+      type: "temporal",
+      title: "",
+    }
+    if (!config.cumulative)
+    {
+      mark = "bar";
+      x['type'] = "ordinal",
+      x['timeUnit'] = "yearmonthdate"
+      x['formatType'] =  "time"
+      x['axis'] = { "labelAngle": 45, format: "%b %Y"}
+    }
 
     var scale = { domain: domain};
+
+    var step = WIDTH / config.data.length;
+    console.log('>> step', step)
 
     var vegaLinechart = {
       $schema: "https://vega.github.io/schema/vega-lite/v5.json",
@@ -928,7 +967,7 @@ dashboard.visualizeTimeSeries = function (
       },
       mark: mark,
       width: WIDTH - 65,
-      height:HIGHT_HIGH - HEIGHT,
+      height: HIGHT_HIGH - HEIGHT,
       encoding: {
         y: {
           field: config.dataField,
@@ -936,29 +975,24 @@ dashboard.visualizeTimeSeries = function (
           title: "",
           scale: scale,
         },
-        x: {
-          field: config.dateField,
-          type: "temporal",
-          title: "",
-        },
+        x: x,
         color: { value: config.color },
       },
     };
 
-    wrapperDiv.append("div").attr("id", "vegadiv-" + parentHtmlId + random);
+    wrapperDiv.append("div").attr("id", "vegadiv-" + parent.attr('id') + random);
 
-    vegaEmbed("#vegadiv-" + parentHtmlId + random, vegaLinechart, { actions: false });
+    vegaEmbed("#vegadiv-" + parent.attr('id') + random, vegaLinechart, { actions: false, renderer: "svg" });
   } 
 
   //////////////// MEDIUM 
   else if (config.detail == dashboard.DETAIL_MEDIUM) 
   {
-    var svg = d3.select("#" + parentHtmlId).append("svg");
-    dashboardComponents.setWidgetTitle(svg, config.title, config.link, config.detail, lastDate);
+    var svg = parent.append("svg");
 
     svg
       .attr("width", WIDTH_MEDIUM)
-      .attr("height", HIGHT_MEDIUM);
+      .attr("height", 50);
 
     dashboardComponents.visualizeNumber(
       svg,
@@ -982,17 +1016,17 @@ dashboard.visualizeTimeSeries = function (
       90, 
     );
   } 
-  // LOW
+
+  //////// LOW
   else if (config.detail == dashboard.DETAIL_LOW) 
   {
 
-    var svg = d3.select("#" + parentHtmlId).append("svg");
-    dashboardComponents.setWidgetTitle(svg, config.title, config.link, config.detail, lastDate);
+    var svg = parent.append("svg");
 
     if(config.layout == dashboard.LAYOUT_HORIZONTAL)
     {
     
-      svg.attr("width", 180).attr("height", 70);
+      svg.attr("width", 180).attr("height", 40);
 
       dashboardComponents.visualizeNumber(
         svg,
@@ -1012,7 +1046,7 @@ dashboard.visualizeTimeSeries = function (
     }else 
     if(config.layout == dashboard.LAYOUT_VERTICAL)
     {
-      svg.attr("width", 70).attr("height", 200);
+      svg.attr("width", 70).attr("height", 130);
       dashboardComponents.visualizeNumber(
         svg,
         config,
@@ -1024,8 +1058,8 @@ dashboard.visualizeTimeSeries = function (
         svg,
         config,
         0,
-        100,
         50,
+        60,
         60
       );
     }
@@ -1042,7 +1076,7 @@ dashboard.visualizeTimeSeries = function (
 ////////////////////////////////////////////////////////
 
 dashboard.visualizeMap = function (
-  parentHtmlElementId, 
+  parent, 
   config,
   lastDateUpdated
 ) {
@@ -1053,21 +1087,20 @@ dashboard.visualizeMap = function (
   var height = 400;
 
   TILE_HEIGHT = 400 / 20;
-  TILE_WIDTH = 400 / 20;
+  TILE_WIDTH = (400 - 40) / 20;
 
 
-  var svg = d3
-    .select("#" + parentHtmlElementId)
+  var svg = parent 
     .append("svg")
     .attr("width", width)
     .attr("height", height);
 
-  dashboardComponents.setWidgetTitle(svg, config.title, null, config.detail, lastDateUpdated);
+  // dashboardComponents.setWidgetTitle(svg, config.title, null, config.detail, lastDateUpdated);
 
   svg
     .append("text")
     .attr("x", 0)
-    .attr("y", BASELINE_WIDGET_TITLE + 30)
+    .attr("y", 0)
     .attr("class", "thin")
     .text("per NHS Board");
 
@@ -1203,6 +1236,24 @@ dashboard.visualizeMap = function (
   //     return !(d[dataField] == max || d[dataField] == min);
   //   })
   //   .attr("class", "cartogramLabel-nonextremes");
+
+  // Create map legend
+  
+  svg.selectAll('.legendCircles') 
+    .data([
+      min,
+      (max-min)/2,
+      max
+    ])
+    .enter()
+    .append('circle')
+      .attr('r', 5)
+      .attr('cx', 0)
+      .attr('cy', function(d,i){
+        return width - 20 + i*30
+      })
+      .style('fill', function(d){return valueScale(d);})
+    
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -1217,27 +1268,12 @@ dashboard.visualizeMap = function (
 // lastDateUpdated
 
 dashboard.visualizeBarChart = function (
-  parentHtmlElementId,
+  parent,
   widgetConfig,
   lastDateUpdated
 ) {
-  console.log('>> VISUALIZE BARCHART')
+
   var random = Math.floor(Math.random() * 1000);
-  var wrapperDiv = d3
-    .select("#" + parentHtmlElementId)
-    .append("div")
-    .attr("id", "wrapperDiv" + random);
-
-  console.log('data')
-
-  var svg = wrapperDiv
-    .append("svg")
-    .attr("height", 40)
-    .style("margin-bottom", 0);
-
-  dashboardComponents.setWidgetTitle(svg, widgetConfig.title, widgetConfig.link, widgetConfig.detail, lastDateUpdated);
-
-  wrapperDiv.append("br");
 
   var data = widgetConfig.data;
   // display only last data
@@ -1260,8 +1296,6 @@ dashboard.visualizeBarChart = function (
     barWidth = 10;
   }
 
-  svg.attr("width", width);
-  
   var vegaBarchart = {
     $schema: "https://vega.github.io/schema/vega-lite/v5.json",
     data: {
@@ -1286,9 +1320,10 @@ dashboard.visualizeBarChart = function (
     },
   };
 
-  wrapperDiv.append("div").attr("id", "vegadiv-" + parentHtmlElementId + random);
+  parent.append("div")
+    .attr("id", "vegadiv-" + parent.attr('id') + random);
 
-  vegaEmbed("#vegadiv-" + parentHtmlElementId + random, vegaBarchart, { actions: false });
+  vegaEmbed("#vegadiv-" + parent.attr('id') + random, vegaBarchart, { actions: false });
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -1299,7 +1334,7 @@ dashboard.visualizeBarChart = function (
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 dashboard.visualizeProgress = function (
-  parentHtmlId,
+  parent,
   config,
   lastDate
   )  {
@@ -1318,10 +1353,9 @@ dashboard.visualizeProgress = function (
     dataObj = config.data;
   }
   var random = Math.floor(Math.random() * 1000);
-  var wrapperDiv = d3
-  .select("#" + parentHtmlId)
-  .append("div")
-  .attr("id", "wrapperDiv" + random);
+  var wrapperDiv = parent
+    .append("div")
+    .attr("id", "wrapperDiv" + random);
 
   var svg = wrapperDiv
   .append("svg")
@@ -1331,7 +1365,7 @@ dashboard.visualizeProgress = function (
   .style("margin-right", 0)
   .style("z-index", -1);
 
-  dashboardComponents.setWidgetTitle(svg, config.title, config.link, config.detail, lastDate);
+  // dashboardComponents.setWidgetTitle(svg, config.title, config.link, config.detail, lastDate);
   console.log(config)
 
   console.log("data here")
@@ -1406,7 +1440,7 @@ dashboard.visualizeProgress = function (
       svg,
       config,
       0,
-      BASELINE_WIDGET_TITLE + 22,
+      0,
       FONT_SIZE_MEDIUM
     );
   
@@ -1446,7 +1480,7 @@ dashboard.visualizeProgress = function (
     wrapperDiv.append("br");
     
     svg.attr("width", WIDTH_LOW);
-    svg.attr("height", 80);
+    svg.attr("height", 50);
 
     dashboardComponents.visualizeNumber(
       svg,
@@ -1487,10 +1521,10 @@ dashboard.visualizeProgress = function (
     .attr('y', BASELINE_LARGE_NUMBER)
   }
 
-  forignObject.append("xhtml:div").attr("id", "vegadiv-" + parentHtmlId + random)
+  forignObject.append("xhtml:div").attr("id", "vegadiv-" + parent.attr('id') + random)
   .style("position", "absolute");
   
-  vegaEmbed("#vegadiv-" + parentHtmlId + random, vegaProgressChart, { actions: false, renderer: "svg"});
+  vegaEmbed("#vegadiv-" + parent.attr('id') + random, vegaProgressChart, { actions: false, renderer: "svg"});
 };
 
 
@@ -1637,10 +1671,10 @@ dashboardComponents.visualizeTrendArrow = function (
   }
 
   var g2 = g.append("g").attr("transform", function () {
-    return "translate(17," + 20 + "),rotate(" + rotation + ")";
+    return "translate(17," + 18 + "),rotate(" + rotation + ")";
   });
 
-  var arrowSize = 12
+  var arrowSize = 10
   var arrowThickness = 5;
   g2.append("line")
     .attr("x1", -arrowSize)
@@ -1820,8 +1854,8 @@ dashboardComponents.visualizeValue = function (
 dashboardComponents.visualizeMiniChart = function (
   svg,
   config,
-  x,
-  y,
+  xPos,
+  yPos,
   chartHeight,
   chartWidth) 
   {
@@ -1840,18 +1874,18 @@ dashboardComponents.visualizeMiniChart = function (
       }
     }
 
-    var g = svg.append("g").attr("transform", "translate(" + x + "," + y + ")");
+    var g = svg.append("g").attr("transform", "translate(" + xPos + "," + yPos + ")");
     if (config.timeUnit == dashboard.TIMEUNIT_WEEK) {
-      dashboardComponents.setLabel(g, "Last " + trendWindow + " weeks", 0, BASELINE_LABELS);
+      dashboardComponents.setLabel(g, "Last " + trendWindow + " weeks", 0, chartHeight + 12);
     }
     if (config.timeUnit == dashboard.TIMEUNIT_DAY) {
-      dashboardComponents.setLabel(g, "Last " + trendWindow + " days", 0, BASELINE_LABELS);
+      dashboardComponents.setLabel(g, "Last " + trendWindow + " days", 0, chartHeight + 12);
     }
     
     var barWidth = (chartWidth - 10) / trendWindow;
     
 
-    var x = d3
+    var xPos = d3
     .scaleLinear()
     .domain([0, trendWindow - 1])
     .range([0, chartWidth - barWidth]);
@@ -1884,21 +1918,21 @@ dashboardComponents.visualizeMiniChart = function (
     }
 
   console.log('>> min,max', config.min, min, max)
-  var y = d3.scaleLinear().domain([min, max]).range([chartHeight, 0]);
+  var yPos = d3.scaleLinear().domain([min, max]).range([chartHeight, 0]);
 
   // if perentage, show 100% line
   if (config.max) {
     g.append("line")
-      .attr("y1", y(max))
-      .attr("y2", y(max))
-      .attr("x1", x(0))
-      .attr("x2", x(dataSlice.length - 1))
+      .attr("y1", yPos(max))
+      .attr("y2", yPos(max))
+      .attr("x1", xPos(0))
+      .attr("x2", xPos(dataSlice.length - 1))
       .attr("class", "chartTopLine");
     g.append("rect")
-      .attr("x", x(0))
-      .attr("y", y(max))
-      .attr("height", Math.abs(y(max) - y(0)))
-      .attr("width", x(dataSlice.length - 1) - x(0))
+      .attr("x", xPos(0))
+      .attr("y", yPos(max))
+      .attr("height", Math.abs(yPos(max) - yPos(0)))
+      .attr("width", xPos(dataSlice.length - 1) - xPos(0))
       .attr("class", "chartTopRect");
   }
 
@@ -1915,11 +1949,11 @@ dashboardComponents.visualizeMiniChart = function (
         d3
           .area()
           .x(function (d, i) {
-            return x(i);
+            return xPos(i);
           })
-          .y0(y(0))
+          .y0(yPos(0))
           .y1(function (d) {
-            return y(d[config.dataField]);
+            return yPos(d[config.dataField]);
           }),
       );
 
@@ -1933,18 +1967,18 @@ dashboardComponents.visualizeMiniChart = function (
         d3
           .line()
           .x(function (d, i) {
-            return x(i);
+            return xPos(i);
           })
           .y(function (d) {
-            return y(d[config.dataField]);
+            return yPos(d[config.dataField]);
           }),
       );
 
     g.append("circle")
       .attr("fill", config.color)
       .attr("r", 3)
-      .attr("cx", x(dataSlice.length - 1))
-      .attr("cy", y(dataSlice[dataSlice.length - 1][config.dataField]));
+      .attr("cx", xPos(dataSlice.length - 1))
+      .attr("cy", yPos(dataSlice[dataSlice.length - 1][config.dataField]));
   } else 
   if(!config.cumulative)
   {
@@ -1958,71 +1992,47 @@ dashboardComponents.visualizeMiniChart = function (
         return c;
       })
       .attr("x", function (d, i) {
-        return x(i);
+        return xPos(i);
       })
       .attr("width", barWidth)
       .attr("y", function (d) {
-        return y(d[config.dataField]);
+        return yPos(d[config.dataField]);
       })
       .attr("height", function (d) {
-        return chartHeight - y(d[config.dataField]);
+        return chartHeight - yPos(d[config.dataField]);
       });
   }
 
   if (config.cumlative) {
     g.append("line")
-      .attr("x1", x(6.9))
-      .attr("x2", x(7.1))
+      .attr("x1", xPos(6.9))
+      .attr("x2", xPos(7.1))
       .attr("y1", 37)
       .attr("y2", 37)
       .attr("class", "weekBar");
   }
 };
 
-dashboardComponents.setWidgetTitle = function (g, text, link, detail, lastDate) {
+dashboardComponents.setWidgetTitle = function (div, config, lastDateUpdated) {
 
-  g.append("line")
-    .attr("x1", 0)
-    .attr("x2", 10000)
-    .attr("y1", BASELINE_WIDGET_TITLE + 5)
-    .attr("y2", BASELINE_WIDGET_TITLE + 5)
-    .attr("class", "separator");
 
-  if (link) {
-    text = text + " [details available]";
-  }
 
-  var text = g
-    .append("text")
-    .style('font-size', FONT_SIZE_LABELS)
+
+  div.append('p')
+    .html(config.title)
+    .style('margin', '0px')
     .style('font-weight', 'bold')
-    .text(text)
-    .attr("y", BASELINE_WIDGET_TITLE);
-
-  if (detail == dashboard.DETAIL_LOW || dashboard.DETAIL_MEDIUM) {
-    text.style("font-size", "9pt");
-  }
-
-  if (lastDate) {
-    g.append("text")
-      .text(lastDate.format("MMM DD, YYYY"))
-      .style('font-size', FONT_SIZE_LABELS)
-      .style('fill', COLOR_LABELS)
-      .attr("y", BASELINE_WIDGET_TITLE + 15);
-  }
-
-  if (link) {
-    text.classed("hasLink", true);
-    text.on("click", function () {
-      window.open(link);
-    });
-    text.on("mouseover", function () {
-      d3.select(this).classed("hover", true);
-    });
-    text.on("mouseout", function () {
-      d3.select(this).classed("hover", false);
-    });
-  }
+    .style('font-size', '1em')
+  div.append('hr')
+    .style('border', '.5px solid #ccc')
+    .style('margin-top', '2px')
+    .style('margin-bottom', '2px')
+  div.append('p')
+    .html(lastDateUpdated.format("MMM DD, YYYY"))
+    .style('margin', '0px')
+    .style('font-weight', '100')
+    .style('font-size', '.8em')
+    .style('margin-bottom', '2px')
 };
 
 dashboardComponents.setLabel = function (g, text, x, y) {
@@ -2038,7 +2048,7 @@ dashboardComponents.setLabelRow2 = function (g, text, x, y) {
     .text(text)
     .attr("font-size", FONT_SIZE_LABELS)
     .attr("x", x)
-    .style('color', '#888')
+    .style('color', '#666')
     .attr("y", y + 15);
 };
 
