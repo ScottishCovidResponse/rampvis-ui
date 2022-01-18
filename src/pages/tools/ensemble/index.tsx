@@ -130,9 +130,14 @@ const Ensemble = () => {
       columns: table_keys,
       retainedDimensions: ["Index"],
       controller: controller,
+      intersectionPoints: Array.from(
+        { length: table_data.length },
+        (x, i) => i,
+      ),
     };
 
-    const scatter = visFactory("HeatMap", options);
+    const heatmap = visFactory("HeatMap", options);
+    controller.heatmap = heatmap;
   }, []);
 
   const stackedBarChart = useCallback(async () => {
@@ -147,9 +152,14 @@ const Ensemble = () => {
       columns: table_keys,
       retainedDimensions: ["Index"],
       controller: controller,
+      intersectionPoints: Array.from(
+        { length: table_data.length },
+        (x, i) => i,
+      ),
     };
 
     const stacked = visFactory("StackedChart", options);
+    controller.stacked = stacked;
   }, []);
 
   const datasetList = useCallback(async () => {
@@ -165,7 +175,7 @@ const Ensemble = () => {
   }, []);
 
   useEffect(() => {
-    datasetList();
+    //datasetList();
     lineChart();
     parallelVerticalChart();
     parallelAdditionalChart();
@@ -174,7 +184,7 @@ const Ensemble = () => {
     heatMap();
     stackedBarChart();
   }, [
-    datasetList,
+    //datasetList,
     lineChart,
     parallelVerticalChart,
     parallelAdditionalChart,
@@ -204,19 +214,22 @@ const Ensemble = () => {
         <Container maxWidth={settings.compact ? "xl" : false}>
           <Card sx={{ minWidth: 1600 }}>
             <CardContent>
-              <select
+              {/* <select
                 name="dataset-list"
                 id="dataset_list"
                 onChange={setDatasetName}
-              ></select>
+              ></select> */}
               <div id="container">
                 <div id="line-chart">
+                  <p className="title">This is a line chart</p>
                   <div id="line_chart" />
                 </div>
                 <div id="parallel-chart">
+                  <p className="title">This is a parallel chart</p>
                   <div id="parallel_chart" />
                 </div>
                 <div id="scatter-plot">
+                  <p className="scattertitle">This is a scatter chart</p>
                   <div id="scatter_plot" />
                 </div>
                 <div id="table"></div>
@@ -224,14 +237,28 @@ const Ensemble = () => {
 
               <div id="container2">
                 <div id="vertical-chart">
+                  <p className="title">This is a parallel plot</p>
                   <div id="parallel_vertical_chart" />
                 </div>
                 <div id="table-plot">
+                  <p className="title">This is a table [add a colormap]</p>
                   <div id="table_plot" />
                 </div>
               </div>
-              <div id="stacked_chart" />
-              <div id="heatmap_chart" />
+
+              <div id="container5">
+                <div id="container3">
+                  <div id="stacked-chart">
+                    <div id="stacked_chart" />
+                  </div>
+                </div>
+
+                <div id="container4">
+                  <div id="heatmap-chart">
+                    <div id="heatmap_chart" />
+                  </div>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </Container>

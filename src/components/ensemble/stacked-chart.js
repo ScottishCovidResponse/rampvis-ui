@@ -4,9 +4,14 @@ import { pv } from "src/lib/vis/pv";
 export class StackedChart {
 
     constructor(options) {
+
+        if (options.intersectionPoints.length == 0){
+            options.intersectionPoints = Array.from({length: options.data.length}, (x, i) => i)
+        }
+
         const margin = { top: 30, right: 30, bottom: 30, left: 30 },
             width = 800 - margin.left - margin.right,
-            height = 3400 - margin.top - margin.bottom;
+            height = (options.intersectionPoints.length) * 20;
 
         const container = d3.select("#" + options.chartElement);
         const svg = container
@@ -16,7 +21,10 @@ export class StackedChart {
             .append("g")
             .attr("transform", `translate(${margin.left},${margin.top})`);
 
+        var controller = options.controller;
         const columns = options.columns;
+
+        const intersectionPoints = options.intersectionPoints;
 
         let values = [];
 
@@ -46,8 +54,9 @@ export class StackedChart {
         const indices = [];
         const arrayValues = [];
 
-        for (var i = 0; i < options.data.length; i++) {
-            var row = (options.data)[i];
+        for (var i = 0; i < intersectionPoints.length; i++) {
+            var intersectionIndex = intersectionPoints[i];
+            var row = (options.data)[intersectionIndex];
             var index = row["Index"];
 
             indices.push(index);
@@ -70,17 +79,7 @@ export class StackedChart {
         const stackedData = d3.stack().keys(subcolumns)(arrayValues);
 
         // color palette = one color per subgroup
-        const colors = ['#8dd3c7','#ffffb3','#bebada','#fb8072','#80b1d3','#fdb462','#b3de69','#fccde5','#d9d9d9','#bc80bd','#ccebc5','#ffed6f','#af8dc3','#7fbf7b']
-
-
-
-        const legendData = subcolumns;
-        const legendContainer = container.append("div").lower();
-        const legend = pv
-          .legend()
-          .margin({ top: 3, right: 0, bottom: 3, left: 80})
-          .colorScale(d3.scaleOrdinal().domain(legendData).range(colors));
-        legendContainer.datum(legendData).call(legend);
+        const colors = ['#8dd3c7', '#ffffb3', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b3de69', '#fccde5', '#d9d9d9', '#bc80bd', '#ccebc5', '#ffed6f', '#af8dc3', '#7fbf7b']
 
 
         // Add x axis
@@ -100,7 +99,7 @@ export class StackedChart {
 
         // Add y axis
         const y = d3.scaleBand()
-            .domain(indices)
+            .domain(intersectionPoints)
             .range([0, height])
             .padding([0.02])
 
@@ -111,14 +110,14 @@ export class StackedChart {
             .attr("dx", "-.8em")
             .attr("transform", "rotate(-15)");
 
-        
+
         // Show the bars
         svg.append("g")
             .selectAll("g")
             // Enter in the stack data = loop key per key = group per group
             .data(stackedData)
             .join("g")
-            .attr("fill", function(d, i){
+            .attr("fill", function (d, i) {
                 return colors[i];
             })
             .selectAll("rect")
@@ -130,6 +129,24 @@ export class StackedChart {
             .attr("height", y.bandwidth())
             .attr("width", d => x(d[1]) - x(d[0]))
 
-        }
+        const legendData = subcolumns;
+        const legendContainer = container.append("div").lower();
+        const legend = pv
+            .legend()
+            .margin({ top: 3, right: 0, bottom: 3, left: 80 })
+            .colorScale(d3.scaleOrdinal().domain(legendData).range(colors));
+        legendContainer.datum(legendData).call(legend);
+
+
+        this.removeContainer = async function () {
+            container.selectAll("*").remove();
+            return this.getController();
+        };
+
+        this.getController = function () {
+            return controller;
+        };
 
     }
+
+}
