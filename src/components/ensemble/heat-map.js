@@ -80,7 +80,7 @@ export class HeatMap {
 
 
         const y = d3.scaleBand()
-            .range([height, 0])
+            .range([0, height])
             .domain(options.intersectionPoints)
             .padding(0.01);
 
