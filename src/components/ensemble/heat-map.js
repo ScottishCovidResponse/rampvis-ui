@@ -89,7 +89,7 @@ export class HeatMap {
 
 
         const myColor = d3.scaleLinear()
-            .range(["#00FF7F", "#FF66B2"])
+            .range(["#FF66B2", "#00FF7F"])
             .domain([1, 100]);
 
 
