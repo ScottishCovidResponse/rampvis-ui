@@ -221,7 +221,7 @@ const Ensemble = () => {
               ></select> */}
               <div id="container">
                 <div id="line-chart">
-                  <h3 className="title">Case changes across time</h3>
+                  <h3 className="title">Cases change across time</h3>
                   <div id="line_chart" />
                 </div>
                 <div id="parallel-chart">
