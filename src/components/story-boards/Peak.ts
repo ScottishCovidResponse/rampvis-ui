@@ -39,8 +39,8 @@ export class Peak extends DataEvent {
   get rank() {
     if (this._rank) return this._rank;
 
-    if (!this._normHeight)
-      throw "You need to set both the normalised height to calculate rank. Please use the setter.";
+    // if (!this._normHeight)
+    // throw "You need to set both the normalised height to calculate rank. Please use the setter.";
     return 1 + Math.floor(this._normHeight / 0.2);
   }
 

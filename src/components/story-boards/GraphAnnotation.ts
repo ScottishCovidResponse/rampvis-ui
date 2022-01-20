@@ -19,7 +19,11 @@ export class GraphAnnotation {
   _connector;
   _textNode;
 
-  constructor(id = false) {
+  node;
+  private _annoWidth: number;
+  private _annoHeight: number;
+
+  constructor(id = "") {
     this._id = id;
     this._wrap = 150;
     this._align = "start";
@@ -30,22 +34,64 @@ export class GraphAnnotation {
     this._showConnector = false;
     this._color = "black";
     this._backgroundColor = "none";
-    this._title = svg`<text font-weight="bold"></text>`;
-    this._rect = svg`<rect></rect>`;
-    this._circle = svg`<circle r=20 stroke-width="3" fill="none"></circle>`;
+    this._title = d3
+      .create("svg")
+      .append("text")
+      .attr("font-weight", "bold")
+      .node();
+    // svg`<text font-weight="bold"></text>`;
+    this._rect = d3.create("svg").append("rect").node();
+    // svg`<rect></rect>`;
+    this._circle = d3
+      .create("svg")
+      .append("circle")
+      .attr("r", 20)
+      .attr("stroke-width", 3)
+      .attr("fill", "none")
+      .node();
+    //  svg`<circle r=20 stroke-width="3" fill="none"></circle>`;
     this._rectPadding = 10;
-    this._label = svg`<text></text>`;
-    this._connector = svg`<line class="graph-annotation-connector" stroke=${this._color}></line>`;
-    this._textNode = svg`<g class="graph-annotation-text" style="fill: ${this.color}">${this._title}
-      ${this._label}</g>`;
-    this.node = svg`<g display="none" ${
-      id ? 'id="' + id + '"' : ""
-    } class="graph-annotation" font-size="12px">
-      ${this._circle}
-      ${this._rect}
-      ${this._connector}
-      ${this._textNode}
-  </g>`;
+    this._label = d3.create("svg").append("text").node();
+    // svg`<text></text>`;
+    this._connector = d3
+      .create("svg")
+      .append("line")
+      .attr("class", "graph-annotation-connector")
+      .attr("stroke", this._color)
+      .node();
+    // svg`<line class="graph-annotation-connector" stroke=${this._color}></line>`;
+    this._textNode = d3
+      .create("svg")
+      .append("g")
+      .attr("class", "graph-annotation-text")
+      .attr("fill", this._color)
+      .node();
+    this._textNode.append(this._title);
+    this._textNode.append(this._label);
+    //.node();
+    // svg`<g class="graph-annotation-text" style="fill: ${this.color}">${this._title}${this._label}</g>`;
+    this.node = d3
+      .create("svg")
+      .append("g")
+      .attr("display", "none")
+      .attr("id", id)
+      .attr("class", "graph-annotation")
+      .attr("font-size", "12px")
+      .node();
+
+    this.node.appendChild(this._circle);
+    this.node.appendChild(this._rect);
+    this.node.appendChild(this._connector);
+    this.node.appendChild(this._textNode);
+
+    // svg`<g display="none" ${
+    //     id ? 'id="' + id + '"' : ""
+    //   } class="graph-annotation" font-size="12px">
+    //     ${this._circle}
+    //     ${this._rect}
+    //     ${this._connector}
+    //     ${this._textNode}
+    // </g>`;
   }
 
   id(id) {
@@ -143,7 +189,11 @@ export class GraphAnnotation {
     // Draw each word onto svg and save its width before removing
     let wordElem;
     words = words.map((word) => {
-      wordElem = textElem.appendChild(svg`<tspan>${word}</tspan>`);
+      // wordElem = textElem.appendChild(svg`<tspan>${word}</tspan>`);
+      wordElem = textElem.appendChild(
+        d3.create("svg").append("tspan").text(word).node(),
+      );
+
       let { width: wordWidth } = wordElem.getBoundingClientRect();
       textElem.removeChild(wordElem);
       return { word: word, width: wordWidth };
@@ -181,7 +231,14 @@ export class GraphAnnotation {
         rowString.push(word.word);
       } else {
         textElem.appendChild(
-          svg`<tspan x=0 dy="1.1em">${rowString.join(" ") + " "}</tspan>`,
+          // svg`<tspan x=0 dy="1.1em">${rowString.join(" ") + " "}</tspan>`,
+          d3
+            .create("svg")
+            .append("tspan")
+            .attr("x", 0)
+            .attr("dy", "1.1em")
+            .text(rowString.join(" ") + " ")
+            .node(),
         );
         currentWidth = word.width;
         rowString = [word.word];
@@ -189,8 +246,18 @@ export class GraphAnnotation {
 
       isLastWord = i == words.length - 1;
       if (isLastWord) {
+        // textElem.appendChild(
+        //   svg`<tspan x=0 dy="1.1em">${rowString.join(" ") + " "}</tspan>`,
+        // );
+
         textElem.appendChild(
-          svg`<tspan x=0 dy="1.1em">${rowString.join(" ") + " "}</tspan>`,
+          d3
+            .create("svg")
+            .append("tspan")
+            .attr("x", 0)
+            .attr("dy", "1.1em")
+            .text(rowString.join(" ") + " ")
+            .node(),
         );
       }
     });

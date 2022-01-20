@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 
-class TimelineAnnotation {
+export class TimelineAnnotation {
   _timelineDepth;
   _id;
   _wrap;
@@ -16,8 +16,11 @@ class TimelineAnnotation {
   _label;
   _connector;
   _textNode;
+  node: any;
+  _annoWidth: any;
+  private _annoHeight: any;
 
-  constructor(timelineDepth = 0, id = false) {
+  constructor(timelineDepth = 0, id = "") {
     this._timelineDepth = timelineDepth;
     this._id = id;
     this._wrap = 150;
@@ -29,17 +32,50 @@ class TimelineAnnotation {
     this._showConnector = false;
     this._color = "black";
     this._connectorColor;
-    this._title = svg`<text font-weight="bold"></text>`;
-    this._label = svg`<text></text>`;
-    this._connector = svg`<line class="graph-annotation-connector" stroke=${this._color}></line>`;
-    this._textNode = svg`<g class="graph-annotation-text" style="fill: ${this.color}">${this._title}
-      ${this._label}</g>`;
-    this.node = svg`<g display="none" ${
-      id ? 'id="' + id + '"' : ""
-    } class="graph-annotation" font-size="12px">
-      ${this._connector}
-      ${this._textNode}
-  </g>`;
+    // this._title = svg`<text font-weight="bold"></text>`;
+    this._title = this._title = d3
+      .create("svg")
+      .append("text")
+      .attr("font-weight", "bold")
+      .node();
+    // this._label = svg`<text></text>`;
+    this._label = d3.create("svg").append("text").node();
+    // this._connector = svg`<line class="graph-annotation-connector" stroke=${this._color}></line>`;
+    this._connector = d3
+      .create("svg")
+      .append("line")
+      .attr("class", "graph-annotation-connector")
+      .attr("stroke", this._color)
+      .node();
+    // this._textNode = svg`<g class="graph-annotation-text" style="fill: ${this.color}">${this._title}
+    //   ${this._label}</g>`;
+    this._textNode = d3
+      .create("svg")
+      .append("g")
+      .attr("class", "graph-annotation-text")
+      .attr("fill", this._color)
+      .node();
+    this._textNode.append(this._title);
+    this._textNode.append(this._label);
+
+    //   this.node = svg`<g display="none" ${
+    //     id ? 'id="' + id + '"' : ""
+    //   } class="graph-annotation" font-size="12px">
+    //     ${this._connector}
+    //     ${this._textNode}
+    // </g>`;
+
+    this.node = d3
+      .create("svg")
+      .append("g")
+      .attr("display", "none")
+      .attr("id", id)
+      .attr("class", "graph-annotation")
+      .attr("font-size", "12px")
+      .node();
+
+    this.node.appendChild(this._connector);
+    this.node.appendChild(this._textNode);
   }
 
   timelineDepth(timelineDepth) {
@@ -116,7 +152,7 @@ class TimelineAnnotation {
     );
   }
 
-  _correctTextAlignment(textElem, annoWidth) {
+  _correctTextAlignment(textElem) {
     // Aligns tspan elements based on chosen alignment
     Array.from(textElem.children).forEach((tspan) =>
       tspan.setAttribute("x", this._alignToX()),
@@ -135,9 +171,10 @@ class TimelineAnnotation {
     // Draw each word onto svg and save its width before removing
     let wordElem;
     words = words.map((word) => {
-      wordElem = textElem.appendChild(svg`<tspan>${word}</tspan>`);
+      // wordElem = textElem.appendChild(svg`<tspan>${word}</tspan>`);
+      wordElem = d3.create("svg").append("tspan").text(word).node();
       let { width: wordWidth } = wordElem.getBoundingClientRect();
-      textElem.removeChild(wordElem);
+      // textElem.removeChild(wordElem); TODO
       return { word: word, width: wordWidth };
     });
 
@@ -173,7 +210,14 @@ class TimelineAnnotation {
         rowString.push(word.word);
       } else {
         textElem.appendChild(
-          svg`<tspan x=0 dy="1.1em">${rowString.join(" ")}</tspan>`,
+          // svg`<tspan x=0 dy="1.1em">${rowString.join(" ")}</tspan>`,
+          d3
+            .create("svg")
+            .append("tspan")
+            .attr("x", 0)
+            .attr("dy", "1.1em")
+            .text(rowString.join(" "))
+            .node(),
         );
         currentWidth = word.width;
         rowString = [word.word];
@@ -182,7 +226,14 @@ class TimelineAnnotation {
       isLastWord = i == words.length - 1;
       if (isLastWord) {
         textElem.appendChild(
-          svg`<tspan x=0 dy="1.1em">${rowString.join(" ")}</tspan>`,
+          // svg`<tspan x=0 dy="1.1em">${rowString.join(" ")}</tspan>`,
+          d3
+            .create("svg")
+            .append("tspan")
+            .attr("x", 0)
+            .attr("dy", "1.1em")
+            .text(rowString.join(" "))
+            .node(),
         );
       }
     });
@@ -203,6 +254,9 @@ class TimelineAnnotation {
   _repositionAnnotation() {
     const { width: annoWidth, height: annoHeight } =
       this._textNode.getBoundingClientRect();
+
+    // prettier-ignore
+    console.log("_repositionAnnotation: width =", annoWidth, "height = ", annoHeight, "_x = ", this._x, "_y", this._y);
 
     this._annoWidth = annoWidth;
     this._annoHeight = annoHeight;

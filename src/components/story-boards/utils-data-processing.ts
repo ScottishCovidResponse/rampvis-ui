@@ -26,7 +26,7 @@ export const yScFnc = (data, h = height, b = border) => {
   return ySc;
 };
 
-export const createDataGroup = (arr, colors = false, domain = false) => {
+export const createDataGroup = (arr, colors = [], domain = false) => {
   return { group: arr, colors: colors, domain: domain };
 };
 
