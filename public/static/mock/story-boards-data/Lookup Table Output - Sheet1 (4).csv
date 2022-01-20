@@ -1,0 +1,6 @@
+type,parameters,output1,output2
+PEAK,"DATE, METRIC, HEIGHT, DURATION",METRIC peaks at HEIGHT on DATE.,On DATE we can observe a peak of HEIGHT in METRIC.
+RISE,"DATE, METRIC, HEIGHT, GRAD",On DATE we see a GRAD rise in METRIC.,This is the beginning of a GRAD rise in METRIC that peaks at HEIGHT.
+FALL,"DATE, METRIC, HEIGHT, GRAD",METRIC begins to fall by a total of HEIGHT.,METRIC has a GRAD downtick.
+DATA MILESTONE,"DATE, METRIC, HEIGHT",METRIC reaches a value of HEIGHT for the very first time.,This marks the first time METRIC has been at a value of HEIGHT.
+SEMANTIC EVENT,DESCRIPTION,DESCRIPTION,DESCRIPTION
