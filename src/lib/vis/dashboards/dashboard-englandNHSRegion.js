@@ -34,6 +34,14 @@ export class DashboardEnglandNHSRegion {
       .append("div")
       .attr("class", "vis-example-container");
 
+    // streams for phong: 
+    var cumAdmissions ='https://api.coronavirus.data.gov.uk/v2/data?areaType=nhsRegion&areaCode=E40000007&metric=cumAdmissions&format=csv'
+    var cumAdmissionsAge = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=nhsRegion&areaCode=E40000007&metric=cumAdmissionsByAge&format=csv'
+    var hospitalCases ='https://api.coronavirus.data.gov.uk/v2/data?areaType=nhsRegion&areaCode=E40000007&metric=hospitalCases&format=csv'
+    var newAdmissions = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=nhsRegion&areaCode=E40000007&metric=newAdmissions&format=csv'
+
+
+
     // 2. specify data URLs here...
     var cumCasesBySpecimenDate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=cumCasesBySpecimenDate&format=csv"
     var femaleCases = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=femaleCases&format=csv"
