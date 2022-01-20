@@ -192,7 +192,6 @@ export function benchmarkPlot(data) {
 
         const [stream, country] = d3.select(this)["_groups"][0][0]["attributes"]["id"]["nodeValue"].split("/");
 
-        console.log(country)
         d3.select("#graph" + stream).selectAll(".multiline").filter(function () {
           return (
             d3.select(this).attr("id") != stream + "/" + country

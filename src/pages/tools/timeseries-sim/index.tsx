@@ -20,12 +20,11 @@ import BenchmarkCountryList from "src/components/timeseries-sim/BenchmarkCountry
 import TimeSeriesBag from "src/components/timeseries-sim/TimeSeriesBag";
 import ComparePopUp from "src/components/timeseries-sim/ComparePopUp";
 import { benchmarkPlot } from "src/components/timeseries-sim/plotfunctions/benchmarkplot";
-import { last } from "lodash";
 
 const API = process.env.NEXT_PUBLIC_API_PY;
 
 const today = new Date();
-const lastDate = new Date(today.setDate(today.getDate() - 3));
+const lastDate = new Date(today.setDate(today.getDate() - 2));
 const firstDate = new Date(today.setDate(today.getDate() - 30));
 const initialFirstRunState = {
   // default user parameters for timeseries search
@@ -75,7 +74,7 @@ const defaultBenchmarkCountries = [
   "Netherlands",
 ];
 
-const defaultTimeSeriesBag = ["A", "B", "C"];
+const defaultTimeSeriesBag = [];
 
 const TimeseriesSim = () => {
   //const { settings } = useSettings();
@@ -176,7 +175,14 @@ const TimeseriesSim = () => {
   const plotSwitch = async () => {
     // summons segmented and aligment plots on response back from API
     if (responseDataSearch.length > 0) {
-      alignmentPlot(responseDataSearch, timeSeriesBag, setTimeSeriesBag);
+      alignmentPlot(
+        responseDataSearch,
+        firstRunForm.indicator,
+        timeSeriesBag,
+        benchmarkCountries,
+        setTimeSeriesBag,
+        setBenchmarkCountries,
+      );
       SegmentedMultiLinePlot(responseDataSearch, firstRunForm);
     }
   };
@@ -209,6 +215,16 @@ const TimeseriesSim = () => {
     }
   };
 
+  const predictPost = async () => {
+    const apiUrl =
+      "http://127.0.0.1:4010/stat/v1/timeseries-sim-search/compare/";
+    console.log({ timeseries: timeSeriesBag });
+  };
+
+  const predictClick = async () => {
+    await predictPost();
+  };
+
   const compareClick = async () => {
     // on clicking search button, fetch data , wait response and summon plots
     comparePopUpOpen(); // in order to make d3 queries, have to open pop-up first before filling with d3 graphs
@@ -231,7 +247,7 @@ const TimeseriesSim = () => {
           <Grid item xs={3}>
             <Card>
               <CardContent>
-                <CardHeader title="Time Series Similarity Search" />
+                <CardHeader title="Time Period Search" />
                 <FirstForm
                   className={classes.firstRunForm}
                   form={firstRunForm}
@@ -259,7 +275,7 @@ const TimeseriesSim = () => {
           <Grid item xs={3}>
             <Card>
               <CardContent>
-                <CardHeader title="Benchmark Country Comparison" />
+                <CardHeader title="Comprehensive Country Comparison" />
                 <BenchmarkCountryList
                   list={benchmarkCountries}
                   manualValue={manualCountry}
@@ -277,10 +293,11 @@ const TimeseriesSim = () => {
           <Grid item xs={3}>
             <Card>
               <CardContent>
-                <CardHeader title="Timeseries Uncertainty Analysis" />
+                <CardHeader title="Observation-based Forecasting" />
                 <TimeSeriesBag
                   list={timeSeriesBag}
                   removeFromList={removeTimeSeries}
+                  onClick={predictClick}
                 />
               </CardContent>
             </Card>

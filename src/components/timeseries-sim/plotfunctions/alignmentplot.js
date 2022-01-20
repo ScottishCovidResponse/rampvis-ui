@@ -1,7 +1,8 @@
 
+import { SettingsBackupRestore } from "@mui/icons-material";
 import * as d3 from "d3";
 
-export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
+export function alignmentPlot(data,indicator, timeSeriesBag, benchmarkCountries,setTimeSeriesBag,setBenchmarkCountries) {
   //------ DATA and Graph Functions ------//
 
   console.log("alignmentPlot: data = ", data);
@@ -36,13 +37,19 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
 
   const GraphData = data;
 
-  let checkState = {}
+  let checkStateTimeSeries = {}
   GraphData.forEach((streams) => {
-    const identifier = streams.key + " " + streams.matchedPeriodEnd
-    checkState[identifier] = "false"
+    const identifier = streams.key + " " + streams.matchedPeriodEnd + " " + indicator.split("_")
+    .map((str) => str.charAt(0).toUpperCase() + str.slice(1)).join(" ");
+    checkStateTimeSeries[identifier] = "false"
   });
 
-  console.log(checkState)
+  let checkStateBenchmarkCountries =  {}
+  GraphData.forEach((streams) => {
+    const identifier = streams.key
+    checkStateBenchmarkCountries[identifier] = "false"
+  });
+
   const dateRange = GraphData
     .filter((streams) => streams.isQuery)[0]
     .values.map((values) => values.date)
@@ -136,22 +143,43 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
 
 
   const updateTimeSeriesBag = (d) => {
-    const identifier = d.key + " " + d.matchedPeriodEnd
-    console.log(timeSeriesBag)
-    if (!timeSeriesBag.includes(identifier) && checkState[identifier] === "false") {
+    const identifier = d.key + " " + d.matchedPeriodEnd + " " + indicator.split("_")
+    .map((str) => str.charAt(0).toUpperCase() + str.slice(1))
+    .join(" ");
+    
+    if (!timeSeriesBag.includes(identifier) && checkStateTimeSeries[identifier] === "false") {
       setTimeSeriesBag((old) => [...old, identifier]);
-      checkState[identifier] = "true";
+      checkStateTimeSeries[identifier] = "true";
       timeSeriesBag.push(identifier);
       d3.select("#alignmentContainer" + spaceRemove(d.key)).attr("style", "outline: thin solid red;") 
     }
-    else if (timeSeriesBag.includes(identifier) && checkState[identifier] === "true") {
+    else if (timeSeriesBag.includes(identifier) && checkStateTimeSeries[identifier] === "true") {
       setTimeSeriesBag((old) => [...old.filter(item => item !== identifier)]);
-      checkState[identifier] = "false";
+      checkStateTimeSeries[identifier] = "false";
       timeSeriesBag = timeSeriesBag.filter(item => item !== identifier);
       d3.select("#alignmentContainer" + spaceRemove(d.key)).attr("style", "outline: none;") 
     }
 
   }
+
+  const updateBenchmarkCountries = (d) => {
+    const identifier = d.key
+    
+    if (!benchmarkCountries.includes(identifier) && checkStateBenchmarkCountries[identifier] === "false") {
+      setBenchmarkCountries((old) => [...old, identifier]);
+      checkStateBenchmarkCountries[identifier] = "true";
+      benchmarkCountries.push(identifier);
+    }
+    else if (benchmarkCountries.includes(identifier) && checkStateBenchmarkCountries[identifier] === "true") {
+      setBenchmarkCountries((old) => [...old.filter(item => item !== identifier)]);
+      checkStateBenchmarkCountries[identifier] = "false";
+      benchmarkCountries = benchmarkCountries.filter(item => item !== identifier);
+    }
+
+  }
+
+
+
 
   GraphData.map(function (streams) {
     d3.select("#xaxis" + spaceRemove(streams.key)).call(xAxis); // call individual xaxis properties
@@ -193,7 +221,10 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
       });
 
     d3.select("#alignmentContainer" + spaceRemove(streams.key))
-      .on("click", updateTimeSeriesBag)
+      .on("click", function(d){
+        updateTimeSeriesBag(d);
+        updateBenchmarkCountries(d);
+      })
 
   });
 
