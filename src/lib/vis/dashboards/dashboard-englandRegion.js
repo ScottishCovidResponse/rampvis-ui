@@ -35,23 +35,24 @@ export class DashboardEnglandRegion {
       .attr("class", "vis-example-container");
 
 
-
-
-
     // 2. specify data URLs here...
+    // PHE_REGION_CASES
     var cumCasesBySpecimenDate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=cumCasesBySpecimenDate&format=csv"
     var femaleCases = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=femaleCases&format=csv"
     var maleCases = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=maleCases&format=csv"
     var newCasesBySpecimenDate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=newCasesBySpecimenDate&format=csv"
     var newCasesBySpecimenDateAgeDemographics = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=newCasesBySpecimenDateAgeDemographics&format=csv"
 
+    // PHE_REGION_UNIQUE
     var uniqueCasePositivityBySpecimenDateRollingSum = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=uniqueCasePositivityBySpecimenDateRollingSum&format=csv"
 
+    // PHE_REGION_DEATHS
     var cumDailyNsoDeathsByDeathDate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=cumDailyNsoDeathsByDeathDate&format=csv"
     var femaleDeaths28Days = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=femaleDeaths28Days&format=csv"
     var maleDeaths28Days = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=maleDeaths28Days&format=csv"
     var newDailyNsoDeathsByDeathDate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=newDailyNsoDeathsByDeathDate&format=csv"
 
+    // PHE_REGION_VACC
     var cumVaccinationFirstDoseUptakeByVaccinationDatePercentage = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&format=csv"
     var cumVaccinationSecondDoseUptakeByVaccinationDatePercentage = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&format=csv"
     var vaccinationsAgeDemographics = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=vaccinationsAgeDemographics&format=csv"
@@ -184,33 +185,35 @@ export class DashboardEnglandRegion {
             dateField: 'date', 
             color: colors.getDeathColor(2), 
             min: 0
-          },{
-            id: 'femaleDeaths28Days', 
-            title: 'Female deaths within last 28 days', 
-            data: femaleDeaths28Days, 
-            dataField: 'rate', 
-            visualization: 'barchart', 
-            detail: dashboard.DETAIL_HIGH, 
-            cumulative: false,
-            timeUnit: dashboard.TIMEUNIT_MONTH,
-            dateField: 'date', 
-            categories: 'age',
-            color: colors.getDeathColor(3), 
-            min: 0
-          },{
-            id: 'maleDeaths28Days', 
-            title: 'Male deaths within last 28 days', 
-            data: maleDeaths28Days, 
-            dataField: 'rate', 
-            visualization: 'barchart', 
-            detail: dashboard.DETAIL_HIGH, 
-            cumulative: false,
-            timeUnit: dashboard.TIMEUNIT_MONTH,
-            dateField: 'date', 
-            categories: 'age',
-            color: colors.getDeathColor(3), 
-            min: 0
-          },{
+          },
+        //   {
+        //     id: 'femaleDeaths28Days', 
+        //     title: 'Female deaths within last 28 days', 
+        //     data: femaleDeaths28Days, 
+        //     dataField: 'rate', 
+        //     visualization: 'barchart', 
+        //     detail: dashboard.DETAIL_HIGH, 
+        //     cumulative: false,
+        //     timeUnit: dashboard.TIMEUNIT_MONTH,
+        //     dateField: 'date', 
+        //     categories: 'age',
+        //     color: colors.getDeathColor(3), 
+        //     min: 0
+        //   },{
+        //     id: 'maleDeaths28Days', 
+        //     title: 'Male deaths within last 28 days', 
+        //     data: maleDeaths28Days, 
+        //     dataField: 'rate', 
+        //     visualization: 'barchart', 
+        //     detail: dashboard.DETAIL_HIGH, 
+        //     cumulative: false,
+        //     timeUnit: dashboard.TIMEUNIT_MONTH,
+        //     dateField: 'date', 
+        //     categories: 'age',
+        //     color: colors.getDeathColor(3), 
+        //     min: 0
+        //   },
+        {
             id: 'vaccinationsAgeDemographics1', 
             title: '1st dose uptake by age groups', 
             data: vaccinationsAgeDemographics, 

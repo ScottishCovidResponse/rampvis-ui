@@ -65,6 +65,9 @@ export class Data {
     PHE_ENGNHS_GROUP1: "areaType=nhsRegion&metric=cumAdmissions&",
     PHE_ENGNHS_GROUP2: "areaType=nhsRegion&metric=cumAdmissionsByAge&",
 
+    // ENGLAND REGION
+    
+
     // UTLA DATA
     PHE_UTLA_NEW: "areaType=utla&metric=newCasesBySpecimenDate&",
     PHE_UTLA_CUM: "areaType=utla&metric=cumCasesBySpecimenDate&",

@@ -38,6 +38,9 @@ export class DashboardMSOA {
       .append("div")
       .attr("class", "vis-example-container");
 
+    console.log('PHE_NATION_ADMISSIONS', Data.from(options.data, Data.Fields.PHE_MSOA_ALL));      
+      
+      
     // 2. specify data URLs here...
     var newCasesBySpecimenDateRollingSum = "https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000961&metric=newCasesBySpecimenDateRollingSum&format=csv"
     var newCasesBySpecimenDateRollingRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000961&metric=newCasesBySpecimenDateRollingRate&format=csv"
