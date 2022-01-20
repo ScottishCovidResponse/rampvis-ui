@@ -1,4 +1,4 @@
-import { fetchCSV } from "./utils-data";
+import { readCSVFile } from "./utils-data";
 import { SemanticEvent } from "./SemanticEvent";
 import { detectFeatures } from "./utils-feature-detection";
 import {
@@ -12,66 +12,28 @@ import {
 
 import { GraphAnnotation } from "./GraphAnnotation";
 import { DataEvent } from "./DataEvent";
+import { TimeSeries } from "./TimeSeries";
 
-const writeText = (text, date, data, showRedCircle = false) => {
-  // Find idx of event in data and set location of the annotation in opposite half of graph
-  const idx = findDateIdx(date, data);
-  const annoIdx = Math.floor(
-    ((idx < data.length / 2 ? 3 : 1) / 4) * data.length,
-  );
+export async function processDataAndGetRegions(): Promise<string[]> {
+  await createDailyCasesByRegion();
+  createCalenderEvents();
+  createPeaksByRegion();
+  createPeaksByRegion();
+  createGaussByRegion();
 
-  const annoX = data[annoIdx].date;
-  const target = data[idx];
-
-  const anno = new GraphAnnotation()
-    .title(date.toLocaleDateString())
-    .label(text)
-    .backgroundColor("white")
-    .wrap(200);
-
-  anno.unscaledX = annoX;
-  anno.unscaledTarget = [target.date, target.y];
-
-  if (showRedCircle) {
-    anno.circleHighlight();
-  }
-
-  return { end: idx, annotation: anno, fadeout: true };
-};
-
-/*
-    Linear regression function inspired by the answer found at: https://stackoverflow.com/a/31566791.
-    We remove the need for array x as we assum y data is equally spaced and we only want the gradient.
-  */
-
-function linRegGrad(y) {
-  var slope = {};
-  var n = y.length;
-  var sum_x = 0;
-  var sum_y = 0;
-  var sum_xy = 0;
-  var sum_xx = 0;
-
-  for (var i = 0; i < y.length; i++) {
-    sum_x += i;
-    sum_y += y[i];
-    sum_xy += i * y[i];
-    sum_xx += i * i;
-  }
-
-  slope = (n * sum_xy - sum_x * sum_y) / (n * sum_xx - sum_x * sum_x);
-  return slope;
+  return Object.keys(dailyCasesByRegion).sort();
 }
 
-export async function storyboardA() {
-  const csv: any[] = await fetchCSV(
+//
+//
+//
+const dailyCasesByRegion = {};
+
+async function createDailyCasesByRegion() {
+  const csv: any[] = await readCSVFile(
     "/static/mock/story-boards-data/newCasesByPublishDateRollingSum.csv",
   );
 
-  //
-  //
-  //
-  const dailyCasesByRegion = {};
   csv.forEach((row) => {
     let region = row.areaName;
     let date = new Date(row.date);
@@ -86,12 +48,16 @@ export async function storyboardA() {
     dailyCasesByRegion[region].sort((e1, e2) => e1.date - e2.date);
   }
 
-  console.log("Story: dailyCasesByRegion = ", dailyCasesByRegion);
+  // prettier-ignore
+  console.log("createDailyCasesByRegion: dailyCasesByRegion = ", dailyCasesByRegion);
+}
 
-  //
-  //
-  //
+//
+//
+//
+let calendarEvents = [];
 
+function createCalenderEvents() {
   // We need to construct Calendar Data Because
   // Lockdown events
   const lockdownStart1 = new SemanticEvent(new Date("2020-03-24"))
@@ -124,7 +90,7 @@ export async function storyboardA() {
     .setDescription("Booster campaign in the UK starts.");
 
   // Create an array of semantic events and return
-  const calendarEvents = [
+  calendarEvents = [
     lockdownStart1,
     lockdownEnd1,
     lockdownStart2,
@@ -135,26 +101,35 @@ export async function storyboardA() {
     booster,
   ];
 
-  console.log("Story: calendarEvents = ", calendarEvents);
+  console.log("createCalenderEvents: calendarEvents = ", calendarEvents);
 
-  //
-  //
-  //
-  const peaksByRegion = {};
+  const ranking = {};
+  ranking[SemanticEvent.TYPES.LOCKDOWN_START] = 5;
+  ranking[SemanticEvent.TYPES.VACCINE] = 4;
+  ranking[SemanticEvent.TYPES.LOCKDOWN_END] = 3;
+
+  calendarEvents.forEach((e) => e.setRank(ranking[e.type]));
+
+  // prettier-ignore
+  console.log("createCalenderEvents: calendarEvents (ranked) = ", calendarEvents);
+}
+
+//
+//
+//
+const peaksByRegion = {};
+
+function createPeaksByRegion() {
   for (let region in dailyCasesByRegion) {
     //console.log(region);
     peaksByRegion[region] = detectFeatures(dailyCasesByRegion[region], {
       peaks: true,
       metric: "Daily Cases",
     });
-    //console.log(peaksByRegion);
   }
 
-  console.log("Story: peaksByRegion = ", peaksByRegion);
+  console.log("createPeaksByRegion: peaksByRegion = ", peaksByRegion);
 
-  //
-  //
-  //
   const rankPeaks = (peaks) => {
     let sorted = [...peaks].sort((p1, p2) => p1.height - p2.height);
     let nPeaks = peaks.length;
@@ -168,30 +143,26 @@ export async function storyboardA() {
     rankPeaks(peaksByRegion[region]);
   }
 
-  //
-  //
-  //
-  const ranking = {};
-  ranking[SemanticEvent.TYPES.LOCKDOWN_START] = 5;
-  ranking[SemanticEvent.TYPES.VACCINE] = 4;
-  ranking[SemanticEvent.TYPES.LOCKDOWN_END] = 3;
+  console.log("createPeaksByRegion: peaksByRegion (ranked) = ", peaksByRegion);
+}
 
-  calendarEvents.forEach((e) => e.setRank(ranking[e.type]));
+//
+//
+//
+const gaussByRegion = {};
 
-  console.log("Story: calendarEvents = ", calendarEvents);
-
-  //
-  //
-  //
-  let gaussByRegion = {};
-
+function createGaussByRegion() {
   for (let region in peaksByRegion) {
     let peaks = peaksByRegion[region];
     let dailyCases = dailyCasesByRegion[region];
 
+    console.log("createGaussByRegion: dailyCases = ", dailyCases);
+
     // Calculate gaussian time series for peaks
     let peaksGauss = eventsToGaussian(peaks, dailyCases);
     let peaksBounds = maxBounds(peaksGauss);
+
+    console.log("createGaussByRegion: peaksBounds = ", peaksBounds);
 
     // Calculate gaussian time series for calendar events
     let calGauss = eventsToGaussian(calendarEvents, dailyCases);
@@ -202,17 +173,18 @@ export async function storyboardA() {
     gaussByRegion[region] = combGauss;
   }
 
-  console.log("gaussByRegion = ", gaussByRegion);
+  // prettier-ignore
+  console.log("createGaussByRegion: gaussByRegion = ", gaussByRegion, Object.keys(gaussByRegion));
+}
 
-  //
-  //
-  //
-  let segNum = 3;
+//
+//
+//
+const splitsByRegion = {};
+let segNum: number;
 
-  //
-  //
-  //
-  let splitsByRegion = {};
+export function segmentData(_segNum: number) {
+  segNum = _segNum;
   for (let region in peaksByRegion) {
     let dailyCases = dailyCasesByRegion[region];
     splitsByRegion[region] = peakSegment(
@@ -221,19 +193,33 @@ export async function storyboardA() {
     ).slice(0, segNum - 1);
   }
 
-  //
-  // region
-  //
+  // prettier-ignore
+  console.log("segmentData: splitsByRegion = ", splitsByRegion);
+}
 
-  let region = "";
+//
+// region
+//
+
+let region;
+let casesData;
+let annotations = [{ start: 0, end: 0 }];
+
+export function onSelectRegion(_region: string) {
+  region = _region;
+  console.log("onSelectRegion: region =  ", region);
 
   //
+  // annotations
   //
-  //
-  const casesData = dailyCasesByRegion[region];
+  casesData = dailyCasesByRegion[region];
+  console.log("onSelectRegion: dailyCasesByRegion", dailyCasesByRegion);
+  console.log("onSelectRegion: caseData", casesData);
 
   // We now combine the event arrays and segment them based on our splits
+  console.log("onSelectRegion: peaksByRegion", peaksByRegion);
   const peaks = peaksByRegion[region];
+  console.log("onSelectRegion: peaks", peaks);
   const events = peaks.concat(calendarEvents);
   const splits = splitsByRegion[region].sort((s1, s2) => s1.date - s2.date);
 
@@ -241,7 +227,7 @@ export async function storyboardA() {
   const dataEventsBySegment = splitDataAndEvents(events, splits, casesData);
 
   // Loop over all segments and apply feature-action rules
-  let annotations = [{ start: 0, end: 0 }];
+  // let annotations = [{ start: 0, end: 0 }];
   let currSeg = 0;
   let currData, firstDate, lastDate;
   for (; currSeg < segNum; currSeg++) {
@@ -420,5 +406,102 @@ export async function storyboardA() {
   annotations.push({ end: casesData.length - 1 });
   annotations.slice(1).forEach((anno, i) => (anno.start = annotations[i].end));
 
-  console.log("annotations", annotations);
+  console.log("onSelectRegion: annotations", annotations);
+}
+
+const writeText = (text, date, data, showRedCircle = false) => {
+  // Find idx of event in data and set location of the annotation in opposite half of graph
+  const idx = findDateIdx(date, data);
+  const annoIdx = Math.floor(
+    ((idx < data.length / 2 ? 3 : 1) / 4) * data.length,
+  );
+
+  const annoX = data[annoIdx].date;
+  const target = data[idx];
+
+  console.log("writeText:annoX = ", annoX, ", target = ", target);
+
+  const anno = new GraphAnnotation()
+    .title(date.toLocaleDateString())
+    .label(text)
+    .backgroundColor("white")
+    .wrap(200);
+
+  anno.unscaledX = annoX;
+  anno.unscaledTarget = [target.date, target.y];
+
+  if (showRedCircle) {
+    anno.circleHighlight();
+  }
+
+  return { end: idx, annotation: anno, fadeout: true };
+};
+
+/*
+    Linear regression function inspired by the answer found at: https://stackoverflow.com/a/31566791.
+    We remove the need for array x as we assum y data is equally spaced and we only want the gradient.
+ */
+
+function linRegGrad(y) {
+  var slope = {};
+  var n = y.length;
+  var sum_x = 0;
+  var sum_y = 0;
+  var sum_xy = 0;
+  var sum_xx = 0;
+
+  for (var i = 0; i < y.length; i++) {
+    sum_x += i;
+    sum_y += y[i];
+    sum_xy += i * y[i];
+    sum_xx += i * i;
+  }
+
+  slope = (n * sum_xy - sum_x * sum_y) / (n * sum_xx - sum_x * sum_x);
+  return slope;
+}
+
+//
+//
+//
+let visCtx;
+let ts;
+
+export function createTimeSeriesSVG(selector: string) {
+  visCtx = TimeSeries.animationSVG(1200, 400, selector);
+}
+
+//
+//
+//
+
+export function onClickAnimate(animationCounter: number, selector: string) {
+  const ts = new TimeSeries(casesData, selector)
+    .svg(visCtx)
+    .title(`Basic story of COVID-19 in ${region}`)
+    .yLabel("Cases per Day")
+    .ticks(30);
+
+  const xSc = ts.getXScale();
+  const ySc = ts.getYScale();
+
+  let annoObj;
+
+  console.log("annotations = ", annotations);
+
+  annotations.forEach((a: any) => {
+    annoObj = a.annotation;
+    if (annoObj) {
+      annoObj.x(xSc(annoObj.unscaledX)).y(ts._height / 2);
+
+      annoObj.target(
+        xSc(annoObj.unscaledTarget[0]),
+        ySc(annoObj.unscaledTarget[1]),
+        false,
+      );
+    }
+  });
+
+  console.log("createTimeSeriesSVG: annoObj = ", annoObj);
+  ts.animate(annotations, animationCounter, visCtx).plot();
 }
