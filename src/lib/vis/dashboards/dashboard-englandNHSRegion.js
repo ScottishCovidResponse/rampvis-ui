@@ -34,6 +34,11 @@ export class DashboardEnglandNHSRegion {
       .append("div")
       .attr("class", "vis-example-container");
 
+    // Phong
+    console.log('***live data')
+    console.log('PHE_ENGNHS_GROUP1', Data.from(options.data, Data.Fields.PHE_ENGNHS_GROUP1));
+    console.log('PHE_ENGNHS_GROUP2', Data.from(options.data, Data.Fields.PHE_ENGNHS_GROUP2));
+
     // 2. specify data URLs here...
     var cumCasesBySpecimenDate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=cumCasesBySpecimenDate&format=csv"
     var femaleCases = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=femaleCases&format=csv"
