@@ -61,11 +61,9 @@ export class Data {
     PHE_NATION_VACC_2: "areaType=nation&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&",
     PHE_NATION_VACC_3: "areaType=nation&metric=cumVaccinationThirdInjectionUptakeByPublishDatePercentage&",
 
-    // ENGLAND NHS REGION
-    PHE_ENGNHS_CASES: [],
-    PHE_ENGNHS_CASES_UNIQUE: [],
-    PHE_ENGNHS_DEATHS: [],
-    PHE_ENGNHS_VACC: [],
+    // ENGLAND NHS REGION DATA
+    PHE_ENGNHS_GROUP1: "areaType=nhsRegion&metric=cumAdmissions&",
+    PHE_ENGNHS_GROUP2: "areaType=nhsRegion&metric=cumAdmissionsByAge&",
 
     // UTLA DATA
     PHE_UTLA_NEW: "areaType=utla&metric=newCasesBySpecimenDate&",
