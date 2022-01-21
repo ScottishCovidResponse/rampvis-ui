@@ -16,6 +16,7 @@ import { SensitivityParameterRangeChart } from  "./sensitivity-parameter-range-c
 import { SensitivityParameterRangeSampleMean } from "./sensitivity-parameter-range-mean-sample";
 import { SensitivityParameterRangeTickChart } from  "./sensitivity-parameter-range-tick-chart";
 import { SensitivityParameterRangeTickSampleMean } from "./sensitivity-parameter-range-tick-mean-sample";
+import { SensitivitySmallMultiple } from "./sensitivity-small-multiple";
 
 // Dashboards
 import { DashboardScotlandCouncil } from "./dashboards/dashboard-scotlandCouncil";
@@ -61,6 +62,8 @@ export const visFactory = (type, args) => {
     return new SensitivityParameterRangeTickChart(args);
   if (type == "SensitivityParameterRangeTickSampleMean")
     return new SensitivityParameterRangeTickSampleMean(args);
+  if (type == "SensitivitySmallMultiple")
+    return new SensitivitySmallMultiple(args);
     
   // Dashboards
   if (type === "DashboardScotlandCouncil") return new DashboardScotlandCouncil(args);
