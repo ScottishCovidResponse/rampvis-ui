@@ -45,9 +45,9 @@ export class DashboardUpperTierLocalAuthority{
     var config = {
         layout: [[
           "cases", 
-          "deaths", 
+          "deaths"], 
           "vacc"
-        ]],
+        ],
         groups: [
           {
             id: "cases",
@@ -63,8 +63,7 @@ export class DashboardUpperTierLocalAuthority{
             id: "vacc",
             title: "Vaccination",
             layout: [
-              ["vacc1", "vacc1Ages"],
-              ["vacc2", "vacc2Ages"],
+              ["vacc1","vacc2"],
             ],
           },
         ],
@@ -75,12 +74,14 @@ export class DashboardUpperTierLocalAuthority{
             color: colors.getCaseColor(),
             data: Data.from(options.data, Data.Fields.PHE_UTLA_CUM),
             dataField: "cumCasesBySpecimenDate",
-            detail: dashboard.DETAIL_MEDIUM,
+            detail: dashboard.DETAIL_LOW,
             cumulative: true,
+            layout: 'horizontal',
             dateField: "date",
             visualization: "linechart",
             abbreviate: true,
-            min: 0
+            min: 0,
+            trendWindow: 'all'
           },
           {
             id: "newCases",
@@ -96,15 +97,17 @@ export class DashboardUpperTierLocalAuthority{
           },
           {
             id: "cumDeaths",
-            title: "Cumulative Deaths, last 28 days",
+            title: "Cumulative",
             color: colors.getDeathColor(),
             data: Data.from(options.data, Data.Fields.PHE_UTLA_CUM),
             dataField: "cumDeaths28DaysByDeathDate", 
-            detail: dashboard.DETAIL_MEDIUM,
+            detail: dashboard.DETAIL_LOW,
             cumulative: true,
             dateField: "date",
+            layout: 'horizontal',
             visualization: "linechart",
-            min: 0
+            min: 0,
+            trendWindow: 'all'
           },
           {
             id: "newDeaths",
@@ -115,14 +118,13 @@ export class DashboardUpperTierLocalAuthority{
             timeUnit: dashboard.TIMEUNIT_WEEK,
             detail: dashboard.DETAIL_MEDIUM,
             dateField: "date",
-
             visualization: "linechart",
             min: 0
           },
           {
             id: "vacc1",
             title: "1st Dose Percentage",
-            color: colors.getVaccinationColor(1),
+            color: colors.getVaccinationColor(0),
             data: Data.from(options.data, Data.Fields.PHE_UTLA_CUM),
             dataField:
               "cumVaccinationFirstDoseUptakeByVaccinationDatePercentage",
@@ -130,14 +132,14 @@ export class DashboardUpperTierLocalAuthority{
             unit: '%',
             cumulative: true,
             dateField: "date",
-            visualization: "linechart",
+            visualization: "progress",
             min: 0,
             max: 100
           },
           {
             id: "vacc2",
             title: "2nd Dose Percentage",
-            color: colors.getVaccinationColor(2),
+            color: colors.getVaccinationColor(1),
             data:  Data.from(options.data, Data.Fields.PHE_UTLA_CUM),
             dataField:
               "cumVaccinationSecondDoseUptakeByVaccinationDatePercentage",
@@ -145,14 +147,14 @@ export class DashboardUpperTierLocalAuthority{
             unit: '%',
             cumulative: true,
             dateField: "date",
-            visualization: "linechart",
+            visualization: "progress",
             min: 0,
             max: 100
           },
           {
             id: "vacc1Ages",
             title: "1st Dose by Age Group",
-            color: colors.getVaccinationColor(1),
+            color: colors.getVaccinationColor(0),
             data:  Data.from(options.data, Data.Fields.PHE_UTLA_CUM),
             dataField: "cumVaccinationFirstDoseUptakeByVaccinationDatePercentage",
             detail: dashboard.DETAIL_MEDIUM,

@@ -1277,10 +1277,13 @@ dashboard.visualizeBarChart = function (
 
   var data = widgetConfig.data;
   // display only last data
-  let lastDate = data[data.length - 1].index;
+  // let lastDate = data[data.length - 1][widgetConfig.dateField];
+  let lastDate = lastDateUpdated.format('YYYY-MM-DD')
   data = data.filter((e) => {
-    return e.index == lastDate;
+    return e[widgetConfig.dateField] == lastDate;
   });
+  console.log('data>>> ', lastDate, data)
+  data = data[widgetConfig.dataField]
 
   // dashboard.DETAILED  
   var width = 150;
