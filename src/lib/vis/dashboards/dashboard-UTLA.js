@@ -63,7 +63,7 @@ export class DashboardUpperTierLocalAuthority{
             id: "vacc",
             title: "Vaccination",
             layout: [
-              ["vacc1","vacc2"],
+              ["vacc1","vacc2", 'vacc3'],
             ],
           },
         ],
@@ -124,7 +124,7 @@ export class DashboardUpperTierLocalAuthority{
           {
             id: "vacc1",
             title: "1st Dose Percentage",
-            color: colors.getVaccinationColor(0),
+            color: colors.getVaccinationColor(-1),
             data: Data.from(options.data, Data.Fields.PHE_UTLA_CUM),
             dataField:
               "cumVaccinationFirstDoseUptakeByVaccinationDatePercentage",
@@ -132,14 +132,16 @@ export class DashboardUpperTierLocalAuthority{
             unit: '%',
             cumulative: true,
             dateField: "date",
-            visualization: "progress",
+            visualization: "linechart",
             min: 0,
-            max: 100
+            max: 100,
+            timeUnit: 'day',
+            trendWindow: 150
           },
           {
             id: "vacc2",
             title: "2nd Dose Percentage",
-            color: colors.getVaccinationColor(1),
+            color: colors.getVaccinationColor(),
             data:  Data.from(options.data, Data.Fields.PHE_UTLA_CUM),
             dataField:
               "cumVaccinationSecondDoseUptakeByVaccinationDatePercentage",
@@ -147,41 +149,29 @@ export class DashboardUpperTierLocalAuthority{
             unit: '%',
             cumulative: true,
             dateField: "date",
-            visualization: "progress",
+            visualization: "linechart",
             min: 0,
-            max: 100
+            max: 100,
+            timeUnit: 'day',
+            trendWindow: 150
           },
           {
-            id: "vacc1Ages",
-            title: "1st Dose by Age Group",
-            color: colors.getVaccinationColor(0),
-            data:  Data.from(options.data, Data.Fields.PHE_UTLA_CUM),
-            dataField: "cumVaccinationFirstDoseUptakeByVaccinationDatePercentage",
+            id: "vacc3",
+            title: "3rd Dose (Booster)",
+            color: colors.getVaccinationColor(1),
+            data:  Data.from(options.data, Data.Fields.PHE_UTLA_NEW),
+            dataField:
+              "cumVaccinationThirdInjectionUptakeByVaccinationDatePercentage",
             detail: dashboard.DETAIL_MEDIUM,
             unit: '%',
             cumulative: true,
             dateField: "date",
-            visualization: dashboard.VIS_BARCHART,
-            categories: "age",
+            visualization: "linechart",
             min: 0,
-            max: 100
-          },
-          {
-            id: "vacc2Ages",
-            title: "2st Dose by Age Group",
-            color: colors.getVaccinationColor(1),
-            data: Data.from(options.data, Data.Fields.PHE_UTLA_CUM),
-            dataField:
-              "cumVaccinationSecondDoseUptakeByVaccinationDatePercentage",
-            detail: dashboard.DETAIL_HIGH,
-            unit: '%',
-            cumulative: true,
-            dateField: "date",
-            visualization: "barchart",
-            categories: "age",
-            min: 0,
-            max: 100
-          },
+            max: 100, 
+            timeUnit: 'day',
+            trendWindow: 150
+          }
         ],
       };
 

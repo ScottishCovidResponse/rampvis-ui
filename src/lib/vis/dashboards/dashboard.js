@@ -1868,20 +1868,12 @@ dashboardComponents.visualizeMiniChart = function (
     }
     else
     {
-      if (config.timeUnit == dashboard.TIMEUNIT_WEEK) {
-        trendWindow = 8;
-      }
-      if (config.timeUnit == dashboard.TIMEUNIT_DAY) {
-        trendWindow = 14;
-      }
+      trendWindow = config.trendWindow;
     }
 
     var g = svg.append("g").attr("transform", "translate(" + xPos + "," + yPos + ")");
-    if (config.timeUnit == dashboard.TIMEUNIT_WEEK) {
-      dashboardComponents.setLabel(g, "Last " + trendWindow + " weeks", 0, chartHeight + 12);
-    }
-    if (config.timeUnit == dashboard.TIMEUNIT_DAY) {
-      dashboardComponents.setLabel(g, "Last " + trendWindow + " days", 0, chartHeight + 12);
+    if (config.timeUnit != undefined) {
+      dashboardComponents.setLabel(g, "Last " + trendWindow + " " + config.timeUnit + "(s)", 0, chartHeight + 12);
     }
     
     var barWidth = (chartWidth - 10) / trendWindow;
@@ -1894,6 +1886,7 @@ dashboardComponents.visualizeMiniChart = function (
     
     // get N last entries
     var dataSlice = config.data.slice(config.data.length - trendWindow);
+    console.log('>> dataSlice', dataSlice.length)
 
     // calc min & max in trend interval
     var min = 99999999
