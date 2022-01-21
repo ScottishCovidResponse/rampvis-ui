@@ -36,84 +36,39 @@ export class DashboardEnglandRegion {
 
     // Phong
     console.log('***live data')
+    // var cumCasesBySpecimenDate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=cumCasesBySpecimenDate&format=csv"
+    // var cumVaccinationFirstDoseUptakeByVaccinationDatePercentage = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&format=csv"
+    // var cumVaccinationSecondDoseUptakeByVaccinationDatePercentage = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&format=csv"
+    // var newCasesBySpecimenDate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=newCasesBySpecimenDate&format=csv"
+    // var uniqueCasePositivityBySpecimenDateRollingSum = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=uniqueCasePositivityBySpecimenDateRollingSum&format=csv"
     console.log('PHE_REGION_CASES_VACCINE', Data.from(options.data, Data.Fields.PHE_REGION_CASES_VACCINE));
+
+    // var femaleCases = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=femaleCases&format=csv"
     console.log('PHE_REGION_FEMALE_CASES', Data.from(options.data, Data.Fields.PHE_REGION_FEMALE_CASES));
+
+    // var maleCases = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=maleCases&format=csv"
     console.log('PHE_REGION_MALE_CASES', Data.from(options.data, Data.Fields.PHE_REGION_MALE_CASES));
-    console.log('PHE_REGION_CASES_AGE', Data.from(options.data, Data.Fields.PHE_REGION_CASES_AGE));
-    console.log('PHE_REGION_DEATHS', Data.from(options.data, Data.Fields.PHE_REGION_DEATHS));
-    console.log('PHE_REGION_FEMALE_DEATHS', Data.from(options.data, Data.Fields.PHE_REGION_FEMALE_DEATHS));
-    console.log('PHE_REGION_MALE_DEATHS', Data.from(options.data, Data.Fields.PHE_REGION_MALE_DEATHS));
-    console.log('PHE_REGION_VACCINE_AGE', Data.from(options.data, Data.Fields.PHE_REGION_VACCINE_AGE));
-
-
-    // 2. specify data URLs here...
-    // PHE_REGION_CASES
-    var cumCasesBySpecimenDate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=cumCasesBySpecimenDate&format=csv"
-    var femaleCases = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=femaleCases&format=csv"
-    var maleCases = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=maleCases&format=csv"
-    var newCasesBySpecimenDate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=newCasesBySpecimenDate&format=csv"
-    var newCasesBySpecimenDateAgeDemographics = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=newCasesBySpecimenDateAgeDemographics&format=csv"
-
-    // PHE_REGION_UNIQUE
-    var uniqueCasePositivityBySpecimenDateRollingSum = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=uniqueCasePositivityBySpecimenDateRollingSum&format=csv"
-
-    // PHE_REGION_DEATHS
-    var cumDailyNsoDeathsByDeathDate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=cumDailyNsoDeathsByDeathDate&format=csv"
-    var femaleDeaths28Days = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=femaleDeaths28Days&format=csv"
-    var maleDeaths28Days = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=maleDeaths28Days&format=csv"
-    var newDailyNsoDeathsByDeathDate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=newDailyNsoDeathsByDeathDate&format=csv"
-
-    // PHE_REGION_VACC
-    var cumVaccinationFirstDoseUptakeByVaccinationDatePercentage = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&format=csv"
-    var cumVaccinationSecondDoseUptakeByVaccinationDatePercentage = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&format=csv"
-    var vaccinationsAgeDemographics = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=vaccinationsAgeDemographics&format=csv"
-
-
-
-    d3.csv(cumCasesBySpecimenDate).then(function (data) {
-      cumCasesBySpecimenDate = data;
-    });
-    d3.csv(cumDailyNsoDeathsByDeathDate).then(function (data) {
-      cumDailyNsoDeathsByDeathDate = data;
-    });
-    d3.csv(cumVaccinationFirstDoseUptakeByVaccinationDatePercentage).then(function (data) {
-      cumVaccinationFirstDoseUptakeByVaccinationDatePercentage = data;
-    });
-    d3.csv(cumVaccinationSecondDoseUptakeByVaccinationDatePercentage).then(function (data) {
-      cumVaccinationSecondDoseUptakeByVaccinationDatePercentage = data;
-    });
-    d3.csv(femaleCases).then(function (data) {
-      femaleCases = data;
-    });
-    d3.csv(maleCases).then(function (data) {
-      maleCases = data;
-    });
-    d3.csv(newCasesBySpecimenDate).then(function (data) {
-      newCasesBySpecimenDate = data;
-    });
-    d3.csv(newCasesBySpecimenDateAgeDemographics).then(function (data) {
-      newCasesBySpecimenDateAgeDemographics = data;
-    });
-    d3.csv(femaleDeaths28Days).then(function (data) {
-      femaleDeaths28Days = data;
-    });
-    d3.csv(maleDeaths28Days).then(function (data) {
-      maleDeaths28Days = data;
-    });
-    d3.csv(newDailyNsoDeathsByDeathDate).then(function (data) {
-      newDailyNsoDeathsByDeathDate = data;
-    });
-    d3.csv(vaccinationsAgeDemographics).then(function (data) {
-      vaccinationsAgeDemographics = data;
-    });
-    d3.csv(uniqueCasePositivityBySpecimenDateRollingSum).then(function (data) {
-      uniqueCasePositivityBySpecimenDateRollingSum = data;
-    });
     
-    console.log(':: options', options)
+    // var newCasesBySpecimenDateAgeDemographics = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=newCasesBySpecimenDateAgeDemographics&format=csv"
+    console.log('PHE_REGION_CASES_AGE', Data.from(options.data, Data.Fields.PHE_REGION_CASES_AGE));
+    
+    // var cumDailyNsoDeathsByDeathDate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=cumDailyNsoDeathsByDeathDate&format=csv"
+    // var newDailyNsoDeathsByDeathDate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=newDailyNsoDeathsByDeathDate&format=csv"
+    console.log('PHE_REGION_DEATHS', Data.from(options.data, Data.Fields.PHE_REGION_DEATHS));
+    
+    // var femaleDeaths28Days = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=femaleDeaths28Days&format=csv"
+    console.log('PHE_REGION_FEMALE_DEATHS', Data.from(options.data, Data.Fields.PHE_REGION_FEMALE_DEATHS));
+    
+    // var maleDeaths28Days = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=maleDeaths28Days&format=csv"
+    console.log('PHE_REGION_MALE_DEATHS', Data.from(options.data, Data.Fields.PHE_REGION_MALE_DEATHS));
+    
+  
+    // var vaccinationsAgeDemographics = "https://api.coronavirus.data.gov.uk/v2/data?areaType=region&areaCode=E12000007&metric=vaccinationsAgeDemographics&format=csv"
+    console.log('PHE_REGION_VACCINE_AGE', Data.from(options.data, Data.Fields.PHE_REGION_VACCINE_AGE));
+    
+    
 
     // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
-    setTimeout(function () {
       var config = {
         links: options.childrenLinks,
         layout: [['cases',['vaccinations','deaths']]],
@@ -139,7 +94,7 @@ export class DashboardEnglandRegion {
           {
             id: 'cumCasesBySpecimenDate', 
             title: 'Total cases over time', 
-            data: cumCasesBySpecimenDate, 
+            data: Data.from(options.data, Data.Fields.PHE_REGION_CASES_VACCINE), 
             dataField: 'cumCasesBySpecimenDate', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_MEDIUM, 
@@ -152,7 +107,7 @@ export class DashboardEnglandRegion {
           {
             id: 'uniqueCasePositivityBySpecimenDateRollingSum', 
             title: 'Unique cases at every given moment', 
-            data: uniqueCasePositivityBySpecimenDateRollingSum, 
+            data: Data.from(options.data, Data.Fields.PHE_REGION_CASES_VACCINE), 
             dataField: 'uniqueCasePositivityBySpecimenDateRollingSum', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_MEDIUM, 
@@ -164,7 +119,7 @@ export class DashboardEnglandRegion {
           },{
             id: 'newCasesBySpecimenDate', 
             title: 'Change in Cases', 
-            data: newCasesBySpecimenDate, 
+            data: Data.from(options.data, Data.Fields.PHE_REGION_CASES_VACCINE), 
             dataField: 'newCasesBySpecimenDate', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_HIGH, 
@@ -176,7 +131,7 @@ export class DashboardEnglandRegion {
           {
             id: 'cumDailyNsoDeathsByDeathDate', 
             title: 'Total deaths over time', 
-            data: cumDailyNsoDeathsByDeathDate, 
+            data: Data.from(options.data, Data.Fields.PHE_REGION_DEATHS),
             dataField: 'cumDailyNsoDeathsByDeathDate', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_MEDIUM, 
@@ -188,7 +143,7 @@ export class DashboardEnglandRegion {
           },{
             id: 'newDailyNsoDeathsByDeathDate', 
             title: 'Change in deaths', 
-            data: newDailyNsoDeathsByDeathDate, 
+            data: Data.from(options.data, Data.Fields.PHE_REGION_DEATHS), 
             dataField: 'newDailyNsoDeathsByDeathDate', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_HIGH, 
@@ -227,7 +182,7 @@ export class DashboardEnglandRegion {
         {
             id: 'vaccinationsAgeDemographics1', 
             title: '1st dose uptake by age groups', 
-            data: vaccinationsAgeDemographics, 
+            data: Data.from(options.data, Data.Fields.PHE_REGION_VACCINE_AGE), 
             dataField: 'cumVaccinationFirstDoseUptakeByVaccinationDatePercentage', 
             visualization: 'barchart', 
             detail: dashboard.DETAIL_HIGH, 
@@ -239,7 +194,7 @@ export class DashboardEnglandRegion {
           },{
             id: 'vaccinationsAgeDemographics2', 
             title: '2nd dose uptake by age groups', 
-            data: vaccinationsAgeDemographics, 
+            data: Data.from(options.data, Data.Fields.PHE_REGION_VACCINE_AGE), 
             dataField: 'cumVaccinationSecondDoseUptakeByVaccinationDatePercentage', 
             visualization: 'barchart', 
             detail: dashboard.DETAIL_HIGH, 
@@ -252,7 +207,7 @@ export class DashboardEnglandRegion {
           {
             id: 'cumVaccinationFirstDoseUptakeByVaccinationDatePercentage', 
             title: 'Total 1st dose uptake', 
-            data: cumVaccinationFirstDoseUptakeByVaccinationDatePercentage, 
+            data: Data.from(options.data, Data.Fields.PHE_REGION_CASES_VACCINE),            
             dataField: 'cumVaccinationFirstDoseUptakeByVaccinationDatePercentage', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_MEDIUM, 
@@ -263,7 +218,7 @@ export class DashboardEnglandRegion {
           },{
             id: 'cumVaccinationSecondDoseUptakeByVaccinationDatePercentage', 
             title: 'Total 1st dose uptake', 
-            data: cumVaccinationSecondDoseUptakeByVaccinationDatePercentage, 
+            data: Data.from(options.data, Data.Fields.PHE_REGION_CASES_VACCINE),             
             dataField: 'cumVaccinationSecondDoseUptakeByVaccinationDatePercentage', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_MEDIUM, 
@@ -277,6 +232,5 @@ export class DashboardEnglandRegion {
 
       // this will interpret the dashboard specifiation
       dashboard.createDashboard(div, config);
-    }, 3000);
   }
 }
