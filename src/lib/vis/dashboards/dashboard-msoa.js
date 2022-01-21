@@ -97,7 +97,7 @@ export class DashboardMSOA {
             cumulative: true,
             unit: '%',
             dateField: 'date', 
-            color: colors.getVaccinationColor(), 
+            color: colors.getVaccinationColor(-1), 
             min: 0,
             max: 100
           }
@@ -111,7 +111,7 @@ export class DashboardMSOA {
             cumulative: true,
             unit: '%',
             dateField: 'date', 
-            color: colors.getVaccinationColor(1), 
+            color: colors.getVaccinationColor(), 
             min: 0,
             max: 100
           },{

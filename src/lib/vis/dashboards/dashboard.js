@@ -1359,7 +1359,7 @@ dashboard.visualizeProgress = function (
 
   var svg = wrapperDiv
   .append("svg")
-  .attr("height", 100)
+  .attr("height", 60)
   .attr('width',WIDTH_HIGH)
   .style("margin-bottom", 0)
   .style("margin-right", 0)
@@ -1381,7 +1381,7 @@ dashboard.visualizeProgress = function (
       dashboardComponents.visualizeTrendArrow(
         svg,
         config,
-        WIDTH_HIGH-100,
+        WIDTH_HIGH-180,
         BASELINE_LARGE_NUMBER,
       );
     }
@@ -1434,7 +1434,6 @@ dashboard.visualizeProgress = function (
     
     //width - 300
     svg.attr("width", WIDTH_MEDIUM);
-    svg.attr("height", 100);
 
     dashboardComponents.visualizeNumber(
       svg,
