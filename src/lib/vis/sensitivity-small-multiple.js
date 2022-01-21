@@ -13,10 +13,8 @@ export class SensitivitySmallMultiple {
     let sampleLineColor = options.sampleLineColor ? options.sampleLineColor : "#A6CCD8";
     let sampleDotColor = options.sampleDotColor ? options.sampleDotColor : "#4171D9";
     let containerChart = options.containerChart ? options.containerChart : "charts";
-    let yMax = options.yMax ? options.yMax : 0;
     console.log("sensitivity small-multiple")
     //Color scheme
-    const baseColor = options.baseColor ? options.baseColor : ["#4f4f4f"];
     const textColor = options.textColor ? options.textColor : ["#4f4f4f"];
     const textWeight = options.textWeight ? options.textWeight : 700;
     
@@ -24,11 +22,7 @@ export class SensitivitySmallMultiple {
     //Load JSON containing all time series and mean time serie
     const data = options.data[0].values;
     //unpack the data for all the time series and for the mean time series 
-    const dataAll = data.dataAll;
-    const dataMean = data.dataMean;
     const runName = "iter" //Name of column denoting the different runs
-    const timeName = data.timeName //Name of column with the time unit
-    const quantityName = data.quantityName //Name of column with the quantity of interest
         
     const sumstattop = d3.nest() // nest function allows to group the calculation per level of a factor
       .key(d => d["parameter"])
