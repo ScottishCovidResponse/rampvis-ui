@@ -81,7 +81,8 @@ export class DashboardUpperTierLocalAuthority{
             visualization: "linechart",
             abbreviate: true,
             min: 0,
-            trendWindow: 'all'
+            timeUnit: 'day',
+            trendWindow: 150
           },
           {
             id: "newCases",
@@ -93,11 +94,13 @@ export class DashboardUpperTierLocalAuthority{
             cumulative: false,
             dateField: "date",
             visualization: "linechart",
-            min: 0
+            min: 0,
+            timeUnit: 'day',
+            trendWindow: 14
           },
           {
             id: "cumDeaths",
-            title: "Cumulative",
+            title: "Cumulative Death",
             color: colors.getDeathColor(),
             data: Data.from(options.data, Data.Fields.PHE_UTLA_CUM),
             dataField: "cumDeaths28DaysByDeathDate", 
@@ -107,11 +110,12 @@ export class DashboardUpperTierLocalAuthority{
             layout: 'horizontal',
             visualization: "linechart",
             min: 0,
-            trendWindow: 'all'
+            timeUnit: 'day',
+            trendWindow: 180
           },
           {
             id: "newDeaths",
-            title: "New Deaths, last 28 days",
+            title: "Daily Deaths",
             color: colors.getDeathColor(),
             data: Data.from(options.data, Data.Fields.PHE_UTLA_NEW),
             dataField: "newDeaths28DaysByDeathDate",
@@ -119,7 +123,9 @@ export class DashboardUpperTierLocalAuthority{
             detail: dashboard.DETAIL_MEDIUM,
             dateField: "date",
             visualization: "linechart",
-            min: 0
+            min: 0,
+            timeUnit: 'day',
+            trendWindow: 14
           },
           {
             id: "vacc1",
@@ -136,7 +142,7 @@ export class DashboardUpperTierLocalAuthority{
             min: 0,
             max: 100,
             timeUnit: 'day',
-            trendWindow: 150
+            trendWindow: 14
           },
           {
             id: "vacc2",
@@ -153,7 +159,7 @@ export class DashboardUpperTierLocalAuthority{
             min: 0,
             max: 100,
             timeUnit: 'day',
-            trendWindow: 150
+            trendWindow: 14
           },
           {
             id: "vacc3",
@@ -170,7 +176,7 @@ export class DashboardUpperTierLocalAuthority{
             min: 0,
             max: 100, 
             timeUnit: 'day',
-            trendWindow: 150
+            trendWindow: 14
           }
         ],
       };

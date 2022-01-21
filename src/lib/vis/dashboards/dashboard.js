@@ -1871,10 +1871,12 @@ dashboardComponents.visualizeMiniChart = function (
       trendWindow = config.trendWindow;
     }
 
+    if(config.timeUnit != undefined)
+      config.timeUnit = 'day'  
+
     var g = svg.append("g").attr("transform", "translate(" + xPos + "," + yPos + ")");
-    if (config.timeUnit != undefined) {
-      dashboardComponents.setLabel(g, "Last " + trendWindow + " " + config.timeUnit + "(s)", 0, chartHeight + 12);
-    }
+    dashboardComponents.setLabel(g, "Last " + trendWindow + " " + config.timeUnit + "(s)", 0, chartHeight + 12);
+    
     
     var barWidth = (chartWidth - 10) / trendWindow;
     
