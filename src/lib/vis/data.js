@@ -65,8 +65,17 @@ export class Data {
     PHE_ENGNHS_GROUP1: "areaType=nhsRegion&metric=cumAdmissions&",
     PHE_ENGNHS_GROUP2: "areaType=nhsRegion&metric=cumAdmissionsByAge&",
 
-    // ENGLAND REGION
-    
+    // ENGLAND REGION DATA
+    // cumCases, newCases, uniqueCasePositivity, cumVaccinationFirstDose, cumVaccinationSecondDose
+    PHE_REGION_CASES_VACCINE: "areaType=region&metric=cumCasesBySpecimenDate&",
+    PHE_REGION_FEMALE_CASES: "areaType=region&metric=femaleCases&",
+    PHE_REGION_MALE_CASES: "areaType=region&metric=maleCases&",
+    PHE_REGION_CASES_AGE: "areaType=region&metric=newCasesBySpecimenDateAgeDemographics&",
+    // cumDailyDeaths, newDailyDeaths
+    PHE_REGION_DEATHS: "areaType=region&metric=cumDailyNsoDeathsByDeathDate&",
+    PHE_REGION_FEMALE_DEATHS: "areaType=region&metric=femaleDeaths28Days&",
+    PHE_REGION_MALE_DEATHS: "areaType=region&metric=maleDeaths28Days&",
+    PHE_REGION_VACCINE_AGE: "areaType=region&metric=vaccinationsAgeDemographics",
 
     // UTLA DATA
     PHE_UTLA_NEW: "areaType=utla&metric=newCasesBySpecimenDate&",

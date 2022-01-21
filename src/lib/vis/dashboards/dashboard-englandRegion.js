@@ -34,6 +34,17 @@ export class DashboardEnglandRegion {
       .append("div")
       .attr("class", "vis-example-container");
 
+    // Phong
+    console.log('***live data')
+    console.log('PHE_REGION_CASES_VACCINE', Data.from(options.data, Data.Fields.PHE_REGION_CASES_VACCINE));
+    console.log('PHE_REGION_FEMALE_CASES', Data.from(options.data, Data.Fields.PHE_REGION_FEMALE_CASES));
+    console.log('PHE_REGION_MALE_CASES', Data.from(options.data, Data.Fields.PHE_REGION_MALE_CASES));
+    console.log('PHE_REGION_CASES_AGE', Data.from(options.data, Data.Fields.PHE_REGION_CASES_AGE));
+    console.log('PHE_REGION_DEATHS', Data.from(options.data, Data.Fields.PHE_REGION_DEATHS));
+    console.log('PHE_REGION_FEMALE_DEATHS', Data.from(options.data, Data.Fields.PHE_REGION_FEMALE_DEATHS));
+    console.log('PHE_REGION_MALE_DEATHS', Data.from(options.data, Data.Fields.PHE_REGION_MALE_DEATHS));
+    console.log('PHE_REGION_VACCINE_AGE', Data.from(options.data, Data.Fields.PHE_REGION_VACCINE_AGE));
+
 
     // 2. specify data URLs here...
     // PHE_REGION_CASES
