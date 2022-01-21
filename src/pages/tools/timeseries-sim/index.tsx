@@ -43,7 +43,7 @@ const initialFirstRunState = {
     String(lastDate.getDate()).padStart(2, "0"),
   indicator: "biweekly_cases_per_million",
   method: "euclidean",
-  numberOfResults: 10,
+  numberOfResults: 30,
   minPopulation: 600000,
   startDate: "2021-01-01",
   endDate:
@@ -217,8 +217,20 @@ const TimeseriesSim = () => {
 
   const predictPost = async () => {
     const apiUrl =
-      "http://127.0.0.1:4010/stat/v1/timeseries-sim-search/compare/";
-    console.log({ timeseries: timeSeriesBag });
+      "http://127.0.0.1:4010/stat/v1/timeseries-sim-search/predict/";
+    const predictObj = {
+      series: timeSeriesBag,
+      query: {
+        country: firstRunForm.targetCountry,
+        first_date: firstRunForm.firstDate,
+        last_date: firstRunForm.lastDate,
+      },
+    };
+    const response = await axios.post(apiUrl, predictObj);
+    console.log("response = ", response);
+    if (response.data?.length > 0) {
+      console.log("response.data = ", response.data);
+    }
   };
 
   const predictClick = async () => {
