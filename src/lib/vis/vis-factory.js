@@ -26,7 +26,7 @@ import { DashboardScotlandVaccination } from "./dashboards/dashboard-scotlandVac
 import { DashboardUK } from "./dashboards/dashboard-UK";
 import { DashboardTian } from "./dashboards/dashboard-tian";
 import { DashboardUpperTierLocalAuthority } from "./dashboards/dashboard-UTLA";
-import { DashboardMSOA } from "./dashboards/dashboard-msoa";
+import { DashboardMSOA } from "./dashboards/dashboard-MSOA";
 import { DashboardEnglandRegion } from "./dashboards/dashboard-englandRegion";
 import { DashboardEnglandNHSRegion } from "./dashboards/dashboard-englandNHSRegion";
 import { DashboardNation } from "./dashboards/dashboard-nation"

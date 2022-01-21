@@ -29,8 +29,8 @@ export class DashboardMSOA {
 
   constructor(options) {
     // Phong
-    console.log('data including all 5 metrics')
-    console.log(Data.from(options.data, Data.Fields.PHE_MSOA_ALL));
+    // console.log('data including all 5 metrics')
+    // console.log(Data.from(options.data, Data.Fields.PHE_MSOA_ALL));
 
     // creates the main div. don't touch
     var div = d3
@@ -38,37 +38,16 @@ export class DashboardMSOA {
       .append("div")
       .attr("class", "vis-example-container");
 
-    console.log('PHE_NATION_ADMISSIONS', Data.from(options.data, Data.Fields.PHE_MSOA_ALL));      
+    console.log('PHE_MSOA_ALL', Data.from(options.data, Data.Fields.PHE_MSOA_ALL));      
       
       
-    // 2. specify data URLs here...
-    var newCasesBySpecimenDateRollingSum = "https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000961&metric=newCasesBySpecimenDateRollingSum&format=csv"
-    var newCasesBySpecimenDateRollingRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000961&metric=newCasesBySpecimenDateRollingRate&format=csv"
-    var newCasesBySpecimenDateChangePercentage = "https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000961&metric=newCasesBySpecimenDateChangePercentage&format=csv"
-    var cumVaccinationFirstDoseUptakeByVaccinationDatePercentage = "https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000961&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&format=csv"
-    var cumVaccinationSecondDoseUptakeByVaccinationDatePercentage = "https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000961&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&format=csv"
-    
-    d3.csv(newCasesBySpecimenDateRollingSum).then(function (data) {
-      newCasesBySpecimenDateRollingSum = data;
-    });
-    d3.csv(newCasesBySpecimenDateRollingRate).then(function (data) {
-      newCasesBySpecimenDateRollingRate = data;
-    });
-    d3.csv(newCasesBySpecimenDateChangePercentage).then(function (data) {
-      newCasesBySpecimenDateChangePercentage = data;
-    });
-    d3.csv(cumVaccinationFirstDoseUptakeByVaccinationDatePercentage).then(function (data) {
-      cumVaccinationFirstDoseUptakeByVaccinationDatePercentage = data;
-    });
-    d3.csv(cumVaccinationSecondDoseUptakeByVaccinationDatePercentage).then(function (data) {
-      cumVaccinationSecondDoseUptakeByVaccinationDatePercentage = data;
-    });
-
+  
 
     // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
-    setTimeout(function () {
       var config = {
-        layout: ['cases','vaccinations'],
+        layout: ['cases',
+        'vaccinations'
+      ],
         groups: [
           {
             id: 'cases', 
@@ -86,7 +65,7 @@ export class DashboardMSOA {
           {
             id: 'newCasesBySpecimenDateRollingSum', 
             title: 'Total cases over time', 
-            data: newCasesBySpecimenDateRollingSum, 
+            data:  Data.from(options.data, Data.Fields.PHE_MSOA_ALL), 
             dataField: 'newCasesBySpecimenDateRollingSum', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_HIGH, 
@@ -97,7 +76,7 @@ export class DashboardMSOA {
           },{
             id: 'newCasesBySpecimenDateRate', 
             title: 'Change in Cases', 
-            data: newCasesBySpecimenDateRollingRate, 
+            data:  Data.from(options.data, Data.Fields.PHE_MSOA_ALL), 
             dataField: 'newCasesBySpecimenDateRollingRate', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_HIGH, 
@@ -109,7 +88,7 @@ export class DashboardMSOA {
           ,{
             id: 'newCasesBySpecimenDateChangePercentage', 
             title: 'Change in Cases', 
-            data: newCasesBySpecimenDateChangePercentage, 
+            data:  Data.from(options.data, Data.Fields.PHE_MSOA_ALL), 
             dataField: 'newCasesBySpecimenDateChangePercentage', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_HIGH, 
@@ -120,7 +99,7 @@ export class DashboardMSOA {
           },{
             id: 'cumVaccinationFirstDoseUptakeByVaccinationDatePercentage', 
             title: 'Change in Cases', 
-            data: cumVaccinationFirstDoseUptakeByVaccinationDatePercentage, 
+            data:  Data.from(options.data, Data.Fields.PHE_MSOA_ALL), 
             dataField: 'cumVaccinationFirstDoseUptakeByVaccinationDatePercentage', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_MEDIUM, 
@@ -132,7 +111,7 @@ export class DashboardMSOA {
           },{
             id: 'cumVaccinationSecondDoseUptakeByVaccinationDatePercentage', 
             title: 'Change in Cases', 
-            data: cumVaccinationSecondDoseUptakeByVaccinationDatePercentage, 
+            data:  Data.from(options.data, Data.Fields.PHE_MSOA_ALL), 
             dataField: 'cumVaccinationSecondDoseUptakeByVaccinationDatePercentage', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_HIGH, 
@@ -147,6 +126,5 @@ export class DashboardMSOA {
 
       // this will interpret the dashboard specifiation
       dashboard.createDashboard(div, config);
-    }, 3000);
   }
 }

@@ -39,37 +39,7 @@ export class DashboardUpperTierLocalAuthority{
     console.log('***live data')
     console.log('PHE_UTLA_NEW', Data.from(options.data, Data.Fields.PHE_UTLA_NEW));
     console.log('PHE_UTLA_CUM', Data.from(options.data, Data.Fields.PHE_UTLA_CUM));
-
-    // for any age range:
-    // VaccineRegisterPopulationByVaccinationDate
-    // cumPeopleVaccinatedCompleteByVaccinationDate
-    // newPeopleVaccinatedCompleteByVaccinationDate
-    // cumPeopleVaccinatedFirstDoseByVaccinationDate
-    // newPeopleVaccinatedFirstDoseByVaccinationDate
-    // cumPeopleVaccinatedSecondDoseByVaccinationDate
-    // newPeopleVaccinatedSecondDoseByVaccinationDate
-    // cumVaccinationFirstDoseUptakeByVaccinationDatePercentage
-    // cumVaccinationCompleteCoverageByVaccinationDatePercentage
-    // cumVaccinationSecondDoseUptakeByVaccinationDatePercentage
-
-    // cumCases = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=cumCasesBySpecimenDate&format=csv'
-    // newCases = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=newCasesBySpecimenDate&format=csv'
-
-    // cumDeaths = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=cumDeaths28DaysByDeathDate&format=csv'
-    // newDeaths = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=newDeaths28DaysByDeathDate&format=csv'
-
-    // cumVaccOnePerc = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&format=csv'
-    // newVaccOne = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=newPeopleVaccinatedFirstDoseByVaccinationDate&format=csv'
-
-    // cumVaccTwoPerc = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&format=csv'
-    // newVaccTwo = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=newPeopleVaccinatedSecondDoseByVaccinationDate&format=csv'
     
-    // newVaccThird = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=newPeopleVaccinatedThirdInjectionByVaccinationDate&format=csv'
-    // cumVaccThreePerc = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=cumVaccinationThirdInjectionUptakeByVaccinationDatePercentage&format=csv'
-
-
-    console.log(':: options', options)
-
     
     // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
     var config = {
