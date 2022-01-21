@@ -1277,10 +1277,13 @@ dashboard.visualizeBarChart = function (
 
   var data = widgetConfig.data;
   // display only last data
-  let lastDate = data[data.length - 1].index;
+  // let lastDate = data[data.length - 1][widgetConfig.dateField];
+  let lastDate = lastDateUpdated.format('YYYY-MM-DD')
   data = data.filter((e) => {
-    return e.index == lastDate;
+    return e[widgetConfig.dateField] == lastDate;
   });
+  console.log('data>>> ', lastDate, data)
+  data = data[widgetConfig.dataField]
 
   // dashboard.DETAILED  
   var width = 150;
@@ -1359,7 +1362,7 @@ dashboard.visualizeProgress = function (
 
   var svg = wrapperDiv
   .append("svg")
-  .attr("height", 100)
+  .attr("height", 60)
   .attr('width',WIDTH_HIGH)
   .style("margin-bottom", 0)
   .style("margin-right", 0)
@@ -1381,7 +1384,7 @@ dashboard.visualizeProgress = function (
       dashboardComponents.visualizeTrendArrow(
         svg,
         config,
-        WIDTH_HIGH-100,
+        WIDTH_HIGH-180,
         BASELINE_LARGE_NUMBER,
       );
     }
@@ -1434,7 +1437,6 @@ dashboard.visualizeProgress = function (
     
     //width - 300
     svg.attr("width", WIDTH_MEDIUM);
-    svg.attr("height", 100);
 
     dashboardComponents.visualizeNumber(
       svg,
@@ -1866,21 +1868,15 @@ dashboardComponents.visualizeMiniChart = function (
     }
     else
     {
-      if (config.timeUnit == dashboard.TIMEUNIT_WEEK) {
-        trendWindow = 8;
-      }
-      if (config.timeUnit == dashboard.TIMEUNIT_DAY) {
-        trendWindow = 14;
-      }
+      trendWindow = config.trendWindow;
     }
 
+    if(config.timeUnit != undefined)
+      config.timeUnit = 'day'  
+
     var g = svg.append("g").attr("transform", "translate(" + xPos + "," + yPos + ")");
-    if (config.timeUnit == dashboard.TIMEUNIT_WEEK) {
-      dashboardComponents.setLabel(g, "Last " + trendWindow + " weeks", 0, chartHeight + 12);
-    }
-    if (config.timeUnit == dashboard.TIMEUNIT_DAY) {
-      dashboardComponents.setLabel(g, "Last " + trendWindow + " days", 0, chartHeight + 12);
-    }
+    dashboardComponents.setLabel(g, "Last " + trendWindow + " " + config.timeUnit + "(s)", 0, chartHeight + 12);
+    
     
     var barWidth = (chartWidth - 10) / trendWindow;
     
@@ -1892,6 +1888,7 @@ dashboardComponents.visualizeMiniChart = function (
     
     // get N last entries
     var dataSlice = config.data.slice(config.data.length - trendWindow);
+    console.log('>> dataSlice', dataSlice.length)
 
     // calc min & max in trend interval
     var min = 99999999
