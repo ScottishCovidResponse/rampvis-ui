@@ -104,6 +104,12 @@ export class DashboardUK {
     setTimeout(function () {
       // 2. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
       var config = {
+        dataSources: [
+          {
+            url: "https://coronavirus.data.gov.uk/details/download",
+            name: "Public Health England"
+          }],
+
         links: options.childrenLinks,
         layout: [
           [

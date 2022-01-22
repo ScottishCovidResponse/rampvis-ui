@@ -70,6 +70,11 @@ export class DashboardEnglandRegion {
 
     // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
       var config = {
+        dataSources: [
+          {
+            url: "https://coronavirus.data.gov.uk/details/download",
+            name: "Public Health England"
+          }],
         links: options.childrenLinks,
         layout: [['cases',['vaccinations','deaths']]],
         groups: [

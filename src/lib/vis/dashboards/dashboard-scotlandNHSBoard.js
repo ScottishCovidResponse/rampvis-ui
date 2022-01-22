@@ -52,6 +52,12 @@ export class DashboardScotlandNHSBoard {
     links = links.concat(options.childrenLinks);
       
     var config = {
+      dataSources: [
+        {
+          url: "https://coronavirus.data.gov.uk/details/download",
+          name: "Public Health England"
+        }],
+
       links: links,
       layout: [
       "testdeath", 

@@ -502,17 +502,20 @@ var LTLAS = [
 
 dashboard.createDashboard = function (div, config) {
 
-  // Display description
-  if(config.description != undefined)
-  {
-    div.append('p').text('Description:' + config.description)
-  }
   if(config.dataSources != undefined)
   {
     for(var i in config.dataSources){
+      div.append('span')
+        .text('Data from: ')
+        .style('font-weight', 'bold')
+        .style('margin-bottom', '10px' )
+        .style('color', '#999' )
+        .style('font-size', '7pt')
       div.append('a')
         .text(config.dataSources[i].name)
-        .attr('href',config.dataSources[i].href)
+        .attr('href',config.dataSources[i].url)
+        .style('font-size', '7pt')
+        .style('color', '#999' )
     }
   }
 
@@ -522,7 +525,7 @@ dashboard.createDashboard = function (div, config) {
   if(globalLinks != undefined && globalLinks.length > 0)
   {
     div.append('span')
-      .text('Related Dashboards:')
+      .text('Related Dashboards: ')
       .style('font-weight', 'bold')
       .style('margin-bottom', '10px' )
       

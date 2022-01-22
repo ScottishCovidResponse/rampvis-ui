@@ -122,8 +122,13 @@ export class DashboardNation {
 
     https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=vaccinationsAgeDemographics&format=csv
     // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
-    setTimeout(function () {
+    // setTimeout(function () {
       var config = {
+        dataSources: [
+          {
+            url: "https://coronavirus.data.gov.uk/details/download",
+            name: "Public Health England"
+          }],
         links: options.childrenLinks,
         layout: [
           [
@@ -369,6 +374,6 @@ export class DashboardNation {
       };
       // this will interpret the dashboard specifiation
       dashboard.createDashboard(div, config);
-    }, 3000);
+    // }, 3000);
   }
 }
