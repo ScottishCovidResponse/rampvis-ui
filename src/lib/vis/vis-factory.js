@@ -21,12 +21,9 @@ import { SensitivityParameterRangeTickSampleMean } from "./sensitivity-parameter
 import { DashboardScotlandCouncil } from "./dashboards/dashboard-scotlandCouncil";
 import { DashboardScotland } from "./dashboards/dashboard-scotland";
 import { DashboardScotlandNHSBoard } from "./dashboards/dashboard-scotlandNHSBoard";
-import { DashboardScotlandNew } from "./dashboards/dashboard-scotlandNew";
-import { DashboardScotlandVaccination } from "./dashboards/dashboard-scotlandVaccination";
 import { DashboardUK } from "./dashboards/dashboard-UK";
-import { DashboardTian } from "./dashboards/dashboard-tian";
 import { DashboardUpperTierLocalAuthority } from "./dashboards/dashboard-UTLA";
-import { DashboardMSOA } from "./dashboards/dashboard-MSOA";
+import { DashboardMSOA } from "./dashboards/dashboard-msoa";
 import { DashboardEnglandRegion } from "./dashboards/dashboard-englandRegion";
 import { DashboardEnglandNHSRegion } from "./dashboards/dashboard-englandNHSRegion";
 import { DashboardNation } from "./dashboards/dashboard-nation"
@@ -66,9 +63,6 @@ export const visFactory = (type, args) => {
   if (type === "DashboardScotlandCouncil") return new DashboardScotlandCouncil(args);
   if (type === "DashboardScotlandNHSBoard") return new DashboardScotlandNHSBoard(args);
   if (type === "DashboardScotland") return new DashboardScotland(args);
-  //if (type === "CountryOverviewNew") return new DashboardScotlandNew(args);
-  // if (type === "CountryOverviewNew") return new DashboardTian(args);
-  // if (type === "VaccineOverview") return new DashboardScotlandVaccination(args);
   if (type === "DashboardUK") return new DashboardUK(args);
   if (type === "DashboardNation") return new DashboardNation(args);
   if (type === "CountryOverviewNew") return new DashboardEnglandNHSRegion(args);
