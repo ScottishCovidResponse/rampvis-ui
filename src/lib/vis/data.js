@@ -82,8 +82,8 @@ export class Data {
     PHE_UTLA_CUM: "areaType=utla&metric=cumCasesBySpecimenDate&",
 
     // MSOA DATA
-    PHE_MSOA_ALL: "areaType=msoa"
-
+    PHE_MSOA_CASES: "areaType=msoa&metric=newCasesBySpecimenDateRollingSum&",
+    PHE_MSOA_VACCINE: "areaType=msoa&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&"
   };
   
   static from(data, field) {

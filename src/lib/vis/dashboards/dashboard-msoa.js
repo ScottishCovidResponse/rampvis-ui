@@ -35,25 +35,26 @@ export class DashboardMSOA {
       .append("div")
       .attr("class", "vis-example-container");
 
-    console.log('PHE_MSOA_ALL', Data.from(options.data, Data.Fields.PHE_MSOA_ALL));      
+    console.log('PHE_MSOA_CASES', Data.from(options.data, Data.Fields.PHE_MSOA_CASES));
+    console.log('PHE_MSOA_VACCINE', Data.from(options.data, Data.Fields.PHE_MSOA_VACCINE));      
       
 
-    var vacc1 = "https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000961&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&format=csv"
-    var vacc2 = "https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000961&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&format=csv"
-    var vacc3 = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000024&metric=cumVaccinationThirdInjectionUptakeByVaccinationDatePercentage&format=csv'
+    // var vacc1 = "https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000961&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&format=csv"
+    // var vacc2 = "https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000961&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&format=csv"
+    // var vacc3 = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000024&metric=cumVaccinationThirdInjectionUptakeByVaccinationDatePercentage&format=csv'
 
-    d3.csv(vacc1).then(function (data) {
-      vacc1 = data;
-      console.log(vacc1)
-    });
-    d3.csv(vacc2).then(function (data) {
-      vacc2 = data;
-      console.log(vacc2)
-    });
-    d3.csv(vacc3).then(function (data) {
-      vacc3 = data;
-      console.log('vacc3', vacc3)
-    });
+    // d3.csv(vacc1).then(function (data) {
+    //   vacc1 = data;
+    //   console.log(vacc1)
+    // });
+    // d3.csv(vacc2).then(function (data) {
+    //   vacc2 = data;
+    //   console.log(vacc2)
+    // });
+    // d3.csv(vacc3).then(function (data) {
+    //   vacc3 = data;
+    //   console.log('vacc3', vacc3)
+    // });
 
 
     // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
@@ -79,7 +80,7 @@ export class DashboardMSOA {
           {
             id: 'newCasesBySpecimenDateRollingRate', 
             title: 'Weekly new cases', 
-            data:  Data.from(options.data, Data.Fields.PHE_MSOA_ALL), 
+            data:  Data.from(options.data, Data.Fields.PHE_MSOA_CASES), 
             dataField: 'newCasesBySpecimenDateRollingRate', 
             visualization: 'linechart', 
             detail: dashboard.DETAIL_HIGH, 
@@ -90,7 +91,7 @@ export class DashboardMSOA {
           },{
             id: 'vacc1', 
             title: 'Vaccination 1 Uptake', 
-            data:  vacc1, 
+            data:  Data.from(options.data, Data.Fields.PHE_MSOA_VACCINE), 
             dataField: 'cumVaccinationFirstDoseUptakeByVaccinationDatePercentage', 
             visualization: 'progress', 
             detail: dashboard.DETAIL_MEDIUM, 
@@ -104,7 +105,7 @@ export class DashboardMSOA {
           ,{
             id: 'vacc2', 
             title: 'Vaccination 2 Uptake', 
-            data:  vacc2, 
+            data:  Data.from(options.data, Data.Fields.PHE_MSOA_VACCINE), 
             dataField: 'cumVaccinationSecondDoseUptakeByVaccinationDatePercentage', 
             visualization: 'progress', 
             detail: dashboard.DETAIL_MEDIUM, 
@@ -117,7 +118,7 @@ export class DashboardMSOA {
           },{
             id: 'vacc3', 
             title: 'Vaccination 3 / Booster Uptake', 
-            data:  vacc3, 
+            data:  Data.from(options.data, Data.Fields.PHE_MSOA_VACCINE), 
             dataField: 'cumVaccinationThirdInjectionUptakeByVaccinationDatePercentage', 
             visualization: 'progress', 
             detail: dashboard.DETAIL_MEDIUM, 
