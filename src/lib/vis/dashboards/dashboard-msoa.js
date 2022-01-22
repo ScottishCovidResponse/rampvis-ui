@@ -59,6 +59,12 @@ export class DashboardMSOA {
 
     // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
     var config = {
+        description: 'This dashboard shows data on an MSOA level (Middle layer Super Output Area',
+        dataSources: [
+          {
+            href: "https://coronavirus.data.gov.uk/details/download",
+            name: "Public Health England"
+          }],
         layout: ['cases',
         'vaccinations'
       ],

@@ -501,8 +501,21 @@ var LTLAS = [
 ]
 
 dashboard.createDashboard = function (div, config) {
-  
-  
+
+  // Display description
+  if(config.description != undefined)
+  {
+    div.append('p').text('Description:' + config.description)
+  }
+  if(config.dataSources != undefined)
+  {
+    for(var i in config.dataSources){
+      div.append('a')
+        .text(config.dataSources[i].name)
+        .attr('href',config.dataSources[i].href)
+    }
+  }
+
   // CREATE RELATED LINKS   
   var globalLinks = config.links; 
 
@@ -523,29 +536,10 @@ dashboard.createDashboard = function (div, config) {
     }
   }
 
-
-  // }else{
-  //   var select = div.append('select')
-  //     .style('margin-left', '10px')
-  //   var visitLink = div.append('a').text('Visit')
-  //     .style('margin-left', '10px')
-    
-  //   select.on('change', function(e){
-  //     console.log('elem', e)
-  //     // visitLink.attr(href,elem)
-  //   })
-    
-  //     for(var i in globalLinks){
-  //     select.append('option').append('a')
-  //       .attr('href', globalLinks[i].url)
-  //       .attr('target',"_blank")
-  //       .text(globalLinks[i].name)
-  //   }
-  // }
-  
   // CREATE GROUP LAYOUT
   var layout = config.layout;
   createLayoutTable(div, layout, config, addGroup);
+
 };
 
 var createLayoutTable = function (parentElement, layout, config, func) {
