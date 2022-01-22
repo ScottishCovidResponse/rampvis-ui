@@ -58,7 +58,6 @@ export class DashboardMSOA {
 
 
     // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
-    setTimeout(function () {
     var config = {
         layout: ['cases',
         'vaccinations'
@@ -134,6 +133,5 @@ export class DashboardMSOA {
 
       // this will interpret the dashboard specifiation
       dashboard.createDashboard(div, config);
-    }, 3000);
   }
 }
