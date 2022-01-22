@@ -1675,6 +1675,8 @@ dashboardComponents.visualizeTrendArrow = function (
 
   var arrowSize = 10
   var arrowThickness = 5;
+  var opacity =trendValue != 0 ? 1 : .2; 
+
   g2.append("line")
     .attr("x1", -arrowSize)
     .attr("x2", arrowSize)
@@ -1684,6 +1686,7 @@ dashboardComponents.visualizeTrendArrow = function (
     .attr("stroke", config.color)
     .style('stroke-width', arrowThickness)
     .style('stroke-linecap', 'round')
+    .style('opacity', opacity)
   
   g2.append("line")
     .attr("x1", arrowSize)
@@ -1694,6 +1697,7 @@ dashboardComponents.visualizeTrendArrow = function (
     .attr("stroke", config.color)
     .style('stroke-width', arrowThickness)
     .style('stroke-linecap', 'round')
+    .style('opacity', opacity)
 
   g2.append("line")
     .attr("x1", arrowSize)
@@ -1704,6 +1708,7 @@ dashboardComponents.visualizeTrendArrow = function (
     .attr("stroke", config.color)
     .style('stroke-width', arrowThickness)
     .style('stroke-linecap', 'round')    
+    .style('opacity', opacity)
 
 };
 
@@ -1775,11 +1780,15 @@ dashboardComponents.visualizeTrendArrowNew = function (
     return "translate(0," + 20 + "),rotate(" + rotation + ")";
   });
 
+  var opacity =trendValue != 0 ? 1 : .5; 
+  console.log('>> opacity', opacity)
+
   g2.append("line")
     .attr("x1", -15)
     .attr("x2", 15)
     .attr("y1", 0)
     .attr("y2", 0)
+    .style('opacity', opacity)
     .attr("class", "arrow")
     .attr("stroke", config.color);
   g2.append("line")
@@ -1787,6 +1796,7 @@ dashboardComponents.visualizeTrendArrowNew = function (
     .attr("x2", 0)
     .attr("y1", 0)
     .attr("y2", -15)
+    .style('opacity', opacity)
     .attr("class", "arrow")
     .attr("stroke", config.color);
   g2.append("line")
@@ -1794,6 +1804,7 @@ dashboardComponents.visualizeTrendArrowNew = function (
     .attr("x2", 0)
     .attr("y1", 0)
     .attr("y2", 15)
+    .style('opacity', opacity)
     .attr("class", "arrow")
     .attr("stroke", config.color);
 };
