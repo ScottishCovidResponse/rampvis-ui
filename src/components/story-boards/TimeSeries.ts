@@ -20,6 +20,7 @@ const xScaleFnc = (data, w = width, b = border) => {
 
   const xScale = d3
     .scaleTime()
+    // @ts-expect-error -- rule out [undefined, undefined] (possible runtime error)
     .domain(xExt)
     .range([border, w - b]);
   return xScale;
@@ -30,6 +31,7 @@ const yScaleFnc = (data, h = height, b = border) => {
   console.log("data =", data, "yExt", yExt);
   const ySc = d3
     .scaleLinear()
+    // @ts-expect-error -- rule out [undefined, undefined] (possible runtime error)
     .domain(yExt)
     .range([h - b, b]);
   return ySc;
@@ -44,6 +46,7 @@ export class TimeSeries {
   _yLabel1;
   _yLabel2;
   _color;
+  _color2;
   _width;
   _height;
   _border;

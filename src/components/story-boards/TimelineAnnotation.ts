@@ -147,14 +147,17 @@ export class TimelineAnnotation {
     // Uses the width and alignment of text to calculate correct x values of tspan elements
     return (
       (this._annoWidth / 2) *
-      ((this._align.toLowerCase() == "middle") * 1 ||
-        (this._align.toLowerCase() == "end") * 2)
+      (this._align.toLowerCase() == "middle"
+        ? 1
+        : this._align.toLowerCase() == "end"
+        ? 2
+        : 0)
     );
   }
 
   _correctTextAlignment(textElem) {
     // Aligns tspan elements based on chosen alignment
-    Array.from(textElem.children).forEach((tspan) =>
+    Array.from(textElem.children).forEach((tspan: any) =>
       tspan.setAttribute("x", this._alignToX()),
     );
   }
@@ -196,6 +199,7 @@ export class TimelineAnnotation {
         const visStr = multiLineBreak ? 'visibility="hidden"' : "";
 
         textElem.appendChild(
+          // @ts-expect-error -- import svg`` ?
           svg`<tspan x=0 dy="1.1em" ${visStr}>${content}</tspan>`,
         );
 
@@ -347,7 +351,7 @@ export class TimelineAnnotation {
     // We increase the height of the annotation based on the height of its nested children
     annos.forEach((anno) => {
       const childrenHeight = findNestedChildren(anno).reduce(
-        (sum, child) => sum + child.height + 5,
+        (sum, child: any) => sum + child.height + 5,
         0,
       );
       console.log(childrenHeight);

@@ -63,7 +63,7 @@ export const peakSegment = (
         (closest, v2) => Math.min(closest, Math.abs(v1.idx - v2.idx)),
         Math.min(v1.idx, dataLen - v1.idx),
       );
-      const score = (closestDist / dataLen) * (ignoreHeight || v1.h / 2);
+      const score = (closestDist / dataLen) * (ignoreHeight ? 1 : v1.h / 2);
 
       // The best peak has the highest score - tallest and most distant
       bestPeak =

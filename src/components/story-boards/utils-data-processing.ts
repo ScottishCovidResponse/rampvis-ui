@@ -12,6 +12,7 @@ export const xScFnc = (data, w = width, b = border) => {
   const xEx = d3.extent(data, (dp: any) => dp.date);
   const xSc = d3
     .scaleTime()
+    // @ts-expect-error -- rule out [undefined, undefined] (possible runtime error)
     .domain(xEx)
     .range([border, w - b]);
   return xSc;
@@ -21,6 +22,7 @@ export const yScFnc = (data, h = height, b = border) => {
   const yEx = d3.extent(data, (dp: any) => dp.y);
   const ySc = d3
     .scaleLinear()
+    // @ts-expect-error -- rule out [undefined, undefined] (possible runtime error)
     .domain(yEx)
     .range([h - b, b]);
   return ySc;
@@ -122,6 +124,7 @@ export const gaussian = (sigma, n) => {
 
 export const parseData = (json, location) =>
   Object.entries(json).map((arr: any) => ({
+    // @ts-expect-error -- import parseDate instead of using an implicit global function
     date: parseDate(arr[1].index),
     y: +arr[1][location],
   }));

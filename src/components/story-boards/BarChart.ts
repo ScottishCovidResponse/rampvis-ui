@@ -7,15 +7,15 @@ const width = 800,
 export class BarChart {
   _data;
   _ctx;
-  _title;
-  _xLabel;
-  _yLabel;
-  _width;
-  _height;
-  _vertBorder;
-  _horiBorder;
-  _barPadding;
-  _isVertical;
+  _title: string;
+  _xLabel: string;
+  _yLabel: string;
+  _width: number;
+  _height: number;
+  _vertBorder: number;
+  _horiBorder: number;
+  _barPadding: number;
+  _isVertical: boolean;
   _categoryScale;
   _valueScale;
   _annotations;
@@ -95,13 +95,13 @@ export class BarChart {
 
   _setScales() {
     // Set range values for scales based on the orientation of the graph
-    const vertRange = this._isVertical
+    const vertRange: [number, number] = this._isVertical
       ? [this._height - this._vertBorder, this._vertBorder]
       : [this._vertBorder, this._height - this._vertBorder];
-    const horiRange = [
+    const horiRange: [number, number] = [
       this._horiBorder,
       this._width - this._horiBorder,
-    ] as const;
+    ];
 
     // Create scales for graph based on chosen orientation
     this._categoryScale = d3
@@ -112,6 +112,7 @@ export class BarChart {
 
     this._valueScale = d3
       .scaleLinear()
+      // @ts-expect-error -- investigate
       .domain([0, d3.extent(this._data.map((d) => d.val))[1]]) // Bar height always starts at 0 (no negative values allowed)
       .range(this._isVertical ? vertRange : horiRange);
   }
@@ -127,6 +128,7 @@ export class BarChart {
   }
 
   renderSVG() {
+    // @ts-expect-error -- investigate
     this._ctx = this._ctx || DOM.svg(this._width, this._height);
     return this._ctx;
   }
@@ -141,6 +143,7 @@ export class BarChart {
 
   plot() {
     // Declare SVG
+    // @ts-expect-error -- investigate
     this._ctx = this._ctx || DOM.svg(this._width, this._height);
 
     this._setScales();
@@ -152,6 +155,7 @@ export class BarChart {
       .join("rect")
       .attr(
         "x",
+        // @ts-expect-error -- investigate
         this._isVertical
           ? (d: any) => this._categoryScale(d.name)
           : this._horiBorder,
@@ -159,8 +163,10 @@ export class BarChart {
       .attr(
         "y",
         this._isVertical
-          ? (d) => this._valueScale(d.val)
-          : (d) => this._categoryScale(d.name),
+          ? // @ts-expect-error -- investigate
+            (d) => this._valueScale(d.val)
+          : // @ts-expect-error -- investigate
+            (d) => this._categoryScale(d.name),
       )
       .attr(
         "width",

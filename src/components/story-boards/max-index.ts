@@ -1,4 +1,4 @@
-export default function maxIndex(values, valueof) {
+export default function maxIndex(values, valueof?) {
   let max;
   let maxIndex = -1;
   let index = -1;

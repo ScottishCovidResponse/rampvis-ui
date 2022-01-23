@@ -203,7 +203,7 @@ export function segmentData(_segNum: number) {
 
 let region;
 let casesData;
-const annotations = [{ start: 0, end: 0 }];
+const annotations: { start?: number; end: number }[] = [{ start: 0, end: 0 }];
 
 export function onSelectRegion(_region: string) {
   region = _region;
@@ -247,7 +247,7 @@ export function onSelectRegion(_region: string) {
         */
 
       // Add annotation for positive line of best fit
-      const slope = linRegGrad(currData.map((d) => d.y));
+      const slope = linRegGrad(currData.map((d) => d.y)) as number;
       const posGrad = slope > 0;
       if (posGrad)
         annotations.push(
@@ -295,6 +295,7 @@ export function onSelectRegion(_region: string) {
           // Add annotation for semantic events that are rank > 3
           if (e.rank > 3 && e instanceof SemanticEvent) {
             annotations.push(
+              // @ts-expect-error -- fix accessing protected _date
               writeText(e.description, e._date, casesData, true),
             );
           }
@@ -325,6 +326,7 @@ export function onSelectRegion(_region: string) {
           // Add annotation for semantic events that are rank > 3
           if (e.rank > 3 && e instanceof SemanticEvent) {
             annotations.push(
+              // @ts-expect-error -- fix accessing protected _date
               writeText(e.description, e._date, casesData, true),
             );
           }
@@ -387,6 +389,7 @@ export function onSelectRegion(_region: string) {
           // Add annotation for semantic events that are rank > 3
           if (e.rank > 3 && e instanceof SemanticEvent) {
             annotations.push(
+              // @ts-expect-error -- fix accessing protected _date
               writeText(e.description, e._date, casesData, true),
             );
           }
@@ -409,7 +412,7 @@ export function onSelectRegion(_region: string) {
   console.log("onSelectRegion: annotations", annotations);
 }
 
-const writeText = (text, date, data, showRedCircle = false) => {
+const writeText = (text, date, data, showRedCircle = false): any => {
   // Find idx of event in data and set location of the annotation in opposite half of graph
   const idx = findDateIdx(date, data);
   const annoIdx = Math.floor(
