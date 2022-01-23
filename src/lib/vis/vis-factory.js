@@ -23,6 +23,7 @@ import { DashboardScotlandCouncil } from "./dashboards/dashboard-scotlandCouncil
 import { DashboardScotland } from "./dashboards/dashboard-scotland";
 import { DashboardScotlandNHSBoard } from "./dashboards/dashboard-scotlandNHSBoard";
 import { DashboardUK } from "./dashboards/dashboard-UK";
+import { DashboardGeo } from "./dashboards/dashboard-geo"
 import { DashboardUpperTierLocalAuthority } from "./dashboards/dashboard-UTLA";
 import { DashboardMSOA } from "./dashboards/dashboard-msoa";
 import { DashboardEnglandRegion } from "./dashboards/dashboard-englandRegion";
@@ -68,7 +69,7 @@ export const visFactory = (type, args) => {
   if (type === "DashboardScotland") return new DashboardScotland(args);
   if (type === "DashboardUK") return new DashboardUK(args);
   if (type === "DashboardNation") return new DashboardNation(args);
-  if (type === "CountryOverviewNew") return new DashboardEnglandNHSRegion(args);
+  if (type === "CountryOverviewNew") return new DashboardGeo(args);
   if (type === "DashboardUTLA") return new DashboardUpperTierLocalAuthority(args);
   if (type === "DashboardMSOA") return new DashboardMSOA(args);
   if (type === "DashboardEnglandNHSRegion") return new DashboardEnglandNHSRegion(args);

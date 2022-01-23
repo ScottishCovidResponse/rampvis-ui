@@ -29,6 +29,7 @@ import { height } from "@mui/system";
 import * as d3 from "d3";
 import { zip } from "lodash";
 import moment from "moment";
+import * as topojson from 'topojson'
 // import "./css/dashboard.css";
 // import "./css/default-dashboard.css";
 // import "./css/common.css";
@@ -39,7 +40,7 @@ author: Benjamin Bach, bbach@ed.ac.uk
 */
 export const dashboard = {};
 export const dashboardComponents = {}
-
+console.log(topojson)
 
 
 var FONT_SIZE_BIG = 27;
@@ -69,6 +70,7 @@ dashboard.VIS_CARTOGRAM = "cartogram";
 dashboard.VIS_BARCHART = "barchart";
 dashboard.VIS_PROGRESS = "progress";
 dashboard.VIS_PROGRESS_GRID = "progress_grid"
+dashboard.VIS_GEO = "geo_viz"
 
 dashboard.TIMEUNIT_SECOND = 'second';
 dashboard.TIMEUNIT_MINUTE = 'minute';
@@ -807,6 +809,14 @@ var createWidget = function (parentHtmlElementId, id, config) {
   }
   else if (widgetConfig.visualization == dashboard.VIS_PROGRESS_GRID) {
     dashboard.visualizeProgressGrid(
+      parentHtmlElementId,
+      widgetConfig,
+      lastDateUpdated
+    );
+  } 
+  else if (widgetConfig.visualization == dashboard.VIS_GEO) {
+    console.log("daj pokazi se")
+    dashboard.visualizeGeo(
       parentHtmlElementId,
       widgetConfig,
       lastDateUpdated
@@ -2376,11 +2386,26 @@ dashboardComponents.visualizeMiniChart = function (
   }
 };
 
+// geojson geometries
+dashboard.visualizeGeo = function (
+  parentHtmlId,
+  config,
+  lastDate
+  )
+  {
+    console.log("geo stuff");
+    if(config.id == 'England')
+    {
+      //const data = require('./england_utla.json');
+      console.log("cmon data")
+      console.log(data);
+
+
+
+    }
+  }
+
 dashboardComponents.setWidgetTitle = function (div, config, lastDateUpdated) {
-
-
-
-
   div.append('p')
     .html(config.title)
     .style('margin', '0px')
