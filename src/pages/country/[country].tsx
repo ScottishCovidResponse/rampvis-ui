@@ -25,7 +25,28 @@ MyPortal.getLayout = function getLayout(page: ReactElement) {
   return <DashboardLayout>{page}</DashboardLayout>;
 };
 
-export const getStaticProps: GetStaticProps = () => {
+const pageIdByCountry: Record<string, string | undefined> = {
+  england: process.env.NEXT_PUBLIC_PAGE_ID_ENGLAND,
+  "northern-ireland": process.env.NEXT_PUBLIC_PAGE_ID_NOTHERN_IRELAND,
+  scotland: process.env.NEXT_PUBLIC_PAGE_ID_SCOTLAND,
+  wales: process.env.NEXT_PUBLIC_PAGE_ID_WALES,
+};
+
+export const getStaticProps: GetStaticProps = ({ params }) => {
+  const pageId =
+    pageIdByCountry[
+      typeof params["country"] === "string" ? params["country"] : ""
+    ];
+
+  if (pageId) {
+    return {
+      redirect: {
+        destination: `/page?id=${pageId}`,
+        permanent: false,
+      },
+    };
+  }
+
   return { props: {} };
 };
 

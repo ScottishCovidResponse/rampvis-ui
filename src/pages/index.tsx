@@ -1,5 +1,6 @@
 import { Card, CardContent, Container, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import { GetStaticProps } from "next";
 import React, { ReactElement } from "react";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 
@@ -57,6 +58,21 @@ const Home = () => {
 
 Home.getLayout = function getLayout(page: ReactElement) {
   return <DashboardLayout>{page}</DashboardLayout>;
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  const pageId = process.env.NEXT_PUBLIC_PAGE_ID_HOME;
+
+  if (pageId) {
+    return {
+      redirect: {
+        destination: `/page?id=${pageId}`,
+        permanent: false,
+      },
+    };
+  }
+
+  return { props: {} };
 };
 
 export default Home;
