@@ -1,4 +1,3 @@
-
 import * as d3 from "d3";
 
 export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
@@ -25,19 +24,18 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
   // create individual containers for individual charts <div> <svg/> </div>
 
   const GraphData = data;
-  
-  let checkState = {}
-  GraphData.forEach((streams)=>{
-    const identifier = streams.key + " " + streams.matchedPeriodEnd
-    checkState[identifier] = "false" 
+
+  let checkState = {};
+  GraphData.forEach((streams) => {
+    const identifier = streams.key + " " + streams.matchedPeriodEnd;
+    checkState[identifier] = "false";
   });
 
-  console.log(checkState)
-  const dateRange = GraphData
-    .filter((streams) => streams.isQuery)[0]
+  console.log(checkState);
+  const dateRange = GraphData.filter((streams) => streams.isQuery)[0]
     .values.map((values) => values.date)
     .map(parseTime); // get query dates and parse
-  
+
   const xScale = d3.scaleTime().range([0, width]).domain(d3.extent(dateRange)); //xscale for dates
   const xAxis = d3.axisBottom(xScale); //x-axis on the bottom
   xAxis.tickFormat((d, i) => dateRange[i]); //x-ticks alignment with data
@@ -52,14 +50,12 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
     ...GraphData.map((streams) =>
       Math.min(...streams.values.map((values) => values.value)),
     ),
-  ); 
+  );
 
-  const yScale =  d3.scaleLinear()
-  .rangeRound([height, 0])
-  .domain([min, max]);
+  const yScale = d3.scaleLinear().rangeRound([height, 0]).domain([min, max]);
 
   const yAxis = d3.axisLeft(yScale).ticks(3);
-  
+
   let layout = d3 // creating individual regions for alignment plots
     .select("#alignmentchart")
     .selectAll("div")
@@ -78,13 +74,13 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
     .attr(
       "viewBox",
       "-" +
-      1.5 * adj +
-      " -" +
-      adj / 2 +
-      " " +
-      (width + adj * 5) +
-      " " +
-      (height + adj * 5),
+        1.5 * adj +
+        " -" +
+        adj / 2 +
+        " " +
+        (width + adj * 5) +
+        " " +
+        (height + adj * 5),
     )
     .classed("svg-content", true);
 
@@ -93,7 +89,7 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
     .attr("class", "xaxis")
     .attr("id", (d, i) => "xaxis" + i)
     .attr("transform", "translate(0," + height + ")")
-    .style("font-size", "20px")
+    .style("font-size", "20px");
 
   layout // add y-axis region to call yAxis func
     .append("g")
@@ -117,29 +113,30 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
     .attr("class", "highlightLine")
     .attr("id", (d, i) => "highlightLine" + i);
 
-
   layout
     .append("path")
     .attr("class", "highlightArea")
     .attr("id", (d, i) => "highlightArea" + i);
 
-
-
   const updateTimeSeriesBag = (d) => {
-    const identifier = d.key + " " + d.matchedPeriodEnd
-    console.log(timeSeriesBag)
-    if (!timeSeriesBag.includes(identifier) && checkState[identifier]==="false") {
+    const identifier = d.key + " " + d.matchedPeriodEnd;
+    console.log(timeSeriesBag);
+    if (
+      !timeSeriesBag.includes(identifier) &&
+      checkState[identifier] === "false"
+    ) {
       setTimeSeriesBag((old) => [...old, identifier]);
       checkState[identifier] = "true";
       timeSeriesBag.push(identifier);
-      }
-    else if(timeSeriesBag.includes(identifier)&& checkState[identifier]==="true") {
-      setTimeSeriesBag((old) => [...old.filter(item=>item!==identifier)]);
-      checkState[identifier]= "false";
-      timeSeriesBag = timeSeriesBag.filter(item=> item!==identifier);
+    } else if (
+      timeSeriesBag.includes(identifier) &&
+      checkState[identifier] === "true"
+    ) {
+      setTimeSeriesBag((old) => [...old.filter((item) => item !== identifier)]);
+      checkState[identifier] = "false";
+      timeSeriesBag = timeSeriesBag.filter((item) => item !== identifier);
     }
-
-  }
+  };
 
   GraphData.map(function (streams, i) {
     d3.select("#xaxis" + i).call(xAxis); // call individual xaxis properties
@@ -180,12 +177,8 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
         return d.name;
       });
 
-    d3.select("#alignmentContainer" + i)
-    .on("click",updateTimeSeriesBag)
-
+    d3.select("#alignmentContainer" + i).on("click", updateTimeSeriesBag);
   });
-
-
 
   let dataFiltered = Array.from(GraphData);
   dataFiltered = dataFiltered.map(function (streams) {
@@ -201,13 +194,12 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
     return streams;
   });
 
-
   dataFiltered.map(function (streams, i) {
     d3.select("#highlightLine" + i)
       .datum(streams.values)
-      .attr("fill","none")
+      .attr("fill", "none")
       .attr("stroke", queryColor)
-      .attr("stroke-width",queryStrokeWidth)
+      .attr("stroke-width", queryStrokeWidth)
       .attr(
         "d",
         d3
@@ -217,14 +209,13 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
           })
           .y(function (d) {
             return yScale(d.value);
-          })
-
+          }),
       );
 
     d3.select("#highlightArea" + i)
       .datum(streams.values)
       .attr("fill", "lightsteelblue")
-      .attr("opacity","0.2")
+      .attr("opacity", "0.2")
       .attr(
         "d",
         d3
@@ -239,9 +230,7 @@ export function alignmentPlot(data, timeSeriesBag, setTimeSeriesBag) {
             return yScale(min);
           }),
       );
-
   });
 
-  d3.select("#alignmentcard").style("visibility","visible");
-  
+  d3.select("#alignmentcard").style("visibility", "visible");
 }

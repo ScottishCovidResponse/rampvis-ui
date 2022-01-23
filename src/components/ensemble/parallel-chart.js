@@ -229,7 +229,7 @@ export class ParallelChart {
       const legendContainer = container.append("div").lower();
       const legend = pv
         .legend()
-        .margin({ top: 3, right: 0, bottom: 3, left: 80})
+        .margin({ top: 3, right: 0, bottom: 3, left: 80 })
         .colorScale(d3.scaleOrdinal().domain(legendData).range(colors));
       legendContainer.datum(legendData).call(legend);
 

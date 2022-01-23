@@ -28,16 +28,20 @@ export class DashboardMSOA {
   CHART_HEIGHT = 400;
 
   constructor(options) {
-
     // creates the main div. don't touch
     var div = d3
       .select("#" + options.chartElement)
       .append("div")
       .attr("class", "vis-example-container");
 
-    console.log('PHE_MSOA_CASES', Data.from(options.data, Data.Fields.PHE_MSOA_CASES));
-    console.log('PHE_MSOA_VACCINE', Data.from(options.data, Data.Fields.PHE_MSOA_VACCINE));      
-      
+    console.log(
+      "PHE_MSOA_CASES",
+      Data.from(options.data, Data.Fields.PHE_MSOA_CASES),
+    );
+    console.log(
+      "PHE_MSOA_VACCINE",
+      Data.from(options.data, Data.Fields.PHE_MSOA_VACCINE),
+    );
 
     // var vacc1 = "https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000961&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&format=csv"
     // var vacc2 = "https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000961&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&format=csv"
@@ -56,87 +60,88 @@ export class DashboardMSOA {
     //   console.log('vacc3', vacc3)
     // });
 
-
     // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
     var config = {
-        dataSources: [
-          {
-            url: "https://coronavirus.data.gov.uk/details/download",
-            name: "Public Health England"
-          }],
-        layout: ['cases',
-        'vaccinations'
-        ],
-        groups: [
-          {
-            id: 'cases', 
-            title: 'Cases', 
-            layout: [['newCasesBySpecimenDateRollingRate']]
-          },
-          {
-            id: 'vaccinations', 
-            title: 'Vaccinations', 
-            layout: [['vacc1','vacc2', 'vacc3' ]]
-          }
+      dataSources: [
+        {
+          url: "https://coronavirus.data.gov.uk/details/download",
+          name: "Public Health England",
+        },
+      ],
+      layout: ["cases", "vaccinations"],
+      groups: [
+        {
+          id: "cases",
+          title: "Cases",
+          layout: [["newCasesBySpecimenDateRollingRate"]],
+        },
+        {
+          id: "vaccinations",
+          title: "Vaccinations",
+          layout: [["vacc1", "vacc2", "vacc3"]],
+        },
+      ],
+      widgets: [
+        {
+          id: "newCasesBySpecimenDateRollingRate",
+          title: "Weekly new cases",
+          data: Data.from(options.data, Data.Fields.PHE_MSOA_CASES),
+          dataField: "newCasesBySpecimenDateRollingRate",
+          visualization: "linechart",
+          detail: dashboard.DETAIL_HIGH,
+          cumulative: false,
+          dateField: "date",
+          color: colors.getCaseColor(),
+          min: 0,
+        },
+        {
+          id: "vacc1",
+          title: "Vaccination 1 Uptake",
+          data: Data.from(options.data, Data.Fields.PHE_MSOA_VACCINE),
+          dataField: "cumVaccinationFirstDoseUptakeByVaccinationDatePercentage",
+          visualization: "progress",
+          detail: dashboard.DETAIL_MEDIUM,
+          cumulative: true,
+          unit: "%",
+          dateField: "date",
+          color: colors.getVaccinationColor(-1),
+          min: 0,
+          max: 100,
+        },
+        {
+          id: "vacc2",
+          title: "Vaccination 2 Uptake",
+          data: Data.from(options.data, Data.Fields.PHE_MSOA_VACCINE),
+          dataField:
+            "cumVaccinationSecondDoseUptakeByVaccinationDatePercentage",
+          visualization: "progress",
+          detail: dashboard.DETAIL_MEDIUM,
+          cumulative: true,
+          unit: "%",
+          dateField: "date",
+          color: colors.getVaccinationColor(),
+          min: 0,
+          max: 100,
+        },
+        {
+          id: "vacc3",
+          title: "Vaccination 3 / Booster Uptake",
+          data: Data.from(options.data, Data.Fields.PHE_MSOA_VACCINE),
+          dataField:
+            "cumVaccinationThirdInjectionUptakeByVaccinationDatePercentage",
+          visualization: "progress",
+          detail: dashboard.DETAIL_MEDIUM,
+          cumulative: true,
+          unit: "%",
+          dateField: "date",
+          color: colors.getVaccinationColor(2),
+          min: 0,
+          max: 100,
+        },
+      ],
+    };
 
-        ],
-        widgets: [
-          {
-            id: 'newCasesBySpecimenDateRollingRate', 
-            title: 'Weekly new cases', 
-            data:  Data.from(options.data, Data.Fields.PHE_MSOA_CASES), 
-            dataField: 'newCasesBySpecimenDateRollingRate', 
-            visualization: 'linechart', 
-            detail: dashboard.DETAIL_HIGH, 
-            cumulative: false,
-            dateField: 'date', 
-            color: colors.getCaseColor(), 
-            min: 0
-          },{
-            id: 'vacc1', 
-            title: 'Vaccination 1 Uptake', 
-            data:  Data.from(options.data, Data.Fields.PHE_MSOA_VACCINE), 
-            dataField: 'cumVaccinationFirstDoseUptakeByVaccinationDatePercentage', 
-            visualization: 'progress', 
-            detail: dashboard.DETAIL_MEDIUM, 
-            cumulative: true,
-            unit: '%',
-            dateField: 'date', 
-            color: colors.getVaccinationColor(-1), 
-            min: 0,
-            max: 100
-          }
-          ,{
-            id: 'vacc2', 
-            title: 'Vaccination 2 Uptake', 
-            data:  Data.from(options.data, Data.Fields.PHE_MSOA_VACCINE), 
-            dataField: 'cumVaccinationSecondDoseUptakeByVaccinationDatePercentage', 
-            visualization: 'progress', 
-            detail: dashboard.DETAIL_MEDIUM, 
-            cumulative: true,
-            unit: '%',
-            dateField: 'date', 
-            color: colors.getVaccinationColor(), 
-            min: 0,
-            max: 100
-          },{
-            id: 'vacc3', 
-            title: 'Vaccination 3 / Booster Uptake', 
-            data:  Data.from(options.data, Data.Fields.PHE_MSOA_VACCINE), 
-            dataField: 'cumVaccinationThirdInjectionUptakeByVaccinationDatePercentage', 
-            visualization: 'progress', 
-            detail: dashboard.DETAIL_MEDIUM, 
-            cumulative: true,
-            unit: '%',
-            dateField: 'date', 
-            color: colors.getVaccinationColor(2), 
-            min: 0,
-            max: 100
-          }
-        ],
-      };
-
-      // this will interpret the dashboard specifiation
-      dashboard.createDashboard(div, config);
+    // this will interpret the dashboard specifiation
+    dashboard.createDashboard(div, config);
   }
 }
