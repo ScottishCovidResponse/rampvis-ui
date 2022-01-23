@@ -11,7 +11,6 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable no-undef */
-/* eslint-disable prefer-desvisualizeMiniCharttructuring */
 /* eslint-disable vars-on-top */
 /* eslint-disable no-var */
 /* eslint-disable spaced-comment */

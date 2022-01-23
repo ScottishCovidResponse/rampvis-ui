@@ -23,6 +23,9 @@ export class GraphAnnotation {
   private _annoWidth: number;
   private _annoHeight: number;
 
+  unscaledX;
+  unscaledTarget;
+
   constructor(id = "") {
     this._id = id;
     this._wrap = 150;
@@ -132,7 +135,7 @@ export class GraphAnnotation {
     return this;
   }
 
-  circleHighlight(color = "red", radius) {
+  circleHighlight(color = "red", radius = 0) {
     this._circle.setAttribute("stroke", color);
     radius && this._circle.setAttribute("r", radius);
     return this;
@@ -165,14 +168,17 @@ export class GraphAnnotation {
     // Uses the width and alignment of text to calculate correct x values of tspan elements
     return (
       (this._annoWidth / 2) *
-      ((this._align.toLowerCase() == "middle") * 1 ||
-        (this._align.toLowerCase() == "end") * 2)
+      (this._align.toLowerCase() == "middle"
+        ? 1
+        : this._align.toLowerCase() == "end"
+        ? 2
+        : 0)
     );
   }
 
-  _correctTextAlignment(textElem, annoWidth) {
+  _correctTextAlignment(textElem, annoWidth?) {
     // Aligns tspan elements based on chosen alignment
-    Array.from(textElem.children).forEach((tspan) =>
+    Array.from(textElem.children).forEach((tspan: any) =>
       tspan.setAttribute("x", this._alignToX()),
     );
   }
@@ -194,7 +200,7 @@ export class GraphAnnotation {
         d3.create("svg").append("tspan").text(word).node(),
       );
 
-      let { width: wordWidth } = wordElem.getBoundingClientRect();
+      const { width: wordWidth } = wordElem.getBoundingClientRect();
       textElem.removeChild(wordElem);
       return { word: word, width: wordWidth };
     });
@@ -212,11 +218,12 @@ export class GraphAnnotation {
       if (forceNewLine) {
         // Multiple consecutive ' \n ' require the tspan to have text to function
         // We fill the tspan with arbitrary text and then hide it
-        let multiLineBreak = rowString.length == 0;
-        let content = multiLineBreak ? "linebreak" : rowString.join(" ");
-        let visStr = multiLineBreak ? 'visibility="hidden"' : "";
+        const multiLineBreak = rowString.length == 0;
+        const content = multiLineBreak ? "linebreak" : rowString.join(" ");
+        const visStr = multiLineBreak ? 'visibility="hidden"' : "";
 
         textElem.appendChild(
+          // @ts-expect-error -- import svg`` ?
           svg`<tspan x=0 dy="1.1em" ${visStr}>${content}</tspan>`,
         );
 
@@ -304,8 +311,8 @@ export class GraphAnnotation {
     const dy = this._y - this._ty;
     const dx = this._x - this._tx;
 
-    const above = dy > 0;
-    const left = dx > 0;
+    const above = dy > 0 ? 1 : 0;
+    const left = dx > 0 ? 1 : 0;
 
     let ix, iy;
     if (dy == 0) {
