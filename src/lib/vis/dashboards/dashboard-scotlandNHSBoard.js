@@ -40,31 +40,26 @@ export class DashboardScotlandNHSBoard {
       .append("div")
       .attr("class", "vis-example-container");
 
-
-    console.log(':: options', options)
+    console.log(":: options", options);
 
     nhsBoardField = Object.keys(options.data[0].values[0])[1];
     latestUpdateTime = console.log(
       options.data[0].values[options.data[0].values.length - 1].index,
     );
     var data = options.data;
-    var links = [options.parentLink]
+    var links = [options.parentLink];
     links = links.concat(options.childrenLinks);
-      
+
     var config = {
       dataSources: [
         {
           url: "https://coronavirus.data.gov.uk/details/download",
-          name: "Public Health England"
-        }],
+          name: "Public Health England",
+        },
+      ],
 
       links: links,
-      layout: [
-      "testdeath", 
-      "hospital"
-      , 
-      "vaccination"
-    ],
+      layout: ["testdeath", "hospital", "vaccination"],
       groups: [
         {
           id: "hospital",
@@ -74,7 +69,7 @@ export class DashboardScotlandNHSBoard {
         {
           id: "testdeath",
           title: "Testing & Deaths",
-          layout: [["dailyTests", 'deaths-weekly']],
+          layout: [["dailyTests", "deaths-weekly"]],
         },
         {
           id: "deaths",
@@ -101,7 +96,7 @@ export class DashboardScotlandNHSBoard {
           visualization: "linechart",
           cumulative: false,
           detail: dashboard.DETAIL_HIGH,
-          min: 0
+          min: 0,
         },
         {
           id: "hospital2",
@@ -113,10 +108,8 @@ export class DashboardScotlandNHSBoard {
           detail: "medium",
           cumulative: false,
           detail: dashboard.DETAIL_HIGH,
-          conditions: [
-            'index != "2011-01-12"', 
-          ],
-          min: 0
+          conditions: ['index != "2011-01-12"'],
+          min: 0,
         },
         {
           id: "dailyTests",
@@ -128,7 +121,7 @@ export class DashboardScotlandNHSBoard {
           // mode: dashboard.MODE_DAILY,
           cumulative: false,
           detail: dashboard.DETAIL_HIGH,
-          min: 0
+          min: 0,
         },
         {
           id: "deaths-weekly",
@@ -140,11 +133,8 @@ export class DashboardScotlandNHSBoard {
           mode: dashboard.MODE_WEEKLY,
           cumulative: false,
           timeUnit: dashboard.TIMEUNIT_WEEK,
-          conditions: [
-            "index.length > 4",
-            'index.indexOf("-01-01") == -1'
-          ],
-          min: 0
+          conditions: ["index.length > 4", 'index.indexOf("-01-01") == -1'],
+          min: 0,
         },
         {
           id: "deaths-all",
@@ -154,10 +144,10 @@ export class DashboardScotlandNHSBoard {
           color: colors.getDeathColor(),
           data: Data.from(options.data, Data.Fields.HEALTH_BOARD_ALL_DEATHS),
           mode: dashboard.MODE_WEEKLY,
-          cumulative: false, 
+          cumulative: false,
           timeUnit: dashboard.TIMEUNIT_WEEK,
           conditions: ["index.length > 4"],
-          min: 0
+          min: 0,
         },
         {
           id: "vaccination-total-1st",
@@ -169,11 +159,12 @@ export class DashboardScotlandNHSBoard {
             options.data,
             Data.Fields.HEALTH_BOARD_VACCINE_SEX_AGEGROUP,
           ),
-          cumulative: true, 
-          unit: '%',
-          min: 0, max: 100,
+          cumulative: true,
+          unit: "%",
+          min: 0,
+          max: 100,
           detail: dashboard.DETAIL_MEDIUM,
-          layout: 'horizontal',
+          layout: "horizontal",
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 1"',
@@ -190,11 +181,12 @@ export class DashboardScotlandNHSBoard {
             options.data,
             Data.Fields.HEALTH_BOARD_VACCINE_SEX_AGEGROUP,
           ),
-          cumulative: true, 
-          min: 0, max: 100,
-          unit: '%',
+          cumulative: true,
+          min: 0,
+          max: 100,
+          unit: "%",
           detail: dashboard.DETAIL_MEDIUM,
-          layout: 'horizontal',
+          layout: "horizontal",
           conditions: [
             'Sex == "Total"',
             'Dose == "Dose 2"',
@@ -211,9 +203,10 @@ export class DashboardScotlandNHSBoard {
             options.data,
             Data.Fields.HEALTH_BOARD_VACCINE_SEX_AGEGROUP,
           ),
-          cumulative: true, 
-          min: 0, max: 100,
-          unit: '%',
+          cumulative: true,
+          min: 0,
+          max: 100,
+          unit: "%",
           detail: dashboard.DETAIL_MEDIUM,
           categories: "AgeGroup",
           conditions: [
@@ -232,9 +225,10 @@ export class DashboardScotlandNHSBoard {
             options.data,
             Data.Fields.HEALTH_BOARD_VACCINE_SEX_AGEGROUP,
           ),
-          cumulative: true, 
-          min: 0, max: 100,
-          unit: '%',
+          cumulative: true,
+          min: 0,
+          max: 100,
+          unit: "%",
           detail: dashboard.DETAIL_MEDIUM,
           categories: "AgeGroup",
           conditions: [

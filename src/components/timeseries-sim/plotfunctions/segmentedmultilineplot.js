@@ -272,5 +272,5 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
         count = count + 1;
       });
   };
-  d3.select("#segmentedcard").style("visibility","visible")
+  d3.select("#segmentedcard").style("visibility", "visible");
 }
