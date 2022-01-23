@@ -68,11 +68,11 @@ colors.getHospitalizedColor = function () {
   return HOSPITALIZED;
 };
 
-colors.getVaccinationColor = function (numberOfDose) {
-  if (numberOfDose && numberOfDose > 1)
+colors.getVaccinationColor = function (num) {
+  if (num != undefined)
     return d3
       .color(VACCINATIONS)
-      .darker(numberOfDose * 0.3)
+      .darker(num * 0.5)
       .formatHex();
   return VACCINATIONS;
 };

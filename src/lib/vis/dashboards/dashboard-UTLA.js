@@ -39,45 +39,26 @@ export class DashboardUpperTierLocalAuthority{
     console.log('***live data')
     console.log('PHE_UTLA_NEW', Data.from(options.data, Data.Fields.PHE_UTLA_NEW));
     console.log('PHE_UTLA_CUM', Data.from(options.data, Data.Fields.PHE_UTLA_CUM));
-
-    // for any age range:
-    // VaccineRegisterPopulationByVaccinationDate
-    // cumPeopleVaccinatedCompleteByVaccinationDate
-    // newPeopleVaccinatedCompleteByVaccinationDate
-    // cumPeopleVaccinatedFirstDoseByVaccinationDate
-    // newPeopleVaccinatedFirstDoseByVaccinationDate
-    // cumPeopleVaccinatedSecondDoseByVaccinationDate
-    // newPeopleVaccinatedSecondDoseByVaccinationDate
-    // cumVaccinationFirstDoseUptakeByVaccinationDatePercentage
-    // cumVaccinationCompleteCoverageByVaccinationDatePercentage
-    // cumVaccinationSecondDoseUptakeByVaccinationDatePercentage
-
-    // cumCases = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=cumCasesBySpecimenDate&format=csv'
-    // newCases = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=newCasesBySpecimenDate&format=csv'
-
-    // cumDeaths = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=cumDeaths28DaysByDeathDate&format=csv'
-    // newDeaths = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=newDeaths28DaysByDeathDate&format=csv'
-
-    // cumVaccOnePerc = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&format=csv'
-    // newVaccOne = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=newPeopleVaccinatedFirstDoseByVaccinationDate&format=csv'
-
-    // cumVaccTwoPerc = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&format=csv'
-    // newVaccTwo = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=newPeopleVaccinatedSecondDoseByVaccinationDate&format=csv'
     
-    // newVaccThird = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=newPeopleVaccinatedThirdInjectionByVaccinationDate&format=csv'
-    // cumVaccThreePerc = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&areaCode=S12000033&metric=cumVaccinationThirdInjectionUptakeByVaccinationDatePercentage&format=csv'
-
-
-    console.log(':: options', options)
-
     
     // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
     var config = {
+      dataSources: [
+        {
+          url: "https://coronavirus.data.gov.uk/details/download",
+          name: "Public Health England"
+        }],
+      dataSources: [
+        {
+          url: "https://coronavirus.data.gov.uk/details/download",
+          name: "Public Health England"
+        }],
+
         layout: [[
           "cases", 
-          "deaths", 
+          "deaths"], 
           "vacc"
-        ]],
+        ],
         groups: [
           {
             id: "cases",
@@ -93,8 +74,7 @@ export class DashboardUpperTierLocalAuthority{
             id: "vacc",
             title: "Vaccination",
             layout: [
-              ["vacc1", "vacc1Ages"],
-              ["vacc2", "vacc2Ages"],
+              ["vacc1","vacc2", 'vacc3'],
             ],
           },
         ],
@@ -103,57 +83,66 @@ export class DashboardUpperTierLocalAuthority{
             id: "cumCases",
             title: "Cumulative Cases",
             color: colors.getCaseColor(),
-            data: Data.from(options.data, Data.Fields.PHE_LTLA_NEW_CASES),
+            data: Data.from(options.data, Data.Fields.PHE_UTLA_CUM),
             dataField: "cumCasesBySpecimenDate",
-            detail: dashboard.DETAIL_MEDIUM,
+            detail: dashboard.DETAIL_LOW,
             cumulative: true,
+            layout: 'horizontal',
             dateField: "date",
             visualization: "linechart",
             abbreviate: true,
-            min: 0
+            min: 0,
+            timeUnit: 'day',
+            trendWindow: 150
           },
           {
             id: "newCases",
             title: "New Cases",
             color: colors.getCaseColor(),
-            data: Data.from(options.data, Data.Fields.PHE_LTLA_NEW_CASES),
+            data: Data.from(options.data, Data.Fields.PHE_UTLA_NEW),
             dataField: "newCasesBySpecimenDate",
             detail: dashboard.DETAIL_MEDIUM,
             cumulative: false,
             dateField: "date",
             visualization: "linechart",
-            min: 0
+            min: 0,
+            timeUnit: 'day',
+            trendWindow: 14
           },
           {
             id: "cumDeaths",
-            title: "Cumulative Deaths",
+            title: "Cumulative Death",
             color: colors.getDeathColor(),
-            data: Data.from(options.data, Data.Fields.PHE_LTLA_NEW_DEATHS),
-            dataField: "cumWeeklyNsoDeathsByRegDate",
-            detail: dashboard.DETAIL_MEDIUM,
+            data: Data.from(options.data, Data.Fields.PHE_UTLA_CUM),
+            dataField: "cumDeaths28DaysByDeathDate", 
+            detail: dashboard.DETAIL_LOW,
             cumulative: true,
             dateField: "date",
+            layout: 'horizontal',
             visualization: "linechart",
-            min: 0
+            min: 0,
+            timeUnit: 'day',
+            trendWindow: 180
           },
           {
             id: "newDeaths",
-            title: "New Weekly Deaths",
+            title: "Daily Deaths",
             color: colors.getDeathColor(),
-            data: Data.from(options.data, Data.Fields.PHE_LTLA_NEW_DEATHS),
-            dataField: "newWeeklyNsoDeathsByRegDate",
+            data: Data.from(options.data, Data.Fields.PHE_UTLA_NEW),
+            dataField: "newDeaths28DaysByDeathDate",
             timeUnit: dashboard.TIMEUNIT_WEEK,
             detail: dashboard.DETAIL_MEDIUM,
             dateField: "date",
-
             visualization: "linechart",
-            min: 0
+            min: 0,
+            timeUnit: 'day',
+            trendWindow: 14
           },
           {
             id: "vacc1",
             title: "1st Dose Percentage",
-            color: colors.getVaccinationColor(1),
-            data: Data.from(options.data, Data.Fields.PHE_LTLA_NEW_VACCINATION),
+            color: colors.getVaccinationColor(-1),
+            data: Data.from(options.data, Data.Fields.PHE_UTLA_CUM),
             dataField:
               "cumVaccinationFirstDoseUptakeByVaccinationDatePercentage",
             detail: dashboard.DETAIL_MEDIUM,
@@ -162,13 +151,15 @@ export class DashboardUpperTierLocalAuthority{
             dateField: "date",
             visualization: "linechart",
             min: 0,
-            max: 100
+            max: 100,
+            timeUnit: 'day',
+            trendWindow: 14
           },
           {
             id: "vacc2",
             title: "2nd Dose Percentage",
-            color: colors.getVaccinationColor(2),
-            data:  Data.from(options.data, Data.Fields.PHE_LTLA_NEW_VACCINATION),
+            color: colors.getVaccinationColor(),
+            data:  Data.from(options.data, Data.Fields.PHE_UTLA_CUM),
             dataField:
               "cumVaccinationSecondDoseUptakeByVaccinationDatePercentage",
             detail: dashboard.DETAIL_MEDIUM,
@@ -177,39 +168,27 @@ export class DashboardUpperTierLocalAuthority{
             dateField: "date",
             visualization: "linechart",
             min: 0,
-            max: 100
+            max: 100,
+            timeUnit: 'day',
+            trendWindow: 14
           },
           {
-            id: "vacc1Ages",
-            title: "1st Dose by Age Group",
+            id: "vacc3",
+            title: "3rd Dose (Booster)",
             color: colors.getVaccinationColor(1),
-            data:  Data.from(options.data, Data.Fields.PHE_LTLA_NEW_VACC_AGE_DEMOGRAPHICS),
-            dataField: "cumVaccinationFirstDoseUptakeByVaccinationDatePercentage",
+            data:  Data.from(options.data, Data.Fields.PHE_UTLA_NEW),
+            dataField:
+              "cumVaccinationThirdInjectionUptakeByVaccinationDatePercentage",
             detail: dashboard.DETAIL_MEDIUM,
             unit: '%',
             cumulative: true,
             dateField: "date",
-            visualization: dashboard.VIS_BARCHART,
-            categories: "age",
+            visualization: "linechart",
             min: 0,
-            max: 100
-          },
-          {
-            id: "vacc2Ages",
-            title: "2st Dose by Age Group",
-            color: colors.getVaccinationColor(1),
-            data: Data.from(options.data, Data.Fields.PHE_LTLA_NEW_VACC_AGE_DEMOGRAPHICS),
-            dataField:
-              "cumVaccinationSecondDoseUptakeByVaccinationDatePercentage",
-            detail: dashboard.DETAIL_HIGH,
-            unit: '%',
-            cumulative: true,
-            dateField: "date",
-            visualization: "barchart",
-            categories: "age",
-            min: 0,
-            max: 100
-          },
+            max: 100, 
+            timeUnit: 'day',
+            trendWindow: 14
+          }
         ],
       };
 

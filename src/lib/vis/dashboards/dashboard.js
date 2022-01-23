@@ -507,15 +507,31 @@ var LTLAS = [
 ]
 
 dashboard.createDashboard = function (div, config) {
-  
-  
+
+  if(config.dataSources != undefined)
+  {
+    for(var i in config.dataSources){
+      div.append('span')
+        .text('Data from: ')
+        .style('font-weight', 'bold')
+        .style('margin-bottom', '10px' )
+        .style('color', '#999' )
+        .style('font-size', '7pt')
+      div.append('a')
+        .text(config.dataSources[i].name)
+        .attr('href',config.dataSources[i].url)
+        .style('font-size', '7pt')
+        .style('color', '#999' )
+    }
+  }
+
   // CREATE RELATED LINKS   
   var globalLinks = config.links; 
 
   if(globalLinks != undefined && globalLinks.length > 0)
   {
     div.append('span')
-      .text('Related Dashboards:')
+      .text('Related Dashboards: ')
       .style('font-weight', 'bold')
       .style('margin-bottom', '10px' )
       
@@ -529,29 +545,10 @@ dashboard.createDashboard = function (div, config) {
     }
   }
 
-
-  // }else{
-  //   var select = div.append('select')
-  //     .style('margin-left', '10px')
-  //   var visitLink = div.append('a').text('Visit')
-  //     .style('margin-left', '10px')
-    
-  //   select.on('change', function(e){
-  //     console.log('elem', e)
-  //     // visitLink.attr(href,elem)
-  //   })
-    
-  //     for(var i in globalLinks){
-  //     select.append('option').append('a')
-  //       .attr('href', globalLinks[i].url)
-  //       .attr('target',"_blank")
-  //       .text(globalLinks[i].name)
-  //   }
-  // }
-  
   // CREATE GROUP LAYOUT
   var layout = config.layout;
   createLayoutTable(div, layout, config, addGroup);
+
 };
 
 var createLayoutTable = function (parentElement, layout, config, func) {
@@ -1291,10 +1288,13 @@ dashboard.visualizeBarChart = function (
 
   var data = widgetConfig.data;
   // display only last data
-  let lastDate = data[data.length - 1].index;
+  // let lastDate = data[data.length - 1][widgetConfig.dateField];
+  let lastDate = lastDateUpdated.format('YYYY-MM-DD')
   data = data.filter((e) => {
-    return e.index == lastDate;
+    return e[widgetConfig.dateField] == lastDate;
   });
+  console.log('data>>> ', lastDate, data)
+  data = data[widgetConfig.dataField]
 
   // dashboard.DETAILED  
   var width = 150;
@@ -1407,7 +1407,7 @@ dashboard.visualizeProgress = function (
       dashboardComponents.visualizeTrendArrow(
         svg,
         config,
-        WIDTH_HIGH-100,
+        WIDTH_HIGH-180,
         BASELINE_LARGE_NUMBER,
       );
       }
@@ -2031,6 +2031,8 @@ dashboardComponents.visualizeTrendArrow = function (
 
   var arrowSize = 10
   var arrowThickness = 5;
+  var opacity =trendValue != 0 ? 1 : .2; 
+
   g2.append("line")
     .attr("x1", -arrowSize)
     .attr("x2", arrowSize)
@@ -2040,6 +2042,7 @@ dashboardComponents.visualizeTrendArrow = function (
     .attr("stroke", config.color)
     .style('stroke-width', arrowThickness)
     .style('stroke-linecap', 'round')
+    .style('opacity', opacity)
   
   g2.append("line")
     .attr("x1", arrowSize)
@@ -2050,6 +2053,7 @@ dashboardComponents.visualizeTrendArrow = function (
     .attr("stroke", config.color)
     .style('stroke-width', arrowThickness)
     .style('stroke-linecap', 'round')
+    .style('opacity', opacity)
 
   g2.append("line")
     .attr("x1", arrowSize)
@@ -2060,6 +2064,7 @@ dashboardComponents.visualizeTrendArrow = function (
     .attr("stroke", config.color)
     .style('stroke-width', arrowThickness)
     .style('stroke-linecap', 'round')    
+    .style('opacity', opacity)
 
 };
 
@@ -2133,11 +2138,15 @@ dashboardComponents.visualizeTrendArrowNew = function (
     return "translate(0," + 20 + "),rotate(" + rotation + ")";
   });
 
+  var opacity =trendValue != 0 ? 1 : .5; 
+  console.log('>> opacity', opacity)
+
   g2.append("line")
     .attr("x1", -15)
     .attr("x2", 15)
     .attr("y1", 0)
     .attr("y2", 0)
+    .style('opacity', opacity)
     .attr("class", "arrow")
     .attr("stroke", config.color);
   g2.append("line")
@@ -2145,6 +2154,7 @@ dashboardComponents.visualizeTrendArrowNew = function (
     .attr("x2", 0)
     .attr("y1", 0)
     .attr("y2", -15)
+    .style('opacity', opacity)
     .attr("class", "arrow")
     .attr("stroke", config.color);
   g2.append("line")
@@ -2152,6 +2162,7 @@ dashboardComponents.visualizeTrendArrowNew = function (
     .attr("x2", 0)
     .attr("y1", 0)
     .attr("y2", 15)
+    .style('opacity', opacity)
     .attr("class", "arrow")
     .attr("stroke", config.color);
 };
@@ -2223,21 +2234,15 @@ dashboardComponents.visualizeMiniChart = function (
     }
     else
     {
-      if (config.timeUnit == dashboard.TIMEUNIT_WEEK) {
-        trendWindow = 8;
-      }
-      if (config.timeUnit == dashboard.TIMEUNIT_DAY) {
-        trendWindow = 14;
-      }
+      trendWindow = config.trendWindow;
     }
 
+    if(config.timeUnit != undefined)
+      config.timeUnit = 'day'  
+
     var g = svg.append("g").attr("transform", "translate(" + xPos + "," + yPos + ")");
-    if (config.timeUnit == dashboard.TIMEUNIT_WEEK) {
-      dashboardComponents.setLabel(g, "Last " + trendWindow + " weeks", 0, chartHeight + 12);
-    }
-    if (config.timeUnit == dashboard.TIMEUNIT_DAY) {
-      dashboardComponents.setLabel(g, "Last " + trendWindow + " days", 0, chartHeight + 12);
-    }
+    dashboardComponents.setLabel(g, "Last " + trendWindow + " " + config.timeUnit + "(s)", 0, chartHeight + 12);
+    
     
     var barWidth = (chartWidth - 10) / trendWindow;
     
@@ -2249,6 +2254,7 @@ dashboardComponents.visualizeMiniChart = function (
     
     // get N last entries
     var dataSlice = config.data.slice(config.data.length - trendWindow);
+    console.log('>> dataSlice', dataSlice.length)
 
     // calc min & max in trend interval
     var min = 99999999
