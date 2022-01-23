@@ -19,7 +19,7 @@
     ]
   },
   "resolutions": {
-    "next/node-fetch": ">=2.6.7"
+    "next/node-fetch": "^2.6.7"
   },
   "dependencies": {
     "@emotion/cache": "^11.7.1",
