@@ -98,7 +98,10 @@ export class BarChart {
     const vertRange = this._isVertical
       ? [this._height - this._vertBorder, this._vertBorder]
       : [this._vertBorder, this._height - this._vertBorder];
-    const horiRange = [this._horiBorder, this._width - this._horiBorder];
+    const horiRange = [
+      this._horiBorder,
+      this._width - this._horiBorder,
+    ] as const;
 
     // Create scales for graph based on chosen orientation
     this._categoryScale = d3

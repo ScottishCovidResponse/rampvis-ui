@@ -194,7 +194,7 @@ export class GraphAnnotation {
         d3.create("svg").append("tspan").text(word).node(),
       );
 
-      let { width: wordWidth } = wordElem.getBoundingClientRect();
+      const { width: wordWidth } = wordElem.getBoundingClientRect();
       textElem.removeChild(wordElem);
       return { word: word, width: wordWidth };
     });
@@ -212,9 +212,9 @@ export class GraphAnnotation {
       if (forceNewLine) {
         // Multiple consecutive ' \n ' require the tspan to have text to function
         // We fill the tspan with arbitrary text and then hide it
-        let multiLineBreak = rowString.length == 0;
-        let content = multiLineBreak ? "linebreak" : rowString.join(" ");
-        let visStr = multiLineBreak ? 'visibility="hidden"' : "";
+        const multiLineBreak = rowString.length == 0;
+        const content = multiLineBreak ? "linebreak" : rowString.join(" ");
+        const visStr = multiLineBreak ? 'visibility="hidden"' : "";
 
         textElem.appendChild(
           svg`<tspan x=0 dy="1.1em" ${visStr}>${content}</tspan>`,

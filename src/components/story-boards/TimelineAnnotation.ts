@@ -173,7 +173,7 @@ export class TimelineAnnotation {
     words = words.map((word) => {
       // wordElem = textElem.appendChild(svg`<tspan>${word}</tspan>`);
       wordElem = d3.create("svg").append("tspan").text(word).node();
-      let { width: wordWidth } = wordElem.getBoundingClientRect();
+      const { width: wordWidth } = wordElem.getBoundingClientRect();
       // textElem.removeChild(wordElem); TODO
       return { word: word, width: wordWidth };
     });
@@ -191,9 +191,9 @@ export class TimelineAnnotation {
       if (forceNewLine) {
         // Multiple consecutive ' \n ' require the tspan to have text to function
         // We fill the tspan with arbitrary text and then hide it
-        let multiLineBreak = rowString.length == 0;
-        let content = multiLineBreak ? "linebreak" : rowString.join(" ");
-        let visStr = multiLineBreak ? 'visibility="hidden"' : "";
+        const multiLineBreak = rowString.length == 0;
+        const content = multiLineBreak ? "linebreak" : rowString.join(" ");
+        const visStr = multiLineBreak ? 'visibility="hidden"' : "";
 
         textElem.appendChild(
           svg`<tspan x=0 dy="1.1em" ${visStr}>${content}</tspan>`,
@@ -320,33 +320,33 @@ export class TimelineAnnotation {
     // For each annotation find the annotations that are colliding with it to its right
     // call these children.
     annos.forEach((anno) => {
-      let rightCollision = (a, b) => b.x - a.x < a.width && a.x < b.x;
-      let colliding = annos.filter((a) => rightCollision(anno, a));
+      const rightCollision = (a, b) => b.x - a.x < a.width && a.x < b.x;
+      const colliding = annos.filter((a) => rightCollision(anno, a));
       anno.children = colliding;
     });
 
     // An annotation's children may also have children so we find all nested children.
     const findNestedChildren = (anno) => {
       // Recursive function for finding all nested children
-      let children = anno.children;
+      const children = anno.children;
 
       // Base case no children -> return empty array
       if (children.length == 0) return [];
 
       // If we have children then find their children
-      let nestedChildren = children
+      const nestedChildren = children
         .map(findNestedChildren)
         .reduce((flat, arr) => flat.concat(arr));
 
       // Combine children and nested children and return unique array
-      let allChildren = children.concat(nestedChildren);
+      const allChildren = children.concat(nestedChildren);
       return [...new Set(allChildren)];
     };
 
     let maxHeight = 0;
     // We increase the height of the annotation based on the height of its nested children
     annos.forEach((anno) => {
-      let childrenHeight = findNestedChildren(anno).reduce(
+      const childrenHeight = findNestedChildren(anno).reduce(
         (sum, child) => sum + child.height + 5,
         0,
       );

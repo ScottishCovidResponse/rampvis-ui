@@ -105,18 +105,18 @@ export const gaussianSmooth = (data, sigma, n) => {
 };
 
 export const gaussian = (sigma, n) => {
-  let even = n % 2 == 0;
+  const even = n % 2 == 0;
   if (even) throw "Cannot use even filter size for gaussian smoothing.";
 
-  let half = Math.floor(n / 2);
-  let xs = [...Array(n)].map((_, i) => i - half);
+  const half = Math.floor(n / 2);
+  const xs = [...Array(n)].map((_, i) => i - half);
 
-  let gs = xs.map(
+  const gs = xs.map(
     (x) =>
       (1 / (sigma * (2 * Math.PI) ** 0.5)) *
       Math.exp(-(x ** 2) / (2 * sigma ** 2)),
   );
-  let gsSum = gs.reduce((s, e) => s + e);
+  const gsSum = gs.reduce((s, e) => s + e);
   return gs.map((g) => g / gsSum);
 };
 

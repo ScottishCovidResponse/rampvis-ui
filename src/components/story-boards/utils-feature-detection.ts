@@ -58,7 +58,7 @@ export const detectPeakEnd = (peakIdx, norm) => {
   We move backwards from the peak until the gradient stops being mostly negative.
 */
 export const detectPeakStart = (peakIdx, norm) => {
-  let deltas = [];
+  const deltas = [];
 
   let i = peakIdx;
 
@@ -73,8 +73,8 @@ export const detectPeakStart = (peakIdx, norm) => {
   }
 
   // Extract line segment
-  let segment = norm.slice(i, peakIdx);
-  let minIdx = i + minIndex(segment);
+  const segment = norm.slice(i, peakIdx);
+  const minIdx = i + minIndex(segment);
 
   return Math.max(Math.max(i, minIdx), 0);
 };
@@ -115,7 +115,7 @@ export const detectPeaks = (timeSeriesData, metric = undefined) => {
   const norm = normalise(timeSeriesData.map((o) => o.y));
 
   let start, end;
-  for (let idx of maxes) {
+  for (const idx of maxes) {
     start = detectPeakStart(idx, norm);
     end = detectPeakEnd(idx, norm);
 
@@ -136,8 +136,8 @@ export const detectPeaks = (timeSeriesData, metric = undefined) => {
 
   // Peak intersection detection function
   const peaksIntersect = (p1, p2) => {
-    let p1PeakIdx = findDateIdx(p1._date, timeSeriesData);
-    let p2PeakIdx = findDateIdx(p2._date, timeSeriesData);
+    const p1PeakIdx = findDateIdx(p1._date, timeSeriesData);
+    const p2PeakIdx = findDateIdx(p2._date, timeSeriesData);
 
     return (
       (p1PeakIdx <= findDateIdx(p2._end, timeSeriesData) &&
@@ -148,10 +148,10 @@ export const detectPeaks = (timeSeriesData, metric = undefined) => {
   };
 
   // For each peak if there is a larger peak that intersects it do not add to uniquePeaks
-  let uniquePeaks = [];
+  const uniquePeaks = [];
   peaks.forEach((p1, i) => {
-    let largerPeaks = peaks.slice(i + 1);
-    let intersect = largerPeaks.find((p2) => peaksIntersect(p1, p2));
+    const largerPeaks = peaks.slice(i + 1);
+    const intersect = largerPeaks.find((p2) => peaksIntersect(p1, p2));
     if (!intersect) uniquePeaks.push(p1);
   });
 
@@ -168,8 +168,8 @@ export const detectPeaks = (timeSeriesData, metric = undefined) => {
 export const detectFalls = (timeSeriesData, metric = undefined) => {
   // Normalise y values between 0 and 1
   const norm = normalise(timeSeriesData.map((o) => o.y));
-  let falls = [];
-  let deltas = [];
+  const falls = [];
+  const deltas = [];
   let start, mid, end, segment, normW, normGrad, grad, height, maxIdx, minIdx;
 
   let i = (start = end = 0);
@@ -250,9 +250,9 @@ export const detectRises = (timeSeriesData, metric = undefined) => {
   // Normalise y values between 0 and 1
   const norm = normalise(timeSeriesData.map((o) => o.y));
 
-  let rises = [];
-  let deltas = [];
-  let rDeltas = [];
+  const rises = [];
+  const deltas = [];
+  const rDeltas = [];
   let start, mid, end, segment, normW, normGrad, grad, height, maxIdx, minIdx;
 
   let i = (start = end = 0);
