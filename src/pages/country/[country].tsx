@@ -4,20 +4,28 @@ import { useRouter } from "next/router";
 import _ from "lodash";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import UnderConstruction from "src/components/errors/UnderConstruction";
-import { GetStaticProps, GetStaticPaths } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
+import PostMountRedirectToPage from "src/components/PostMountRedirectToPage";
+
+const pageIdByRoute = {
+  "/country/england": process.env.NEXT_PUBLIC_PAGE_ID_ENGLAND,
+  "/country/northern-ireland": process.env.NEXT_PUBLIC_PAGE_ID_NORTHERN_IRELAND,
+  "/country/scotland": process.env.NEXT_PUBLIC_PAGE_ID_SCOTLAND,
+  "/country/wales": process.env.NEXT_PUBLIC_PAGE_ID_WALES,
+};
 
 const MyPortal = () => {
   const router = useRouter();
   const country = `${router.query.country}`;
 
   return (
-    <>
+    <PostMountRedirectToPage pageIdByRoute={pageIdByRoute}>
       <Helmet>
         <title>{_.startCase(country)}</title>
       </Helmet>
 
       <UnderConstruction />
-    </>
+    </PostMountRedirectToPage>
   );
 };
 
@@ -25,28 +33,7 @@ MyPortal.getLayout = function getLayout(page: ReactElement) {
   return <DashboardLayout>{page}</DashboardLayout>;
 };
 
-const pageIdByCountry: Record<string, string | undefined> = {
-  england: process.env.NEXT_PUBLIC_PAGE_ID_ENGLAND,
-  "northern-ireland": process.env.NEXT_PUBLIC_PAGE_ID_NOTHERN_IRELAND,
-  scotland: process.env.NEXT_PUBLIC_PAGE_ID_SCOTLAND,
-  wales: process.env.NEXT_PUBLIC_PAGE_ID_WALES,
-};
-
-export const getStaticProps: GetStaticProps = ({ params }) => {
-  const pageId =
-    pageIdByCountry[
-      typeof params["country"] === "string" ? params["country"] : ""
-    ];
-
-  if (pageId) {
-    return {
-      redirect: {
-        destination: `/page?id=${pageId}`,
-        permanent: false,
-      },
-    };
-  }
-
+export const getStaticProps: GetStaticProps = () => {
   return { props: {} };
 };
 
