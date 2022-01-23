@@ -4,11 +4,10 @@ import Common from "./common";
 export class SensitivityParameterRangeTickChart {
   GAP = 10;
   constructor(options) {
-
     // Setting default values of inputs using ? ternary operator.
-    let heightfactor = options.heightfactor ? options.heightfactor : 1
-    let widthfactor = options.widthfactor ? options.widthfactor : 1
-    let divId = options.divId ? options.divId : 'charts';
+    let heightfactor = options.heightfactor ? options.heightfactor : 1;
+    let widthfactor = options.widthfactor ? options.widthfactor : 1;
+    let divId = options.divId ? options.divId : "charts";
 
     //Color scheme
     const baseColor = options.baseColor ? options.baseColor : ["#4f4f4f"];
@@ -18,8 +17,10 @@ export class SensitivityParameterRangeTickChart {
     const tickWidthPx = 2;
     const tickOpacity = 0.6;
 
-    const CHART_HEIGHT = (window.innerHeight - Common.MAIN_CONTENT_GAP) * heightfactor;
-    const CHART_WIDTH = document.getElementById(divId).offsetWidth * widthfactor;
+    const CHART_HEIGHT =
+      (window.innerHeight - Common.MAIN_CONTENT_GAP) * heightfactor;
+    const CHART_WIDTH =
+      document.getElementById(divId).offsetWidth * widthfactor;
     //To avoid loading multiple times
     d3.select("#" + options.chartElement).html("");
     d3.select("#" + options.chartElement)
@@ -53,13 +54,23 @@ export class SensitivityParameterRangeTickChart {
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     //set default values
-    const defaultColors = ["#E69F00", "#009E73", "#DB4D56", "#0072B2", "#D55E00", "#F0E442", "#56B4E9"];
+    const defaultColors = [
+      "#E69F00",
+      "#009E73",
+      "#DB4D56",
+      "#0072B2",
+      "#D55E00",
+      "#F0E442",
+      "#56B4E9",
+    ];
     let colors = options.colors ? options.colors : defaultColors;
-    let parameterName = options.parameterName ? options.parameterName : ["name"];
+    let parameterName = options.parameterName
+      ? options.parameterName
+      : ["name"];
 
     var groupData = data;
     var k = groupData.length;
-    var subgroups = Array.from(Array(k).keys()) //Cluster labels
+    var subgroups = Array.from(Array(k).keys()); //Cluster labels
     // List of groups = species here = value of the first column called group -> I show them on the X axis
     var groups = d3
       .map(data[0], function (d, i) {
@@ -94,16 +105,32 @@ export class SensitivityParameterRangeTickChart {
       .style("text-align", "left");
 
     var stackedData = d3.stack().keys(subgroups)(data);
-    var widthFactor = 1 / k
+    var widthFactor = 1 / k;
     // Draw bar chart
     var k_index = 0;
-    groupData = groupData.map((obj, i) => ([...obj.map(d => ({ ...d, k: i }))]))
+    groupData = groupData.map((obj, i) => [
+      ...obj.map((d) => ({ ...d, k: i })),
+    ]);
     // Create array with the data for plotting the ticks showing individual model runs
-    let tickData = [].concat(...groupData.map((d, i) => {
-      return [].concat(...d.map((obj) => { 
-          return obj.rescaledTicks.map((tick) => {
-              return { tickLoc: tick, k: i, parameterName: obj[parameterName] } }) || []; })) || [];
-    }));
+    let tickData = [].concat(
+      ...groupData.map((d, i) => {
+        return (
+          [].concat(
+            ...d.map((obj) => {
+              return (
+                obj.rescaledTicks.map((tick) => {
+                  return {
+                    tickLoc: tick,
+                    k: i,
+                    parameterName: obj[parameterName],
+                  };
+                }) || []
+              );
+            }),
+          ) || []
+        );
+      }),
+    );
     let bars = g
       .selectAll("g")
       // Enter in the stack data = loop key per key = group per group
@@ -122,18 +149,25 @@ export class SensitivityParameterRangeTickChart {
       })
       .enter()
       .append("rect")
-      .attr("y", (d) => { return y(d[parameterName]) + d.k * y.bandwidth() * widthFactor; })
+      .attr("y", (d) => {
+        return y(d[parameterName]) + d.k * y.bandwidth() * widthFactor;
+      })
       .attr("x", (d) => x(d.rescaledStart))
       .attr("width", (d) => x(d.rescaledRange))
       .attr("height", y.bandwidth() * widthFactor);
 
     //Draw the ticks showing individual paramter values
-    let ticks = g.selectAll("foo")
+    let ticks = g
+      .selectAll("foo")
       .data(tickData)
       .enter()
       .append("rect")
-      .attr("x", function (d) { return x(d.tickLoc) - tickWidthPx/2; })
-      .attr("y", (d) => { return y(d.parameterName) + d.k * y.bandwidth() * widthFactor; })
+      .attr("x", function (d) {
+        return x(d.tickLoc) - tickWidthPx / 2;
+      })
+      .attr("y", (d) => {
+        return y(d.parameterName) + d.k * y.bandwidth() * widthFactor;
+      })
       .attr("width", (d) => tickWidthPx)
       .attr("height", y.bandwidth() * widthFactor)
       .attr("fill-opacity", tickOpacity)
@@ -259,17 +293,23 @@ export class SensitivityParameterRangeTickChart {
 
       //update bars
       bars
-        .attr("y", (d) => { return y(d[parameterName]) + d.k * y.bandwidth() * widthFactor; })
+        .attr("y", (d) => {
+          return y(d[parameterName]) + d.k * y.bandwidth() * widthFactor;
+        })
         .attr("x", (d) => x(d.rescaledStart))
         .attr("width", (d) => x(d.rescaledRange))
         .attr("height", y.bandwidth() * widthFactor);
 
       //update ticks
-      ticks      
-      .attr("x", function (d) { return x(d.tickLoc) - tickWidthPx/2; })
-      .attr("y", (d) => { return y(d.parameterName) + d.k * y.bandwidth() * widthFactor; })
-      .attr("width", (d) => tickWidthPx)
-      .attr("height", y.bandwidth() * widthFactor)
+      ticks
+        .attr("x", function (d) {
+          return x(d.tickLoc) - tickWidthPx / 2;
+        })
+        .attr("y", (d) => {
+          return y(d.parameterName) + d.k * y.bandwidth() * widthFactor;
+        })
+        .attr("width", (d) => tickWidthPx)
+        .attr("height", y.bandwidth() * widthFactor);
 
       //update legend
       legendDot

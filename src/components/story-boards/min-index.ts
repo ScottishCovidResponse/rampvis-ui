@@ -1,4 +1,4 @@
-export default function minIndex(values, valueof) {
+export default function minIndex(values, valueof?) {
   let min;
   let minIndex = -1;
   let index = -1;

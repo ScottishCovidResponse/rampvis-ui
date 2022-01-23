@@ -12,6 +12,7 @@ export const xScFnc = (data, w = width, b = border) => {
   const xEx = d3.extent(data, (dp: any) => dp.date);
   const xSc = d3
     .scaleTime()
+    // @ts-expect-error -- rule out [undefined, undefined] (possible runtime error)
     .domain(xEx)
     .range([border, w - b]);
   return xSc;
@@ -21,6 +22,7 @@ export const yScFnc = (data, h = height, b = border) => {
   const yEx = d3.extent(data, (dp: any) => dp.y);
   const ySc = d3
     .scaleLinear()
+    // @ts-expect-error -- rule out [undefined, undefined] (possible runtime error)
     .domain(yEx)
     .range([h - b, b]);
   return ySc;
@@ -105,23 +107,24 @@ export const gaussianSmooth = (data, sigma, n) => {
 };
 
 export const gaussian = (sigma, n) => {
-  let even = n % 2 == 0;
+  const even = n % 2 == 0;
   if (even) throw "Cannot use even filter size for gaussian smoothing.";
 
-  let half = Math.floor(n / 2);
-  let xs = [...Array(n)].map((_, i) => i - half);
+  const half = Math.floor(n / 2);
+  const xs = [...Array(n)].map((_, i) => i - half);
 
-  let gs = xs.map(
+  const gs = xs.map(
     (x) =>
       (1 / (sigma * (2 * Math.PI) ** 0.5)) *
       Math.exp(-(x ** 2) / (2 * sigma ** 2)),
   );
-  let gsSum = gs.reduce((s, e) => s + e);
+  const gsSum = gs.reduce((s, e) => s + e);
   return gs.map((g) => g / gsSum);
 };
 
 export const parseData = (json, location) =>
   Object.entries(json).map((arr: any) => ({
+    // @ts-expect-error -- import parseDate instead of using an implicit global function
     date: parseDate(arr[1].index),
     y: +arr[1][location],
   }));

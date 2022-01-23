@@ -35,16 +35,16 @@ async function createDailyCasesByRegion() {
   );
 
   csv.forEach((row) => {
-    let region = row.areaName;
-    let date = new Date(row.date);
-    let cases = +row.newCasesByPublishDateRollingSum;
+    const region = row.areaName;
+    const date = new Date(row.date);
+    const cases = +row.newCasesByPublishDateRollingSum;
 
     if (!dailyCasesByRegion[region]) dailyCasesByRegion[region] = [];
 
     dailyCasesByRegion[region].push({ date: date, y: cases });
   });
 
-  for (let region in dailyCasesByRegion) {
+  for (const region in dailyCasesByRegion) {
     dailyCasesByRegion[region].sort((e1, e2) => e1.date - e2.date);
   }
 
@@ -120,7 +120,7 @@ function createCalenderEvents() {
 const peaksByRegion = {};
 
 function createPeaksByRegion() {
-  for (let region in dailyCasesByRegion) {
+  for (const region in dailyCasesByRegion) {
     //console.log(region);
     peaksByRegion[region] = detectFeatures(dailyCasesByRegion[region], {
       peaks: true,
@@ -131,15 +131,15 @@ function createPeaksByRegion() {
   console.log("createPeaksByRegion: peaksByRegion = ", peaksByRegion);
 
   const rankPeaks = (peaks) => {
-    let sorted = [...peaks].sort((p1, p2) => p1.height - p2.height);
-    let nPeaks = peaks.length;
-    let fifth = nPeaks / 5;
+    const sorted = [...peaks].sort((p1, p2) => p1.height - p2.height);
+    const nPeaks = peaks.length;
+    const fifth = nPeaks / 5;
 
     sorted.forEach((p, i) => p.setRank(1 + Math.floor(i / fifth)));
   };
 
   // for each region we apply the ranking function to the peak events
-  for (let region in peaksByRegion) {
+  for (const region in peaksByRegion) {
     rankPeaks(peaksByRegion[region]);
   }
 
@@ -152,24 +152,24 @@ function createPeaksByRegion() {
 const gaussByRegion = {};
 
 function createGaussByRegion() {
-  for (let region in peaksByRegion) {
-    let peaks = peaksByRegion[region];
-    let dailyCases = dailyCasesByRegion[region];
+  for (const region in peaksByRegion) {
+    const peaks = peaksByRegion[region];
+    const dailyCases = dailyCasesByRegion[region];
 
     console.log("createGaussByRegion: dailyCases = ", dailyCases);
 
     // Calculate gaussian time series for peaks
-    let peaksGauss = eventsToGaussian(peaks, dailyCases);
-    let peaksBounds = maxBounds(peaksGauss);
+    const peaksGauss = eventsToGaussian(peaks, dailyCases);
+    const peaksBounds = maxBounds(peaksGauss);
 
     console.log("createGaussByRegion: peaksBounds = ", peaksBounds);
 
     // Calculate gaussian time series for calendar events
-    let calGauss = eventsToGaussian(calendarEvents, dailyCases);
-    let calBounds = maxBounds(calGauss);
+    const calGauss = eventsToGaussian(calendarEvents, dailyCases);
+    const calBounds = maxBounds(calGauss);
 
     // Combine gaussian time series
-    let combGauss = combineBounds([peaksBounds, calBounds]);
+    const combGauss = combineBounds([peaksBounds, calBounds]);
     gaussByRegion[region] = combGauss;
   }
 
@@ -185,8 +185,8 @@ let segNum: number;
 
 export function segmentData(_segNum: number) {
   segNum = _segNum;
-  for (let region in peaksByRegion) {
-    let dailyCases = dailyCasesByRegion[region];
+  for (const region in peaksByRegion) {
+    const dailyCases = dailyCasesByRegion[region];
     splitsByRegion[region] = peakSegment(
       gaussByRegion[region],
       dailyCases,
@@ -203,7 +203,7 @@ export function segmentData(_segNum: number) {
 
 let region;
 let casesData;
-let annotations = [{ start: 0, end: 0 }];
+const annotations: { start?: number; end: number }[] = [{ start: 0, end: 0 }];
 
 export function onSelectRegion(_region: string) {
   region = _region;
@@ -247,8 +247,8 @@ export function onSelectRegion(_region: string) {
         */
 
       // Add annotation for positive line of best fit
-      let slope = linRegGrad(currData.map((d) => d.y));
-      let posGrad = slope > 0;
+      const slope = linRegGrad(currData.map((d) => d.y)) as number;
+      const posGrad = slope > 0;
       if (posGrad)
         annotations.push(
           writeText(
@@ -286,7 +286,7 @@ export function onSelectRegion(_region: string) {
       currData.forEach((d) => {
         // Add annotation for the first non-zero value
         if (!foundNonZero && d.y > 0) {
-          let nonZeroText = `On ${d.date.toLocaleDateString()}, ${region} recorded its first COVID-19 case.`;
+          const nonZeroText = `On ${d.date.toLocaleDateString()}, ${region} recorded its first COVID-19 case.`;
           annotations.push(writeText(nonZeroText, d.date, casesData));
           foundNonZero = true;
         }
@@ -295,6 +295,7 @@ export function onSelectRegion(_region: string) {
           // Add annotation for semantic events that are rank > 3
           if (e.rank > 3 && e instanceof SemanticEvent) {
             annotations.push(
+              // @ts-expect-error -- fix accessing protected _date
               writeText(e.description, e._date, casesData, true),
             );
           }
@@ -309,7 +310,7 @@ export function onSelectRegion(_region: string) {
 
       // Add annotation if we have a tall enough peak
       if (highestPeak) {
-        let peakText = `By ${highestPeak.date}, the number of cases reached ${highestPeak.height}.`;
+        const peakText = `By ${highestPeak.date}, the number of cases reached ${highestPeak.height}.`;
         annotations.push(writeText(peakText, highestPeak._date, casesData));
       }
     } else if (currSeg < segNum - 1) {
@@ -325,13 +326,14 @@ export function onSelectRegion(_region: string) {
           // Add annotation for semantic events that are rank > 3
           if (e.rank > 3 && e instanceof SemanticEvent) {
             annotations.push(
+              // @ts-expect-error -- fix accessing protected _date
               writeText(e.description, e._date, casesData, true),
             );
           }
 
           // Add annotation for peak events that are rank > 3
           if (e.rank > 3 && e.type == DataEvent.TYPES.PEAK) {
-            let peakText = `By ${e.date}, the number of cases peaks at ${e.height}.`;
+            const peakText = `By ${e.date}, the number of cases peaks at ${e.height}.`;
             annotations.push(writeText(peakText, e._date, casesData, true));
           }
         });
@@ -347,7 +349,7 @@ export function onSelectRegion(_region: string) {
 
       // Add annotation based on gradient of line of best fit
       let gradText = "";
-      let slope = linRegGrad(currData.map((d) => d.y));
+      const slope = linRegGrad(currData.map((d) => d.y));
       if (slope >= 0.25) {
         // Steep case
         gradText = `By ${lastDate.toLocaleDateString()}, the number of cases continued to climb higher.
@@ -358,7 +360,7 @@ export function onSelectRegion(_region: string) {
                       Let us continue to help bring the number down. Be safe, and support the NHS.`;
       } else if (slope > -0.05) {
         // Flat case
-        let cases = casesData[casesData.length - 1].y;
+        const cases = casesData[casesData.length - 1].y;
 
         // Add annotation based on final case number
         if (cases >= 200) {
@@ -387,13 +389,14 @@ export function onSelectRegion(_region: string) {
           // Add annotation for semantic events that are rank > 3
           if (e.rank > 3 && e instanceof SemanticEvent) {
             annotations.push(
+              // @ts-expect-error -- fix accessing protected _date
               writeText(e.description, e._date, casesData, true),
             );
           }
 
           // Add annotation for peak events that are rank > 3
           if (e.rank > 3 && e.type == DataEvent.TYPES.PEAK) {
-            let peakText = `By ${e.date}, the number of cases peaks at ${e.height}.`;
+            const peakText = `By ${e.date}, the number of cases peaks at ${e.height}.`;
             annotations.push(writeText(peakText, e._date, casesData, true));
           }
         });
@@ -409,7 +412,7 @@ export function onSelectRegion(_region: string) {
   console.log("onSelectRegion: annotations", annotations);
 }
 
-const writeText = (text, date, data, showRedCircle = false) => {
+const writeText = (text, date, data, showRedCircle = false): any => {
   // Find idx of event in data and set location of the annotation in opposite half of graph
   const idx = findDateIdx(date, data);
   const annoIdx = Math.floor(
@@ -443,14 +446,14 @@ const writeText = (text, date, data, showRedCircle = false) => {
  */
 
 function linRegGrad(y) {
-  var slope = {};
-  var n = y.length;
-  var sum_x = 0;
-  var sum_y = 0;
-  var sum_xy = 0;
-  var sum_xx = 0;
+  let slope = {};
+  const n = y.length;
+  let sum_x = 0;
+  let sum_y = 0;
+  let sum_xy = 0;
+  let sum_xx = 0;
 
-  for (var i = 0; i < y.length; i++) {
+  for (let i = 0; i < y.length; i++) {
     sum_x += i;
     sum_y += y[i];
     sum_xy += i * y[i];

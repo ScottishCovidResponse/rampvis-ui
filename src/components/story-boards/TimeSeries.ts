@@ -20,6 +20,7 @@ const xScaleFnc = (data, w = width, b = border) => {
 
   const xScale = d3
     .scaleTime()
+    // @ts-expect-error -- rule out [undefined, undefined] (possible runtime error)
     .domain(xExt)
     .range([border, w - b]);
   return xScale;
@@ -30,6 +31,7 @@ const yScaleFnc = (data, h = height, b = border) => {
   console.log("data =", data, "yExt", yExt);
   const ySc = d3
     .scaleLinear()
+    // @ts-expect-error -- rule out [undefined, undefined] (possible runtime error)
     .domain(yExt)
     .range([h - b, b]);
   return ySc;
@@ -44,6 +46,7 @@ export class TimeSeries {
   _yLabel1;
   _yLabel2;
   _color;
+  _color2;
   _width;
   _height;
   _border;
@@ -148,7 +151,7 @@ export class TimeSeries {
 
   height(height) {
     this._height = height;
-    let sameScale = this.yScale == this._yScale2;
+    const sameScale = this.yScale == this._yScale2;
 
     this.yScale = yScaleFnc(this._data1, this._height, this._border);
     if (this._data2) this._fitPairedData(sameScale);
@@ -157,7 +160,7 @@ export class TimeSeries {
 
   width(width) {
     this._width = width;
-    let sameScale = this.yScale == this._yScale2;
+    const sameScale = this.yScale == this._yScale2;
 
     this.xScale = xScaleFnc(this._data1, this._width, this._border);
     if (this._data2) this._fitPairedData(sameScale);
@@ -167,7 +170,7 @@ export class TimeSeries {
   border(border) {
     this._border = border;
 
-    let sameScale = this.yScale == this._yScale2;
+    const sameScale = this.yScale == this._yScale2;
 
     this.xScale = xScaleFnc(this._data1, this._width, this._border);
     if (this._data2) this._fitPairedData(sameScale);
@@ -219,7 +222,7 @@ export class TimeSeries {
 
   svg(ctx) {
     this._ctx = ctx;
-    let bounds = ctx.getBoundingClientRect();
+    const bounds = ctx.getBoundingClientRect();
     this.width(bounds.width);
     this.height(bounds.height);
     return this;
@@ -311,7 +314,7 @@ export class TimeSeries {
       annoElem = d3.select(`#anim-anno-${idx}`).style("opacity", 0);
 
       if (this._showEventLines) {
-        let container = d3.select(`#anim-anno-${idx}`);
+        const container = d3.select(`#anim-anno-${idx}`);
         this._addEventLine(container, anno._tx, anno._ty);
       }
 
@@ -331,12 +334,12 @@ export class TimeSeries {
     if (this._data2) {
       const colors = this._data2.colors;
       this._data2.group.forEach((data, i) => {
-        let points2 = data;
+        const points2 = data;
 
         // .map(Object.values);
         console.log("points2 = ", points2);
         console.log("this.line(points2) = ", this.line(points2));
-        let path2 = d3
+        const path2 = d3
           .select(this._ctx)
           .append("path")
           .attr("stroke", colors ? colors[i % colors.length] : this._color)
@@ -444,7 +447,7 @@ export class TimeSeries {
       });
 
       if (this._showEventLines) {
-        let container = d3.select(this._ctx);
+        const container = d3.select(this._ctx);
         this._annotations.forEach((anno) =>
           this._addEventLine(container, anno._tx, anno._ty),
         );

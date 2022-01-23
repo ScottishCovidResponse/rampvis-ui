@@ -91,9 +91,10 @@ export class DashboardTian {
     //  aberdeenshire_vacc_rate = data;
     //});
     d3.csv(aberdeenshire_vacc_rate).then(function (data) {
-      data[0].percent = data[0].cumVaccinationFirstDoseUptakeByPublishDatePercentage/100
-      aberdeenshire_vacc_rate = data
-    })
+      data[0].percent =
+        data[0].cumVaccinationFirstDoseUptakeByPublishDatePercentage / 100;
+      aberdeenshire_vacc_rate = data;
+    });
 
     console.log("Tian's playground");
 
@@ -105,19 +106,19 @@ export class DashboardTian {
           {
             id: "england",
             title: "Progress Bars",
-            layout: [[ 
-              "ni_death_rates_v", 
-              "aberdeen_vax_progress2",
-              "ni_death_rates"
-            ], [
-              "ni_death_rates_horizontal",
-              "aberdeen_vax_progress_v", 
-              "aberdeen_vax_progress_3"
+            layout: [
+              ["ni_death_rates_v", "aberdeen_vax_progress2", "ni_death_rates"],
+              [
+                "ni_death_rates_horizontal",
+                "aberdeen_vax_progress_v",
+                "aberdeen_vax_progress_3",
+              ],
+              [
+                "ni_death_rates_vertical",
+                "aberdeen_vax_progress_vertical",
+                "aberdeen_vax_progress_vertical_low",
+              ],
             ],
-            ["ni_death_rates_vertical",
-             "aberdeen_vax_progress_vertical",
-             "aberdeen_vax_progress_vertical_low"]
-          ]
             //layout:["aberdeen_vax_progress2", "ni_death_rates", "ni_death_rates_v"]
           },
         ],
@@ -136,7 +137,7 @@ export class DashboardTian {
             timeLabel: dashboard.TIMEUNIT_DAY,
             detail: dashboard.DETAIL_LOW,
             layout: dashboard.LAYOUT_HORIZONTAL,
-            abbreviate: true
+            abbreviate: true,
           },
           {
             id: "ni_death_rates_horizontal",
@@ -152,7 +153,7 @@ export class DashboardTian {
             timeLabel: dashboard.TIMEUNIT_DAY,
             detail: dashboard.DETAIL_HIGH,
             layout: dashboard.LAYOUT_HORIZONTAL,
-            abbreviate: true
+            abbreviate: true,
           },
           {
             id: "ni_death_rates_vertical",
@@ -168,7 +169,7 @@ export class DashboardTian {
             timeLabel: dashboard.TIMEUNIT_DAY,
             detail: dashboard.DETAIL_HIGH,
             layout: dashboard.LAYOUT_VERTICAL,
-            abbreviate: true
+            abbreviate: true,
           },
           {
             id: "aberdeen_vax_progress",
@@ -180,10 +181,10 @@ export class DashboardTian {
             timeUnit: dashboard.TIMEUNIT_DAY,
             min: 0,
             max: 100,
-            unit: '%',
+            unit: "%",
             detail: dashboard.DETAIL_HIGH,
             layout: dashboard.LAYOUT_HORIZONTAL,
-            abbreviate: true
+            abbreviate: true,
           },
           {
             id: "aberdeen_vax_progress_vertical",
@@ -195,10 +196,10 @@ export class DashboardTian {
             timeUnit: dashboard.TIMEUNIT_DAY,
             min: 0,
             max: 100,
-            unit: '%',
+            unit: "%",
             detail: dashboard.DETAIL_MEDIUM,
             layout: dashboard.LAYOUT_VERTICAL,
-            abbreviate: true
+            abbreviate: true,
           },
           {
             id: "aberdeen_vax_progress_vertical_low",
@@ -210,10 +211,10 @@ export class DashboardTian {
             timeUnit: dashboard.TIMEUNIT_DAY,
             min: 0,
             max: 100,
-            unit: '%',
+            unit: "%",
             detail: dashboard.DETAIL_LOW,
             layout: dashboard.LAYOUT_VERTICAL,
-            abbreviate: true
+            abbreviate: true,
           },
           {
             id: "aberdeen_vax_progress2",
@@ -225,10 +226,10 @@ export class DashboardTian {
             timeUnit: dashboard.TIMEUNIT_DAY,
             min: 0,
             max: 100,
-            unit: '%',
+            unit: "%",
             detail: dashboard.DETAIL_MEDIUM,
             layout: dashboard.LAYOUT_HORIZONTAL,
-            abbreviate: true
+            abbreviate: true,
           },
           {
             id: "ni_death_rates_v",
@@ -244,7 +245,7 @@ export class DashboardTian {
             timeLabel: dashboard.TIMEUNIT_DAY,
             detail: dashboard.DETAIL_HIGH,
             layout: dashboard.LAYOUT_HORIZONTAL,
-            abbreviate: true
+            abbreviate: true,
           },
           {
             id: "aberdeen_vax_progress_v",
@@ -256,10 +257,10 @@ export class DashboardTian {
             timeUnit: dashboard.TIMEUNIT_DAY,
             min: 0,
             max: 100,
-            unit: '%',
+            unit: "%",
             detail: dashboard.DETAIL_MEDIUM,
             layout: dashboard.LAYOUT_HORIZONTAL,
-            abbreviate: true
+            abbreviate: true,
           },
           {
             id: "aberdeen_vax_progress_3",
@@ -271,10 +272,10 @@ export class DashboardTian {
             timeUnit: dashboard.TIMEUNIT_DAY,
             min: 0,
             max: 100,
-            unit: '%',
+            unit: "%",
             detail: dashboard.DETAIL_LOW,
             layout: dashboard.LAYOUT_HORIZONTAL,
-            abbreviate: true
+            abbreviate: true,
           },
         ],
       };
