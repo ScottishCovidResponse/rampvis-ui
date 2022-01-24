@@ -633,12 +633,6 @@ var createWidget = function (parentHtmlElementId, id, config) {
   // create convenience variable for 'data' that will be linked back
   // to thw widgetConf before visualizing.
   var data = widgetConfig.data;
-  var dataField = widgetConfig.dataField;
-  // check if data is not empty
-  if (data.length == 0) {
-    console.log("NO DATA FOUND / DATA ARRAY IS EMPTY", id);
-    return;
-  }
 
   // if(widgetConfig.visualization == dashboard.VIS_CARTOGRAM){
   //   console.log('data[0]', data[0])
@@ -741,6 +735,23 @@ var createWidget = function (parentHtmlElementId, id, config) {
     .style("border", "1px solid #ddd");
 
   dashboardComponents.setWidgetTitle(widgetDiv, widgetConfig, lastDateUpdated);
+
+  // console.log('>> create widget: data: ',data)
+  if (
+    data == undefined ||
+    data.length == 0 ||
+    data[0][widgetConfig.dataField] == undefined ||
+    data[0][widgetConfig.dataField].length == 0
+  ) {
+    // Show no data
+    widgetDiv
+      .append("p")
+      .text("No data is available for this area.")
+      .style("color", "#777")
+      .style("font-style", "italic");
+
+    return;
+  }
 
   if (widgetConfig.visualization == dashboard.VIS_CARTOGRAM) {
     dashboard.visualizeMap(widgetDiv, widgetConfig, lastDateUpdated);
