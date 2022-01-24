@@ -6,14 +6,14 @@ import {
   DialogContent,
 } from "@mui/material";
 
-function ComparePopUp(props) {
+function PredictPopUp(props) {
   return (
     <div>
       <Dialog fullScreen open={props.state} onClose={props.close}>
-        <DialogTitle>Benchmark Country Comparison Screen</DialogTitle>
+        <DialogTitle>Observation-based Forecasting Screen</DialogTitle>
 
         <DialogContent>
-          <div id="countryCompare" />
+          <div id="predictCompare" />
         </DialogContent>
         <DialogActions>
           <Button onClick={props.close} color="primary">
@@ -25,4 +25,4 @@ function ComparePopUp(props) {
   );
 }
 
-export default ComparePopUp;
+export default PredictPopUp;

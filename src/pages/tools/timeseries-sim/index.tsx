@@ -20,6 +20,8 @@ import BenchmarkCountryList from "src/components/timeseries-sim/BenchmarkCountry
 import TimeSeriesBag from "src/components/timeseries-sim/TimeSeriesBag";
 import ComparePopUp from "src/components/timeseries-sim/ComparePopUp";
 import { benchmarkPlot } from "src/components/timeseries-sim/plotfunctions/benchmarkplot";
+import PredictPopUp from "src/components/timeseries-sim/PredictPopUp";
+import { predictPlot } from "src/components/timeseries-sim/plotfunctions/predictplot";
 
 const API = process.env.NEXT_PUBLIC_API_PY;
 
@@ -74,13 +76,43 @@ const defaultBenchmarkCountries = [
   "Netherlands",
 ];
 
-const defaultTimeSeriesBag = [];
+const defaultTimeSeriesBag = [
+  "Ireland 2022-01-18 Biweekly Cases Per Million",
+  "Cyprus 2022-01-19 Biweekly Cases Per Million",
+  "Denmark 2022-01-16 Biweekly Cases Per Million",
+  "United Kingdom 2022-01-19 Biweekly Cases Per Million",
+  "Slovakia 2021-12-11 Biweekly Cases Per Million",
+  "Czechia 2021-12-15 Biweekly Cases Per Million",
+  "Slovenia 2021-12-01 Biweekly Cases Per Million",
+  "Belgium 2021-12-16 Biweekly Cases Per Million",
+  "Austria 2021-12-08 Biweekly Cases Per Million",
+  "Latvia 2021-11-12 Biweekly Cases Per Million",
+  "Estonia 2021-11-17 Biweekly Cases Per Million",
+  "Croatia 2021-10-17 Biweekly Deaths Per Million",
+  "Belgium 2021-04-13 Biweekly Deaths Per Million",
+  "Greece 2021-03-17 Biweekly Deaths Per Million",
+  "Netherlands 2021-12-25 Biweekly Deaths Per Million",
+  "Switzerland 2022-01-09 Biweekly Deaths Per Million",
+  "Albania 2021-10-22 Biweekly Deaths Per Million",
+  "Slovenia 2021-11-06 Biweekly Deaths Per Million",
+];
 
 const TimeseriesSim = () => {
   //const { settings } = useSettings();
   const classes = useStyles();
 
+  const [advancedFilterPopup, setAdvancedFilterPopup] = useState(false); // advanced filter popup state control
   const [comparePopUp, setComparePopUp] = useState(false);
+  const [predictPopUp, setPredictPopUp] = useState(false);
+
+  const advancedFilterClickOpen = () => {
+    // sets popup state to true
+    setAdvancedFilterPopup(true);
+  };
+  const advancedFilterClickClose = () => {
+    // sets popup state to false
+    setAdvancedFilterPopup(false);
+  };
 
   const comparePopUpOpen = () => {
     setComparePopUp(true);
@@ -90,15 +122,12 @@ const TimeseriesSim = () => {
     setComparePopUp(false);
   };
 
-  const [advancedFilterPopup, setAdvancedFilterPopup] = useState(false); // advanced filter popup state control
-
-  const advancedFilterClickOpen = () => {
-    // sets popup state to true
-    setAdvancedFilterPopup(true);
+  const predictPopUpOpen = () => {
+    setPredictPopUp(true);
   };
-  const advancedFilterClickClose = () => {
-    // sets popup state to false
-    setAdvancedFilterPopup(false);
+
+  const predictPopUpClose = () => {
+    setPredictPopUp(false);
   };
 
   const [firstRunForm, setFirstRunForm] = useState(initialFirstRunState); // time series search state control
@@ -230,10 +259,12 @@ const TimeseriesSim = () => {
     console.log("response = ", response);
     if (response.data?.length > 0) {
       console.log("response.data = ", response.data);
+      predictPlot(response.data);
     }
   };
 
   const predictClick = async () => {
+    predictPopUpOpen();
     await predictPost();
   };
 
@@ -311,6 +342,7 @@ const TimeseriesSim = () => {
                   removeFromList={removeTimeSeries}
                   onClick={predictClick}
                 />
+                <PredictPopUp state={predictPopUp} close={predictPopUpClose} />
               </CardContent>
             </Card>
           </Grid>
