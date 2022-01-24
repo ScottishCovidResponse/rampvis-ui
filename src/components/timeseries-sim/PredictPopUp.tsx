@@ -13,7 +13,7 @@ function PredictPopUp(props) {
         <DialogTitle>Observation-based Forecasting Screen</DialogTitle>
 
         <DialogContent>
-          <div id="predictCompare" />
+          <div id="predictScreen" />
         </DialogContent>
         <DialogActions>
           <Button onClick={props.close} color="primary">
