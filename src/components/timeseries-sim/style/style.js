@@ -23,6 +23,5 @@ export const useStyles = makeStyles((theme) => ({
   chartTitle: {
     textAlign: "center",
   },
-  chart: {
-  },
+  chart: {},
 }));

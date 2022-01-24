@@ -15,7 +15,7 @@ export const readCSVFile = async (file: string) => {
 
 export const readJSONFile = async (file: string) => {
   const response = await fetch(file);
-  let arrayObj = await response.json();
+  const arrayObj = await response.json();
   console.log("readJSONFile: json data = ", arrayObj);
 
   return arrayObj;

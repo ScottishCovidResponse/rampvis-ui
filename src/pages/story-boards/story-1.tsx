@@ -89,7 +89,7 @@ const Story = () => {
   };
 
   const handleClickButton = () => {
-    let count = animationCounter + 1;
+    const count = animationCounter + 1;
     setAnimationCounter(count);
     console.log(count);
     onClickAnimate(count, "#chart1");

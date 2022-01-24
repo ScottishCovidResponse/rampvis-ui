@@ -11,7 +11,7 @@ export class DataMilestone extends DataEvent {
 
   get score() {
     // Need to figure out how to score milestone events
-    return (this._height == 0) * 1 + 1;
+    return (this._height == 0 ? 1 : 0) + 1;
   }
 
   setHeight(height) {

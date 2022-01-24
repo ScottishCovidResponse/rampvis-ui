@@ -59,11 +59,11 @@ export const peakSegment = (
     // For each remaining peak calculate its score using its height and proximity to other peaks in ordering
     peaksCpy.forEach((v1, idx) => {
       // Calculate smallest distance from current peak to those in ordering array (or edges)
-      let closestDist = ordering.reduce(
+      const closestDist = ordering.reduce(
         (closest, v2) => Math.min(closest, Math.abs(v1.idx - v2.idx)),
         Math.min(v1.idx, dataLen - v1.idx),
       );
-      let score = (closestDist / dataLen) * (ignoreHeight || v1.h / 2);
+      const score = (closestDist / dataLen) * (ignoreHeight ? 1 : v1.h / 2);
 
       // The best peak has the highest score - tallest and most distant
       bestPeak =
@@ -132,7 +132,7 @@ export const gaussian = function (mean, h, dataLen, w = undefined) {
   */
 export const eventsToGaussian = function (events, data) {
   const gaussians = events.map((e) => {
-    let dateIdx = findDateIdx(e._date, data);
+    const dateIdx = findDateIdx(e._date, data);
     return gaussian(dateIdx, e.rank, data.length);
   });
 

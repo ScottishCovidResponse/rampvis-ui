@@ -47,7 +47,7 @@ export const covidIndicators = [
   {
     label: "Weekly Deaths",
     value: "weekly_deaths",
-  }
+  },
 ];
 
 export const similarityMeasures = [
@@ -93,4 +93,3 @@ export const continents = [
     value: "South America",
   },
 ];
-

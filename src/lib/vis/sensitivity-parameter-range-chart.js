@@ -4,19 +4,20 @@ import Common from "./common";
 export class SensitivityParameterRangeChart {
   GAP = 10;
   constructor(options) {
-
     // Setting default values of inputs using ? ternary operator.
-    let heightfactor = options.heightfactor ? options.heightfactor : 1
-    let widthfactor = options.widthfactor ? options.widthfactor : 1
-    let divId = options.divId ? options.divId : 'charts';
-    
-    //Color scheme
-    const baseColor = options.baseColor?  options.baseColor : ["#4f4f4f"];
-    const textColor = options.textColor? options.textColor: ["#4f4f4f"];
-    const textWeight = options.textWeight? options.textWeight: 700;
+    let heightfactor = options.heightfactor ? options.heightfactor : 1;
+    let widthfactor = options.widthfactor ? options.widthfactor : 1;
+    let divId = options.divId ? options.divId : "charts";
 
-    const CHART_HEIGHT = (window.innerHeight - Common.MAIN_CONTENT_GAP) * heightfactor;
-    const CHART_WIDTH = document.getElementById(divId).offsetWidth * widthfactor;
+    //Color scheme
+    const baseColor = options.baseColor ? options.baseColor : ["#4f4f4f"];
+    const textColor = options.textColor ? options.textColor : ["#4f4f4f"];
+    const textWeight = options.textWeight ? options.textWeight : 700;
+
+    const CHART_HEIGHT =
+      (window.innerHeight - Common.MAIN_CONTENT_GAP) * heightfactor;
+    const CHART_WIDTH =
+      document.getElementById(divId).offsetWidth * widthfactor;
     //To avoid loading multiple times
     d3.select("#" + options.chartElement).html("");
     d3.select("#" + options.chartElement)
@@ -50,13 +51,23 @@ export class SensitivityParameterRangeChart {
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     //set default values
-    const defaultColors = ["#E69F00", "#009E73", "#DB4D56", "#0072B2", "#D55E00", "#F0E442", "#56B4E9"];
+    const defaultColors = [
+      "#E69F00",
+      "#009E73",
+      "#DB4D56",
+      "#0072B2",
+      "#D55E00",
+      "#F0E442",
+      "#56B4E9",
+    ];
     let colors = options.colors ? options.colors : defaultColors;
-    let parameterName = options.parameterName ? options.parameterName : ["name"];
+    let parameterName = options.parameterName
+      ? options.parameterName
+      : ["name"];
 
     var groupData = data;
     var k = groupData.length;
-    var subgroups = Array.from(Array(k).keys()) //Cluster labels
+    var subgroups = Array.from(Array(k).keys()); //Cluster labels
     // List of groups = species here = value of the first column called group -> I show them on the X axis
     var groups = d3
       .map(data[0], function (d) {
@@ -91,10 +102,12 @@ export class SensitivityParameterRangeChart {
       .style("text-align", "left");
 
     var stackedData = d3.stack().keys(subgroups)(data);
-    var widthFactor = 1 / k
+    var widthFactor = 1 / k;
     // Draw bar chart
     var k_index = 0;
-    groupData = groupData.map((obj, i) => ([...obj.map(d => ({ ...d, k: i }))]))
+    groupData = groupData.map((obj, i) => [
+      ...obj.map((d) => ({ ...d, k: i })),
+    ]);
     let bars = g
       .selectAll("g")
       // Enter in the stack data = loop key per key = group per group
@@ -112,7 +125,9 @@ export class SensitivityParameterRangeChart {
       })
       .enter()
       .append("rect")
-      .attr("y", (d) => { return y(d[parameterName]) + d.k * y.bandwidth() * widthFactor; })
+      .attr("y", (d) => {
+        return y(d[parameterName]) + d.k * y.bandwidth() * widthFactor;
+      })
       .attr("x", (d) => x(d.rescaledStart))
       .attr("width", (d) => x(d.rescaledRange))
       .attr("height", y.bandwidth() * widthFactor);
@@ -237,7 +252,9 @@ export class SensitivityParameterRangeChart {
 
       //update bars
       bars
-        .attr("y", (d) => { return y(d[parameterName]) + d.k * y.bandwidth() * widthFactor; })
+        .attr("y", (d) => {
+          return y(d[parameterName]) + d.k * y.bandwidth() * widthFactor;
+        })
         .attr("x", (d) => x(d.rescaledStart))
         .attr("width", (d) => x(d.rescaledRange))
         .attr("height", y.bandwidth() * widthFactor);

@@ -1,21 +1,24 @@
-
-import { SettingsBackupRestore } from "@mui/icons-material";
 import * as d3 from "d3";
 
-export function alignmentPlot(data,indicator, timeSeriesBag, benchmarkCountries,setTimeSeriesBag,setBenchmarkCountries) {
+export function alignmentPlot(
+  data,
+  indicator,
+  timeSeriesBag,
+  benchmarkCountries,
+  setTimeSeriesBag,
+  setBenchmarkCountries,
+) {
   //------ DATA and Graph Functions ------//
 
   console.log("alignmentPlot: data = ", data);
 
-
   const spaceRemove = (key) => {
     if (key.split(" ").length === 1) {
-      return key
+      return key;
+    } else {
+      return key.split(" ").join("");
     }
-    else {
-      return key.split(" ").join("")
-    }
-  }
+  };
 
   const parseTime = d3.timeParse("%Y-%m-%d"); // date parser (str to date)
   const formatTime = d3.timeFormat("%b %d"); // date formatter (date to str)
@@ -37,21 +40,27 @@ export function alignmentPlot(data,indicator, timeSeriesBag, benchmarkCountries,
 
   const GraphData = data;
 
-  let checkStateTimeSeries = {}
+  let checkStateTimeSeries = {};
   GraphData.forEach((streams) => {
-    const identifier = streams.key + " " + streams.matchedPeriodEnd + " " + indicator.split("_")
-    .map((str) => str.charAt(0).toUpperCase() + str.slice(1)).join(" ");
-    checkStateTimeSeries[identifier] = "false"
+    const identifier =
+      streams.key +
+      " " +
+      streams.matchedPeriodEnd +
+      " " +
+      indicator
+        .split("_")
+        .map((str) => str.charAt(0).toUpperCase() + str.slice(1))
+        .join(" ");
+    checkStateTimeSeries[identifier] = "false";
   });
 
-  let checkStateBenchmarkCountries =  {}
+  let checkStateBenchmarkCountries = {};
   GraphData.forEach((streams) => {
-    const identifier = streams.key
-    checkStateBenchmarkCountries[identifier] = "false"
+    const identifier = streams.key;
+    checkStateBenchmarkCountries[identifier] = "false";
   });
 
-  const dateRange = GraphData
-    .filter((streams) => streams.isQuery)[0]
+  const dateRange = GraphData.filter((streams) => streams.isQuery)[0]
     .values.map((values) => values.date)
     .map(parseTime); // get query dates and parse
 
@@ -71,9 +80,7 @@ export function alignmentPlot(data,indicator, timeSeriesBag, benchmarkCountries,
     ),
   );
 
-  const yScale = d3.scaleLinear()
-    .rangeRound([height, 0])
-    .domain([min, max]);
+  const yScale = d3.scaleLinear().rangeRound([height, 0]).domain([min, max]);
 
   const yAxis = d3.axisLeft(yScale).ticks(3);
 
@@ -86,7 +93,7 @@ export function alignmentPlot(data,indicator, timeSeriesBag, benchmarkCountries,
     .append("div")
     .attr("id", (d) => "alignmentContainer" + spaceRemove(d.key))
     .style("width", "100%")
-    .style("height", height*2 + "px")
+    .style("height", height * 2 + "px")
     .style("margin", margin) // add divs for individual alignment plots
 
     .append("svg")
@@ -95,13 +102,13 @@ export function alignmentPlot(data,indicator, timeSeriesBag, benchmarkCountries,
     .attr(
       "viewBox",
       "-" +
-      1.5 * adj +
-      " -" +
-      adj / 2 +
-      " " +
-      (width + adj * 5) +
-      " " +
-      (height + adj * 5),
+        1.5 * adj +
+        " -" +
+        adj / 2 +
+        " " +
+        (width + adj * 5) +
+        " " +
+        (height + adj * 5),
     )
     .classed("svg-content", true);
 
@@ -110,7 +117,7 @@ export function alignmentPlot(data,indicator, timeSeriesBag, benchmarkCountries,
     .attr("class", "xaxis")
     .attr("id", (d) => "xaxis" + spaceRemove(d.key))
     .attr("transform", "translate(0," + height + ")")
-    .style("font-size", "20px")
+    .style("font-size", "20px");
 
   layout // add y-axis region to call yAxis func
     .append("g")
@@ -134,52 +141,70 @@ export function alignmentPlot(data,indicator, timeSeriesBag, benchmarkCountries,
     .attr("class", "highlightLine")
     .attr("id", (d) => "highlightLine" + spaceRemove(d.key));
 
-
   layout
     .append("path")
     .attr("class", "highlightArea")
     .attr("id", (d) => "highlightArea" + spaceRemove(d.key));
 
-
-
   const updateTimeSeriesBag = (d) => {
-    const identifier = d.key + " " + d.matchedPeriodEnd + " " + indicator.split("_")
-    .map((str) => str.charAt(0).toUpperCase() + str.slice(1))
-    .join(" ");
-    
-    if (!timeSeriesBag.includes(identifier) && checkStateTimeSeries[identifier] === "false") {
+    const identifier =
+      d.key +
+      " " +
+      d.matchedPeriodEnd +
+      " " +
+      indicator
+        .split("_")
+        .map((str) => str.charAt(0).toUpperCase() + str.slice(1))
+        .join(" ");
+
+    if (
+      !timeSeriesBag.includes(identifier) &&
+      checkStateTimeSeries[identifier] === "false"
+    ) {
       setTimeSeriesBag((old) => [...old, identifier]);
       checkStateTimeSeries[identifier] = "true";
       timeSeriesBag.push(identifier);
-      d3.select("#alignmentContainer" + spaceRemove(d.key)).attr("style", "outline: thin solid red;") 
-    }
-    else if (timeSeriesBag.includes(identifier) && checkStateTimeSeries[identifier] === "true") {
-      setTimeSeriesBag((old) => [...old.filter(item => item !== identifier)]);
+      d3.select("#alignmentContainer" + spaceRemove(d.key)).attr(
+        "style",
+        "outline: thin solid red;",
+      );
+    } else if (
+      timeSeriesBag.includes(identifier) &&
+      checkStateTimeSeries[identifier] === "true"
+    ) {
+      setTimeSeriesBag((old) => [...old.filter((item) => item !== identifier)]);
       checkStateTimeSeries[identifier] = "false";
-      timeSeriesBag = timeSeriesBag.filter(item => item !== identifier);
-      d3.select("#alignmentContainer" + spaceRemove(d.key)).attr("style", "outline: none;") 
+      timeSeriesBag = timeSeriesBag.filter((item) => item !== identifier);
+      d3.select("#alignmentContainer" + spaceRemove(d.key)).attr(
+        "style",
+        "outline: none;",
+      );
     }
-
-  }
+  };
 
   const updateBenchmarkCountries = (d) => {
-    const identifier = d.key
-    
-    if (!benchmarkCountries.includes(identifier) && checkStateBenchmarkCountries[identifier] === "false") {
+    const identifier = d.key;
+
+    if (
+      !benchmarkCountries.includes(identifier) &&
+      checkStateBenchmarkCountries[identifier] === "false"
+    ) {
       setBenchmarkCountries((old) => [...old, identifier]);
       checkStateBenchmarkCountries[identifier] = "true";
       benchmarkCountries.push(identifier);
-    }
-    else if (benchmarkCountries.includes(identifier) && checkStateBenchmarkCountries[identifier] === "true") {
-      setBenchmarkCountries((old) => [...old.filter(item => item !== identifier)]);
+    } else if (
+      benchmarkCountries.includes(identifier) &&
+      checkStateBenchmarkCountries[identifier] === "true"
+    ) {
+      setBenchmarkCountries((old) => [
+        ...old.filter((item) => item !== identifier),
+      ]);
       checkStateBenchmarkCountries[identifier] = "false";
-      benchmarkCountries = benchmarkCountries.filter(item => item !== identifier);
+      benchmarkCountries = benchmarkCountries.filter(
+        (item) => item !== identifier,
+      );
     }
-
-  }
-
-
-
+  };
 
   GraphData.map(function (streams) {
     d3.select("#xaxis" + spaceRemove(streams.key)).call(xAxis); // call individual xaxis properties
@@ -220,15 +245,14 @@ export function alignmentPlot(data,indicator, timeSeriesBag, benchmarkCountries,
         return d.name;
       });
 
-    d3.select("#alignmentContainer" + spaceRemove(streams.key))
-      .on("click", function(d){
+    d3.select("#alignmentContainer" + spaceRemove(streams.key)).on(
+      "click",
+      function (d) {
         updateTimeSeriesBag(d);
         updateBenchmarkCountries(d);
-      })
-
+      },
+    );
   });
-
-
 
   let dataFiltered = Array.from(GraphData);
   dataFiltered = dataFiltered.map(function (streams) {
@@ -243,7 +267,6 @@ export function alignmentPlot(data,indicator, timeSeriesBag, benchmarkCountries,
     streams.values = filteredValues;
     return streams;
   });
-
 
   dataFiltered.map(function (streams) {
     d3.select("#highlightLine" + spaceRemove(streams.key))
@@ -260,8 +283,7 @@ export function alignmentPlot(data,indicator, timeSeriesBag, benchmarkCountries,
           })
           .y(function (d) {
             return yScale(d.value);
-          })
-
+          }),
       );
 
     d3.select("#highlightArea" + spaceRemove(streams.key))
@@ -282,9 +304,7 @@ export function alignmentPlot(data,indicator, timeSeriesBag, benchmarkCountries,
             return yScale(min);
           }),
       );
-
   });
 
   d3.select("#alignmentcard").style("visibility", "visible");
-
 }
