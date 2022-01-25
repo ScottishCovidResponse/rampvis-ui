@@ -40,10 +40,10 @@ async function createDailyCasesByRegion() {
   );
 
   csv.forEach((row) => {
-    let region = row.areaName;
-    let date = new Date(row.date);
-    let cases = +row.newCasesByPublishDateRollingSum / 7;
-    let country = areaCodeToCountry[row.areaCode[0]];
+    const region = row.areaName;
+    const date = new Date(row.date);
+    const cases = +row.newCasesByPublishDateRollingSum / 7;
+    const country = areaCodeToCountry[row.areaCode[0]];
 
     if (!dailyCasesByRegion[region])
       dailyCasesByRegion[region] = { country: country, data: [] };
@@ -51,7 +51,7 @@ async function createDailyCasesByRegion() {
     dailyCasesByRegion[region].data.push({ date: date, y: cases });
   });
 
-  for (let region in dailyCasesByRegion) {
+  for (const region in dailyCasesByRegion) {
     dailyCasesByRegion[region].data.sort((e1, e2) => e1.date - e2.date);
   }
 
@@ -61,33 +61,33 @@ async function createDailyCasesByRegion() {
 
 // Use properties of a peak object to create rise and fall objects
 const calcPeakRiseFall = (peak, data) => {
-  let [min, max] = d3.extent(data.map((d) => d.y));
+  const [min, max] = d3.extent<number>(data.map((d) => d.y));
 
   // Get dates
-  let start = peak._start;
-  let date = peak._date;
-  let end = peak._end;
+  const start = peak._start;
+  const date = peak._date;
+  const end = peak._end;
 
   // Get idxs
-  let startIdx = findDateIdx(start, data);
-  let dateIdx = findDateIdx(date, data);
-  let endIdx = findDateIdx(end, data);
+  const startIdx = findDateIdx(start, data);
+  const dateIdx = findDateIdx(date, data);
+  const endIdx = findDateIdx(end, data);
 
   // Calculate properties of peak's rising segment
-  let riseHeight = data[dateIdx].y - data[startIdx].y;
-  let riseGrad = riseHeight / (dateIdx - startIdx);
+  const riseHeight = data[dateIdx].y - data[startIdx].y;
+  const riseGrad = riseHeight / (dateIdx - startIdx);
 
-  let normRiseHeight = riseHeight / (max - min);
-  let normRiseGrad = normRiseHeight / (dateIdx - startIdx);
+  const normRiseHeight: number = riseHeight / (max - min);
+  const normRiseGrad = normRiseHeight / (dateIdx - startIdx);
 
   // Calculate properties of peak's falling segment
-  let fallHeight = data[dateIdx].y - data[endIdx].y;
-  let fallGrad = fallHeight / (endIdx - dateIdx);
+  const fallHeight = data[dateIdx].y - data[endIdx].y;
+  const fallGrad = fallHeight / (endIdx - dateIdx);
 
-  let normFallHeight = fallHeight / (max - min);
-  let normFallGrad = normFallHeight / (endIdx - dateIdx);
+  const normFallHeight = fallHeight / (max - min);
+  const normFallGrad = normFallHeight / (endIdx - dateIdx);
 
-  let rise = new Rise(
+  const rise = new Rise(
     start,
     start,
     date,
@@ -95,7 +95,7 @@ const calcPeakRiseFall = (peak, data) => {
     riseHeight,
     riseGrad,
   ).setNormGrad(normRiseGrad);
-  let fall = new Fall(
+  const fall = new Fall(
     date,
     date,
     end,
@@ -108,7 +108,7 @@ const calcPeakRiseFall = (peak, data) => {
 };
 
 const rankFeatures = (featureObj) => {
-  let { peak, rise, fall } = featureObj;
+  const { peak, rise, fall } = featureObj;
 
   peak.setRank(peak._normHeight * 5);
   rise.setRank(2);
@@ -119,14 +119,17 @@ const peaksByRegion = {};
 let wavesByRegion = {};
 
 function createPeaksByRegion() {
-  for (let region in dailyCasesByRegion) {
+  for (const region in dailyCasesByRegion) {
     let allPeaks = detectFeatures(dailyCasesByRegion[region].data, {
       peaks: true,
       metric: "Daily Cases",
     });
 
     allPeaks = allPeaks.map((p) => {
-      let { rise, fall } = calcPeakRiseFall(p, dailyCasesByRegion[region].data);
+      const { rise, fall } = calcPeakRiseFall(
+        p,
+        dailyCasesByRegion[region].data,
+      );
       return { peak: p, rise: rise, fall: fall };
     });
     allPeaks.map(rankFeatures);
@@ -158,28 +161,34 @@ export function onSelectRegion(_region1, _region2) {
 let gauss;
 
 function createCombGauss(region1, region2) {
-  let reg1Waves = wavesByRegion[region1];
-  let reg2Waves = wavesByRegion[region2];
+  const reg1Waves = wavesByRegion[region1];
+  const reg2Waves = wavesByRegion[region2];
 
-  let region1Peaks = reg1Waves.reduce((arr, obj) => arr.concat([obj.peak]), []);
-  let region2Peaks = reg2Waves.reduce((arr, obj) => arr.concat([obj.peak]), []);
+  const region1Peaks = reg1Waves.reduce(
+    (arr, obj) => arr.concat([obj.peak]),
+    [],
+  );
+  const region2Peaks = reg2Waves.reduce(
+    (arr, obj) => arr.concat([obj.peak]),
+    [],
+  );
 
-  let reg1DailyCases = dailyCasesByRegion[region1].data;
-  let reg2DailyCases = dailyCasesByRegion[region2].data;
+  const reg1DailyCases = dailyCasesByRegion[region1].data;
+  const reg2DailyCases = dailyCasesByRegion[region2].data;
 
-  let largestDataSet =
+  const largestDataSet =
     reg1DailyCases.length > reg2DailyCases.length
       ? reg1DailyCases
       : reg2DailyCases;
 
-  let reg1Gauss = eventsToGaussian(region1Peaks, largestDataSet);
-  let reg1Bounds = maxBounds(reg1Gauss);
+  const reg1Gauss = eventsToGaussian(region1Peaks, largestDataSet);
+  const reg1Bounds = maxBounds(reg1Gauss);
 
-  let reg2Gauss = eventsToGaussian(region2Peaks, largestDataSet);
-  let reg2Bounds = maxBounds(reg2Gauss);
+  const reg2Gauss = eventsToGaussian(region2Peaks, largestDataSet);
+  const reg2Bounds = maxBounds(reg2Gauss);
 
   // Combine gaussian time series
-  let combGauss = combineBounds([reg1Bounds, reg2Bounds]);
+  const combGauss = combineBounds([reg1Bounds, reg2Bounds]);
 
   gauss = combGauss;
   console.log("createCombGauss: combGauss/gauss = ", gauss);
@@ -194,15 +203,15 @@ function calculateGaussMatchedWaves(region1, region2) {
   const peakTimeDistance = (p1, p2) =>
     Math.abs(p1._date.getTime() - p2._date.getTime());
 
-  let reg1DailyCases = dailyCasesByRegion[region1].data;
-  let reg2DailyCases = dailyCasesByRegion[region2].data;
+  const reg1DailyCases = dailyCasesByRegion[region1].data;
+  const reg2DailyCases = dailyCasesByRegion[region2].data;
 
-  let largestDataSet =
+  const largestDataSet =
     reg1DailyCases.length > reg2DailyCases.length
       ? reg1DailyCases
       : reg2DailyCases;
 
-  let gaussTS = gauss.map((g, i) => {
+  const gaussTS = gauss.map((g, i) => {
     return { date: largestDataSet[i].date, y: g };
   });
 
@@ -210,8 +219,8 @@ function calculateGaussMatchedWaves(region1, region2) {
     peaks: true,
   });
 
-  let reg1Waves = wavesByRegion[region1];
-  let reg2Waves = wavesByRegion[region2];
+  const reg1Waves = wavesByRegion[region1];
+  const reg2Waves = wavesByRegion[region2];
 
   let closestReg1Wave, closestReg2Wave;
   // Match gauss to corresponding regional and national waves
@@ -280,13 +289,13 @@ function createAnnotations(region1, region2) {
   const STEEP_THRESH = 0.004;
   const SLOW_THRESH = 0.002;
 
-  const graphAnnos = [{ start: 0, end: 0 }];
+  const graphAnnos: any = [{ start: 0, end: 0 }];
   let annoText = "";
   for (let i = 0; i < cutOff; i++) {
-    let n = i + 1;
-    let ordinal = n + (n == 1 ? "st" : n == 2 ? "nd" : n == 3 ? "rd" : "th");
+    const n = i + 1;
+    const ordinal = n + (n == 1 ? "st" : n == 2 ? "nd" : n == 3 ? "rd" : "th");
 
-    let { reg1Wave, reg2Wave } = topWaves[i];
+    const { reg1Wave, reg2Wave } = topWaves[i];
 
     graphAnnos.push(
       writeText(
@@ -313,13 +322,13 @@ function createAnnotations(region1, region2) {
     );
 
     if (i > 0) {
-      let prevWave = topWaves[i - 1].reg2Wave;
-      let prevH = prevWave.peak.height;
-      let currH = reg2Wave.peak.height;
+      const prevWave = topWaves[i - 1].reg2Wave;
+      const prevH = prevWave.peak.height;
+      const currH = reg2Wave.peak.height;
 
       annoText = "";
 
-      let hRatio = Math.max(prevH, currH) / Math.min(prevH, currH);
+      const hRatio = Math.max(prevH, currH) / Math.min(prevH, currH);
 
       if (reg2Wave == maxReg2Wave) {
         annoText = `This was the greatest wave ${region2} has experienced.`;
@@ -368,7 +377,7 @@ function createAnnotations(region1, region2) {
       ),
     );
 
-    let daysBetween =
+    const daysBetween =
       (reg1Wave.peak._date.getTime() - reg2Wave.peak._date.getTime()) /
       (1000 * 3600 * 24);
 
@@ -392,13 +401,13 @@ function createAnnotations(region1, region2) {
     );
 
     if (i > 0) {
-      let prevWave = topWaves[i - 1].reg1Wave;
-      let prevH = prevWave.peak.height;
-      let currH = reg1Wave.peak.height;
+      const prevWave = topWaves[i - 1].reg1Wave;
+      const prevH = prevWave.peak.height;
+      const currH = reg1Wave.peak.height;
 
       annoText = "";
 
-      let hRatio = Math.max(prevH, currH) / Math.min(prevH, currH);
+      const hRatio = Math.max(prevH, currH) / Math.min(prevH, currH);
 
       if (reg1Wave == maxReg1Wave) {
         annoText = `This was the greatest wave ${region1} has experienced.`;
@@ -454,8 +463,8 @@ function createAnnotations(region1, region2) {
     );
 
     annoText = "";
-    let regRise = reg1Wave.rise._normGrad;
-    let regFall = reg1Wave.fall._normGrad;
+    const regRise = reg1Wave.rise._normGrad;
+    const regFall = reg1Wave.fall._normGrad;
     if (regRise == maxReg1Rise && regFall == maxReg1Fall) {
       annoText =
         "This wave was the fastest rising and falling of all of ${region1}'s' waves.";
@@ -467,13 +476,17 @@ function createAnnotations(region1, region2) {
   }
 
   if (
-    !graphAnnos.find((a) => !a.useData2 && a.end == region2CasesData.length - 1)
+    !graphAnnos.find(
+      (a: any) => !a.useData2 && a.end == region2CasesData.length - 1,
+    )
   ) {
     graphAnnos.push({ end: region2CasesData.length - 1, color: region2Color });
   }
 
   if (
-    !graphAnnos.find((a) => a.useData2 && a.end == region1CasesData.length - 1)
+    !graphAnnos.find(
+      (a: any) => a.useData2 && a.end == region1CasesData.length - 1,
+    )
   ) {
     graphAnnos.push({
       end: region1CasesData.length - 1,
@@ -482,8 +495,8 @@ function createAnnotations(region1, region2) {
     });
   }
 
-  let reg2Annos = graphAnnos.filter((a) => !a.useData2);
-  let reg1Annos = graphAnnos.filter((a) => a.useData2);
+  const reg2Annos = graphAnnos.filter((a: any) => !a.useData2);
+  const reg1Annos = graphAnnos.filter((a): any => a.useData2);
 
   reg2Annos.slice(1).forEach((anno, i) => (anno.start = reg2Annos[i].end));
   reg1Annos.slice(1).forEach((anno, i) => (anno.start = reg1Annos[i].end));
@@ -579,7 +592,7 @@ export function onClickAnimate(animationCounter: number, selector: string) {
 
   ts.animate(annotations, animationCounter, visCtx).plot();
 
-  let key = d3
+  const key = d3
     .select(visCtx)
     .append("g")
     .attr("transform", "translate(100,100)");

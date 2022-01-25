@@ -65,7 +65,8 @@ const StoryBoards = () => {
                       </div>
                     </Link>
                   </Grid>
-                  <Grid item xs={6}>
+
+                  {/* <Grid item xs={6}>
                     <Link href="/story-boards/story-3" passHref>
                       <div className={styles.container}>
                         <img
@@ -90,7 +91,7 @@ const StoryBoards = () => {
                         </div>
                       </div>
                     </Link>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               </CardContent>
             </Card>

@@ -351,7 +351,7 @@ export class TimeSeries {
       this._data2.group.forEach((data, i) => {
         points2 = data.map(Object.values);
         if (!this._animationList) {
-          let path2 = d3
+          const path2 = d3
             .select(this._ctx)
             .append("path")
             .attr("stroke", colors ? colors[i % colors.length] : this._color)
@@ -469,7 +469,7 @@ export class TimeSeries {
         anno.id("anno-" + idx).addTo(this._ctx),
       );
       if (this._showEventLines) {
-        let container = d3.select(this._ctx);
+        const container = d3.select(this._ctx);
         this._annotations.forEach((anno) =>
           this._addEventLine(container, anno._tx, anno._ty),
         );
