@@ -76,6 +76,7 @@ const defaultBenchmarkCountries = [
   "Netherlands",
 ];
 
+/*
 const defaultTimeSeriesBag = [
   "Ireland 2022-01-18 Biweekly Cases Per Million",
   "Cyprus 2022-01-19 Biweekly Cases Per Million",
@@ -96,7 +97,9 @@ const defaultTimeSeriesBag = [
   "Albania 2021-10-22 Biweekly Deaths Per Million",
   "Slovenia 2021-11-06 Biweekly Deaths Per Million",
 ];
+*/
 
+const defaultTimeSeriesBag = [];
 const TimeseriesSim = () => {
   //const { settings } = useSettings();
   const classes = useStyles();

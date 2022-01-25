@@ -1,3 +1,4 @@
+import { QueueTwoTone } from "@mui/icons-material";
 import * as d3 from "d3";
 import { continuousLegend } from "src/lib/vis/pv-continuous-legend";
 
@@ -12,16 +13,6 @@ export function predictPlot(data) {
     }
   };
 
-  const width = 1275.5;
-  const height = 400;
-  const margin = 5;
-  const adj = 50;
-
-  const predictArray = Array.from(data);
-  const predictData = predictArray[0];
-  const meanCurveData = predictData["meancurves"];
-  const queryCurveData = predictData["query"];
-  const selectedCurvesData = predictData["series"];
   const parseTime = d3.timeParse("%Y-%m-%d"); // date parser (str to date)
   const formatTime = d3.timeFormat("%b %d"); // date formatter (date to str)
   const getDaysArray = function (s, e) {
@@ -30,9 +21,22 @@ export function predictPlot(data) {
     }
     return a;
   };
+  const width = 1275.5;
+  const height = 400;
+  const margin = 5;
+  const adj = 50;
+
+  const queryColor = "#FF6600";
+  const meanColor = "#426cab";
+  const predictArray = Array.from(data);
+  const predictData = predictArray[0];
+  const meanCurveData = predictData["meancurves"];
+  const queryCurveData = predictData["query"];
+  const selectedCurvesData = predictData["series"];
+
   const keys = Object.keys(meanCurveData);
 
-  //calculate max/min for d3 ranges
+  //calculate max/min dates/values for d3 ranges,scales and axis
   const meanCurveMaxes = Object.keys(meanCurveData).map((key) =>
     Math.max(...Object.values(meanCurveData[key])),
   );
@@ -208,6 +212,16 @@ export function predictPlot(data) {
     .attr("id", (d) => "yaxis" + spaceRemove(d.key))
     .style("font-size", "20px");
 
+  layout
+    .append("path")
+    .attr("class", "myline")
+    .attr("id", (d) => "queryCurve" + spaceRemove(d.key));
+
+  layout
+    .append("path")
+    .attr("class", "myline")
+    .attr("id", (d) => "meanCurve" + spaceRemove(d.key));
+
   keys.map((key, i) => {
     d3.select("#xaxis" + spaceRemove(key)).call(xAxes[i]);
     d3.select("#yaxis" + spaceRemove(key)).call(yAxes[i]);
@@ -230,7 +244,35 @@ export function predictPlot(data) {
         };
       },
     );
+    const xScale = xScales[i];
+    const yScale = yScales[i];
 
-    console.log(seriesCurves);
+    d3.select("#queryCurve" + spaceRemove(key))
+      .datum(queryCurve)
+      .attr("fill", "none")
+      .attr("stroke", queryColor)
+      .attr("stroke-width", 5)
+      .attr(
+        "d",
+        d3
+          .line()
+          .x((d) => xScale(parseTime(d.date)))
+          .y((d) => yScale(d.value)),
+      );
+
+    d3.select("#meanCurve" + spaceRemove(key))
+      .datum(meanCurve)
+      .attr("fill", "none")
+      .attr("stroke", meanColor)
+      .attr("stroke-width", 5)
+      .attr(
+        "d",
+        d3
+          .line()
+          .x((d) => xScale(parseTime(d.date)))
+          .y((d) => yScale(d.value)),
+      );
+
+    console.log(queryCurve);
   });
 }
