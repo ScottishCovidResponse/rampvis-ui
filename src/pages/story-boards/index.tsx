@@ -56,7 +56,7 @@ const StoryBoards = () => {
                     <Link href="/story-boards/story-2" passHref>
                       <div className={styles.container}>
                         <img
-                          src="/static/story-boards/story-.png"
+                          src="/static/story-boards/story-2.png"
                           className={styles.image}
                         ></img>
                         <div className={styles.overlay}>
