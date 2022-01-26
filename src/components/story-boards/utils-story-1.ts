@@ -18,7 +18,6 @@ export async function processDataAndGetRegions(): Promise<string[]> {
   await createDailyCasesByRegion();
   createCalenderEvents();
   createPeaksByRegion();
-  createPeaksByRegion();
   createGaussByRegion();
 
   return Object.keys(dailyCasesByRegion).sort();

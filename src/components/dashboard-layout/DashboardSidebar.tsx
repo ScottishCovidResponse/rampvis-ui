@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import type { FC } from "react";
 import { useRouter } from "next/router";
-import { Box, Divider, Drawer, Typography } from "@mui/material";
+import { Box, Divider, Drawer, Link, Typography } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -171,12 +171,16 @@ const DashboardSidebar: FC<DashboardSidebarProps> = ({
             />
 
             <Box sx={{ ml: 2 }}>
-              <Typography color="primary" variant="h5">
-                RAMPVIS
-              </Typography>
-              <Typography color="primary" alignItems="center" variant="body2">
-                v.1.0
-              </Typography>
+              <Link href="/" style={{ textDecoration: "none" }}>
+                <Typography color="primary" variant="h5">
+                  RAMPVIS
+                </Typography>
+              </Link>
+              <Link href="/" style={{ textDecoration: "none" }}>
+                <Typography color="primary" alignItems="center" variant="body2">
+                  v.1.0
+                </Typography>
+              </Link>
             </Box>
           </Box>
         </Box>

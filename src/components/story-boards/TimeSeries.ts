@@ -14,7 +14,7 @@ const width = 800,
   height = 300,
   border = 50;
 
-const xScaleFnc = (data, w = width, b = border) => {
+const xScFnc = (data, w = width, b = border) => {
   const xExt = d3.extent(data, (d: any) => d.date);
   console.log("data =", data, "xExt", xExt);
 
@@ -26,7 +26,7 @@ const xScaleFnc = (data, w = width, b = border) => {
   return xScale;
 };
 
-const yScaleFnc = (data, h = height, b = border) => {
+const yScFnc = (data, h = height, b = border) => {
   const yExt = d3.extent(data, (d: any) => d.y);
   console.log("data =", data, "yExt", yExt);
   const ySc = d3
@@ -53,9 +53,9 @@ export class TimeSeries {
   _ticks;
   _showPoints;
   _showEventLines;
-  xScale;
-  yScale;
-  _yScale2;
+  _xSc;
+  _ySc1;
+  _ySc2;
   _annotations;
   _animationList;
   _animationCounter;
@@ -80,9 +80,9 @@ export class TimeSeries {
     this._ticks = false;
     this._showPoints = false;
     this._showEventLines = false;
-    this.xScale = xScaleFnc(this._data1, this._width, this._border);
-    this.yScale = yScaleFnc(this._data1, this._height, this._border);
-    this._yScale2;
+    this._xSc = xScFnc(this._data1, this._width, this._border);
+    this._ySc1 = yScFnc(this._data1, this._height, this._border);
+    this._ySc2;
     this._annotations;
     this._animationList;
     this._animationCounter;
@@ -90,8 +90,8 @@ export class TimeSeries {
     // line generator
     this.line = d3
       .line()
-      .x((d: any) => this.xScale(d.date))
-      .y((d: any) => this.yScale(d.y));
+      .x((d: any) => this._xSc(d.date))
+      .y((d: any) => this._ySc1(d.y));
   }
 
   static animationSVG(width, height, selector) {
@@ -151,18 +151,18 @@ export class TimeSeries {
 
   height(height) {
     this._height = height;
-    const sameScale = this.yScale == this._yScale2;
+    const sameScale = this._ySc1 == this._ySc2;
 
-    this.yScale = yScaleFnc(this._data1, this._height, this._border);
+    this._ySc1 = yScFnc(this._data1, this._height, this._border);
     if (this._data2) this._fitPairedData(sameScale);
     return this;
   }
 
   width(width) {
     this._width = width;
-    const sameScale = this.yScale == this._yScale2;
+    const sameScale = this._ySc1 == this._ySc2;
 
-    this.xScale = xScaleFnc(this._data1, this._width, this._border);
+    this._xSc = xScFnc(this._data1, this._width, this._border);
     if (this._data2) this._fitPairedData(sameScale);
     return this;
   }
@@ -170,9 +170,9 @@ export class TimeSeries {
   border(border) {
     this._border = border;
 
-    const sameScale = this.yScale == this._yScale2;
+    const sameScale = this._ySc1 == this._ySc2;
 
-    this.xScale = xScaleFnc(this._data1, this._width, this._border);
+    this._xSc = xScFnc(this._data1, this._width, this._border);
     if (this._data2) this._fitPairedData(sameScale);
     return this;
   }
@@ -188,18 +188,22 @@ export class TimeSeries {
   }
 
   getXScale() {
-    return this.xScale;
+    return this._xSc;
   }
 
   getYScale() {
-    return this.yScale;
+    return this._ySc1;
+  }
+
+  getYScale2() {
+    return this._ySc2;
   }
 
   _fitPairedData(sameScale) {
     let data2Comb = this._data2.group.reduce((comb, arr) => comb.concat(arr));
     let combData = this._data1.concat(data2Comb);
 
-    this.xScale = xScaleFnc(combData, this._width, this._border);
+    this._xSc = xScFnc(combData, this._width, this._border);
 
     if (this._data2.domain) {
       data2Comb = this._data2.domain.map((v) => {
@@ -209,14 +213,10 @@ export class TimeSeries {
     }
 
     if (!sameScale) {
-      this.yScale = yScaleFnc(this._data1, this._height, this._border);
-      this._yScale2 = yScaleFnc(data2Comb, this._height, this._border);
+      this._ySc1 = yScFnc(this._data1, this._height, this._border);
+      this._ySc2 = yScFnc(data2Comb, this._height, this._border);
     } else {
-      this.yScale = this._yScale2 = yScaleFnc(
-        combData,
-        this._height,
-        this._border,
-      );
+      this._ySc1 = this._ySc2 = yScFnc(combData, this._height, this._border);
     }
   }
 
@@ -256,13 +256,18 @@ export class TimeSeries {
     return this;
   }
 
-  _createPaths(points) {
+  _createPaths(points1, points2) {
     // Helper for _addPaths fnc
     // Returns array of objects representing segment path, their length and animation duration
     let subPoints, path, length, duration;
     const createPath = (animObj, i) => {
       // Slice datapoints within the start and end idx of the segment
-      subPoints = points.slice(animObj.start, animObj.end + 1);
+      if (animObj.useData2) {
+        subPoints = points2.slice(animObj.start, animObj.end + 1);
+      } else {
+        subPoints = points1.slice(animObj.start, animObj.end + 1);
+      }
+
       // Create a d3 path with this data slice
       path = d3
         .select(this._ctx)
@@ -270,8 +275,15 @@ export class TimeSeries {
         .attr("stroke", animObj.color || "black")
         .attr("stroke-width", 3)
         .attr("fill", "none")
-        .attr("d", this.line(subPoints));
-
+        .attr(
+          "d",
+          d3
+            .line()
+            .x((d) => this._xSc(d[0]))
+            .y((d) => (animObj.useData2 ? this._ySc2(d[1]) : this._ySc1(d[1])))(
+            subPoints,
+          ),
+        );
       length = path.node().getTotalLength();
       // Set the path to be hidden initially
       path
@@ -331,40 +343,53 @@ export class TimeSeries {
     // Helper for plot fnc
     // Will create and add paths to svg based on whether the ts has been called with animate
 
+    // Convert data to array of coordinate pairs i.e. [[x1, y1],[x2, y2]...[xn, yn]]
+    const points1 = this._data1.map(Object.values);
+    let points2;
     if (this._data2) {
       const colors = this._data2.colors;
       this._data2.group.forEach((data, i) => {
-        const points2 = data;
-
-        // .map(Object.values);
-        console.log("points2 = ", points2);
-        console.log("this.line(points2) = ", this.line(points2));
-        const path2 = d3
-          .select(this._ctx)
-          .append("path")
-          .attr("stroke", colors ? colors[i % colors.length] : this._color)
-          .attr("stroke-width", 3)
-          .attr("fill", "none")
-          .attr("d", this.line(points2));
+        points2 = data.map(Object.values);
+        if (!this._animationList) {
+          const path2 = d3
+            .select(this._ctx)
+            .append("path")
+            .attr("stroke", colors ? colors[i % colors.length] : this._color)
+            .attr("stroke-width", 3)
+            .attr("fill", "none")
+            .attr(
+              "d",
+              d3
+                .line()
+                .x((d) => this._xSc(d[0]))
+                .y((d) => this._ySc2(d[1]))(points2),
+            );
+        }
       });
     }
 
     if (!this._animationList) {
       // When we dont want to animate simply add a single static path derived from the datapoints
 
-      d3.select(this._ctx)
+      const path1 = d3
+        .select(this._ctx)
         .append("path")
         .attr("stroke", this._color)
         .attr("stroke-width", 3)
         .attr("fill", "none")
-        .attr("d", this.line(this._data1));
+        .attr(
+          "d",
+          d3
+            .line()
+            .x((d) => this._xSc(d[0]))
+            .y((d) => this._ySc1(d[1]))(points1),
+        );
     } else {
       // We want to animate and are given a list of path segments and annotations to animate
-
       const pathNum = this._animationList.length; // Number of path segments
 
       // Create a list of d3 paths and annotations from our animation list
-      const paths = this._createPaths(this._data1);
+      const paths = this._createPaths(points1, points2);
       const annotations = this._createAnnos();
 
       // Use modulus to repeat animation sequence once counter > number of animation segments
@@ -440,12 +465,9 @@ export class TimeSeries {
 
     // Add static annotations
     if (this._annotations) {
-      console.log("this._annotations", this._annotations);
-      this._annotations.forEach((anno, idx) => {
-        console.log("anno", anno);
-        return anno.id("anno-" + idx).addTo(this._ctx);
-      });
-
+      this._annotations.forEach((anno, idx) =>
+        anno.id("anno-" + idx).addTo(this._ctx),
+      );
       if (this._showEventLines) {
         const container = d3.select(this._ctx);
         this._annotations.forEach((anno) =>
@@ -455,7 +477,7 @@ export class TimeSeries {
     }
 
     // Create Axes and add Labels
-    const axisBottom = d3.axisBottom(this.xScale);
+    const axisBottom = d3.axisBottom(this._xSc);
     if (this._ticks) {
       axisBottom.ticks(this._ticks);
     }
@@ -472,7 +494,7 @@ export class TimeSeries {
       .attr("y", this._height - 5)
       .text(this._xLabel);
 
-    const axisLeft = d3.axisLeft(this.yScale);
+    const axisLeft = d3.axisLeft(this._ySc1);
     d3.select(this._ctx)
       .append("g")
       .attr("transform", `translate(${this._border},0)`)
@@ -488,7 +510,7 @@ export class TimeSeries {
       .text(this._yLabel1);
 
     if (this._data2) {
-      const axisRight = d3.axisRight(this._yScale2);
+      const axisRight = d3.axisRight(this._ySc2);
       d3.select(this._ctx)
         .append("g")
         .attr("transform", `translate(${this._width - this._border},0)`)
@@ -520,8 +542,8 @@ export class TimeSeries {
         .data(this._data1.map(Object.values))
         .join("circle")
         .attr("r", 3)
-        .attr("cx", (d: any) => this.xScale(d.date))
-        .attr("cy", (d: any) => this.yScale(d.y))
+        .attr("cx", (d) => this._xSc(d[0]))
+        .attr("cy", (d) => this._ySc1(d[1]))
         .style("fill", this._color);
     }
 

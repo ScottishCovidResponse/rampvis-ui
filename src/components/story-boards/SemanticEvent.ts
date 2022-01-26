@@ -1,7 +1,9 @@
 import { SBEvent } from "./SBEvent";
 
 export class SemanticEvent extends SBEvent {
+  _type;
   _description;
+  _rank;
 
   static get TYPES() {
     return {
