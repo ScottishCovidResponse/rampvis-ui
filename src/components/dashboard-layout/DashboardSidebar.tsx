@@ -73,11 +73,6 @@ const sections = [
         path: "/story-boards",
         icon: <PublicIcon fontSize="small" />,
       },
-    ],
-  },
-  {
-    title: "",
-    items: [
       {
         title: "Tools",
         path: "",
