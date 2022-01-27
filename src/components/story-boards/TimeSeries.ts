@@ -63,7 +63,7 @@ export class TimeSeries {
   selector;
   line;
 
-  constructor(data, selector, w = width, h = height) {
+  constructor(data, selector = undefined, w = width, h = height) {
     this.selector = selector;
 
     this._data1 = data;
@@ -249,7 +249,7 @@ export class TimeSeries {
     return this;
   }
 
-  animate(animationList, animationCounter = 0, ctx = this._ctx) {
+  animate(animationList, animationCounter, ctx = this._ctx) {
     this._animationList = animationList;
     this._animationCounter = animationCounter;
 

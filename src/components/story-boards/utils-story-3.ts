@@ -14,6 +14,9 @@ export async function createData() {
   });
 }
 
+let tl, ts;
+let annotations;
+
 export function createScrollingSvg(selector) {
   let scrollSvg = ScrollingSvg(
     selector,
@@ -25,30 +28,46 @@ export function createScrollingSvg(selector) {
     ],
     800,
     500,
+    undefined,
+    onChangeContainer,
   );
 
   console.log("utils-story-3: scrollSvg = ", scrollSvg);
   // prettier-ignore
   console.log("utils-story-3: scrollSvg.graphSvg = ", d3.select(scrollSvg).select("#graphSvg"));
 
-  const ts = new TimeSeries(testDataICU, undefined).svg(
+  ts = new TimeSeries(testDataICU).svg(
     d3.select(scrollSvg).select("#graphSvg").node(),
   );
-  const tl = new TimeLine(testDataICU).svg(
+  tl = new TimeLine(testDataICU).svg(
     d3.select(scrollSvg).select("#timelineSvg").node(),
   );
+
   //d3.select(scrollSvg.graphSvg).selectAll("*").remove();
   //d3.select(scrollSvg.timelineSvg).selectAll("*").remove();
   d3.select(scrollSvg).select("#graphSvg").selectAll("*").remove();
   d3.select(scrollSvg).select("#timelineSvg").selectAll("*").remove();
 
-  const annotations = [
+  annotations = [
     { start: 0, end: 0 },
     { start: 0, end: 30 },
     { start: 30, end: 35 },
     { start: 35, end: 100 },
     { start: 100, end: testDataICU.length - 1 },
   ];
-  tl.annotations(annotations).plot(scrollSvg.event);
-  ts.animate(annotations, 0, scrollSvg.event).plot();
+
+  tl.annotations(annotations).plot(0);
+  ts.animate(annotations, 0).plot();
+
+  // Timeline scroll event will generate a number
+  // Catch the events
+  function onChangeContainer(val: number) {
+    d3.select(scrollSvg).select("#graphSvg").selectAll("*").remove();
+    d3.select(scrollSvg).select("#timelineSvg").selectAll("*").remove();
+
+    console.log("utils-story-3: onChangeContainer: val = ", val);
+
+    tl.annotations(annotations).plot(val);
+    ts.animate(annotations, val).plot();
+  }
 }

@@ -8,6 +8,7 @@ export const ScrollingSvg = (
   width = 600,
   height = 500,
   timeline = true,
+  callback = undefined,
 ) => {
   // We add supplementary events either end of the array to allow all actual events to be reached by scrolling
   const descStartEnd = [
@@ -53,7 +54,8 @@ export const ScrollingSvg = (
   const scrollContainer = visContainer
     .append("div")
     .attr("dir", "ltr")
-    .attr("class", "scroll-container");
+    .attr("class", "scroll-container")
+    .attr("id", "scrollContainer");
 
   // Create a scrollable event per entry in descriptions
   scrollContainer
@@ -63,7 +65,12 @@ export const ScrollingSvg = (
     .attr("class", "event")
     .style(
       "opacity",
-      (_, i) => (i == visContainer.node().value.event + 1 ? 1 : 0.3), // Only the currently central event is opaque
+      (_, i) => {
+        const val = i == visContainer.node().value.event + 1 ? 1 : 0.3;
+        // prettier-ignore
+        console.log("ScrollingSvg: 1 opacity, visContainer.node().value.event", visContainer.node().value.event,"val = ", val);
+        return val;
+      }, // Only the currently central event is opaque
     )
     .html((d) => `<h5>${d.date || ""}</h5>${d.description || ""}`);
 
@@ -76,16 +83,19 @@ export const ScrollingSvg = (
     visContainer.node().dispatchEvent(new Event("input", { bubbles: true }));
 
     // Set opacity depending on which event is in focus
-    scrollContainer
-      .selectAll(".event")
-      .style("opacity", (_, i) =>
-        i == visContainer.node().value.event + 1 ? 1 : 0.3,
-      );
+    scrollContainer.selectAll(".event").style("opacity", (_, i) => {
+      const val = i == visContainer.node().value.event + 1 ? 1 : 0.3;
+      // prettier-ignore
+      console.log("ScrollingSvg: 2 opacity, visContainer.node().value.event", visContainer.node().value.event,"val = ", val);
+      callback(visContainer.node().value.event);
+      return val;
+    });
   };
 
   // Need to only trigger animation update only when scrolling is finished
   let timer;
   scrollContainer.on("scroll", (e) => {
+    console.log("ScrollingSvg: scroll event");
     clearTimeout(timer);
     timer = setTimeout(updateAnimation, 500);
   });
