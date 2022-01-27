@@ -19,7 +19,7 @@ const StoryBoards = () => {
 
     const fetchAndDraw = async () => {
       let testDataICU = await readJSONFile(
-        "/static/mock/story-boards-data/icuGlasgow.json",
+        "/static/story-boards/icuGlasgow.json",
       );
       // Convert data ITimeSeriesData i.e. [{date: , y: }, ...]
       testDataICU = testDataICU.map(Object.values).map((d) => {
@@ -27,7 +27,7 @@ const StoryBoards = () => {
       });
 
       let testDataHosp = await readJSONFile(
-        "/static/mock/story-boards-data/hospitalGlasgow.json",
+        "/static/story-boards/hospitalGlasgow.json",
       );
       // Convert to ITimeSeriesData i.e. [{date: , y: }, ...]
       testDataHosp = testDataHosp.map(Object.values).map((d) => {
