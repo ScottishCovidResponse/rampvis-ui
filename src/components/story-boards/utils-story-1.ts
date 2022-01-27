@@ -30,7 +30,7 @@ const dailyCasesByRegion = {};
 
 async function createDailyCasesByRegion() {
   const csv: any[] = await readCSVFile(
-    "/static/mock/story-boards-data/newCasesByPublishDateRollingSum.csv",
+    "/static/story-boards/newCasesByPublishDateRollingSum.csv",
   );
 
   csv.forEach((row) => {
