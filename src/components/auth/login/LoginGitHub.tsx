@@ -64,7 +64,7 @@ const LoginGitHub: FC = (props) => {
       >
         <Link href={url} passHref>
           <LoadingButton
-            disabled="true"
+            disabled={true}
             style={{ width: "100%" }}
             variant="contained"
             color="primary"

@@ -1,6 +1,6 @@
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { useTheme, makeStyles } from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 import {
   Avatar,
   Box,
@@ -13,11 +13,13 @@ import {
 import { blue } from "@mui/material/colors";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import useSettings from "src/hooks/useSettings";
-import { apiService } from "src/utils/ApiService";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import AuthGuard from "src/components/auth/guards/AuthGuard";
 import PortalView from "src/components/portal/PortalView";
 import { mockPortalData } from "src/components/mock/portalData";
+import useAuth from "src/hooks/useAuth";
+import { apiService } from "src/utils/ApiService";
+import { IThumbnail } from "src/models/IThumbnail";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,23 +38,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MyPortal = () => {
-  console.log("MyPortal:");
-  const theme = useTheme();
+  const { user } = useAuth();
   const classes = useStyles();
   const { settings } = useSettings();
-
   const [portalData, setPortalData] = useState<any[]>(mockPortalData);
-  const url = `/template/pages/example`; // TODO: Set correct URL once available
 
   const fetchPortalPages = useCallback(async () => {
-    try {
-      const res = (await apiService.get(url))?.data;
-      console.log("MyPortal: data = ", res);
-      setPortalData(res);
-    } catch (err) {
-      // prettier-ignore
-      console.error(`MyPortal: Fetching ${url}, error = ${err}`);
-    }
+    const portal: IThumbnail[] = await apiService.get(`/template/portal`);
+    console.log("MyPortal: portal = ", portal);
+    setPortalData(portal);
   }, []);
 
   useEffect(() => {

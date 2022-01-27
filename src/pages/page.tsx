@@ -25,7 +25,6 @@ import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import { ILink } from "src/models/ILink";
 import { IOntoPageTemplate } from "src/models/IOntoPageTemplate";
 import { IOntoData } from "src/models/IOntoData";
-import useAuth from "src/hooks/useAuth";
 
 const API = {
   API_PY: process.env.NEXT_PUBLIC_API_PY,
@@ -49,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PropagatedPage = () => {
-  const { user } = useAuth();
   const { settings } = useSettings();
   const classes = useStyles();
   const router = useRouter();
