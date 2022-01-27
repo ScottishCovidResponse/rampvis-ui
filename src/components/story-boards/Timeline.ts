@@ -52,7 +52,7 @@ export class TimeLine {
       .attr("stroke-width", 2);
   }
 
-  plot(animCounter) {
+  plot(animCounter = 0) {
     // this._svg = this._svg || DOM.svg(this._width, this._height);
 
     this._svg =
@@ -71,6 +71,8 @@ export class TimeLine {
       .scaleLinear()
       .domain([0, this._data.length - 1]) // unit: km
       .range([lineStart, lineEnd]);
+
+    console.log("Timeline:plot: _annotations = ", this._annotations);
 
     const animStart =
       animCounter > 0 ? xSc(this._annotations[animCounter - 1].end) : lineStart;
@@ -104,6 +106,8 @@ export class TimeLine {
       .duration(progressAnimDur)
       .ease(d3.easeLinear)
       .attr("x2", animEnd);
+
+    console.log("Timeline:plot: this._data = ", this._data);
 
     const dateText = d3
       .select(this._svg)

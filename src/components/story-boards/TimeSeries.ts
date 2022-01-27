@@ -221,6 +221,7 @@ export class TimeSeries {
   }
 
   svg(ctx) {
+    console.log("TimeSeries: ctx = ", ctx);
     this._ctx = ctx;
     const bounds = ctx.getBoundingClientRect();
     this.width(bounds.width);
@@ -248,7 +249,7 @@ export class TimeSeries {
     return this;
   }
 
-  animate(animationList, animationCounter, ctx = this._ctx) {
+  animate(animationList, animationCounter = 0, ctx = this._ctx) {
     this._animationList = animationList;
     this._animationCounter = animationCounter;
 

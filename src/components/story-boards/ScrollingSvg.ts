@@ -3,6 +3,7 @@ import * as d3 from "d3";
 // This relies on observable's (unique?) input system that uses the keyword: viewof
 // We can return the html for the scrollytelling and access the current scrolled to event by accessing the cell's value.
 export const ScrollingSvg = (
+  selector,
   descriptions,
   width = 600,
   height = 500,
@@ -18,7 +19,9 @@ export const ScrollingSvg = (
 
   // Div containing the entire vis
   const visContainer = d3
-    .create("div")
+    .select(selector)
+    //.create("div")
+    .append("div")
     .attr("class", "vis-container")
     .style("width", width + "px")
     .style("height", height + "px");
@@ -31,7 +34,8 @@ export const ScrollingSvg = (
   const graphContainer = visContainer
     .append("svg")
     .attr("width", width)
-    .attr("height", height - (timeline ? 150 : 100)); // -200 to make space for scroll section & timeline
+    .attr("height", height - (timeline ? 150 : 100)) // -200 to make space for scroll section & timeline
+    .attr("id", "graphSvg");
 
   visContainer.node().value.graphSvg = graphContainer.node();
 
@@ -39,7 +43,8 @@ export const ScrollingSvg = (
     const timelineContainer = visContainer
       .append("svg")
       .attr("width", width)
-      .attr("height", 50);
+      .attr("height", 50)
+      .attr("id", "timelineSvg");
 
     visContainer.node().value.timelineSvg = timelineContainer.node();
   }

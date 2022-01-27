@@ -7,7 +7,11 @@ import { readJSONFile } from "./utils-data";
 let testDataICU: any;
 
 export async function createData() {
+  const parseDate = d3.timeParse("%Y-%m-%d");
   testDataICU = await readJSONFile("/static/story-boards/icuGlasgow.json");
+  testDataICU = testDataICU.map(Object.values).map((d) => {
+    return { date: parseDate(d[0]), y: d[1] };
+  });
 }
 
 export function createScrollingSvg(selector) {
@@ -24,12 +28,19 @@ export function createScrollingSvg(selector) {
   );
 
   console.log("utils-story-3: scrollSvg = ", scrollSvg);
-  console.log("utils-story-3: scrollSvg.graphSvg = ", scrollSvg.graphSvg);
+  // prettier-ignore
+  console.log("utils-story-3: scrollSvg.graphSvg = ", d3.select(scrollSvg).select("#graphSvg"));
 
-  const ts = new TimeSeries(testDataICU, undefined).svg(scrollSvg.graphSvg);
-  const tl = new TimeLine(testDataICU).svg(scrollSvg.timelineSvg);
-  d3.select(scrollSvg.graphSvg).selectAll("*").remove();
-  d3.select(scrollSvg.timelineSvg).selectAll("*").remove();
+  const ts = new TimeSeries(testDataICU, undefined).svg(
+    d3.select(scrollSvg).select("#graphSvg").node(),
+  );
+  const tl = new TimeLine(testDataICU).svg(
+    d3.select(scrollSvg).select("#timelineSvg").node(),
+  );
+  //d3.select(scrollSvg.graphSvg).selectAll("*").remove();
+  //d3.select(scrollSvg.timelineSvg).selectAll("*").remove();
+  d3.select(scrollSvg).select("#graphSvg").selectAll("*").remove();
+  d3.select(scrollSvg).select("#timelineSvg").selectAll("*").remove();
 
   const annotations = [
     { start: 0, end: 0 },
@@ -39,5 +50,5 @@ export function createScrollingSvg(selector) {
     { start: 100, end: testDataICU.length - 1 },
   ];
   tl.annotations(annotations).plot(scrollSvg.event);
-  ts.animate(annotations, scrollSvg.event).plot();
+  ts.animate(annotations, 0, scrollSvg.event).plot();
 }
