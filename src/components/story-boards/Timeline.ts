@@ -29,7 +29,7 @@ export class TimeLine {
 
   svg(svg) {
     this._svg = svg;
-    let bounds = svg.getBoundingClientRect();
+    const bounds = svg.getBoundingClientRect();
     this.width(bounds.width);
     this.height(bounds.height);
     return this;
@@ -125,7 +125,7 @@ export class TimeLine {
       .delay(progressAnimDur)
       .style("opacity", 1);
 
-    let checkpoints = this._annotations.map((anno) =>
+    const checkpoints = this._annotations.map((anno) =>
       this._placeCheckPoint(anno.end, this._svg, xSc),
     );
 

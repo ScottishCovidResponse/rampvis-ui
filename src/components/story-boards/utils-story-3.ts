@@ -18,7 +18,7 @@ let tl, ts;
 let annotations;
 
 export function createScrollingSvg(selector) {
-  let scrollSvg = ScrollingSvg(
+  const scrollSvg = ScrollingSvg(
     selector,
     [
       { date: "11th October", description: "This is an example" },
