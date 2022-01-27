@@ -47,16 +47,6 @@ export class ApiService {
     const res = await this.getAxiosInstance().delete(this.getEndpoint(url));
     return res.data;
   }
-
-  // async put(url: string, body: T): Promise<T> {
-  //     console.log("ApiService:put: url = ", url, "endpoint = ", this.getEndpoint(url))
-  //     const res = await this.getAxiosInstance().put(this.getEndpoint(url));
-  //     return res.data;
-  // }
-
-  //   patch(url: string, body: T): Observable<T> {
-  //     return ...patch<T>(this.getEndpoint(url), body);
-  //   }
 }
 
 export const apiService = new ApiService();
