@@ -2,9 +2,9 @@ import * as d3 from "d3";
 
 export class ScatterPlot {
   constructor(options) {
-    const margin = { top: 40, right: 30, bottom: 30, left: 250 };
+    const margin = { top: 50, right: 30, bottom: 30, left: 250 };
     const width = 300;
-    const height = 300;
+    const height = 280;
 
     const container = d3.select("#" + options.chartElement);
     const svg = container
@@ -12,7 +12,7 @@ export class ScatterPlot {
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
-      .attr("transform", `translate(0,${margin.top})`);
+      .attr("transform", `translate(0,10)`);
 
     const color = d3.scaleSequential(d3.interpolateTurbo);
 

@@ -1,0 +1,26 @@
+ 
+/* Storyboard 3 */
+/* Scrolling */
+.scroll-container {
+  height:100px;
+  white-space: nowrap;
+  position: relative;
+  overflow-x:scroll;
+  overflow-y:hidden;
+  scroll-snap-type: x mandatory;
+}
+
+.event {
+  font-size: 14px;
+  width: 33%;
+  background-color: #eee;
+  float: none;
+  height: 90%;
+  margin: 0 0.25%;
+  display: inline-block;
+  zoom: 1;
+  scroll-snap-align: center;
+  vertical-align: bottom;
+  text-align: center;
+  white-space: normal
+}

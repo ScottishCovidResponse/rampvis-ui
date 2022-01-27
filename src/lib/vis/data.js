@@ -41,51 +41,68 @@ export class Data {
     // UK DATA
     PHE_UK_CUM_ADMISSIONS: "product=phe/overview&component=cumAdmissions&",
     PHE_UK_CUM_CASES: "product=phe/overview&component=cumCasesBySpecimenDate&",
-    PHE_UK_CUM_DEATHS_28_DAYS: "product=phe/overview&component=cumDeaths28DaysByDeathDate&",
-    PHE_UK_CUM_VACC_FIRST: "product=phe/overview&component=cumPeopleVaccinatedFirstDoseByPublishDate&",
-    PHE_UK_CUM_VACC_SECOND: "product=phe/overview&component=cumPeopleVaccinatedSecondDoseByPublishDate&",
-    PHE_UK_CUM_VACC_THIRD: "product=phe/overview&component=cumPeopleVaccinatedThirdInjectionByPublishDate&",
+    PHE_UK_CUM_DEATHS_28_DAYS:
+      "product=phe/overview&component=cumDeaths28DaysByDeathDate&",
+    PHE_UK_CUM_VACC_FIRST:
+      "product=phe/overview&component=cumPeopleVaccinatedFirstDoseByPublishDate&",
+    PHE_UK_CUM_VACC_SECOND:
+      "product=phe/overview&component=cumPeopleVaccinatedSecondDoseByPublishDate&",
+    PHE_UK_CUM_VACC_THIRD:
+      "product=phe/overview&component=cumPeopleVaccinatedThirdInjectionByPublishDate&",
     PHE_UK_NEW_AMISSIONS: "product=phe/overview&component=newAdmissions&",
     PHE_UK_NEW_CASES: "product=phe/overview&component=newCasesBySpecimenDate&",
-    PHE_UK_NEW_DEATHS_28_DAYS: "product=phe/overview&component=newDeaths28DaysByDeathDate&",
-    PHE_UK_NEW_VACC_FIRST: "product=phe/overview&component=newPeopleVaccinatedFirstDoseByPublishDate&",
-    PHE_UK_NEW_VACC_SECOND: "product=phe/overview&component=newPeopleVaccinatedSecondDoseByPublishDate&",
-    PHE_UK_NEW_VACC_THIRD: "product=phe/overview&component=newPeopleVaccinatedThirdInjectionByPublishDate&",
+    PHE_UK_NEW_DEATHS_28_DAYS:
+      "product=phe/overview&component=newDeaths28DaysByDeathDate&",
+    PHE_UK_NEW_VACC_FIRST:
+      "product=phe/overview&component=newPeopleVaccinatedFirstDoseByPublishDate&",
+    PHE_UK_NEW_VACC_SECOND:
+      "product=phe/overview&component=newPeopleVaccinatedSecondDoseByPublishDate&",
+    PHE_UK_NEW_VACC_THIRD:
+      "product=phe/overview&component=newPeopleVaccinatedThirdInjectionByPublishDate&",
 
     // NATION DATA
-    // Phong...
     PHE_NATION_ADMISSIONS: "areaType=nation&metric=cumAdmissions&",
     PHE_NATION_CASES: "areaType=nation&metric=cumCasesBySpecimenDate&",
     PHE_NATION_DEATHS: "areaType=nation&metric=cumOnsDeathsByRegistrationDate&",
 
-    PHE_NATION_VACC_1: "areaType=nation&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&",
-    PHE_NATION_VACC_2: "areaType=nation&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&",
-    PHE_NATION_VACC_3: "areaType=nation&metric=cumVaccinationThirdInjectionUptakeByPublishDatePercentage&",
+    PHE_NATION_VACC_1:
+      "areaType=nation&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&",
+    PHE_NATION_VACC_2:
+      "areaType=nation&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&",
+    PHE_NATION_VACC_3:
+      "areaType=nation&metric=cumVaccinationThirdInjectionUptakeByPublishDatePercentage&",
 
-    // ENGLAND NHS REGION
-    PHE_ENGNHS_CASES: [],
-    PHE_ENGNHS_CASES_UNIQUE: [],
-    PHE_ENGNHS_DEATHS: [],
-    PHE_ENGNHS_VACC: [],
+    // ENGLAND NHS REGION DATA
+    PHE_ENGNHS_GROUP1: "areaType=nhsRegion&metric=cumAdmissions&",
+    PHE_ENGNHS_GROUP2: "areaType=nhsRegion&metric=cumAdmissionsByAge&",
+
+    // ENGLAND REGION DATA
+    // cumCases, newCases, uniqueCasePositivity, cumVaccinationFirstDose, cumVaccinationSecondDose
+    PHE_REGION_CASES_VACCINE: "areaType=region&metric=cumCasesBySpecimenDate&",
+    PHE_REGION_FEMALE_CASES: "areaType=region&metric=femaleCases&",
+    PHE_REGION_MALE_CASES: "areaType=region&metric=maleCases&",
+    PHE_REGION_CASES_AGE:
+      "areaType=region&metric=newCasesBySpecimenDateAgeDemographics&",
+    // cumDailyDeaths, newDailyDeaths
+    PHE_REGION_DEATHS: "areaType=region&metric=cumDailyNsoDeathsByDeathDate&",
+    PHE_REGION_FEMALE_DEATHS: "areaType=region&metric=femaleDeaths28Days&",
+    PHE_REGION_MALE_DEATHS: "areaType=region&metric=maleDeaths28Days&",
+    PHE_REGION_VACCINE_AGE:
+      "areaType=region&metric=vaccinationsAgeDemographics",
 
     // UTLA DATA
-    // Phong...
-    // See UTLA dashboard
-
-    // LTLA DATA (discarded)
-    PHE_LTLA_NEW_CASES: ["product=phe/ltla/", "component=newCasesBySpecimenDate&"],
-    PHE_LTLA_NEW_DEATHS: ["product=phe/ltla/", "component=newWeeklyNsoDeathsByRegDate&"],
-    PHE_LTLA_NEW_VACCINATION: ["product=phe/ltla/", "component=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&"],
-    PHE_LTLA_NEW_VACC_AGE_DEMOGRAPHICS: ["product=phe/ltla/", "component=vaccinationsAgeDemographics&"],
+    PHE_UTLA_NEW: "areaType=utla&metric=newCasesBySpecimenDate&",
+    PHE_UTLA_CUM: "areaType=utla&metric=cumCasesBySpecimenDate&",
 
     // MSOA DATA
-    PHE_MSOA_ALL: "areaType=msoa"
-
+    PHE_MSOA_CASES: "areaType=msoa&metric=newCasesBySpecimenDateRollingSum&",
+    PHE_MSOA_VACCINE:
+      "areaType=msoa&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&",
   };
-  
+
   static from(data, field) {
     let x;
-    if (typeof(field) == 'string') {
+    if (typeof field == "string") {
       x = data.find((d) => d.endpoint.includes(field));
     } else {
       // Array of AND conditions
@@ -96,7 +113,7 @@ export class Data {
       // PHE: the data has 'body' field
       return x.values.body ? x.values.body : x.values;
     } else {
-      console.error('Data stream not found with' + field);
+      console.error("Data stream not found with" + field);
       return undefined;
     }
   }

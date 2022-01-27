@@ -28,122 +28,120 @@ export class DashboardMSOA {
   CHART_HEIGHT = 400;
 
   constructor(options) {
-    // Phong
-    console.log('data including all 5 metrics')
-    console.log(Data.from(options.data, Data.Fields.PHE_MSOA_ALL));
-
     // creates the main div. don't touch
     var div = d3
       .select("#" + options.chartElement)
       .append("div")
       .attr("class", "vis-example-container");
 
-    // 2. specify data URLs here...
-    var newCasesBySpecimenDateRollingSum = "https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000961&metric=newCasesBySpecimenDateRollingSum&format=csv"
-    var newCasesBySpecimenDateRollingRate = "https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000961&metric=newCasesBySpecimenDateRollingRate&format=csv"
-    var newCasesBySpecimenDateChangePercentage = "https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000961&metric=newCasesBySpecimenDateChangePercentage&format=csv"
-    var cumVaccinationFirstDoseUptakeByVaccinationDatePercentage = "https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000961&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&format=csv"
-    var cumVaccinationSecondDoseUptakeByVaccinationDatePercentage = "https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000961&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&format=csv"
-    
-    d3.csv(newCasesBySpecimenDateRollingSum).then(function (data) {
-      newCasesBySpecimenDateRollingSum = data;
-    });
-    d3.csv(newCasesBySpecimenDateRollingRate).then(function (data) {
-      newCasesBySpecimenDateRollingRate = data;
-    });
-    d3.csv(newCasesBySpecimenDateChangePercentage).then(function (data) {
-      newCasesBySpecimenDateChangePercentage = data;
-    });
-    d3.csv(cumVaccinationFirstDoseUptakeByVaccinationDatePercentage).then(function (data) {
-      cumVaccinationFirstDoseUptakeByVaccinationDatePercentage = data;
-    });
-    d3.csv(cumVaccinationSecondDoseUptakeByVaccinationDatePercentage).then(function (data) {
-      cumVaccinationSecondDoseUptakeByVaccinationDatePercentage = data;
-    });
+    console.log(
+      "PHE_MSOA_CASES",
+      Data.from(options.data, Data.Fields.PHE_MSOA_CASES),
+    );
+    console.log(
+      "PHE_MSOA_VACCINE",
+      Data.from(options.data, Data.Fields.PHE_MSOA_VACCINE),
+    );
 
+    // var vacc1 = "https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000961&metric=cumVaccinationFirstDoseUptakeByVaccinationDatePercentage&format=csv"
+    // var vacc2 = "https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000961&metric=cumVaccinationSecondDoseUptakeByVaccinationDatePercentage&format=csv"
+    // var vacc3 = 'https://api.coronavirus.data.gov.uk/v2/data?areaType=msoa&areaCode=E02000024&metric=cumVaccinationThirdInjectionUptakeByVaccinationDatePercentage&format=csv'
+
+    // d3.csv(vacc1).then(function (data) {
+    //   vacc1 = data;
+    //   console.log(vacc1)
+    // });
+    // d3.csv(vacc2).then(function (data) {
+    //   vacc2 = data;
+    //   console.log(vacc2)
+    // });
+    // d3.csv(vacc3).then(function (data) {
+    //   vacc3 = data;
+    //   console.log('vacc3', vacc3)
+    // });
 
     // 3. Specify your dashboar spec here: https://github.com/benjbach/dashboardscript/wiki
-    setTimeout(function () {
-      var config = {
-        layout: ['cases','vaccinations'],
-        groups: [
-          {
-            id: 'cases', 
-            title: 'Cases', 
-            layout: [['newCasesBySpecimenDateRollingSum','newCasesBySpecimenDateRate','newCasesBySpecimenDateChangePercentage']]
-          },
-          {
-            id: 'vaccinations', 
-            title: 'Vaccinations', 
-            layout: [['cumVaccinationFirstDoseUptakeByVaccinationDatePercentage', 'cumVaccinationSecondDoseUptakeByVaccinationDatePercentage']]
-          }
+    var config = {
+      dataSources: [
+        {
+          url: "https://coronavirus.data.gov.uk/details/download",
+          name: "Public Health England",
+        },
+      ],
+      layout: ["cases", "vaccinations"],
+      groups: [
+        {
+          id: "cases",
+          title: "Cases",
+          layout: [["newCasesBySpecimenDateRollingRate"]],
+        },
+        {
+          id: "vaccinations",
+          title: "Vaccinations",
+          layout: [["vacc1", "vacc2", "vacc3"]],
+        },
+      ],
+      widgets: [
+        {
+          id: "newCasesBySpecimenDateRollingRate",
+          title: "Weekly new cases",
+          data: Data.from(options.data, Data.Fields.PHE_MSOA_CASES),
+          dataField: "newCasesBySpecimenDateRollingRate",
+          visualization: "linechart",
+          detail: dashboard.DETAIL_HIGH,
+          cumulative: false,
+          dateField: "date",
+          color: colors.getCaseColor(),
+          min: 0,
+        },
+        {
+          id: "vacc1",
+          title: "Vaccination 1 Uptake",
+          data: Data.from(options.data, Data.Fields.PHE_MSOA_VACCINE),
+          dataField: "cumVaccinationFirstDoseUptakeByVaccinationDatePercentage",
+          visualization: "progress",
+          detail: dashboard.DETAIL_MEDIUM,
+          cumulative: true,
+          unit: "%",
+          dateField: "date",
+          color: colors.getVaccinationColor(-1),
+          min: 0,
+          max: 100,
+        },
+        {
+          id: "vacc2",
+          title: "Vaccination 2 Uptake",
+          data: Data.from(options.data, Data.Fields.PHE_MSOA_VACCINE),
+          dataField:
+            "cumVaccinationSecondDoseUptakeByVaccinationDatePercentage",
+          visualization: "progress",
+          detail: dashboard.DETAIL_MEDIUM,
+          cumulative: true,
+          unit: "%",
+          dateField: "date",
+          color: colors.getVaccinationColor(),
+          min: 0,
+          max: 100,
+        },
+        {
+          id: "vacc3",
+          title: "Vaccination 3 / Booster Uptake",
+          data: Data.from(options.data, Data.Fields.PHE_MSOA_VACCINE),
+          dataField:
+            "cumVaccinationThirdInjectionUptakeByVaccinationDatePercentage",
+          visualization: "progress",
+          detail: dashboard.DETAIL_MEDIUM,
+          cumulative: true,
+          unit: "%",
+          dateField: "date",
+          color: colors.getVaccinationColor(2),
+          min: 0,
+          max: 100,
+        },
+      ],
+    };
 
-        ],
-        widgets: [
-          {
-            id: 'newCasesBySpecimenDateRollingSum', 
-            title: 'Total cases over time', 
-            data: newCasesBySpecimenDateRollingSum, 
-            dataField: 'newCasesBySpecimenDateRollingSum', 
-            visualization: 'linechart', 
-            detail: dashboard.DETAIL_HIGH, 
-            cumulative: true,
-            dateField: 'date', 
-            color: colors.getCaseColor(), 
-            min: 0
-          },{
-            id: 'newCasesBySpecimenDateRate', 
-            title: 'Change in Cases', 
-            data: newCasesBySpecimenDateRollingRate, 
-            dataField: 'newCasesBySpecimenDateRollingRate', 
-            visualization: 'linechart', 
-            detail: dashboard.DETAIL_HIGH, 
-            cumulative: false,
-            dateField: 'date', 
-            color: colors.getCaseColor(), 
-            min: 0
-          }
-          ,{
-            id: 'newCasesBySpecimenDateChangePercentage', 
-            title: 'Change in Cases', 
-            data: newCasesBySpecimenDateChangePercentage, 
-            dataField: 'newCasesBySpecimenDateChangePercentage', 
-            visualization: 'linechart', 
-            detail: dashboard.DETAIL_HIGH, 
-            cumulative: false,
-            dateField: 'date', 
-            color: colors.getCaseColor(), 
-            min: 0
-          },{
-            id: 'cumVaccinationFirstDoseUptakeByVaccinationDatePercentage', 
-            title: 'Change in Cases', 
-            data: cumVaccinationFirstDoseUptakeByVaccinationDatePercentage, 
-            dataField: 'cumVaccinationFirstDoseUptakeByVaccinationDatePercentage', 
-            visualization: 'linechart', 
-            detail: dashboard.DETAIL_MEDIUM, 
-            cumulative: true,
-            unit: '%',
-            dateField: 'date', 
-            color: colors.getCaseColor(), 
-            min: 0
-          },{
-            id: 'cumVaccinationSecondDoseUptakeByVaccinationDatePercentage', 
-            title: 'Change in Cases', 
-            data: cumVaccinationSecondDoseUptakeByVaccinationDatePercentage, 
-            dataField: 'cumVaccinationSecondDoseUptakeByVaccinationDatePercentage', 
-            visualization: 'linechart', 
-            detail: dashboard.DETAIL_HIGH, 
-            cumulative: true, 
-            unit: '%,',
-            dateField: 'date', 
-            color: colors.getCaseColor(), 
-            min: 0
-          }
-        ],
-      };
-
-      // this will interpret the dashboard specifiation
-      dashboard.createDashboard(div, config);
-    }, 3000);
+    // this will interpret the dashboard specifiation
+    dashboard.createDashboard(div, config);
   }
 }

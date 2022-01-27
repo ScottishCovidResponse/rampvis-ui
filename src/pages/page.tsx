@@ -54,6 +54,7 @@ const PropagatedPage = () => {
   const pageId =
     typeof router.query.id === "string" ? router.query.id : undefined;
   const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
   const resolveLinksUrl = (links) => {
@@ -91,6 +92,7 @@ const PropagatedPage = () => {
       console.log("[TEMPLATE] Datastreams = ", ontoPageTemplate.data);
 
       setTitle(ontoPageTemplate?.title);
+      setDescription(ontoPageTemplate?.vis.description);
 
       // fetch data stream values
       const ontoData = await Promise.all(
@@ -177,7 +179,7 @@ const PropagatedPage = () => {
                 </Avatar>
               }
               title={title}
-              subheader=""
+              subheader={description}
             />
 
             <CardContent sx={{ pt: "8px" }}>

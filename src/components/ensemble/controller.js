@@ -9,6 +9,8 @@ export class Controller {
     this.parallel1 = null;
     this.parallel2 = null;
     this.scatter = null;
+    this.heatmap = null;
+    this.stacked = null;
 
     this.scatterPoints = [];
     this.parallelPoints = [];
@@ -57,6 +59,8 @@ export class Controller {
   scatterRemoved() {
     this.parallel1.scatterRemoved();
     this.toggleRows(this.getIntersectionPoints());
+    this.changeStackedChart();
+    this.changeHeatMap();
   }
 
   setAgeIndex(ageIndex) {
@@ -83,7 +87,6 @@ export class Controller {
     return this.getIntersectionPoints().length != 0;
   }
 
-
   changeLineChart(ageData) {
     this.line.removeContainer();
     this.line.displayData(ageData);
@@ -100,11 +103,15 @@ export class Controller {
     // get first of the displayed table points
     var simulationIndex = this.tablePoints[0];
 
-    this.getSimulationData(simulationIndex).then(ageData => {
+    this.getSimulationData(simulationIndex).then((ageData) => {
       this.changeLineChart(ageData);
     });
 
     this.changeParallelChart();
+
+    // Adhitya: new functionality
+    this.changeStackedChart();
+    this.changeHeatMap();
   }
 
   toggleRows(points) {
@@ -129,7 +136,6 @@ export class Controller {
     /// for now, this should work. there are other components that also have to be refreshed
     this.tableToggled([0]);
     // refresh everything on this page
-
   }
 
   makeDataforLineVis(ageData, simulation, age) {
@@ -214,8 +220,7 @@ export class Controller {
 
     if (this.isCallback(callback)) {
       callback.call(this.simulationData);
-    }
-    else {
+    } else {
       return this.simulationData;
     }
   }
@@ -241,11 +246,9 @@ export class Controller {
     const res = await axios.get(apiUrl);
     if (this.isCallback(callback)) {
       callback.call(res.data);
-    }
-    else {
+    } else {
       return res.data;
     }
-
   }
 
   async getSimulationAgeData(callback) {
@@ -255,11 +258,9 @@ export class Controller {
     const data = this.makeDataforParallelVis(ageData, this.ageIndex);
     if (this.isCallback(callback)) {
       callback.call(data);
-    }
-    else {
+    } else {
       return data;
     }
-
   }
 
   async drawParallelChart(visualizationData, polylineData) {
@@ -290,11 +291,59 @@ export class Controller {
     this.parallel2 = parallel2;
   }
 
+  async drawStackedChart(metadata, intersectionPoints) {
+    const controller = this.stacked.removeContainer();
+
+    const table_data = metadata.posterior_parameters;
+    const table_keys = Object.keys(table_data[0]);
+
+    const stacked = visFactory("StackedChart", {
+      chartElement: "stacked_chart",
+      data: table_data,
+      columns: table_keys,
+      retainedDimensions: ["Index"],
+      controller: controller,
+      intersectionPoints: intersectionPoints,
+    });
+
+    this.stacked = stacked;
+  }
+
+  async drawHeatMap(metadata, intersectionPoints) {
+    const controller = this.heatmap.removeContainer();
+
+    const table_data = metadata.posterior_parameters;
+    const table_keys = Object.keys(table_data[0]);
+
+    const heatmap = visFactory("HeatMap", {
+      chartElement: "heatmap_chart",
+      data: table_data,
+      columns: table_keys,
+      retainedDimensions: ["Index"],
+      controller: controller,
+      intersectionPoints: intersectionPoints,
+    });
+
+    this.heatmap = heatmap;
+  }
+
   async changeParallelChart() {
-    this.getSimulationAgeData().then(visualizationData => {
-      this.getPolylineData().then(polylineData => {
+    this.getSimulationAgeData().then((visualizationData) => {
+      this.getPolylineData().then((polylineData) => {
         this.drawParallelChart(visualizationData, polylineData);
       });
+    });
+  }
+
+  async changeStackedChart() {
+    this.getMetaData().then((metadata) => {
+      this.drawStackedChart(metadata, this.getIntersectionPoints());
+    });
+  }
+
+  async changeHeatMap() {
+    this.getMetaData().then((metadata) => {
+      this.drawHeatMap(metadata, this.getIntersectionPoints());
     });
   }
 }
