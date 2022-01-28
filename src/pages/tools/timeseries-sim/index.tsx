@@ -24,7 +24,7 @@ import PredictPopUp from "src/components/timeseries-sim/PredictPopUp";
 import { predictPlot } from "src/components/timeseries-sim/plotfunctions/predictplot";
 
 const API = process.env.NEXT_PUBLIC_API_PY;
-
+const API_PY = API + "/timeseries-sim-search";
 const today = new Date();
 const lastDate = new Date(today.setDate(today.getDate() - 1));
 const firstDate = new Date(today.setDate(today.getDate() - 30));
@@ -222,8 +222,7 @@ const TimeseriesSim = () => {
 
   const searchPost = async () => {
     // post request to get similar timeseries back from API
-    const apiUrl =
-      "http://127.0.0.1:4010/stat/v1/timeseries-sim-search/search/";
+    const apiUrl = API_PY + "/search/";
     //const apiUrl = `${API}/timeseries-sim-search/`;
     const response = await axios.post(apiUrl, firstRunForm);
     console.log("response = ", response);
@@ -234,8 +233,7 @@ const TimeseriesSim = () => {
   };
 
   const comparePost = async () => {
-    const apiUrl =
-      "http://127.0.0.1:4010/stat/v1/timeseries-sim-search/compare/";
+    const apiUrl = API_PY + "/compare/";
     //const apiUrl = `${API}/timeseries-sim-search/`;
     console.log({ countries: benchmarkCountries });
     const response = await axios.post(apiUrl, {
@@ -249,8 +247,7 @@ const TimeseriesSim = () => {
   };
 
   const predictPost = async () => {
-    const apiUrl =
-      "http://127.0.0.1:4010/stat/v1/timeseries-sim-search/predict/";
+    const apiUrl = API_PY + "/predict/";
     const predictObj = {
       series: timeSeriesBag,
       query: {
