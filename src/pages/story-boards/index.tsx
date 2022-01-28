@@ -56,7 +56,7 @@ const StoryBoards = () => {
                     <Link href="/story-boards/story-2" passHref>
                       <div className={styles.container}>
                         <img
-                          src="/static/story-boards/story-.png"
+                          src="/static/story-boards/story-2.png"
                           className={styles.image}
                         ></img>
                         <div className={styles.overlay}>
@@ -65,11 +65,12 @@ const StoryBoards = () => {
                       </div>
                     </Link>
                   </Grid>
+
                   <Grid item xs={6}>
                     <Link href="/story-boards/story-3" passHref>
                       <div className={styles.container}>
                         <img
-                          src="/static/story-boards/story-.png"
+                          src="/static/story-boards/story-3.png"
                           className={styles.image}
                         ></img>
                         <div className={styles.overlay}>
@@ -78,7 +79,7 @@ const StoryBoards = () => {
                       </div>
                     </Link>
                   </Grid>
-                  <Grid item xs={6}>
+                  {/* <Grid item xs={6}>
                     <Link href="/story-boards/story-4" passHref>
                       <div className={styles.container}>
                         <img
@@ -90,7 +91,7 @@ const StoryBoards = () => {
                         </div>
                       </div>
                     </Link>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               </CardContent>
             </Card>

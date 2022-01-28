@@ -18,7 +18,6 @@ export async function processDataAndGetRegions(): Promise<string[]> {
   await createDailyCasesByRegion();
   createCalenderEvents();
   createPeaksByRegion();
-  createPeaksByRegion();
   createGaussByRegion();
 
   return Object.keys(dailyCasesByRegion).sort();
@@ -31,7 +30,7 @@ const dailyCasesByRegion = {};
 
 async function createDailyCasesByRegion() {
   const csv: any[] = await readCSVFile(
-    "/static/mock/story-boards-data/newCasesByPublishDateRollingSum.csv",
+    "/static/story-boards/newCasesByPublishDateRollingSum.csv",
   );
 
   csv.forEach((row) => {

@@ -4,7 +4,6 @@ export class Fall extends DataEvent {
   _height;
   _grad;
   _normGrad;
-  _rank;
 
   constructor(
     date = undefined,
@@ -18,16 +17,10 @@ export class Fall extends DataEvent {
     this._type = DataEvent.TYPES.FALL;
     this._height = height;
     this._grad = grad;
-    this._normGrad;
   }
 
   get rank() {
-    if (this._rank) return this._rank;
-
-    if (!this._normGrad) {
-      throw "You must set normalised gradient. Use the set functions: .setNormGrad().";
-    }
-    return 1 + Math.min(9, Math.round(this._normGrad - 1));
+    return this._rank;
   }
 
   setHeight(height) {
