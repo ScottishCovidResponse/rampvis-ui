@@ -13,7 +13,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import * as d3 from "d3";
-import { Data } from '../data'
+import { Data } from "../data";
 import { dashboard } from "./dashboard";
 import { colors } from "../colors";
 
@@ -147,7 +147,7 @@ export class DashboardScotlandNew {
             'AgeBand == "18 years and over"',
             'Product == "Total"',
           ],
-          detail: dashboard.DETAIL_MEDIUM
+          detail: dashboard.DETAIL_MEDIUM,
         },
         {
           id: "vaccinated2",
@@ -157,10 +157,11 @@ export class DashboardScotlandNew {
           color: colors.getVaccinationColor(),
           data: Data.from(options.data, Data.Fields.COUNTRY_VACCINE_TOTAL),
           conditions: [
-            'Dose == "Dose 2"', 
+            'Dose == "Dose 2"',
             'AgeBand == "18 years and over"',
-            'Product == "Total"'],
-          detail: dashboard.DETAIL_MEDIUM
+            'Product == "Total"',
+          ],
+          detail: dashboard.DETAIL_MEDIUM,
         },
         {
           id: "vaccinated3",
@@ -172,7 +173,7 @@ export class DashboardScotlandNew {
             options.data,
             Data.Fields.COUNTRY_VACCINE_SEX_AGEGROUP,
           ),
-          unit: '%',
+          unit: "%",
           cumulative: true,
           detail: dashboard.DETAIL_MEDIUM,
           conditions: [
@@ -192,7 +193,7 @@ export class DashboardScotlandNew {
             options.data,
             Data.Fields.COUNTRY_VACCINE_SEX_AGEGROUP,
           ),
-          unit: '%',
+          unit: "%",
           detail: dashboard.DETAIL_MEDIUM,
           conditions: [
             'Dose == "Dose 1"',
@@ -252,7 +253,7 @@ export class DashboardScotlandNew {
             Data.Fields.HEALTH_BOARD_ALL_DEATHS_NORMALIZED,
           ),
           visualization: "cartogram",
-          color:  colors.getDeathColor(),
+          color: colors.getDeathColor(),
           normalized: true,
         },
       ],

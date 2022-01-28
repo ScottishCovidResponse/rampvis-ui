@@ -130,9 +130,36 @@ const Ensemble = () => {
       columns: table_keys,
       retainedDimensions: ["Index"],
       controller: controller,
+      intersectionPoints: Array.from(
+        { length: table_data.length },
+        (x, i) => i,
+      ),
     };
 
-    const scatter = visFactory("HeatMap", options);
+    const heatmap = visFactory("HeatMap", options);
+    controller.heatmap = heatmap;
+  }, []);
+
+  const stackedBarChart = useCallback(async () => {
+    const metadata = await controller.getMetaData();
+    const table_data = metadata.posterior_parameters;
+
+    const table_keys = Object.keys(table_data[0]);
+
+    const options = {
+      chartElement: "stacked_chart",
+      data: table_data,
+      columns: table_keys,
+      retainedDimensions: ["Index"],
+      controller: controller,
+      intersectionPoints: Array.from(
+        { length: table_data.length },
+        (x, i) => i,
+      ),
+    };
+
+    const stacked = visFactory("StackedChart", options);
+    controller.stacked = stacked;
   }, []);
 
   const datasetList = useCallback(async () => {
@@ -148,21 +175,23 @@ const Ensemble = () => {
   }, []);
 
   useEffect(() => {
-    datasetList();
+    //datasetList();
     lineChart();
     parallelVerticalChart();
     parallelAdditionalChart();
     scatterPlot();
     tablePlot();
     heatMap();
+    stackedBarChart();
   }, [
-    datasetList,
+    //datasetList,
     lineChart,
     parallelVerticalChart,
     parallelAdditionalChart,
     scatterPlot,
     tablePlot,
     heatMap,
+    stackedBarChart,
   ]);
 
   const setDatasetName = useCallback(async (event) => {
@@ -185,19 +214,22 @@ const Ensemble = () => {
         <Container maxWidth={settings.compact ? "xl" : false}>
           <Card sx={{ minWidth: 1600 }}>
             <CardContent>
-              <select
+              {/* <select
                 name="dataset-list"
                 id="dataset_list"
                 onChange={setDatasetName}
-              ></select>
+              ></select> */}
               <div id="container">
                 <div id="line-chart">
+                  <h3 className="title">Cases change across time</h3>
                   <div id="line_chart" />
                 </div>
                 <div id="parallel-chart">
+                  <h3 className="title">Mean case change across age-groups</h3>
                   <div id="parallel_chart" />
                 </div>
                 <div id="scatter-plot">
+                  <h3 className="scattertitle">PCA scatter plot of a & b</h3>
                   <div id="scatter_plot" />
                 </div>
                 <div id="table"></div>
@@ -205,13 +237,35 @@ const Ensemble = () => {
 
               <div id="container2">
                 <div id="vertical-chart">
+                  <h3 className="title">Parallel chart of parameters</h3>
                   <div id="parallel_vertical_chart" />
                 </div>
                 <div id="table-plot">
+                  <h3 className="title">
+                    Variation of parameters over their mean [pink below mean,
+                    green above mean]
+                  </h3>
                   <div id="table_plot" />
                 </div>
               </div>
-              <div id="heatmap_chart" />
+
+              <div id="container5">
+                <div id="container3">
+                  <div id="stacked-chart">
+                    <h3 className="title">
+                      Parameters normalized across runs/parameter
+                    </h3>
+                    <div id="stacked_chart" />
+                  </div>
+                </div>
+
+                <div id="container4">
+                  <div id="heatmap-chart">
+                    <h3 className="title">Pixel Map of parameters</h3>
+                    <div id="heatmap_chart" />
+                  </div>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </Container>

@@ -8,7 +8,7 @@ import { Controller } from "./controller";
 export class ParallelChart {
   constructor(options) {
     // set the dimensions and margins of the graph
-    const margin = { top: 30, right: 10, bottom: 10, left: 20 },
+    const margin = { top: 60, right: 10, bottom: 10, left: 20 },
       width = 800 - margin.left - margin.right,
       height = 250 - margin.top - margin.bottom;
 
@@ -229,7 +229,7 @@ export class ParallelChart {
       const legendContainer = container.append("div").lower();
       const legend = pv
         .legend()
-        .margin({ top: 3, right: 0, bottom: 3, left: 80})
+        .margin({ top: 3, right: 0, bottom: 3, left: 80 })
         .colorScale(d3.scaleOrdinal().domain(legendData).range(colors));
       legendContainer.datum(legendData).call(legend);
 

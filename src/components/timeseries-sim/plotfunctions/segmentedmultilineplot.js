@@ -131,6 +131,9 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
     .style("font-size", "20px");
 
   //multi-line drawer
+
+  console.log(dataFiltered);
+
   svg
     .selectAll(".line")
     .data(dataFiltered)
@@ -272,5 +275,5 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
         count = count + 1;
       });
   };
-  d3.select("#segmentedcard").style("visibility","visible")
+  d3.select("#segmentedcard").style("visibility", "visible");
 }

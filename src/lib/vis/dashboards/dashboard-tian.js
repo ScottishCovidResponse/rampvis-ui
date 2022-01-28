@@ -91,9 +91,10 @@ export class DashboardTian {
     //  aberdeenshire_vacc_rate = data;
     //});
     d3.csv(aberdeenshire_vacc_rate).then(function (data) {
-      data[0].percent = data[0].cumVaccinationFirstDoseUptakeByPublishDatePercentage/100
-      aberdeenshire_vacc_rate = data
-    })
+      data[0].percent =
+        data[0].cumVaccinationFirstDoseUptakeByPublishDatePercentage / 100;
+      aberdeenshire_vacc_rate = data;
+    });
 
     console.log("Tian's playground");
 
@@ -105,11 +106,13 @@ export class DashboardTian {
           {
             id: "england",
             title: "Progress Bars",
-            layout: [[
-              "ni_death_rates", 
-              "aberdeen_vax_progress", 
-              "aberdeen_vax_progress2"
-            ]]
+            layout: [
+              [
+                "ni_death_rates",
+                "aberdeen_vax_progress",
+                "aberdeen_vax_progress2",
+              ],
+            ],
           },
         ],
         widgets: [
@@ -126,7 +129,7 @@ export class DashboardTian {
             timeWindow: 1,
             timeLabel: dashboard.TIMEUNIT_MONTH,
             detail: dashboard.DETAIL_HIGH,
-            abbreviate: true
+            abbreviate: true,
           },
           {
             id: "aberdeen_vax_progress",
@@ -138,9 +141,9 @@ export class DashboardTian {
             timeUnit: dashboard.TIMEUNIT_DAY,
             min: 0,
             max: 100,
-            unit: '%',
+            unit: "%",
             detail: dashboard.DETAIL_MEDIUM,
-            abbreviate: true
+            abbreviate: true,
           },
           {
             id: "aberdeen_vax_progress2",
@@ -152,9 +155,9 @@ export class DashboardTian {
             timeUnit: dashboard.TIMEUNIT_DAY,
             min: 0,
             max: 100,
-            unit: '%',
+            unit: "%",
             detail: dashboard.DETAIL_LOW,
-            abbreviate: true
+            abbreviate: true,
           },
         ],
       };
