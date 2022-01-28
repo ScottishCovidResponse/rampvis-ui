@@ -38,12 +38,24 @@ export class DashboardRiskMonitoring {
 
     let last7day_inf = [];
     let tempTotalInf = 0;
+
     let last7day_dea = [];
     let tempTotalDea = 0;
+
+    let last7day_hos = [];
+    let tempTotalHos = 0;
+
+    let last7day_icu = [];
+    let tempTotalIcu = 0;
+
+    let last7day_vac = [];
+    let tempTotalVac = 0;
 
     d0_last7day.forEach(function (item, index) {
       tempTotalInf = tempTotalInf + item["case"];
       tempTotalDea = tempTotalDea + item["death"];
+      tempTotalHos = tempTotalHos + item["hospital"];
+      tempTotalIcu = tempTotalIcu + item["icu"];
 
       if (index != 0 && index % 13 == 0) {
         last7day_inf.push({
@@ -56,8 +68,20 @@ export class DashboardRiskMonitoring {
           value: tempTotalDea,
         });
 
+        last7day_hos.push({
+          year: item["date"],
+          value: tempTotalHos,
+        });
+
+        last7day_icu.push({
+          year: item["date"],
+          value: tempTotalIcu,
+        });
+
         tempTotalInf = 0;
         tempTotalDea = 0;
+        tempTotalHos = 0;
+        tempTotalIcu = 0;
       }
     });
 
@@ -140,6 +164,27 @@ export class DashboardRiskMonitoring {
       }
     });
     dataVac[9].year = "80+";
+
+    dataVac = dataVac.slice(3);
+
+    let d1_last7dayVac = d1.slice(d1.length - 7 * 70, d1.length);
+    let last7daysVac = [];
+    let tepmSumvac = 0;
+    let countFlag = 0;
+    d1_last7dayVac.forEach(function (item) {
+      countFlag = countFlag + 1;
+      let tempyear = item["index"];
+      tepmSumvac = tepmSumvac + item["CumulativeNumberVaccinated"];
+
+      if (countFlag % 70 === 0) {
+        last7daysVac.push({
+          year: tempyear,
+          value: tepmSumvac,
+        });
+
+        tepmSumvac = 0;
+      }
+    });
 
     container.innerHTML = `
         <link rel="stylesheet" type="text/css" media="screen" href="https://cdn.staticfile.org/ionicons/2.0.1/css/ionicons.min.css">      
@@ -255,7 +300,7 @@ export class DashboardRiskMonitoring {
         <div class="mainContent">
             <div class="middleguage">
                 <div class="item">
-                    <span><div class="a">Infections</div></span>
+                    <span><div class="a">Infections (7 days)</div></span>
                     <div class="itemDiv">
                         <div class="guageDiv">
                             <div id="fillgauge1"></div>
@@ -266,7 +311,7 @@ export class DashboardRiskMonitoring {
                     </div>
                 </div>
                 <div class="item">
-                    <span><div class="a">Deaths</div></span>
+                    <span><div class="a">Fatalities (7 days)</div></span>
                     <div class="itemDiv">
                         <div class="guageDiv">
                             <div id="fillgauge2"></div>
@@ -277,7 +322,7 @@ export class DashboardRiskMonitoring {
                     </div>
                 </div>
                 <div class="item">
-                    <span><div class="a">In Hospital</div></span>
+                    <span><div class="a">In Hospital (7 days)</div></span>
                     <div class="itemDiv">
                         <div class="guageDiv">
                             <div id="fillgauge3"></div>
@@ -288,7 +333,7 @@ export class DashboardRiskMonitoring {
                     </div>
                 </div>
                 <div class="item">
-                    <span><div class="a">In ICU</div></span>
+                    <span><div class="a">In ICU (7 days)</div></span>
                     <div class="itemDiv">
                         <div class="guageDiv">
                             <div id="fillgauge4"></div>
@@ -299,7 +344,7 @@ export class DashboardRiskMonitoring {
                     </div>
                 </div>
                 <div class="item">
-                    <span><div class="a">Vaccinated</div></span>
+                    <span><div class="a">Dose-2 Vaccinated (7 days)</div></span>
                     <div class="itemDiv">                    
                             <div class="guageDiv">
                                 <div id="fillgauge5"></div>
@@ -316,163 +361,84 @@ export class DashboardRiskMonitoring {
                     <table style="width:100%;" cellspacing="0" cellpadding="0" border="0">
                         <tr height="25px">
                             <th style="width:25%; font-size:13px">Neighbour</th>
-                            <th style="width:15%; font-size:13px">Infection</th>
-                            <th style="width:15%; font-size:13px">Death</th>
-                            <th style="width:15%; font-size:13px">Hospital</th>
-                            <th style="width:15%; font-size:13px">ICU</th>
-                            <th style="width:15%; font-size:13px">Vaccinated</th>
+                            <th style="width:15%; font-size:13px">Infection (7 days)</th>
+                            <th style="width:15%; font-size:13px">Fatalities (7 days)</th>
+                            <th style="width:15%; font-size:13px">Hospital (7 days)</th>
+                            <th style="width:15%; font-size:13px">ICU (7 days)</th>
+                            <th style="width:15%; font-size:13px">Vaccinated (7 days)</th>
                         </tr>
-                        <tr height="20px">
+                        <tr height="20px" style='text-align:center; font-size:14px'>
                             <td>Borders</td>
-                            <td>
-                                <div class="neighbourDivL">
-                                    <div style="background-color:green; width:25%; height:20px; position: relative; display: inline-block; text-align: center; color:white"><span style="font-size: 9px; line-height: 20px;">25%</span></div>
-                                </div>
-                                <div class="neighbourDivR">&nbsp</div>
-                                <i class='icon ion-arrow-down-c' style='font-size:20px; line-height: 20px;color:green;'></i>
+                            <td>                      
+                                <div style='text-align:center'>22,  20,  35,  24,  63,  44,  56</div>                               
                             </td>
-                            <td>
-                                <div class="neighbourDivL">
-                                    <div style="background-color:green; width:15%; height:20px; position: relative; display: inline-block; text-align: center; color:white"><span style="font-size: 9px; line-height: 20px;">15%</span></div>
-                                </div>
-                                <div class="neighbourDivR">&nbsp</div>
-                                <i class='icon ion-arrow-down-c' style='font-size:20px; line-height: 20px;color:green'></i>
+                            <td>                      
+                                <div style='text-align:center'>22,  30,  45,  54,  23,  34,  66</div>                               
                             </td>
-                            <td>
-                                <div class="neighbourDivL">
-                                    <div style="background-color:green; width:45%; height:20px; position: relative; display: inline-block; text-align: center; color:white"><span style="font-size: 9px; line-height: 20px;">45%</span></div>
-                                </div>
-                                <div class="neighbourDivR">&nbsp</div>
-                                <i class='icon ion-arrow-down-c' style='font-size:20px; line-height: 20px;color:green'></i>
+                            <td>                      
+                                <div style='text-align:center'>12,  20,  35,  34,  23,  44,  66</div>                               
                             </td>
-                            <td>
-                                <div class="neighbourDivL">
-                                    <div style="background-color:green; width:15%; height:20px; position: relative; display: inline-block; text-align: center; color:white"><span style="font-size: 9px; line-height: 20px;">15%</span></div>
-                                </div>
-                                <div class="neighbourDivR">&nbsp</div>
-                                <i class='icon ion-arrow-down-c' style='font-size:20px; line-height: 20px;color:green'></i>
+                            <td>                      
+                                <div style='text-align:center'>12,  30,  35,  24,  12,  44,  66</div>                               
                             </td>
-                            <td>
-                                <div class="neighbourDivL">
-                                    <div style="background-color:green; width:35%; height:20px; position: relative; display: inline-block; text-align: center; color:white"><span style="font-size: 9px; line-height: 20px;">35%</span></div>
-                                </div>
-                                <div class="neighbourDivR">&nbsp</div>
-                                <i class='icon ion-arrow-down-c' style='font-size:20px; line-height: 20px;color:green'></i>
+                            <td>                      
+                                <div style='text-align:center'>12,  30,  45,  34,  23,  34,  66</div>                               
                             </td>
+                            
                         </tr>
-                        <tr height="20px">
+                        <tr height="20px" style='text-align:center; font-size:14px'>
                             <td>Greater Glasgow</td>
-                            <td>
-                                <div class="neighbourDivL">&nbsp</div>
-                                <div class="neighbourDivR">
-                                    <div style="background-color:red; width:30%; height:20px; position: relative; display: inline-block; text-align: center; color:white"><span style="font-size: 9px; line-height: 20px;">30%</span></div>
-                                </div>
-                                <i class='icon ion-arrow-up-c' style='font-size:20px; line-height: 20px;color:red'></i>                                
+                            <td>                      
+                                <div style='text-align:center'>22,  20,  35,  24,  12,  44,  66</div>                               
                             </td>
-                            <td>
-                                <div class="neighbourDivL">&nbsp</div>
-                                <div class="neighbourDivR">
-                                    <div style="background-color:red; width:20%; height:20px; position: relative; display: inline-block; text-align: center; color:white"><span style="font-size: 9px; line-height: 20px;">20%</span></div>
-                                </div>
-                                <i class='icon ion-arrow-up-c' style='font-size:20px; line-height: 20px;color:red'></i>                                
+                            <td>                      
+                                <div style='text-align:center'>12,  20,  45,  24,  23,  34,  56</div>                               
                             </td>
-                            <td>
-                                <div class="neighbourDivL">&nbsp</div>
-                                <div class="neighbourDivR">
-                                    <div style="background-color:red; width:90%; height:20px; position: relative; display: inline-block; text-align: center; color:white"><span style="font-size: 9px; line-height: 20px;">90%</span></div>
-                                </div>
-                                <i class='icon ion-arrow-up-c' style='font-size:20px; line-height: 20px;color:red'></i>                                
+                            <td>                      
+                                <div style='text-align:center'>12,  20,  35,  24,  13,  34,  56</div>                               
                             </td>
-                            <td>
-                                <div class="neighbourDivL">&nbsp</div>
-                                <div class="neighbourDivR">
-                                    <div style="background-color:red; width:50%; height:20px; position: relative; display: inline-block; text-align: center; color:white"><span style="font-size: 9px; line-height: 20px;">50%</span></div>
-                                </div>
-                                <i class='icon ion-arrow-up-c' style='font-size:20px; line-height: 20px;color:red'></i>                                
+                            <td>                      
+                                <div style='text-align:center'>12,  20,  35,  34,  13,  34,  56</div>                               
                             </td>
-                            <td>
-                                <div class="neighbourDivL">
-                                    <div style="background-color:green; width:15%; height:20px; position: relative; display: inline-block; text-align: center; color:white"><span style="font-size: 9px; line-height: 20px;">15%</span></div>
-                                </div>
-                                <div class="neighbourDivR">&nbsp</div>
-                                <i class='icon ion-arrow-down-c' style='font-size:20px; line-height: 20px;color:green'></i>
-                            </td>
+                            <td>                      
+                                <div style='text-align:center'>12,  20,  45,  34,  13,  34,  56</div>                               
+                            </td>                            
                         </tr>
-                        <tr height="20px">
+                        <tr height="20px" style='text-align:center; font-size:14px'>
                             <td>Fife</td>
-                            <td>
-                                <div class="neighbourDivL">&nbsp</div>
-                                <div class="neighbourDivR">
-                                    <div style="background-color:red; width:60%; height:20px; position: relative; display: inline-block; text-align: center; color:white"><span style="font-size: 9px; line-height: 20px;">60%</span></div>
-                                </div>
-                                <i class='icon ion-arrow-up-c' style='font-size:20px; line-height: 20px;color:red'></i>                                    
+                            <td>                      
+                                <div style='text-align:center'>12,  20,  45,  24,  13,  44,  56</div>                               
                             </td>
-                            <td>
-                                <div class="neighbourDivL">
-                                    <div style="background-color:green; width:35%; height:20px; position: relative; display: inline-block; text-align: center; color:white"><span style="font-size: 9px; line-height: 20px;">35%</span></div>
-                                </div>
-                                <div class="neighbourDivR">&nbsp</div>
-                                <i class='icon ion-arrow-down-c' style='font-size:20px; line-height: 20px;color:green'></i>
+                            <td>                      
+                                <div style='text-align:center'>12,  20,  35,  24,  13,  34,  56</div>                               
                             </td>
-                            <td>
-                                <div class="neighbourDivL">
-                                    <div style="background-color:green; width:45%; height:20px; position: relative; display: inline-block; text-align: center; color:white"><span style="font-size: 9px; line-height: 20px;">45%</span></div>
-                                </div>
-                                <div class="neighbourDivR">&nbsp</div>
-                                <i class='icon ion-arrow-down-c' style='font-size:20px; line-height: 20px;color:green'></i>
+                            <td>                      
+                                <div style='text-align:center'>12,  20,  45,  24,  13,  34,  56</div>                               
                             </td>
-                            <td>
-                                <div class="neighbourDivL">&nbsp</div>
-                                <div class="neighbourDivR">
-                                    <div style="background-color:red; width:20%; height:20px; position: relative; display: inline-block; text-align: center; color:white"><span style="font-size: 9px; line-height: 20px;">20%</span></div>
-                                </div>
-                                <i class='icon ion-arrow-up-c' style='font-size:20px; line-height: 20px;color:red'></i>                                    
+                            <td>                      
+                                <div style='text-align:center'>12,  23,  34,  23,  12,  34,  56</div>                               
                             </td>
-                            <td>
-                                <div class="neighbourDivL">&nbsp</div>
-                                <div class="neighbourDivR">
-                                    <div style="background-color:red; width:40%; height:20px; position: relative; display: inline-block; text-align: center; color:white"><span style="font-size: 9px; line-height: 20px;">40%</span></div>
-                                </div>
-                                <i class='icon ion-arrow-up-c' style='font-size:20px; line-height: 20px;color:red'></i>                                    
-                            </td>
+                            <td>                      
+                                <div style='text-align:center'>12,  30,  45,  34,  13,  44,  66</div>                               
+                            </td>                            
                         </tr>
-                        <tr height="20px">
+                        <tr height="20px" style='text-align:center; font-size:14px'>
                             <td>Tayside</td>
-                            <td>
-                                <div class="neighbourDivL">
-                                    <div style="background-color:green; width:80%; height:20px; position: relative; display: inline-block; text-align: center; color:white"><span style="font-size: 9px; line-height: 20px;">80%</span></div>
-                                </div>
-                                <div class="neighbourDivR">&nbsp</div>
-                                <i class='icon ion-arrow-down-c' style='font-size:20px; line-height: 20px;color:green'></i>
-                            </td>                           
-                            <td>
-                                <div class="neighbourDivL">
-                                    <div style="background-color:green; width:55%; height:20px; position: relative; display: inline-block; text-align: center; color:white"><span style="font-size: 9px; line-height: 20px;">55%</span></div>
-                                </div>
-                                <div class="neighbourDivR">&nbsp</div>
-                                <i class='icon ion-arrow-down-c' style='font-size:20px; line-height: 20px;color:green'></i>
+                            <td>                      
+                                <div style='text-align:center'>12,  20,  45,  24,  23,  44,  66</div>                               
                             </td>
-                            <td>
-                                <div class="neighbourDivL">&nbsp</div>
-                                <div class="neighbourDivR">
-                                    <div style="background-color:red; width:66%; height:20px; position: relative; display: inline-block; text-align: center; color:white"><span style="font-size: 9px; line-height: 20px;">66%</span></div>
-                                </div>
-                                <i class='icon ion-arrow-up-c' style='font-size:20px; line-height: 20px;color:red'></i>                                    
+                            <td>                      
+                                <div style='text-align:center'>12,  20,  45,  24,  13,  34,  66</div>                               
                             </td>
-                            <td>
-                                <div class="neighbourDivL">&nbsp</div>
-                                <div class="neighbourDivR">
-                                    <div style="background-color:red; width:55%; height:20px; position: relative; display: inline-block; text-align: center; color:white"><span style="font-size: 9px; line-height: 20px;">55%</span></div>
-                                </div>
-                                <i class='icon ion-arrow-up-c' style='font-size:20px; line-height: 20px;color:red'></i>                                    
+                            <td>                      
+                                <div style='text-align:center'>22,  30,  45,  24,  13,  44,  66</div>                               
                             </td>
-                            <td>
-                                <div class="neighbourDivL">
-                                    <div style="background-color:green; width:75%; height:20px; position: relative; display: inline-block; text-align: center; color:white"><span style="font-size: 9px; line-height: 20px;">75%</span></div>
-                                </div>
-                                <div class="neighbourDivR">&nbsp</div>
-                                <i class='icon ion-arrow-down-c' style='font-size:20px; line-height: 20px;color:green'></i>
+                            <td>                      
+                                <div style='text-align:center'>12,  20,  45,  24,  23,  34,  66</div>                               
                             </td>
+                            <td>                      
+                                <div style='text-align:center'>22,  20,  45,  24,  13,  34,  56</div>                               
+                            </td>                        
                         </tr>
                     </table>
                 
@@ -481,68 +447,45 @@ export class DashboardRiskMonitoring {
         </div>
         `;
 
-    let data3key1 = totalInhos + " in";
-    let data3key2 = totalInf - totalInhos;
+    let data3key1 = totalInhos + " in hospital";
+    let data3key2 = totalInf - totalInhos + " not in hospital";
     let data3 = {};
     data3[data3key1] = totalInhos;
     data3[data3key2] = totalInf - totalInhos;
 
-    let data4key1 = totalIcu + " icu";
-    let data4key2 = totalInhos - totalIcu;
+    let data4key1 = totalIcu + " in ICU";
+    let data4key2 = totalInhos - totalIcu + "in ward";
     let data4 = {};
     data4[data4key1] = totalIcu;
     data4[data4key2] = totalInhos - totalIcu;
 
-    let data5key1 = totalVac + " vac";
-    let data5key2 = totalPop - totalVac;
+    let data5key1 = totalVac + " yes";
+    let data5key2 = totalPop - totalVac + " not";
     let data5 = {};
     data5[data5key1] = totalVac;
     data5[data5key2] = totalPop - totalVac;
 
-    drawpiechart(
-      150,
-      200,
-      ["rgb(101, 80, 187)", "rgb(146,122,242)"],
-      "#fillgauge3",
-      data3,
-      "In-patient percentage of last day ",
-      totalInhos,
-      totalInf,
-    );
-    drawpiechart(
-      150,
-      200,
-      ["rgb(146, 59, 111)", "rgb(205,97,162)"],
-      "#fillgauge4",
-      data4,
-      "ICU patient percentage of last day",
-      totalIcu,
-      totalInhos,
-    );
-    drawpiechart(
-      150,
-      200,
-      ["rgb(99, 136, 20)", "rgb(177,212,103)"],
-      "#fillgauge5",
-      data5,
-      "Dose-2 percentage of last day",
-      totalVac,
-      totalPop,
-    );
+    // drawpiechart(150,200,['#E17A76','#EBB87C'],"#fillgauge3",data3,"Last day in hospital ",totalInhos,totalInf,3)
+    // drawpiechart(150,200,['#D91D82','#E17A76'],"#fillgauge4",data4,"Last day ICU",totalIcu,totalInhos,4)
+    //drawpiechart(180,200,['#85A346','#d3e0b8'],"#fillgauge5",data5,"Last day dose-2",totalVac,totalPop,5)
 
-    drawstackbarchart("#ag_infection", "Infection by age group");
-    drawstackbarchart("#ag_deaths", "Deaths by age group");
-    drawstackbarchart("#ag_hospital", "In hospital by age group");
-    drawstackbarchart("#ag_icu", "ICU by age group");
+    drawstackbarchart("#ag_infection", "Age & gender subtotals");
+    drawstackbarchart("#ag_deaths", "Age & gender subtotals");
+    drawstackbarchart("#ag_hospital", "Age & gender subtotals");
+    drawstackbarchart("#ag_icu", "Age & gender subtotals");
     drawstackbarchart("#ag_vaccined", "Vaccined by age group");
 
-    createbar("#fillgauge1", 150, 200, 1);
-    createbar("#fillgauge2", 150, 200, 2);
+    createbar("#fillgauge1", 230, 200, 1);
+    createbar("#fillgauge2", 230, 200, 2);
+
+    createbar("#fillgauge3", 230, 200, 3);
+    createbar("#fillgauge4", 230, 200, 4);
+    createbar("#fillgauge5", 230, 200, 5);
 
     function drawstackbarchart(id, title) {
       const maxHeight = 150;
-      const maxWidth = 200;
-      const barWidth = 15;
+      const maxWidth = 230;
+      const barWidth = 23;
       let data;
 
       if (id == "#ag_infection") {
@@ -572,7 +515,7 @@ export class DashboardRiskMonitoring {
       const series = stack(data);
       console.log(series);
 
-      const colorArray = ["#03a1fc", "#e980f2"];
+      const colorArray = ["#4075b0", "#e2aed9"];
 
       function renderVerticalStack() {
         const svg = d3
@@ -642,9 +585,9 @@ export class DashboardRiskMonitoring {
           .style("font-size", "10px")
           .style("fill", function (d) {
             if (d[0] == 0) {
-              return "black";
+              return "#fff";
             } else {
-              return "yellow";
+              return "#000";
             }
           });
 
@@ -669,13 +612,13 @@ export class DashboardRiskMonitoring {
           .attr("cx", 20 + maxWidth / 2)
           .attr("cy", maxHeight + 38)
           .attr("r", 5)
-          .style("fill", "#03a1fc");
+          .style("fill", "#4075b0");
         svg
           .append("circle")
           .attr("cx", 55 + maxWidth / 2)
           .attr("cy", maxHeight + 38)
           .attr("r", 5)
-          .style("fill", "#e980f2");
+          .style("fill", "#e2aed9");
         svg
           .append("text")
           .attr("x", 15 + 10 + maxWidth / 2)
@@ -695,12 +638,12 @@ export class DashboardRiskMonitoring {
       renderVerticalStack();
     }
 
-    function drawpiechart(w, h, mycolor, id, mydata, title, n, m) {
+    function drawpiechart(w, h, mycolor, id, mydata, title, n, m, p) {
       let width = w;
       let height = h;
       let margin = 0;
 
-      let radius = Math.min(width, height) / 2 - 5;
+      let radius = Math.min(width, height) / 2 - 10;
 
       let svg = d3
         .select(id)
@@ -734,6 +677,7 @@ export class DashboardRiskMonitoring {
         .style("stroke-width", "2px")
         .style("opacity", 0.7);
 
+      let yn = 1;
       svg
         .selectAll("mySlices")
         .data(data_ready)
@@ -743,18 +687,110 @@ export class DashboardRiskMonitoring {
           return d.data.key;
         })
         .attr("transform", function (d) {
-          return "translate(" + arcGenerator.centroid(d) + ")";
+          let centroid = arcGenerator.centroid(d);
+          if (yn == 1) {
+            yn = yn + 1;
+            return `translate(${centroid[0] - 5},${centroid[1] - 5})`;
+          } else {
+            return `translate(${centroid[0] - 5},${centroid[1] + 15})`;
+          }
+
+          // return "translate(" + arcGenerator.centroid(d) + ")";
         })
         .style("text-anchor", "middle")
         .style("font-size", 10);
 
+      //centroid(d)
+
       svg
         .append("text")
-        .attr("x", 0)
+        .attr("x", -28)
         .attr("y", height / 2 - 10)
         .attr("text-anchor", "middle")
         .style("font-size", "10px")
         .text(title);
+      if (p == 3) {
+        svg
+          .append("circle")
+          .attr("cx", 20 + 5)
+          .attr("cy", height / 2 - 13)
+          .attr("r", 5)
+          .style("fill", "#E17A76");
+        svg
+          .append("circle")
+          .attr("cx", 55 - 5)
+          .attr("cy", height / 2 - 13)
+          .attr("r", 5)
+          .style("fill", "#EBB87C");
+        svg
+          .append("text")
+          .attr("x", 15 + 10 + 5)
+          .attr("y", height / 2 - 13)
+          .text("In")
+          .style("font-size", "10px")
+          .attr("alignment-baseline", "middle");
+        svg
+          .append("text")
+          .attr("x", 50 + 10 - 5)
+          .attr("y", height / 2 - 13)
+          .text("Case")
+          .style("font-size", "10px")
+          .attr("alignment-baseline", "middle");
+      } else if (p == 4) {
+        svg
+          .append("circle")
+          .attr("cx", 20 - 10)
+          .attr("cy", height / 2 - 13)
+          .attr("r", 5)
+          .style("fill", "#D91D82");
+        svg
+          .append("circle")
+          .attr("cx", 55 - 10)
+          .attr("cy", height / 2 - 13)
+          .attr("r", 5)
+          .style("fill", "#E17A76");
+        svg
+          .append("text")
+          .attr("x", 15 + 10 - 10)
+          .attr("y", height / 2 - 13)
+          .text("ICU")
+          .style("font-size", "10px")
+          .attr("alignment-baseline", "middle");
+        svg
+          .append("text")
+          .attr("x", 50 + 10 - 10)
+          .attr("y", height / 2 - 13)
+          .text("Ward")
+          .style("font-size", "10px")
+          .attr("alignment-baseline", "middle");
+      } else if (p == 5) {
+        svg
+          .append("circle")
+          .attr("cx", 20 - 8)
+          .attr("cy", height / 2 - 13)
+          .attr("r", 5)
+          .style("fill", "#85A346");
+        svg
+          .append("circle")
+          .attr("cx", 55 - 1)
+          .attr("cy", height / 2 - 13)
+          .attr("r", 5)
+          .style("fill", "#d3e0b8");
+        svg
+          .append("text")
+          .attr("x", 15 + 10 - 8)
+          .attr("y", height / 2 - 13)
+          .text("Dose-2")
+          .style("font-size", "10px")
+          .attr("alignment-baseline", "middle");
+        svg
+          .append("text")
+          .attr("x", 50 + 10 - 1)
+          .attr("y", height / 2 - 13)
+          .text("Not")
+          .style("font-size", "10px")
+          .attr("alignment-baseline", "middle");
+      }
     }
 
     function createbar(id, w, h, r) {
@@ -776,12 +812,24 @@ export class DashboardRiskMonitoring {
 
       if (r == 1) {
         data = last7day_inf;
-        mycolor = "rgb(111,180,208)";
+        mycolor = "#EBB87C";
         mr = 5000;
       } else if (r == 2) {
         data = last7day_dea;
-        mycolor = "rgb(126,126,126)";
+        mycolor = "#AAA";
         mr = 40;
+      } else if (r == 3) {
+        data = last7day_hos;
+        mycolor = "#E17A76";
+        mr = 800;
+      } else if (r == 4) {
+        data = last7day_icu;
+        mycolor = "#D91D82";
+        mr = 150;
+      } else if (r == 5) {
+        data = last7daysVac;
+        mycolor = "#85A346";
+        mr = 2351000;
       }
 
       let x = d3
@@ -830,7 +878,7 @@ export class DashboardRiskMonitoring {
         .attr("y", h - margin.top - 10)
         .attr("text-anchor", "middle")
         .style("font-size", "10px")
-        .text("Value of last 7 days");
+        .text("Case numbers per day");
     }
   }
 }
