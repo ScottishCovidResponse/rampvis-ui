@@ -5,10 +5,10 @@ import {
   CardContent,
   CardHeader,
   Container,
-  Grid,
   Card,
   Fade,
   CircularProgress,
+  IconButton,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { blue } from "@mui/material/colors";
@@ -168,13 +168,11 @@ const PropagatedPage = () => {
         <Container maxWidth={settings.compact ? "xl" : false}>
           <Card sx={{ minWidth: 1600 }}>
             <CardHeader
-              // TODO:
-              // action={
-              //   <IconButton aria-label="settings">
-              //     { user?.id ? (<MoreVertIcon />) : (<TimelineIcon />)}
-              //   </IconButton>
-              //   <Bookmark pageId={pageId} />
-              // }
+              action={
+                <IconButton aria-label="settings">
+                  <Bookmark pageId={pageId} />
+                </IconButton>
+              }
               avatar={
                 <Avatar className={classes.avatar}>
                   <InsertChartIcon />

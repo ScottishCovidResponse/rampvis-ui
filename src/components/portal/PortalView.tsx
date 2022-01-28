@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { makeStyles } from "@mui/styles";
 import { Theme, Grid } from "@mui/material";
 import PortalItem from "./PortalItem";
+import { IThumbnail } from "src/models/IThumbnail";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -14,11 +15,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-interface PortalViewProps {
-  data: any[];
-}
-
-const PortalView: FC<PortalViewProps> = ({ data = [] }) => {
+const PortalView: FC<{ data: IThumbnail[] }> = ({ data = [] }) => {
   const classes = useStyles();
   console.log("PortalView: data = ", data);
 
@@ -29,7 +26,7 @@ const PortalView: FC<PortalViewProps> = ({ data = [] }) => {
           <PortalItem
             key={d.id}
             id={d.id}
-            image={`/static/mock-images/thumbnails/${d.id}.jpeg`}
+            thumbnail={d.thumbnail}
             title={d.title}
           />
         ))}

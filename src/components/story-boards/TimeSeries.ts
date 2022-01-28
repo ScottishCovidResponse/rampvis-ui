@@ -63,7 +63,7 @@ export class TimeSeries {
   selector;
   line;
 
-  constructor(data, selector, w = width, h = height) {
+  constructor(data, selector = undefined, w = width, h = height) {
     this.selector = selector;
 
     this._data1 = data;
@@ -221,6 +221,7 @@ export class TimeSeries {
   }
 
   svg(ctx) {
+    console.log("TimeSeries: ctx = ", ctx);
     this._ctx = ctx;
     const bounds = ctx.getBoundingClientRect();
     this.width(bounds.width);

@@ -69,15 +69,10 @@ const sections = [
     title: "",
     items: [
       {
-        title: "Public",
+        title: "Public Storyboards",
         path: "/story-boards",
         icon: <PublicIcon fontSize="small" />,
       },
-    ],
-  },
-  {
-    title: "",
-    items: [
       {
         title: "Tools",
         path: "",
@@ -116,13 +111,13 @@ const sections = [
         icon: <PlaceIcon fontSize="small" />,
       },
       {
-        title: "N. ireland",
-        path: "/country/northern-ireland",
+        title: "Wales",
+        path: "/country/wales",
         icon: <PlaceIcon fontSize="small" />,
       },
       {
-        title: "Wales",
-        path: "/country/wales",
+        title: "N. Ireland",
+        path: "/country/northern-ireland",
         icon: <PlaceIcon fontSize="small" />,
       },
     ],

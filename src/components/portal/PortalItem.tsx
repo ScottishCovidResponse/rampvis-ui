@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Link from "next/link";
+import { IThumbnail } from "src/models/IThumbnail";
 
 const useStyles = makeStyles({
   root: {
@@ -17,21 +18,21 @@ const useStyles = makeStyles({
   },
 });
 
-interface PortalItemProps {
-  id: string;
-  image: string;
-  title: string;
-}
-
-const PortalItem: FC<PortalItemProps> = ({ id, image, title }) => {
+const PortalItem: FC<IThumbnail> = ({ id, thumbnail, title }) => {
   const classes = useStyles();
   // prettier-ignore
-  console.log("PortalItem: { image, title } =", image, title);
+  console.log("PortalItem: { id, thumbnail, title } =", id, thumbnail, title);
 
   return (
     <Card className={classes.root}>
       <CardActionArea>
-        <CardMedia component="img" height={250} alt="" image={image} title="" />
+        <CardMedia
+          component="img"
+          height={250}
+          alt=""
+          image={thumbnail && `data:image/jpeg;base64,${thumbnail}`}
+          title=""
+        />
         <CardContent>
           <Link href={{ pathname: "/page", query: { id: id } }} passHref={true}>
             {" "}
