@@ -15,6 +15,23 @@ import { unstable_batchedUpdates } from "react-dom";
 
 const dataPointDisplaySize = 2;
 
+const AnimatedEllipsis: React.VoidFunctionComponent = () => {
+  const [count, setCount] = React.useState(3);
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCount((oldCount) => (oldCount + 1) % 4);
+    }, 500);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+  return (
+    <span style={{ display: "inline-block", width: "1em" }}>
+      {".".repeat(count)}
+    </span>
+  );
+};
+
 const GriddedGlyphsLayerView: GeoMapLayerView<GriddedGlyphsLayerConfig> = ({
   layerConfig,
   onLayerConfigChange,
@@ -223,7 +240,10 @@ const GriddedGlyphsLayerView: GeoMapLayerView<GriddedGlyphsLayerConfig> = ({
             background: "#fffc",
           }}
         >
-          <Typography>preparing data...</Typography>
+          <Typography>
+            preparing data
+            <AnimatedEllipsis />
+          </Typography>
         </Box>
       ) : undefined}
     </>
