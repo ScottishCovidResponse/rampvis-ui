@@ -9,8 +9,28 @@ import {
 import { gridTheData } from "./gridTheData";
 import { getGlyphBlueprint } from "./shared/glyphs";
 import { AbortError } from "../../../shared/AbortError";
+import { Box } from "@mui/system";
+import { Typography } from "@mui/material";
+import { unstable_batchedUpdates } from "react-dom";
 
 const dataPointDisplaySize = 2;
+
+const AnimatedEllipsis: React.VoidFunctionComponent = () => {
+  const [count, setCount] = React.useState(3);
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCount((oldCount) => (oldCount + 1) % 4);
+    }, 500);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+  return (
+    <span style={{ display: "inline-block", width: "1em" }}>
+      {".".repeat(count)}
+    </span>
+  );
+};
 
 const GriddedGlyphsLayerView: GeoMapLayerView<GriddedGlyphsLayerConfig> = ({
   layerConfig,
@@ -37,16 +57,17 @@ const GriddedGlyphsLayerView: GeoMapLayerView<GriddedGlyphsLayerConfig> = ({
       ? glyphConfig.yearsPerAgeBin
       : 100;
 
-  const [glyphMapRecords, setGlyphMapRecords] = React.useState<
-    GlyphMapRecord[]
-  >([]);
+  const [glyphMapRecords, setGlyphMapRecords] =
+    React.useState<GlyphMapRecord[]>();
+  const [glyphMapRecordsPreparing, setGlyphMapRecordsPreparing] =
+    React.useState<boolean>(true);
 
   React.useEffect(() => {
-    setGlyphMapRecords([]);
-
     if (!rawDemographicData) {
       return;
     }
+
+    setGlyphMapRecordsPreparing(true);
 
     const controller = new AbortController();
     const signal = controller.signal;
@@ -57,9 +78,16 @@ const GriddedGlyphsLayerView: GeoMapLayerView<GriddedGlyphsLayerConfig> = ({
       signal,
     })
       .then((glyphMapRecords) => {
-        setGlyphMapRecords(glyphMapRecords);
+        unstable_batchedUpdates(() => {
+          setGlyphMapRecordsPreparing(false);
+          setGlyphMapRecords(glyphMapRecords);
+        });
       })
       .catch((error: unknown) => {
+        unstable_batchedUpdates(() => {
+          setGlyphMapRecordsPreparing(false);
+          setGlyphMapRecords([]);
+        });
         if (!(error instanceof AbortError)) {
           throw error;
         }
@@ -73,7 +101,7 @@ const GriddedGlyphsLayerView: GeoMapLayerView<GriddedGlyphsLayerConfig> = ({
   const griddedData = React.useMemo(
     () =>
       gridTheData(
-        glyphMapRecords,
+        glyphMapRecords ?? [],
         gridPixelSize,
         width,
         height,
@@ -159,7 +187,7 @@ const GriddedGlyphsLayerView: GeoMapLayerView<GriddedGlyphsLayerConfig> = ({
     if (showDataPoints) {
       canvasContext.strokeStyle = "#0000";
       canvasContext.fillStyle = "#000";
-      for (const glyphMapRecord of glyphMapRecords) {
+      for (const glyphMapRecord of glyphMapRecords ?? []) {
         canvasContext.beginPath();
         canvasContext.rect(
           Math.round(geoToScreenX(glyphMapRecord.x) - dataPointDisplaySize / 2),
@@ -190,8 +218,8 @@ const GriddedGlyphsLayerView: GeoMapLayerView<GriddedGlyphsLayerConfig> = ({
       <canvas
         style={{
           position: "absolute",
-          top: "0",
-          left: "0",
+          top: 0,
+          left: 0,
           transform: `scale(${1 / pixelRatio})`,
           transformOrigin: "top left",
         }}
@@ -199,6 +227,25 @@ const GriddedGlyphsLayerView: GeoMapLayerView<GriddedGlyphsLayerConfig> = ({
         height={Math.floor(height * pixelRatio)}
         ref={canvasRef}
       />
+      {glyphMapRecordsPreparing ? (
+        <Box
+          sx={{
+            zIndex: 100,
+            position: "absolute",
+            top: 8,
+            left: 8,
+            paddingX: 1,
+            paddingY: 0.5,
+            borderRadius: 1,
+            background: "#fffc",
+          }}
+        >
+          <Typography>
+            preparing data
+            <AnimatedEllipsis />
+          </Typography>
+        </Box>
+      ) : undefined}
     </>
   );
 };
