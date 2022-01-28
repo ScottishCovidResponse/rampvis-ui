@@ -26,7 +26,7 @@ import { predictPlot } from "src/components/timeseries-sim/plotfunctions/predict
 const API = process.env.NEXT_PUBLIC_API_PY;
 
 const today = new Date();
-const lastDate = new Date(today.setDate(today.getDate() - 2));
+const lastDate = new Date(today.setDate(today.getDate() - 1));
 const firstDate = new Date(today.setDate(today.getDate() - 30));
 const initialFirstRunState = {
   // default user parameters for timeseries search
@@ -100,6 +100,7 @@ const defaultTimeSeriesBag = [
 */
 
 const defaultTimeSeriesBag = [];
+
 const TimeseriesSim = () => {
   //const { settings } = useSettings();
   const classes = useStyles();
@@ -262,7 +263,7 @@ const TimeseriesSim = () => {
     console.log("response = ", response);
     if (response.data?.length > 0) {
       console.log("response.data = ", response.data);
-      predictPlot(response.data);
+      predictPlot(response.data, firstRunForm.targetCountry);
     }
   };
 

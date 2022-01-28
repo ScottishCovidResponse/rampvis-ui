@@ -1,8 +1,11 @@
-import { QueueTwoTone } from "@mui/icons-material";
+import {
+  getListItemSecondaryActionClassesUtilityClass,
+  speedDialActionClasses,
+} from "@mui/material";
 import * as d3 from "d3";
-import { continuousLegend } from "src/lib/vis/pv-continuous-legend";
+import { parse } from "date-fns";
 
-export function predictPlot(data) {
+export function predictPlot(data, country) {
   console.log("predictPlot: data = ", data[0]);
 
   const spaceRemove = (key) => {
@@ -28,13 +31,24 @@ export function predictPlot(data) {
 
   const queryColor = "#FF6600";
   const meanColor = "#426cab";
+  const seriesColor = "#4178ad";
+  const validationColor = "#f98433";
   const predictArray = Array.from(data);
   const predictData = predictArray[0];
   const meanCurveData = predictData["meancurves"];
   const queryCurveData = predictData["query"];
   const selectedCurvesData = predictData["series"];
+  const queryValidationCurveData = predictData["query_validation"];
 
   const keys = Object.keys(meanCurveData);
+  const validationMimic = {};
+  keys.map((key) => {
+    if (queryValidationCurveData[key] === "empty") {
+      validationMimic[key] = queryCurveData[key];
+    } else {
+      validationMimic[key] = queryValidationCurveData[key];
+    }
+  });
 
   //calculate max/min dates/values for d3 ranges,scales and axis
   const meanCurveMaxes = Object.keys(meanCurveData).map((key) =>
@@ -51,6 +65,14 @@ export function predictPlot(data) {
 
   const queryCurveMins = Object.keys(queryCurveData).map((key) =>
     Math.min(...Object.values(queryCurveData[key])),
+  );
+
+  const validationCurveMaxes = Object.keys(validationMimic).map((key) =>
+    Math.max(...Object.values(validationMimic[key])),
+  );
+
+  const validationCurveMins = Object.keys(validationMimic).map((key) =>
+    Math.min(...Object.values(validationMimic[key])),
   );
 
   const selectedCurveMaxes = Object.keys(selectedCurvesData).map((key) =>
@@ -74,11 +96,17 @@ export function predictPlot(data) {
       meanCurveMaxes[i],
       queryCurveMaxes[i],
       selectedCurveMaxes[i],
+      validationCurveMaxes[i],
     );
   });
 
   const minPerGraph = keys.map((d, i) => {
-    return Math.min(meanCurveMins[i], queryCurveMins[i], selectedCurveMins[i]);
+    return Math.min(
+      meanCurveMins[i],
+      queryCurveMins[i],
+      selectedCurveMins[i],
+      validationCurveMins[i],
+    );
   });
 
   const meanCurveDateMaxes = Object.keys(meanCurveData).map((key) => {
@@ -101,6 +129,18 @@ export function predictPlot(data) {
 
   const queryCurveDateMins = Object.keys(queryCurveData).map((key) => {
     const dates = Object.keys(queryCurveData[key]).map(parseTime);
+    const minDate = new Date(Math.min(...dates));
+    return minDate;
+  });
+
+  const validationCurveDateMaxes = Object.keys(validationMimic).map((key) => {
+    const dates = Object.keys(validationMimic[key]).map(parseTime);
+    const maxDate = new Date(Math.max(...dates));
+    return maxDate;
+  });
+
+  const validationCurveDateMins = Object.keys(validationMimic).map((key) => {
+    const dates = Object.keys(validationMimic[key]).map(parseTime);
     const minDate = new Date(Math.min(...dates));
     return minDate;
   });
@@ -134,6 +174,7 @@ export function predictPlot(data) {
       meanCurveDateMaxes[i],
       queryCurveDateMaxes[i],
       selectedCurveDateMaxes[i],
+      validationCurveDateMaxes[i],
     );
     const maxDate = new Date(maxInt);
     return maxDate;
@@ -144,6 +185,7 @@ export function predictPlot(data) {
       meanCurveDateMins[i],
       queryCurveDateMins[i],
       selectedCurveDateMins[i],
+      validationCurveDateMins[i],
     );
     const minDate = new Date(minInt);
     return minDate;
@@ -222,6 +264,11 @@ export function predictPlot(data) {
     .attr("class", "myline")
     .attr("id", (d) => "meanCurve" + spaceRemove(d.key));
 
+  layout
+    .append("path")
+    .attr("class", "myline")
+    .attr("id", (d) => "validationCurve" + spaceRemove(d.key));
+
   keys.map((key, i) => {
     d3.select("#xaxis" + spaceRemove(key)).call(xAxes[i]);
     d3.select("#yaxis" + spaceRemove(key)).call(yAxes[i]);
@@ -232,6 +279,7 @@ export function predictPlot(data) {
     const queryCurve = Object.entries(queryCurveData[key]).map((pairs) => {
       return { date: pairs[0], value: pairs[1] };
     });
+
     const seriesCurves = Object.keys(selectedCurvesData[key]).map(
       (countries) => {
         return {
@@ -251,7 +299,7 @@ export function predictPlot(data) {
       .datum(queryCurve)
       .attr("fill", "none")
       .attr("stroke", queryColor)
-      .attr("stroke-width", 5)
+      .attr("stroke-width", 10)
       .attr(
         "d",
         d3
@@ -259,12 +307,32 @@ export function predictPlot(data) {
           .x((d) => xScale(parseTime(d.date)))
           .y((d) => yScale(d.value)),
       );
+
+    if (queryValidationCurveData[key] !== "empty") {
+      const validationCurve = Object.entries(queryValidationCurveData[key]).map(
+        (pairs) => {
+          return { date: pairs[0], value: pairs[1] };
+        },
+      );
+      d3.select("#validationCurve" + spaceRemove(key))
+        .datum(validationCurve)
+        .attr("fill", "none")
+        .attr("stroke", validationColor)
+        .attr("stroke-width", 10)
+        .attr(
+          "d",
+          d3
+            .line()
+            .x((d) => xScale(parseTime(d.date)))
+            .y((d) => yScale(d.value)),
+        );
+    }
 
     d3.select("#meanCurve" + spaceRemove(key))
       .datum(meanCurve)
       .attr("fill", "none")
       .attr("stroke", meanColor)
-      .attr("stroke-width", 5)
+      .attr("stroke-width", 10)
       .attr(
         "d",
         d3
@@ -273,6 +341,29 @@ export function predictPlot(data) {
           .y((d) => yScale(d.value)),
       );
 
-    console.log(queryCurve);
+    layout
+      .selectAll(".line")
+      .data(seriesCurves)
+      .enter()
+      .append("path")
+      .attr("class", "multiline")
+      .attr("id", (d) => d.country)
+      .attr("fill", "none")
+      .attr("stroke", seriesColor)
+      .attr("stroke-width", 5)
+      .attr("stroke-opacity", 0.3)
+      .attr("d", (d) =>
+        d3
+          .line()
+          .x((d) => xScale(parseTime(d.date)))
+          .y((d) => yScale(d.value))(d.values),
+      );
+    d3.select("#graph" + spaceRemove(key))
+      .append("text")
+      .attr("x", width / 2)
+      .attr("y", 0 - margin)
+      .attr("text-anchor", "middle")
+      .style("font-size", "16px")
+      .text(key + " Prediction for " + country);
   });
 }
