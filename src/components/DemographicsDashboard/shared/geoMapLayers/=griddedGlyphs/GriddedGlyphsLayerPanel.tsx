@@ -48,6 +48,13 @@ const GriddedGlyphsLayerPanel: GeoMapLayerPanel<GriddedGlyphsLayerConfig> = ({
     });
   };
 
+  const handleShowGridChange = () => {
+    onLayerConfigChange?.({
+      ...layerConfig,
+      showGridOutline: !layerConfig.showGridOutline,
+    });
+  };
+
   const handleGridConfigChange = (gridConfig: GridConfig) => {
     onLayerConfigChange?.({
       ...layerConfig,
@@ -146,7 +153,15 @@ const GriddedGlyphsLayerPanel: GeoMapLayerPanel<GriddedGlyphsLayerConfig> = ({
           label="show data points"
         />
       </FormGroup>
-      <Divider sx={{ marginTop: 2, marginBottom: 3 }}>Gridding</Divider>
+      <Divider sx={{ marginTop: 2, marginBottom: 1 }}>Gridding</Divider>
+      <FormControlLabel
+        sx={{ marginBottom: 2 }}
+        control={
+          <Checkbox checked={layerConfig.showGridOutline} disabled={disabled} />
+        }
+        onChange={handleShowGridChange}
+        label="show grid outline"
+      />
       <GridPanel
         disabled={disabled}
         gridConfig={layerConfig.grid}

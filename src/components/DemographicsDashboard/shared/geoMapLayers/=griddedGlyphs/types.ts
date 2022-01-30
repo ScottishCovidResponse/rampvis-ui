@@ -9,6 +9,6 @@ export interface GriddedGlyphsLayerConfig extends BaseGeoMapLayerConfig {
   glyph: GlyphConfig;
   grid: GridConfig;
   showDataPoints: boolean;
-  showGrid: boolean;
+  showGridOutline: boolean;
   smooth: boolean;
 }

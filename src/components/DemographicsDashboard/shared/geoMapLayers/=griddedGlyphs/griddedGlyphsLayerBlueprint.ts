@@ -14,7 +14,7 @@ export const griddedGlyphsLayerBlueprint: GeoMapLayerBlueprint<GriddedGlyphsLaye
       glyph: glyphBlueprintLookup.heatmap.generateDefaultConfig(),
       grid: gridBlueprintLookup.square.generateDefaultConfig(),
       showDataPoints: false,
-      showGrid: false,
+      showGridOutline: false,
       smooth: false,
       visible: true,
     }),
