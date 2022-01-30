@@ -23,7 +23,6 @@ import { DashboardScotlandCouncil } from "./dashboards/dashboard-scotlandCouncil
 import { DashboardScotland } from "./dashboards/dashboard-scotland";
 import { DashboardScotlandNHSBoard } from "./dashboards/dashboard-scotlandNHSBoard";
 import { DashboardUK } from "./dashboards/dashboard-UK";
-import { DashboardGeo } from "./dashboards/dashboard-geo";
 import { DashboardUpperTierLocalAuthority } from "./dashboards/dashboard-UTLA";
 import { DashboardMSOA } from "./dashboards/dashboard-msoa";
 import { DashboardEnglandRegion } from "./dashboards/dashboard-englandRegion";
