@@ -16,6 +16,8 @@ import * as d3 from "d3";
 import { Data } from "../data";
 import { dashboard } from "./dashboard";
 import { colors } from "../colors.js";
+import * as england_utla from "srclib\visdashboardsengland_utla.json";
+import * as scotland_councils from "scottish_councils.json";
 
 // import "./css/dashboard.css";
 // import "./css/default-dashboard.css";
@@ -43,7 +45,10 @@ export class DashboardScotland {
     var links = options.links;
 
     var config = {
-      layout: [["summary", "vaccinations"], "regions"],
+      layout: [
+        ["summary", "vaccinations"],
+        ["regions", "chloropleth"],
+      ],
       groups: [
         {
           id: "summary",
@@ -65,8 +70,37 @@ export class DashboardScotland {
             ],
           ],
         },
+        {
+          id: "chloropleth",
+          title: "Chloropleth Maps",
+          layout: [["england_utla"], ["scotland_councils"]],
+        },
       ],
       widgets: [
+        {
+          id: "england_utla",
+          data: Data.from(
+            options.data,
+            Data.Fields.HEALTH_BOARD_HOSPITAL_NORMALIZED,
+          ),
+          title: "Cloropleth map of English UTLA regions",
+          color: colors.getHospitalizedColor(),
+          visualization: "cartogram",
+          normalized: true,
+          min: 0,
+        },
+        {
+          id: "scotland_councils",
+          data: Data.from(
+            options.data,
+            Data.Fields.HEALTH_BOARD_HOSPITAL_NORMALIZED,
+          ),
+          title: "Cloropleth map of Scottish councils",
+          color: colors.getHospitalizedColor(),
+          visualization: "cartogram",
+          normalized: true,
+          min: 0,
+        },
         {
           id: "cases",
           title: "New Cases",

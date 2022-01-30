@@ -28,7 +28,7 @@ import { height } from "@mui/system";
 import * as d3 from "d3";
 import { zip } from "lodash";
 import moment from "moment";
-import * as topojson from "topojson";
+//import * as topojson from "topojson";
 // import "./css/dashboard.css";
 // import "./css/default-dashboard.css";
 // import "./css/common.css";
@@ -1037,6 +1037,36 @@ dashboard.visualizeMap = function (parent, config, lastDateUpdated) {
 
   // dashboardComponents.setWidgetTitle(svg, config.title, null, config.detail, lastDateUpdated);
 
+  //cloropleth maps
+  var projection = d3
+    .geoMercator()
+    .center([-3, 58]) // GPS of location to zoom on
+    .scale(1550) // This is like the zoom
+    .translate([width / 2, height / 2]);
+
+  var path = d3.geoPath(projection);
+
+  d3.json("england_utla.json", function (error, regions) {
+    if (error) return console.error(error);
+
+    let counties = topojson.feature(regions, regions.objects.lad).features;
+
+    svg
+      .selectAll("path")
+      .data(counties)
+      .join("path")
+      .attr("d", path)
+      .attr("fill", function (d, i) {
+        if (d.id == "S12000026") {
+          return "#FFFF00";
+        } else {
+          return "#808080";
+        }
+      })
+      .attr("stroke", "white")
+      .attr("stroke-width", 0.1);
+  });
+
   svg
     .append("text")
     .attr("x", 0)
@@ -1303,7 +1333,7 @@ dashboard.visualizeProgress = function (parent, config, lastDate) {
   }
 
   dashboardComponents.setWidgetTitle(
-    svg,
+    parent,
     config.title,
     config.link,
     config.detail,
@@ -1686,23 +1716,19 @@ dashboard.visualizeProgressGrid = function (parentHtmlId, config, lastDate) {
   var gridData = makeGridStructure(cell_nr, cell_side, cell_side);
 
   var random = Math.floor(Math.random() * 1000);
-  var wrapperDiv = d3
-    .select("#" + parentHtmlId)
-    .append("div")
-    .attr("id", "wrapperDiv" + random);
+  // var wrapperDiv = d3
+  //   .select("#" + parentHtmlId)
+  //   .append("div")
+  //   .attr("id", "wrapperDiv" + random);
+
+  var wrapperDiv = parentHtmlId.append("div").attr("id", "wrapperDiv" + random);
 
   var grid = wrapperDiv
     .append("svg")
     .attr("width", grid_width)
     .attr("height", grid_height);
 
-  dashboardComponents.setWidgetTitle(
-    grid,
-    config.title,
-    config.link,
-    config.detail,
-    lastDate,
-  );
+  dashboardComponents.setWidgetTitle(grid, config, lastDate);
 
   var row = grid
     .selectAll(".row")
