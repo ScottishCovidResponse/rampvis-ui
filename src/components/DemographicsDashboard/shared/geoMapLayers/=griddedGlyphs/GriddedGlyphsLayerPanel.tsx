@@ -1,4 +1,3 @@
-import InfoIcon from "@mui/icons-material/Info";
 import GeoMapLayerPanelEssentials from "../shared/GeoMapLayerPanelEssentials";
 import { GeoMapLayerPanel } from "../types";
 import * as React from "react";
@@ -10,7 +9,6 @@ import {
   FormGroup,
   Slider,
   SliderProps,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { GriddedGlyphsLayerConfig } from "./types";
@@ -51,7 +49,10 @@ const GriddedGlyphsLayerPanel: GeoMapLayerPanel<GriddedGlyphsLayerConfig> = ({
   const handleGridSizeChange: SliderProps["onChange"] = (event, value) => {
     onLayerConfigChange?.({
       ...layerConfig,
-      gridPixelSize: Array.isArray(value) ? value[0] : value,
+      grid: {
+        ...layerConfig.grid,
+        pixelSize: Array.isArray(value) ? value[0] : value,
+      },
     });
   };
 
@@ -80,28 +81,31 @@ const GriddedGlyphsLayerPanel: GeoMapLayerPanel<GriddedGlyphsLayerConfig> = ({
         Math.max(gridPixelSizeSetup.min, newValue),
       );
 
-      if (cappedValue !== layerConfig.gridPixelSize) {
+      if (cappedValue !== layerConfig.grid.pixelSize) {
         onLayerConfigChange?.({
           ...layerConfig,
-          gridPixelSize: cappedValue,
+          grid: {
+            ...layerConfig.grid,
+            pixelSize: cappedValue,
+          },
         });
       }
     };
     return {
       ArrowLeft: (event) => {
-        applyGridPixelSize(layerConfig.gridPixelSize - 1);
+        applyGridPixelSize(layerConfig.grid.pixelSize - 1);
         event.preventDefault();
       },
       "Shift+ArrowLeft": (event) => {
-        applyGridPixelSize(layerConfig.gridPixelSize - 5);
+        applyGridPixelSize(layerConfig.grid.pixelSize - 5);
         event.preventDefault();
       },
       ArrowRight: (event) => {
-        applyGridPixelSize(layerConfig.gridPixelSize + 1);
+        applyGridPixelSize(layerConfig.grid.pixelSize + 1);
         event.preventDefault();
       },
       "Shift+ArrowRight": (event) => {
-        applyGridPixelSize(layerConfig.gridPixelSize + 5);
+        applyGridPixelSize(layerConfig.grid.pixelSize + 5);
         event.preventDefault();
       },
       g: (event) => {
@@ -155,11 +159,11 @@ const GriddedGlyphsLayerPanel: GeoMapLayerPanel<GriddedGlyphsLayerConfig> = ({
       <FormGroup sx={{ marginTop: 2 }}>
         <FormControl>
           <Typography gutterBottom>
-            grid size in pixels: {layerConfig.gridPixelSize}
+            grid size in pixels: {layerConfig.grid.pixelSize}
           </Typography>
           <Slider
             disabled={disabled}
-            value={layerConfig.gridPixelSize}
+            value={layerConfig.grid.pixelSize}
             step={5}
             min={gridPixelSizeSetup.min}
             max={gridPixelSizeSetup.max}
