@@ -1,14 +1,16 @@
 module.exports = {
   plugins: ["@typescript-eslint"],
-  extends: ["next", "plugin:@typescript-eslint/recommended", "prettier"],
+  extends: [
+    "next",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "plugin:import/errors",
+    "plugin:import/typescript",
+  ],
   rules: {
     "@typescript-eslint/comma-dangle": "off",
     "class-methods-use-this": "off",
     "comma-dangle": "off",
-    "import/no-cycle": "off",
-    "import/no-extraneous-dependencies": "off",
-    "import/order": "off",
-    "import/prefer-default-export": "off",
     "jsx-a11y/anchor-is-valid": "off",
     "max-len": "off",
     "no-console": "off",
