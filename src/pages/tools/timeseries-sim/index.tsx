@@ -26,11 +26,11 @@ import { predictPlot } from "src/components/timeseries-sim/plotfunctions/predict
 const API = process.env.NEXT_PUBLIC_API_PY;
 const API_PY = API + "/timeseries-sim-search";
 const today = new Date();
-const lastDate = new Date(today.setDate(today.getDate() - 1));
+const lastDate = new Date(today.setDate(today.getDate() - 2));
 const firstDate = new Date(today.setDate(today.getDate() - 30));
 const initialFirstRunState = {
   // default user parameters for timeseries search
-  targetCountry: "France",
+  targetCountry: "Belgium",
   firstDate:
     String(firstDate.getFullYear()) +
     "-" +
@@ -75,29 +75,6 @@ const defaultBenchmarkCountries = [
   "United Kingdom",
   "Netherlands",
 ];
-
-/*
-const defaultTimeSeriesBag = [
-  "Ireland 2022-01-18 Biweekly Cases Per Million",
-  "Cyprus 2022-01-19 Biweekly Cases Per Million",
-  "Denmark 2022-01-16 Biweekly Cases Per Million",
-  "United Kingdom 2022-01-19 Biweekly Cases Per Million",
-  "Slovakia 2021-12-11 Biweekly Cases Per Million",
-  "Czechia 2021-12-15 Biweekly Cases Per Million",
-  "Slovenia 2021-12-01 Biweekly Cases Per Million",
-  "Belgium 2021-12-16 Biweekly Cases Per Million",
-  "Austria 2021-12-08 Biweekly Cases Per Million",
-  "Latvia 2021-11-12 Biweekly Cases Per Million",
-  "Estonia 2021-11-17 Biweekly Cases Per Million",
-  "Croatia 2021-10-17 Biweekly Deaths Per Million",
-  "Belgium 2021-04-13 Biweekly Deaths Per Million",
-  "Greece 2021-03-17 Biweekly Deaths Per Million",
-  "Netherlands 2021-12-25 Biweekly Deaths Per Million",
-  "Switzerland 2022-01-09 Biweekly Deaths Per Million",
-  "Albania 2021-10-22 Biweekly Deaths Per Million",
-  "Slovenia 2021-11-06 Biweekly Deaths Per Million",
-];
-*/
 
 const defaultTimeSeriesBag = [];
 
@@ -204,22 +181,6 @@ const TimeseriesSim = () => {
     }
   };
 
-  const [responseDataSearch, setResponseDataSearch] = useState([]); // timeseries comparison response from API state control
-  const plotSwitch = async () => {
-    // summons segmented and aligment plots on response back from API
-    if (responseDataSearch.length > 0) {
-      alignmentPlot(
-        responseDataSearch,
-        firstRunForm.indicator,
-        timeSeriesBag,
-        benchmarkCountries,
-        setTimeSeriesBag,
-        setBenchmarkCountries,
-      );
-      SegmentedMultiLinePlot(responseDataSearch, firstRunForm);
-    }
-  };
-
   const searchPost = async () => {
     // post request to get similar timeseries back from API
     const apiUrl = API_PY + "/search/";
@@ -227,8 +188,17 @@ const TimeseriesSim = () => {
     const response = await axios.post(apiUrl, firstRunForm);
     console.log("response = ", response);
     if (response.data?.length > 0) {
-      setResponseDataSearch(response.data);
+      //setResponseDataSearch(response.data);
       console.log("response.data = ", response.data);
+      alignmentPlot(
+        response.data,
+        firstRunForm.indicator,
+        timeSeriesBag,
+        benchmarkCountries,
+        setTimeSeriesBag,
+        setBenchmarkCountries,
+      );
+      SegmentedMultiLinePlot(response.data, firstRunForm);
     }
   };
 
@@ -278,7 +248,7 @@ const TimeseriesSim = () => {
   const searchClick = async () => {
     // on clicking search button, fetch data , wait response and summon plots
     await searchPost();
-    plotSwitch();
+    //plotSwitch();
   };
 
   return (

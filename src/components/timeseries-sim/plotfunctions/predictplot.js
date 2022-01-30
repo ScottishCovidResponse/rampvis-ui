@@ -341,7 +341,7 @@ export function predictPlot(data, country) {
           .y((d) => yScale(d.value)),
       );
 
-    layout
+    d3.select("#graph" + spaceRemove(key))
       .selectAll(".line")
       .data(seriesCurves)
       .enter()
