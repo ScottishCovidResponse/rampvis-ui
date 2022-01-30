@@ -94,7 +94,7 @@ function FirstForm(props) {
           InputLabelProps={{
             shrink: true,
           }}
-          InputProps={{ inputProps: { min: 0, max: 10 } }}
+          InputProps={{ inputProps: { min: 0, max: 20 } }}
         />
       </h2>
     </div>

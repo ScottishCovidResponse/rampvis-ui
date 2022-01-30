@@ -131,6 +131,9 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
     .style("font-size", "20px");
 
   //multi-line drawer
+
+  console.log(dataFiltered);
+
   svg
     .selectAll(".line")
     .data(dataFiltered)
