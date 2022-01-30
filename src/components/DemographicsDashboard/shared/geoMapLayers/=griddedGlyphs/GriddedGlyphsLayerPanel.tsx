@@ -20,6 +20,8 @@ import {
   aggregateDistanceSetup,
   gridPixelSizeSetup,
 } from "./shared/helpersForConfig";
+import { GridConfig } from "./shared/grid/blueprints";
+import GridPanel from "./shared/grid/GridPanel";
 
 const GriddedGlyphsLayerPanel: GeoMapLayerPanel<GriddedGlyphsLayerConfig> = ({
   layerConfig,
@@ -46,20 +48,10 @@ const GriddedGlyphsLayerPanel: GeoMapLayerPanel<GriddedGlyphsLayerConfig> = ({
     });
   };
 
-  const handleGridSizeChange: SliderProps["onChange"] = (event, value) => {
+  const handleGridConfigChange = (gridConfig: GridConfig) => {
     onLayerConfigChange?.({
       ...layerConfig,
-      grid: {
-        ...layerConfig.grid,
-        pixelSize: Array.isArray(value) ? value[0] : value,
-      },
-    });
-  };
-
-  const handleSmoothCheckboxChange = () => {
-    onLayerConfigChange?.({
-      ...layerConfig,
-      smooth: !layerConfig.smooth,
+      grid: gridConfig,
     });
   };
 
@@ -155,29 +147,12 @@ const GriddedGlyphsLayerPanel: GeoMapLayerPanel<GriddedGlyphsLayerConfig> = ({
         />
       </FormGroup>
       <Divider sx={{ marginTop: 2, marginBottom: 3 }}>Gridding</Divider>
+      <GridPanel
+        disabled={disabled}
+        gridConfig={layerConfig.grid}
+        onGridConfigChange={handleGridConfigChange}
+      />
 
-      <FormGroup sx={{ marginTop: 2 }}>
-        <FormControl>
-          <Typography gutterBottom>
-            grid size in pixels: {layerConfig.grid.pixelSize}
-          </Typography>
-          <Slider
-            disabled={disabled}
-            value={layerConfig.grid.pixelSize}
-            step={5}
-            min={gridPixelSizeSetup.min}
-            max={gridPixelSizeSetup.max}
-            onChange={handleGridSizeChange}
-          />
-        </FormControl>
-
-        <FormControlLabel
-          control={<Checkbox checked={layerConfig.smooth} />}
-          onChange={handleSmoothCheckboxChange}
-          label={<>smooth </>}
-          disabled={disabled}
-        />
-      </FormGroup>
       <Divider sx={{ marginTop: 3, marginBottom: 2 }}>Glyph</Divider>
       <GlyphPanel
         disabled={disabled}
