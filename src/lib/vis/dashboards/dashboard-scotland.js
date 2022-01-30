@@ -16,8 +16,8 @@ import * as d3 from "d3";
 import { Data } from "../data";
 import { dashboard } from "./dashboard";
 import { colors } from "../colors.js";
-import * as england_utla from "srclib\visdashboardsengland_utla.json";
-import * as scotland_councils from "scottish_councils.json";
+import * as england_utla from "./england_utla.json";
+import * as scotland_councils from "./scottish_councils.json";
 
 // import "./css/dashboard.css";
 // import "./css/default-dashboard.css";
