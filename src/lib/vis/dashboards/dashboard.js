@@ -1799,7 +1799,7 @@ dashboard.visualizeProgressGrid = function (parentHtmlId, config, lastDate) {
 };
 
 function makeGridStructure(cell_count, width, height) {
-  var data = new Array();
+  var data = [];
   var xpos = 1; //starting xpos and ypos at 1 so the stroke will show when we make the grid below
   var ypos = 1;
   var width = width;
@@ -1807,7 +1807,7 @@ function makeGridStructure(cell_count, width, height) {
   // iterate for rows
   var count = 0;
   for (var row = 0; row < cell_count; row++) {
-    data.push(new Array());
+    data.push([]);
     // iterate for cells/columns inside rows
     for (var column = 0; column < cell_count; column++) {
       data[row].push({
