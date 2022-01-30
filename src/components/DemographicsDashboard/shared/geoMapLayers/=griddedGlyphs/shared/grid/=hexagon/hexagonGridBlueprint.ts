@@ -8,6 +8,7 @@ export const hexagonGridBlueprint: GridBlueprint<HexagonGridConfig> = {
   generateDefaultConfig: () => ({
     gridType: "hexagon",
     pixelSize: 30,
+    orientation: "vertical",
   }),
   Panel: HexagonGridPanel,
 };

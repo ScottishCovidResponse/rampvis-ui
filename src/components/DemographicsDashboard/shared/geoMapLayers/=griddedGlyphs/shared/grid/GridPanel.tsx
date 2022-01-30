@@ -82,13 +82,6 @@ const GridPanel: React.VoidFunctionComponent<GridPanelProps> = ({
             onChange={handlePixelSizeChange}
           />
         </FormControl>
-
-        {/* <FormControlLabel
-          control={<Checkbox checked={layerConfig.smooth} />}
-          onChange={handleSmoothCheckboxChange}
-          label={<>smooth </>}
-          disabled={disabled}
-        /> */}
       </FormGroup>
 
       <gridBlueprint.Panel
