@@ -57,7 +57,7 @@ function BenchmarkCountryList(props) {
         </Button>
       </h2>
       <h2>
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" onClick={props.onClick}>
           Compare
         </Button>
       </h2>

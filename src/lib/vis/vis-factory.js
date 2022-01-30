@@ -28,6 +28,7 @@ import { DashboardMSOA } from "./dashboards/dashboard-msoa";
 import { DashboardEnglandRegion } from "./dashboards/dashboard-englandRegion";
 import { DashboardEnglandNHSRegion } from "./dashboards/dashboard-englandNHSRegion";
 import { DashboardNation } from "./dashboards/dashboard-nation";
+import { DashboardTian } from "./dashboards/dashboard-tian";
 
 export const visFactory = (type, args) => {
   if (type === "SimpleBarChart") return new SimpleBarChart(args);
@@ -69,7 +70,7 @@ export const visFactory = (type, args) => {
   if (type === "DashboardScotland") return new DashboardScotland(args);
   if (type === "DashboardUK") return new DashboardUK(args);
   if (type === "DashboardNation") return new DashboardNation(args);
-  if (type === "CountryOverviewNew") return new DashboardEnglandNHSRegion(args);
+  if (type === "CountryOverviewNew") return new DashboardScotland(args);
   if (type === "DashboardUTLA")
     return new DashboardUpperTierLocalAuthority(args);
   if (type === "DashboardMSOA") return new DashboardMSOA(args);

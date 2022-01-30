@@ -15,24 +15,6 @@ export const covidIndicators = [
     label: "Daily Cases per million",
     value: "new_cases_per_million",
   },
-
-  {
-    label: "Cumulative Deaths",
-    value: "total_deaths",
-  },
-  {
-    label: "Cumulative Cases",
-    value: "total_cases",
-  },
-
-  {
-    label: "Cumulative Deaths per million",
-    value: "total_deaths_per_million",
-  },
-  {
-    label: "Cumulative Cases per million",
-    value: "total_cases_per_million",
-  },
   {
     label: "Biweekly Cases per million",
     value: "biweekly_cases_per_million",
@@ -65,22 +47,6 @@ export const covidIndicators = [
   {
     label: "Weekly Deaths",
     value: "weekly_deaths",
-  },
-  {
-    label: "Weekly Cases Rate",
-    value: "weekly_cases_rate",
-  },
-  {
-    label: "Weekly Deaths Rate",
-    value: "weekly_deaths_rate",
-  },
-  {
-    label: "Biweekly Cases Rate",
-    value: "biweekly_cases_rate",
-  },
-  {
-    label: "Biweekly Deaths Rate",
-    value: "biweekly_deaths_rate",
   },
 ];
 
@@ -115,7 +81,7 @@ export const continents = [
     value: "Asia",
   },
   {
-    value: "Australia",
+    value: "Ocenia",
   },
   {
     value: "Europe",
