@@ -11,7 +11,9 @@ function PredictPopUp(props) {
     <div>
       <Dialog fullScreen open={props.state} onClose={props.close}>
         <DialogTitle>Observation-based Forecasting Screen</DialogTitle>
-
+        <Button onClick={props.close} color="primary">
+          Close
+        </Button>
         <DialogContent>
           <div id="predictScreen" />
         </DialogContent>
