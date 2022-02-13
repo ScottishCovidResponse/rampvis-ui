@@ -1,6 +1,13 @@
 import { useState, ReactElement } from "react";
 import { Helmet } from "react-helmet-async";
-import { Grid, Box, Card, CardContent, CardHeader } from "@mui/material";
+import {
+  Button,
+  Grid,
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+} from "@mui/material";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import axios from "axios";
 import FirstForm from "src/components/timeseries-sim/FirstForm";
@@ -22,6 +29,7 @@ import ComparePopUp from "src/components/timeseries-sim/ComparePopUp";
 import { benchmarkPlot } from "src/components/timeseries-sim/plotfunctions/benchmarkplot";
 import PredictPopUp from "src/components/timeseries-sim/PredictPopUp";
 import { predictPlot } from "src/components/timeseries-sim/plotfunctions/predictplot";
+import InfoPopUp from "src/components/timeseries-sim/InfoPopUp";
 
 const API = process.env.NEXT_PUBLIC_API_PY;
 const API_PY = API + "/timeseries-sim-search";
@@ -83,6 +91,7 @@ const TimeseriesSim = () => {
   const classes = useStyles();
 
   const [advancedFilterPopup, setAdvancedFilterPopup] = useState(false); // advanced filter popup state control
+  const [infoPopUp, setInfoPopUp] = useState(false);
   const [comparePopUp, setComparePopUp] = useState(false);
   const [predictPopUp, setPredictPopUp] = useState(false);
 
@@ -93,6 +102,14 @@ const TimeseriesSim = () => {
   const advancedFilterClickClose = () => {
     // sets popup state to false
     setAdvancedFilterPopup(false);
+  };
+  const infoPopUpClickOpen = () => {
+    // sets popup state to true
+    setInfoPopUp(true);
+  };
+  const infoPopUpClickClose = () => {
+    // sets popup state to false
+    setInfoPopUp(false);
   };
 
   const comparePopUpOpen = () => {
@@ -281,6 +298,11 @@ const TimeseriesSim = () => {
                 <SearchButton
                   className={classes.searchButton}
                   onClick={searchClick}
+                />
+                <InfoPopUp
+                  open={infoPopUpClickOpen}
+                  state={infoPopUp}
+                  close={infoPopUpClickClose}
                 />
               </CardContent>
             </Card>

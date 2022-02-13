@@ -16,7 +16,6 @@ export const useStyles = makeStyles((theme) => ({
     float: "left",
   },
   searchButton: {
-    marginBottom: theme.spacing(2),
     float: "right",
   },
 
