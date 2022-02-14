@@ -122,7 +122,7 @@ function InfoPopUp(props) {
                 the number of countries.
               </p>
               <p>
-                The tool's aim is to rank and display statistically closest
+                The tool&apos;s aim is to rank and display statistically closest
                 temporal movements given a query time-series. This is solved by
                 defining a similarity or distance measure between the
                 time-series object to estimate how close the temporal movements
@@ -139,10 +139,10 @@ function InfoPopUp(props) {
                 whole time-series matching is used.
               </p>
               <p>
-                Given a query time-series,(ex: last month's biweekly cases per
-                million for France) the system creates a dataframe which gathers
-                all available countries data on the given indicator. Then using
-                a window function, a new dataframe generated storing
+                Given a query time-series,(ex: last month&apos;s biweekly cases
+                per million for France) the system creates a dataframe which
+                gathers all available countries data on the given indicator.
+                Then using a window function, a new dataframe generated storing
                 same-lengthed time-series in each cell using the query length.
                 The generated dataframe TSDF can be represented as follows:
                 <MathJax.Node formula={slicedMatrix} />
@@ -224,7 +224,7 @@ function InfoPopUp(props) {
                 notion of the algorithms such that it measures how much
                 information or compression can be obtained by knowing one of the
                 compared time-series [12]. These are mainly used in text and
-                media mining [13]. Pearson's correlation distance uses the
+                media mining [13]. Pearson&apos;s correlation distance uses the
                 co-variance between the time-series [13]. If only correlation
                 index is used, the output ranges from -1 to 1 with 1 indicating
                 that there is perfect positive linear relationship between
@@ -232,8 +232,8 @@ function InfoPopUp(props) {
                 independent. To obtain a distance measure, the result is
                 subtracted from 1, resulting a new range from 0 to 2. Cosine
                 distance evaluates the cosine angle between the temporal points
-                [12]. It's a special case of the Pearson's correlation distance
-                when the mean of both time-series is equal to zero.
+                [12]. It&apos;s a special case of the Pearson&apos;s correlation
+                distance when the mean of both time-series is equal to zero.
               </p>
               <MathJax.Node formula={compressionMeasureTable} />
               <p>
@@ -302,7 +302,7 @@ function InfoPopUp(props) {
               <p>
                 [2] Guojun Gan, Chaoqun Ma, and Jianhong Wu. Data clustering -
                 theory, algorithms, and applications., chapter 6.6, pages
-                87–100. SIAM, 2007.
+                87-100. SIAM, 2007.
               </p>
               <p>
                 [3] Carmelo Cassisi, Placido Montalto, Marco Aliotta, Andrea
@@ -325,7 +325,7 @@ function InfoPopUp(props) {
               <p>
                 [6] Yang Yu and Dingsheng Wang. Similarity study of hydrological
                 time series based on data mining. In Big Data Analytics for
-                Cyber-Physical System in Smart City, pages 1049–1055. Springer
+                Cyber-Physical System in Smart City, pages 1049-055. Springer
                 Singapore, 2021. ISBN 978-981-33-4572-0.
               </p>
               <p>
@@ -344,7 +344,7 @@ function InfoPopUp(props) {
               <p>
                 [9] Ali Seyed Shirkhorshidi, Saeed Aghabozorgi, and Teh Ying
                 Wah. A comparison study on similarity and dissimilarity measures
-                in clustering continuous data. PLOS ONE, 10(12):1–20, 12 2015.
+                in clustering continuous data. PLOS ONE, 10(12):1-20, 12 2015.
                 doi: 10.1371/journal.pone.0144059. URL
                 https://doi.org/10.1371/journal.pone.0144059.
               </p>
@@ -374,14 +374,14 @@ function InfoPopUp(props) {
               </p>
               <p>
                 [14] Meinard Müller. Dynamic time warping. Information Retrieval
-                for Music and Motion, 2:69–84, 01 2007. doi:
+                for Music and Motion, 2:69-84, 01 2007. doi:
                 10.1007/978-3-540-74048-3_4.
               </p>
               <p>
                 [15] Tomasz Górecki. Classification of time series using
                 combination of dtw and lcss dissimilarity measures.
                 Communications in Statistics - Simulation and Computation,
-                47(1):263–276, 2018. doi: 10.1080/03610918.2017.1280829.
+                47(1):263-276, 2018. doi: 10.1080/03610918.2017.1280829.
               </p>
               <p>
                 [16] Gholamreza Soleimany and Masoud Abessi. A new similarity
