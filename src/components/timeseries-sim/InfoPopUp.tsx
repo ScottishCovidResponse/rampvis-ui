@@ -1,18 +1,12 @@
-import { HealthAndSafety } from "@mui/icons-material";
 import {
-  TextField,
   Button,
   Dialog,
   DialogActions,
   DialogTitle,
   DialogContent,
-  DialogContentText,
-  FormGroup,
-  Checkbox,
 } from "@mui/material";
 import MathJax from "react-mathjax";
-const inlineFormula = `k_{n+1} = n^2 + k_n^2 - k_{n-1}`;
-const blockFormula = `\\int_0^\\infty x^2 dx`;
+
 const timeseriesFormula = `\\pmb{t} = \\{t_\\mathrm{1},t_\\mathrm{2},\\cdots,t_\\mathrm{n}\\}`;
 const multiTimeseries = `\\pmb{T}_\\mathrm{d,c} =\\{\\pmb{t}_\\mathrm{d,c}^{(\\mathrm{1})},\\mathbf{t}_\\mathrm{d,c}^{(\\mathrm{2})},\\cdots,\\pmb{t}_\\mathrm{d,c}^{(n_\\mathrm{i})}\\}^\\top`;
 const timeseriesMatrix = `\\mathrm{TSDB}_\\mathrm{n_\\mathrm{d} \\times n_\\mathrm{c}} = 
@@ -77,20 +71,6 @@ const compressionMeasureTable = `
 \\hline
 \\hline
 \\end{array}`;
-
-const dtwAlgo = `\\begin{algorithm}[H]
-\\setstretch{1.2}{
-\\SetAlgoLined
-\\KwIn{Two time-series objects $\\pmb{x}: [x_1,..,x_n]$ and $\\pmb{y} : [y_1,...,y_m]$, distance measure $d(\\pmb{x},\\pmb{y})$}
-\\KwOut{Distance $d_\\mathrm{DTW}(\\pmb{x},\\pmb{y})$ between time-series objects }
-DTW = zeros(n,m) \\;
-\\For{$i\\leftarrow 1$ \\KwTo $n$}{ \\For{$j\\leftarrow 1$\\KwTo $m$}{DTW[$i,j$] = $\\infty $}}
-DTW[$0,0$] = $0$ \\; 
-\\For{$i\\leftarrow 1$ \\KwTo $n$}{ \\For{$j\\leftarrow 1$ \\KwTo $m$}{cost = d($x[i],y[j]$)\\;
-DTW[$i,j$]  = cost + $\\min$\\{ DTW[$i-1,j$] ,DTW[$i,j-1$],  DTW[$i-1,j-1$]\\}}}
-\\KwRet{$\\mathrm{DTW[n,m]}$}}
-\end{algorithm}
-`;
 
 function InfoPopUp(props) {
   return (
