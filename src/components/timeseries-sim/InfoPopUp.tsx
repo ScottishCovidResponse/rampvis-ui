@@ -29,9 +29,11 @@ function InfoPopUp(props) {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">
-          Time-series Search Info
+          Time-period Search Info Screen
         </DialogTitle>
-        <DialogContent></DialogContent>
+        <DialogContent>
+          <h1>Time-period Search</h1>
+        </DialogContent>
         <DialogActions>
           <Button onClick={props.close} color="primary">
             Close
