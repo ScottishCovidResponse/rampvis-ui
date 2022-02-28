@@ -40,15 +40,9 @@ const distanceMeasureTable = `
 \\\\
 \\text{Euclidean} & d_2  :  (\\pmb{x},\\pmb{y}) \\longmapsto ||\\pmb{x}-\\pmb{y}||_2 = \\sqrt{\\sum_{i=1}^n (x_i - y_i)^2} 
 \\\\
-\\text{Sum of Squared} &d_\\mathrm{SSD} : (\\pmb{x},\\pmb{y}) \\longmapsto d_2^2 = ||\\pmb{x}-\\pmb{y}||_2^2 = \\sum_{i=1}^n (x_i - y_i)^2
-\\\\
-\\text{Mean Squared} & d_\\mathrm{MSE} : (\\pmb{x},\\pmb{y}) \\longmapsto \\frac{d_\\mathrm{SSD}}{n} = \\frac{||\\pmb{x}-\\pmb{y}||_2^2}{n} = \\frac{1}{n}\\sum_{i=1}^n (x_i - y_i)^2
-\\\\
 \\text{Chebyshev} &   d_\\infty : (\\pmb{x},\\pmb{y}) \\longmapsto ||\\pmb{x}-\\pmb{y}||_\\infty = \\lim_{p \\rightarrow \\infty}\\Big(\\sum_{i=1}^n (x_i - y_i)^p\\Big)^{\\frac{1}{p}}
 \\\\
 \\text{Canberra} & d_\\mathrm{CAD} : (\\pmb{x},\\pmb{y}) \\longmapsto \\sum_{i=1}^n \\frac{|x_i-y_i|}{|x_i|+|y_i|}
-\\\\
-\\text{Bray-Curtis} & d_\\mathrm{BC} : (\\pmb{x},\\pmb{y}) \\longmapsto  \\frac{\\sum_{i=1}^n|x_i-y_i|}{\\sum_{i=1}^n|x_i+y_i|}
 \\\\
 \\\\
 \\hline
@@ -106,20 +100,7 @@ function InfoPopUp(props) {
                 element and length of the time-series object. For the
                 covid-data, a time-series database is created. For one country,
                 there are several indicators introducing multi-dimensional data
-                (cases, deaths, icu admissions, tests). For a particular date
-                and country, multi-dimensional time-series data is represented
-                as <MathJax.Node inline formula={multiTimeseries} /> where{" "}
-                <MathJax.Node inline formula={`\\mathrm{d}`} /> is date,{" "}
-                <MathJax.Node inline formula={`\\mathrm{c}`} /> is country and{" "}
-                <MathJax.Node inline formula={`\\mathrm{n}_\\mathrm{i}`} />
-                is the number of indicators. The time-series database is
-                structured as follows:
-                <MathJax.Node formula={timeseriesMatrix} />
-                where{" "}
-                <MathJax.Node inline formula={`\\mathrm{n}_\\mathrm{d}`} /> is
-                the number of dates and{" "}
-                <MathJax.Node inline formula={`\\mathrm{n}_\\mathrm{c}`} /> is
-                the number of countries.
+                (cases, deaths, icu admissions, tests).
               </p>
               <p>
                 The tool&apos;s aim is to rank and display statistically closest
@@ -130,51 +111,30 @@ function InfoPopUp(props) {
                 time-series objects x and y are defined as [2]:
                 <MathJax.Node formula={distanceScore} />
                 <MathJax.Node formula={similarityScore} /> where{" "}
-                <MathJax.Node inline formula={`a`} /> is scalar. There are two
-                frameworks on time-series matching which are [3] whole series
-                and subsequent matching. The former uses the whole length of the
-                time-series and computes similarity between all objects in the
-                database. The latter takes a shorter time-series as the query
-                input and finds matches from longer time-series. In this tool,
-                whole time-series matching is used.
+                <MathJax.Node inline formula={`a`} /> is scalar.
               </p>
               <p>
                 Given a query time-series,(ex: last month&apos;s biweekly cases
-                per million for France) the system creates a dataframe which
-                gathers all available countries data on the given indicator.
-                Then using a window function, a new dataframe generated storing
-                same-lengthed time-series in each cell using the query length.
-                The generated dataframe TSDF can be represented as follows:
-                <MathJax.Node formula={slicedMatrix} />
-                The column values are country names and the indexes correspond
-                to the last date of the corresponding time-series. A sample
-                dataframe is shown below:
-                <div style={{ textAlign: "center" }}>
-                  <img height={400} src="/static/timeseries-sim/tsdf.png" />
-                </div>
-                Using the similarity measure chosen by the user, the similarity
-                between query and each cell are calculated to create a new
-                dataframe in same dimensions but with scalar distance scores in
-                each cell. This dataframe are then vectorized and most similar
-                time-series are sorted and sent back to visualize.
+                per million for France) and similarity measure (Euclidean
+                distance) the system sorts most similar time-series from past.
               </p>
               <h2>Similarity measures</h2>
               <p>
                 Distance measures can be categorized in numerous ways. Some
                 algorithms favors the similarity in the linear relationship of
-                the curves [4], others favor the similarity in time by using
-                one-to-one point alignment [5]. For longer time-series, there
-                are model-based (ARIMA) [6] and feature based (DFT) [7]
+                the curves [3], others favor the similarity in time by using
+                one-to-one point alignment [4]. For longer time-series, there
+                are model-based (ARIMA) [5] and feature based (DFT) [6]
                 algorithms which fit the time-series into a parametric model or
                 extract features using dimension reduction methods respectively.
                 The distance measures available tool are divided into two
                 categories (lock-step and elastic measures) by how the points
                 from two time-series objects can align. Distance measures can be
                 categorized in numerous ways. Some algorithms favors the
-                similarity in the linear relationship of the curves [29], others
+                similarity in the linear relationship of the curves [3], others
                 favor the similarity in time by using one-to-one point alignment
-                [5]. For longer time-series, there are model-based (ARIMA) [6]
-                and feature based (DFT) [7] algorithms which fit the time-series
+                [4]. For longer time-series, there are model-based (ARIMA) [5]
+                and feature based (DFT) [6] algorithms which fit the time-series
                 into a parametric model or extract features using dimension
                 reduction methods respectively. The distance measures availables
                 are divided into two categories (lock-step and elastic measures)
@@ -183,94 +143,48 @@ function InfoPopUp(props) {
               <h3>Lock-step measures</h3>
               <p>
                 Lock step measures compare the points at the exact same temporal
-                position [8]. The most used lock step measure to compare
+                position [7]. The most used lock step measure to compare
                 time-series is the Minkowski distance, also known as Lp norm
-                [8]. For p = 1, the distance measure is called Manhattan or
+                [7]. For p = 1, the distance measure is called Manhattan or
                 city-block distance. This uses the absolute value of the
-                difference between time-points [9]. For p = 2, Euclidean
-                distance is obtained [9]. This measure is the most common method
+                difference between time-points [8]. For p = 2, Euclidean
+                distance is obtained [8]. This measure is the most common method
                 used for one dimensional applications, but for higher
                 dimensions, Manhattan distance is more preferable [10]. Both
-                distance measures are sensitive to noises [9]. If there is a
+                distance measures are sensitive to noises [8]. If there is a
                 high amplitude noise in the signal, all of the score is
                 dominated by this point as the distance measures sum up the
                 difference values of corresponding points. This effect increases
                 naturally as p is increased. For the limit p → ∞, Chebyshev
                 distance is obtained which takes the maximum distance between
-                all temporal pairs [9].
+                all temporal pairs [8]. Geometrical representation and formulae
+                are below:
               </p>
               <MathJax.Node formula={distanceMeasureTable} />
-              <p>
-                Sum of Squared distance is the squared version of Euclidean
-                distance. Due to disappearance of square root in the calculation
-                of distance score, this method is faster when computing. Mean
-                squared distance is also derived from the Euclidean distance by
-                squaring and dividing by the number elements. The ranking of
-                distance scores are done using same length
-                time-series;therefore, there is no difference on results created
-                by Euclidean, squared, mean squared distance. Canberra and
-                Bray-Curtis distance measures are modifications of Manhattan
-                distance by weighting the difference by the values of the
-                temporal points [11]. The main problem using those metrics is
-                that if the compared points are both close to the origin, the
-                distance score gets significantly large due to the denominator.
-                Secondly, all the time-series compared in the system is
-                non-negative. Therefore, the results obtained from these
-                measures will be the same.
-              </p>
-              <p>
-                The second category in the lock-step measures is the
-                compression-based family. The idea and the name comes from the
-                notion of the algorithms such that it measures how much
-                information or compression can be obtained by knowing one of the
-                compared time-series [12]. These are mainly used in text and
-                media mining [13]. Pearson&apos;s correlation distance uses the
-                co-variance between the time-series [13]. If only correlation
-                index is used, the output ranges from -1 to 1 with 1 indicating
-                that there is perfect positive linear relationship between
-                time-series. A correlation of 0 means that two series are
-                independent. To obtain a distance measure, the result is
-                subtracted from 1, resulting a new range from 0 to 2. Cosine
-                distance evaluates the cosine angle between the temporal points
-                [12]. It&apos;s a special case of the Pearson&apos;s correlation
-                distance when the mean of both time-series is equal to zero.
-              </p>
-              <MathJax.Node formula={compressionMeasureTable} />
-              <p>
-                Compression-based metrics favor the shape of the curve rather
-                than the amplitude and are all invariant to uniform amplitude
-                scaling and offset. Therefore, if the amplitudes of the curves
-                are important in the ranking system, they would behave poorly.
-              </p>
+              <div style={{ textAlign: "center" }}>
+                <img height={400} src="/static/timeseries-sim/lockstep.png" />
+              </div>
               <h3>Elastic measures</h3>
               <p>
                 Elastic measures are more complex algorithms that are able to
                 work with time-series with different length and sampling rate
-                [8]. Unlike the lock-step measure approach, they allow elastic
+                [7]. Unlike the lock-step measure approach, they allow elastic
                 temporal alignments in the time-series. Dynamic time warping
                 (DTW) and longest common sub-sequence (LCS) algorithms are
                 available in the tool. The pseucode for the algorithms are shown
                 below. Euclidean distance is chosen as the metric to be used in
                 both elastic measures.
-                <div style={{ display: "flex" }}>
-                  <div style={{ textAlign: "center" }}>
-                    <img height={400} src="/static/timeseries-sim/dtw.png" />
-                  </div>
-                  <div style={{ textAlign: "center" }}>
-                    <img height={500} src="/static/timeseries-sim/lcs.png" />
-                  </div>
-                </div>
               </p>
               <p>
                 DTW algorithm calculates the perfect alignment between the
                 time-series objects. It takes two time-series objects and
                 transforms their time alignment into a warped time shape by
-                using repeated/removed temporal points [14]. It allows for
+                using repeated/removed temporal points [9]. It allows for
                 one-to-many and many-to-one matching between temporal points
-                [14]. This is done by generating a distance matrix from time
+                [9]. This is done by generating a distance matrix from time
                 series and finding the distance path corresponding to minimal
-                cost from the origin to the end-point [14]. For two time-series
-                x and y with lengths n and m respectively, the algorithm has a
+                cost from the origin to the end-point [9]. For two time-series x
+                and y with lengths n and m respectively, the algorithm has a
                 time complexity of O(nm) which is significant as all the
                 shape-based features have a complexity of O(n) and all the
                 compression-based O(3n).
@@ -280,9 +194,9 @@ function InfoPopUp(props) {
               time-series effect the resulting distance score. LCS does not
               suffer from this problem as the algorithm does not match all the
               points but looks for similar sub-sequences inside the compared
-              time-series [15]. Secondly it has two inputs for adjusting both
+              time-series [10]. Secondly it has two inputs for adjusting both
               the distance threshold and the maximum number of allowed shift for
-              alignment which are ε and δ respectively [16]. If the objects in
+              alignment which are ε and δ respectively [11]. If the objects in
               the time-series database are close to each other, a small value of
               ε causes reduced extracted features which is infeasible for
               ranking. As the value of ε tends to infinity, the paths calculated
@@ -305,86 +219,56 @@ function InfoPopUp(props) {
                 87-100. SIAM, 2007.
               </p>
               <p>
-                [3] Carmelo Cassisi, Placido Montalto, Marco Aliotta, Andrea
-                Cannata, and Alfredo Pulvirenti. Similarity Measures and
-                Dimensionality Reduction Techniques for Time Series Data Mining,
-                chapter 3. 09 2012. ISBN 978-953-51-0748-4. doi: 10.5772/49941.
-              </p>
-              <p>
-                [4] Rongheng Lin, Budan Wu, and Yun Su. An adaptive weighted
+                [3] Rongheng Lin, Budan Wu, and Yun Su. An adaptive weighted
                 pearson similarity measurement method for load curve clustering.
                 Energies, 11(9), 2018. ISSN 1996-1073. doi: 10.3390/en11092466.
                 URL https://www.mdpi.com/1996-1073/11/9/2466.
               </p>
               <p>
-                [5] Joan Serra and Josep Ll. Arcos. An empirical evaluation of
+                [4] Joan Serra and Josep Ll. Arcos. An empirical evaluation of
                 similarity measures for time series classification. 67:305-314,
                 September 2014. ISSN 0950-7051. doi:
                 10.1016/j.knosys.2014.04.035.
               </p>
               <p>
-                [6] Yang Yu and Dingsheng Wang. Similarity study of hydrological
+                [5] Yang Yu and Dingsheng Wang. Similarity study of hydrological
                 time series based on data mining. In Big Data Analytics for
                 Cyber-Physical System in Smart City, pages 1049-055. Springer
                 Singapore, 2021. ISBN 978-981-33-4572-0.
               </p>
               <p>
-                [7] Miaomiao Zhang and Dechang Pi. A new time series
+                [6] Miaomiao Zhang and Dechang Pi. A new time series
                 representation model and corresponding similarity measure for
                 fast and accurate similarity detection. IEEE Access,
                 5:24503-24519, 2017. doi: 10.1109/ACCESS.2017.2764633.
               </p>
               <p>
-                [8] Xiaoyue Wang, Hui Ding, Goce Trajcevski, Peter Scheuermann,
+                [7] Xiaoyue Wang, Hui Ding, Goce Trajcevski, Peter Scheuermann,
                 and Eamonn Keogh. Experimental comparison of representation
                 methods and distance measures for time series data. Data Mining
                 and Knowledge Discovery, 26, 12 2010. doi:
                 10.1007/s10618-012-0250-5.
               </p>
               <p>
-                [9] Ali Seyed Shirkhorshidi, Saeed Aghabozorgi, and Teh Ying
+                [8] Ali Seyed Shirkhorshidi, Saeed Aghabozorgi, and Teh Ying
                 Wah. A comparison study on similarity and dissimilarity measures
                 in clustering continuous data. PLOS ONE, 10(12):1-20, 12 2015.
                 doi: 10.1371/journal.pone.0144059. URL
                 https://doi.org/10.1371/journal.pone.0144059.
               </p>
               <p>
-                [10] Charu Aggarwal, Alexander Hinneburg, and Daniel Keim. On
-                the surprising behavior of distance metric in high-dimensional
-                space. ICDT 200, 8th International Conference, London, UK,
-                January 4 - 6, 2001, 02 2002.
-              </p>
-              <p>
-                [11] Sung-Hyuk Cha. Comprehensive survey on distance/similarity
-                measures between probability density functions. Int. J. Math.
-                Model. Meth. Appl. Sci., 1, 01 2007.
-              </p>
-              <p>
-                [12] Eamonn Keogh, Stefano Lonardi, Chotirat Ratanamahatana, Li
-                Wei, Sang-Hee Lee, and John Handley. Compression-based data
-                mining of sequential data. Data Mining and Knowledge Discovery,
-                14:99-129, 02 2007. doi: 10.1007/s10618-006-0049-3.
-              </p>
-              <p>
-                [13] David Pereira Coutinho and Mário A. T. Figueiredo. Text
-                classification using compression-based dissimilarity measures.
-                International Journal of Pattern Recognition and Artificial
-                Intelligence, 29 (05):1553004, 2015. doi:
-                10.1142/S0218001415530043.
-              </p>
-              <p>
-                [14] Meinard Müller. Dynamic time warping. Information Retrieval
+                [9] Meinard Müller. Dynamic time warping. Information Retrieval
                 for Music and Motion, 2:69-84, 01 2007. doi:
                 10.1007/978-3-540-74048-3_4.
               </p>
               <p>
-                [15] Tomasz Górecki. Classification of time series using
+                [10] Tomasz Górecki. Classification of time series using
                 combination of dtw and lcss dissimilarity measures.
                 Communications in Statistics - Simulation and Computation,
                 47(1):263-276, 2018. doi: 10.1080/03610918.2017.1280829.
               </p>
               <p>
-                [16] Gholamreza Soleimany and Masoud Abessi. A new similarity
+                [11] Gholamreza Soleimany and Masoud Abessi. A new similarity
                 measure for time series data mining based on longest common
                 subsequence. American Journal of Data Mining and Knowledge
                 Discovery, 4:32, 01 2019. doi: 10.11648/j.ajdmkd.20190401.16.
