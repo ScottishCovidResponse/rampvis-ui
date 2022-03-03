@@ -8,16 +8,21 @@ import {
   CardContent,
   CardHeader,
   Container,
+  Fade,
   FormControl,
   FormGroup,
   InputLabel,
+  LinearProgress,
   MenuItem,
   Select,
   SelectChangeEvent,
+  Tooltip,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import { blue } from "@mui/material/colors";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import {
   processDataAndGetRegions,
@@ -45,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
 const Story2 = () => {
   const classes = useStyles();
 
+  const [loading, setLoading] = useState(false);
   const [regions, setRegions] = useState<string[]>([]);
   const [region1, setRegion1] = useState<string>("");
   const [region2, setRegion2] = useState<string>("");
@@ -52,11 +58,18 @@ const Story2 = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const _regions = await processDataAndGetRegions();
       setRegions(_regions.map((d) => d));
+      setLoading(false);
     };
 
-    fetchData().catch(console.error);
+    try {
+      fetchData();
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
   }, []);
 
   const handleChangeSelect1 = (event: SelectChangeEvent) => {
@@ -110,60 +123,86 @@ const Story2 = () => {
                   </Avatar>
                 }
                 title="Story-2"
-                subheader="This page is not tested and might have some bugs!"
+                subheader="Select two regions and click the button to animate"
               />
               <CardContent sx={{ pt: "8px" }}>
-                <FormGroup>
-                  <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
-                    <InputLabel id="select-region-label">
-                      Select a region
-                    </InputLabel>
-                    <Select
-                      labelId="select-region-label"
-                      id="select-region-label"
-                      displayEmpty
-                      onChange={handleChangeSelect1}
-                      value={region1}
+                {loading ? (
+                  <Box sx={{ width: "100%" }}>
+                    <LinearProgress />
+                  </Box>
+                ) : (
+                  <>
+                    <FormGroup
+                      sx={{
+                        flexDirection: {
+                          xs: "column",
+                          sm: "row",
+                          alignItems: "center",
+                        },
+                      }}
                     >
-                      {regions.map((d) => (
-                        <MenuItem key={d} value={d}>
-                          {d}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                      <FormControl
+                        sx={{ m: 1, width: 300, mt: 0 }}
+                        size="small"
+                      >
+                        <InputLabel id="select-region-label">
+                          Select a region
+                        </InputLabel>
+                        <Select
+                          labelId="select-region-label"
+                          id="select-region-label"
+                          displayEmpty
+                          onChange={handleChangeSelect1}
+                          value={region1}
+                        >
+                          {regions.map((d) => (
+                            <MenuItem key={d} value={d}>
+                              {d}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
 
-                  <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
-                    <InputLabel id="select-region-label">
-                      Select a region
-                    </InputLabel>
-                    <Select
-                      labelId="select-region-label"
-                      id="select-region-label"
-                      displayEmpty
-                      onChange={handleChangeSelect2}
-                      value={region2}
-                    >
-                      {regions.map((d) => (
-                        <MenuItem key={d} value={d}>
-                          {d}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                      <FormControl
+                        sx={{ m: 1, width: 300, mt: 0 }}
+                        size="small"
+                      >
+                        <InputLabel id="select-region-label">
+                          Select a region
+                        </InputLabel>
+                        <Select
+                          labelId="select-region-label"
+                          id="select-region-label"
+                          displayEmpty
+                          onChange={handleChangeSelect2}
+                          value={region2}
+                        >
+                          {regions.map((d) => (
+                            <MenuItem key={d} value={d}>
+                              {d}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
 
-                  <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
-                    <Button
-                      variant="contained"
-                      disabled={!region1 || !region2}
-                      onClick={handleClickButton}
-                    >
-                      Click to proceed animation
-                    </Button>
-                  </FormControl>
-                </FormGroup>
+                      <FormControl sx={{ m: 1, width: 100, mt: 0 }}>
+                        <Tooltip title="Click to proceed animation">
+                          <Button
+                            variant="contained"
+                            disabled={!region1 || !region2}
+                            onClick={handleClickButton}
+                            endIcon={<PlayArrowIcon />}
+                            component="span"
+                          >
+                            Play
+                          </Button>
+                        </Tooltip>
+                      </FormControl>
+                    </FormGroup>
 
-                <div id="chart1" />
+                    <div id="chart1" />
+                  </>
+                )}
               </CardContent>
             </Card>
           </Container>

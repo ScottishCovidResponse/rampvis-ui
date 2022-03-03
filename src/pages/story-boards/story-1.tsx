@@ -8,19 +8,19 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Chip,
   Container,
   FormControl,
   FormGroup,
   InputLabel,
+  LinearProgress,
   MenuItem,
-  OutlinedInput,
   Select,
   SelectChangeEvent,
-  Typography,
+  Tooltip,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { blue } from "@mui/material/colors";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import {
@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
 const Story = () => {
   const classes = useStyles();
 
+  const [loading, setLoading] = useState(false);
   const [segment, setSegment] = useState<number>(3);
   const [regions, setRegions] = useState<string[]>([]);
   const [region, setRegion] = useState<string>("");
@@ -57,12 +58,19 @@ const Story = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const _regions = await processDataAndGetRegions();
       setRegions(_regions.map((d) => d));
       segmentData(segment);
+      setLoading(false);
     };
 
-    fetchData().catch(console.error);
+    try {
+      fetchData();
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
   }, []);
 
   const handleChangeSlider = (event) => {
@@ -117,58 +125,89 @@ const Story = () => {
                   </Avatar>
                 }
                 title="Story-1"
-                subheader="This page is untested and might have some  bugs!"
+                subheader="Set a segment value, a region, and click the button to animate"
               />
               <CardContent sx={{ pt: "8px" }}>
-                <FormGroup>
-                  <InputLabel id="segment-slider-label">Segments</InputLabel>
-                  <FormControl sx={{ m: 1, width: 300, mt: 0 }}>
-                    <Slider
-                      // labelId="segment-slider"
-                      aria-label="Segments"
-                      // defaultValue={3}
-                      getAriaValueText={valuetext}
-                      step={1}
-                      marks
-                      min={0}
-                      max={5}
-                      value={segment}
-                      valueLabelDisplay="auto"
-                      onChange={handleChangeSlider}
-                    />
-                  </FormControl>
-
-                  <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
-                    <InputLabel id="select-region-label">
-                      Select region
-                    </InputLabel>
-                    <Select
-                      labelId="select-region-label"
-                      id="select-region-label"
-                      displayEmpty
-                      onChange={handleChangeSelect}
-                      value={region}
+                {loading ? (
+                  <Box sx={{ width: "100%" }}>
+                    <LinearProgress />
+                  </Box>
+                ) : (
+                  <>
+                    <FormGroup
+                      sx={{
+                        flexDirection: {
+                          xs: "column",
+                          sm: "row",
+                          alignItems: "center",
+                        },
+                      }}
                     >
-                      {regions.map((d) => (
-                        <MenuItem key={d} value={d}>
-                          {d}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                      <InputLabel
+                        sx={{ m: 1, mt: 0 }}
+                        id="segment-slider-label"
+                      >
+                        Set segment value
+                      </InputLabel>
+                      <FormControl
+                        sx={{ m: 1, width: 300, mt: 0 }}
+                        size="small"
+                      >
+                        <Slider
+                          // labelId="segment-slider"
+                          aria-label="Segments"
+                          // defaultValue={3}
+                          getAriaValueText={valuetext}
+                          step={1}
+                          marks
+                          min={0}
+                          max={5}
+                          value={segment}
+                          valueLabelDisplay="auto"
+                          onChange={handleChangeSlider}
+                        />
+                      </FormControl>
 
-                  <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
-                    <Button
-                      variant="contained"
-                      disabled={!region}
-                      onClick={handleClickButton}
-                    >
-                      Click to proceed animation
-                    </Button>
-                  </FormControl>
-                </FormGroup>
+                      <FormControl
+                        sx={{ m: 1, width: 300, mt: 0 }}
+                        size="small"
+                      >
+                        <InputLabel id="select-region-label">
+                          Select region
+                        </InputLabel>
+                        <Select
+                          labelId="select-region-label"
+                          id="select-region-label"
+                          displayEmpty
+                          onChange={handleChangeSelect}
+                          value={region}
+                        >
+                          {regions.map((d) => (
+                            <MenuItem key={d} value={d}>
+                              {d}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
 
-                <div id="chart1" />
+                      <FormControl sx={{ m: 1, width: 100, mt: 0 }}>
+                        <Tooltip title="Click to proceed animation">
+                          <Button
+                            variant="contained"
+                            disabled={!region}
+                            onClick={handleClickButton}
+                            endIcon={<PlayArrowIcon />}
+                            component="span"
+                          >
+                            Play
+                          </Button>
+                        </Tooltip>
+                      </FormControl>
+                    </FormGroup>
+
+                    <div id="chart1" />
+                  </>
+                )}
               </CardContent>
             </Card>
           </Container>
