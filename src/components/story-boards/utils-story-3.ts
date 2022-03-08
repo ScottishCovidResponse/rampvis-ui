@@ -25,9 +25,9 @@ export async function prepareData() {
 }
 
 export async function prepareNationCases() {
-  let csv = await readCSVFile("/static/story-boards/nation_cases.csv");
+  const csv = await readCSVFile("/static/story-boards/nation_cases.csv");
 
-  let casesObj = {};
+  const casesObj = {};
   csv.forEach((d) => {
     if (!casesObj[d.areaName]) {
       casesObj[d.areaName] = [];
@@ -38,16 +38,16 @@ export async function prepareNationCases() {
     });
   });
 
-  for (let nation in casesObj) {
+  for (const nation in casesObj) {
     casesObj[nation].sort((r1, r2) => r1.date - r2.date);
   }
   return casesObj;
 }
 
 export async function prepareNationDeaths() {
-  let csv = await readCSVFile("/static/story-boards/nation_deaths.csv");
+  const csv = await readCSVFile("/static/story-boards/nation_deaths.csv");
 
-  let deathsObj = {};
+  const deathsObj = {};
   csv.forEach((d) => {
     if (!deathsObj[d.areaName]) {
       deathsObj[d.areaName] = [];
@@ -58,14 +58,14 @@ export async function prepareNationDeaths() {
     });
   });
 
-  for (let nation in deathsObj) {
+  for (const nation in deathsObj) {
     deathsObj[nation].sort((r1, r2) => r1.date - r2.date);
   }
   return deathsObj;
 }
 
 export async function prepareUKCasesData() {
-  let csv = await readCSVFile("/static/story-boards/uk_daily_cases.csv");
+  const csv = await readCSVFile("/static/story-boards/uk_daily_cases.csv");
 
   return csv.map((row) => {
     return { date: new Date(row.date), y: +row.newCasesByPublishDate };
@@ -73,7 +73,7 @@ export async function prepareUKCasesData() {
 }
 
 export async function prepareSemanticCSV() {
-  let csv = await readCSVFile("/static/story-boards/semantic_events@3.csv");
+  const csv = await readCSVFile("/static/story-boards/semantic_events@3.csv");
   return csv;
 }
 
@@ -99,11 +99,11 @@ const writeText = (text, date, data) => {
 };
 
 export function prepareAnnotations(region, calendarEvents) {
-  let annos = [{ start: 0, end: 0 }];
+  const annos = [{ start: 0, end: 0 }];
 
   // Load data
-  let cases = nationCases[region];
-  let deaths = nationDeaths[region];
+  const cases = nationCases[region];
+  const deaths = nationDeaths[region];
 
   // ------------- Death based events -------------
   let firstDeath = false;
@@ -149,10 +149,10 @@ export function prepareAnnotations(region, calendarEvents) {
   }
 
   // Create Anno for least deaths since jan 2021
-  let janIdx = findDateIdx(new Date("2021-01-01"), deaths); // Get beginning idx to start search
-  let seg = deaths.slice(janIdx);
+  const janIdx = findDateIdx(new Date("2021-01-01"), deaths); // Get beginning idx to start search
+  const seg = deaths.slice(janIdx);
   // Find min deaths value
-  let minDeaths = seg.reduce((min, curr) => (min.y < curr.y ? min : curr));
+  const minDeaths = seg.reduce((min, curr) => (min.y < curr.y ? min : curr));
 
   annos.push(
     writeText(
@@ -205,7 +205,7 @@ export function prepareAnnotations(region, calendarEvents) {
   }
 
   // Create Anno for greatest weekly increase
-  let maxIncrease = cases
+  const maxIncrease = cases
     .slice(7)
     .reduce(
       (max, curr, i) =>
@@ -226,7 +226,7 @@ export function prepareAnnotations(region, calendarEvents) {
   );
 
   // Create Anno for max cases
-  let maxCases = cases.reduce((max, curr) => (max.y > curr.y ? max : curr));
+  const maxCases = cases.reduce((max, curr) => (max.y > curr.y ? max : curr));
   annos.push(
     writeText(
       `This day had the largest recorded cases for ${region}, with ${maxCases.y} new cases.`,
@@ -256,8 +256,8 @@ export function prepareAnnotations(region, calendarEvents) {
 export async function createScrollingSvg(selector, nation) {
   d3.select(selector).selectAll("*").remove();
 
-  let calendarEvents = await prepareCalendarEvents(nation);
-  let annotations = await prepareAnnotations(nation, calendarEvents);
+  const calendarEvents = await prepareCalendarEvents(nation);
+  const annotations = await prepareAnnotations(nation, calendarEvents);
   console.log("annotations = ", annotations);
 
   const scrollSvg = ScrollingSvg(

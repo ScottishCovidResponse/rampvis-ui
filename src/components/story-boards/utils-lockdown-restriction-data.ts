@@ -12,38 +12,38 @@ let countryRestrictionData;
 async function initLockdownRestrictionData() {
   console.log("initLockdownRestrictionData:");
   let csv = await readCSVFile("/static/story-boards/englandCalendar@2.csv");
-  let englandRestrictionData = csv.map((row) => {
+  const englandRestrictionData = csv.map((row) => {
     row.country = "England";
     return row;
   });
-  let englishRegions = new Set(
+  const englishRegions = new Set(
     englandRestrictionData.map((e) => e["Local Authority"]),
   );
 
   csv = await readCSVFile("/static/story-boards/walesCalendar.csv");
-  let walesRestrictionData = csv.map((row) => {
+  const walesRestrictionData = csv.map((row) => {
     row.country = "Wales";
     return row;
   });
-  let welshRegions = Array.from(
+  const welshRegions = Array.from(
     new Set(walesRestrictionData.map((e) => e["Local Authority"])),
   );
 
   csv = await readCSVFile("/static/story-boards/northernIrelandCalendar.csv");
-  let northernIrelandRestrictionData = csv.map((row) => {
+  const northernIrelandRestrictionData = csv.map((row) => {
     row.country = "Northern Ireland";
     return row;
   });
-  let northernIrelandRegions = Array.from(
+  const northernIrelandRegions = Array.from(
     new Set(northernIrelandRestrictionData.map((e) => e["Local Authority"])),
   );
 
   csv = await readCSVFile("/static/story-boards/scotlandCalendar@1.csv");
-  let scotlandRestrictionData = csv.map((row) => {
+  const scotlandRestrictionData = csv.map((row) => {
     row.country = "Scotland";
     return row;
   });
-  let scottishRegions = Array.from(
+  const scottishRegions = Array.from(
     new Set(scotlandRestrictionData.map((e) => e["Local Authority"])),
   );
 
@@ -68,13 +68,13 @@ export async function getCalendarEvents(placeName, types) {
   console.log("countryRestrictionData = ", countryRestrictionData);
 
   // If given place name is a country we will use its first alphabetical local authority
-  let isCountry = countryRegions[placeName];
-  let localAuthority = isCountry ? [...isCountry][0] : placeName;
+  const isCountry = countryRegions[placeName];
+  const localAuthority = isCountry ? [...isCountry][0] : placeName;
 
   console.log("isCountry = ", isCountry, ", localAuthority = ", localAuthority);
 
   let country;
-  for (let key in countryRegions) {
+  for (const key in countryRegions) {
     // console.log("key = ", key, "countryRegions[key] = ", countryRegions[key]);
     if ([...countryRegions[key]].includes(localAuthority)) country = key;
   }
