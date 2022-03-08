@@ -15,6 +15,7 @@ import {
   InputLabel,
   LinearProgress,
   MenuItem,
+  OutlinedInput,
   Select,
   SelectChangeEvent,
   Tooltip,
@@ -77,7 +78,9 @@ const Story2 = () => {
     const selectedRegion1 = event.target.value;
     console.log("selectedRegion1 = ", selectedRegion1);
     if (selectedRegion1) {
-      if (selectedRegion1 && region2) onSelectRegion(selectedRegion1, region2);
+      if (selectedRegion1 && region2) {
+        onSelectRegion(selectedRegion1, region2);
+      }
       createTimeSeriesSVG("#chart1");
       setRegion1(selectedRegion1);
       setAnimationCounter(0);
@@ -88,7 +91,9 @@ const Story2 = () => {
     const selectedRegion2 = event.target.value;
     console.log("selectedRegion2 = ", selectedRegion2);
     if (selectedRegion2) {
-      if (region1 && selectedRegion2) onSelectRegion(region1, selectedRegion2);
+      if (region1 && selectedRegion2) {
+        onSelectRegion(region1, selectedRegion2);
+      }
       createTimeSeriesSVG("#chart1");
       setRegion2(selectedRegion2);
       setAnimationCounter(0);
@@ -149,14 +154,14 @@ const Story2 = () => {
                         sx={{ m: 1, width: 300, mt: 0 }}
                         size="small"
                       >
-                        <InputLabel id="select-region-label">
-                          Select a region
+                        <InputLabel id="select-region-1-label">
+                          Select region 1
                         </InputLabel>
                         <Select
-                          labelId="select-region-label"
-                          id="select-region-label"
-                          displayEmpty
+                          labelId="select-region-1-label"
+                          id="select-region-1-label"
                           onChange={handleChangeSelect1}
+                          input={<OutlinedInput label="Select region 1" />}
                           value={region1}
                         >
                           {regions.map((d) => (
@@ -177,14 +182,15 @@ const Story2 = () => {
                         sx={{ m: 1, width: 300, mt: 0 }}
                         size="small"
                       >
-                        <InputLabel id="select-region-label">
-                          Select a region
+                        <InputLabel id="select-region-2-label">
+                          Select region 2
                         </InputLabel>
                         <Select
-                          labelId="select-region-label"
-                          id="select-region-label"
+                          labelId="select-region-2-label"
+                          id="select-region-1-label"
                           displayEmpty
                           onChange={handleChangeSelect2}
+                          input={<OutlinedInput label="Select region 2" />}
                           value={region2}
                         >
                           {regions.map((d) => (
