@@ -7,6 +7,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Chip,
   Container,
   Fade,
   FormControl,
@@ -97,7 +98,7 @@ const Story2 = () => {
   const handleClickButton = () => {
     const count = animationCounter + 1;
     setAnimationCounter(count);
-    console.log(count);
+    console.log("Story2: animationCounter = ", animationCounter);
     onClickAnimate(count, "#chart1");
   };
 
@@ -141,6 +142,10 @@ const Story2 = () => {
                         },
                       }}
                     >
+                      <FormControl sx={{ m: 0, width: 20, mt: 0 }} size="small">
+                        <Chip label="" style={{ backgroundColor: "orange" }} />
+                      </FormControl>
+
                       <FormControl
                         sx={{ m: 1, width: 300, mt: 0 }}
                         size="small"
@@ -161,6 +166,10 @@ const Story2 = () => {
                             </MenuItem>
                           ))}
                         </Select>
+                      </FormControl>
+
+                      <FormControl sx={{ m: 1, width: 20, mt: 0 }} size="small">
+                        <Chip label="" style={{ backgroundColor: "blue" }} />
                       </FormControl>
 
                       <FormControl
@@ -199,8 +208,7 @@ const Story2 = () => {
                         </Tooltip>
                       </FormControl>
                     </FormGroup>
-
-                    <div id="chart1" />
+                    <div id="chart1" style={{ marginTop: "50px" }} />
                   </>
                 )}
               </CardContent>

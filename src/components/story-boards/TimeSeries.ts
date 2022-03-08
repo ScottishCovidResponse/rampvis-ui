@@ -108,7 +108,7 @@ export class TimeSeries {
       .node();
   }
 
-  addExtraDatasets(dataGroup, isSameScale = false) {
+  addExtraDatasets(dataGroup, isSameScale = true) {
     this._data2 = dataGroup;
     this._fitPairedData(isSameScale);
     return this;
@@ -534,7 +534,8 @@ export class TimeSeries {
       .attr("x", this._width / 2)
       .attr("y", this._border / 2)
       .attr("text-anchor", "middle")
-      .text(this._title);
+      .text(this._title)
+      .attr("font-weight", "bold");
 
     if (this._showPoints) {
       d3.select(this._ctx)
