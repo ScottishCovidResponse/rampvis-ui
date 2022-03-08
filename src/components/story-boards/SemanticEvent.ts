@@ -12,6 +12,9 @@ export class SemanticEvent extends SBEvent {
       LOCKDOWN_START: "LOCKDOWN START",
       LOCKDOWN_END: "LOCKDOWN END",
       VACCINE: "VACCINE",
+      VACCINE_1: "VACCINE_1",
+      VACCINE_2: "VACCINE_2",
+      VACCINE_3: "VACCINE_3",
     };
   }
 

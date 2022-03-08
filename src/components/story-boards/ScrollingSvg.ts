@@ -36,7 +36,7 @@ export const ScrollingSvg = (
   const graphContainer = visContainer
     .append("svg")
     .attr("width", width)
-    .attr("height", height - (timeline ? 150 : 100)) // -200 to make space for scroll section & timeline
+    .attr("height", height - (timeline ? 250 : 200)) // -200 to make space for scroll section & timeline
     .attr("id", "graphSvg");
 
   // visContainer.node().value.graphSvg = graphContainer.node();

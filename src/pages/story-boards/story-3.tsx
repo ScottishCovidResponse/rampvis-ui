@@ -9,9 +9,10 @@ import {
   CardHeader,
   Container,
   FormControl,
-  FormGroup,
   InputLabel,
+  LinearProgress,
   MenuItem,
+  OutlinedInput,
   Select,
   SelectChangeEvent,
 } from "@mui/material";
@@ -20,7 +21,7 @@ import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import { blue } from "@mui/material/colors";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import {
-  createData,
+  prepareData,
   createScrollingSvg,
 } from "src/components/story-boards/utils-story-3";
 
@@ -43,13 +44,38 @@ const useStyles = makeStyles((theme) => ({
 const Story3 = () => {
   const classes = useStyles();
 
+  const [loading, setLoading] = useState(false);
+  const [nations, setNations] = useState<string[]>([
+    "England",
+    "Wales",
+    "Northern Ireland",
+    "Scotland",
+  ]);
+  const [nation, setNation] = useState<string>("");
+
   useEffect(() => {
     const fetchData = async () => {
-      await createData();
-      createScrollingSvg("#chart1");
+      setLoading(true);
+      await prepareData();
+      setLoading(false);
     };
-    fetchData().catch(console.error);
+
+    try {
+      fetchData();
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
   }, []);
+
+  const handleChangeSelect1 = (event: SelectChangeEvent) => {
+    const nation = event.target.value;
+    console.log("selected nation = ", nation);
+    if (nation) {
+      setNation(nation);
+      createScrollingSvg("#divId", nation);
+    }
+  };
 
   return (
     <>
@@ -65,7 +91,7 @@ const Story3 = () => {
           }}
         >
           <Container>
-            <Card sx={{ minWidth: 1200 }}>
+            <Card sx={{ minWidth: 1300 }}>
               <CardHeader
                 avatar={
                   <Avatar className={classes.avatar}>
@@ -73,10 +99,36 @@ const Story3 = () => {
                   </Avatar>
                 }
                 title="Story-3"
-                subheader="This page is not tested and might have some bugs!"
+                subheader="Select a nation and scroll the timeline to animate"
               />
               <CardContent sx={{ pt: "8px" }}>
-                <div id="chart1" />
+                {loading ? (
+                  <Box sx={{ width: "100%" }}>
+                    <LinearProgress />
+                  </Box>
+                ) : (
+                  <>
+                    <FormControl sx={{ m: 1, width: 300, mt: 0 }} size="small">
+                      <InputLabel id="select-nation-label">
+                        Select nation
+                      </InputLabel>
+                      <Select
+                        labelId="select-nation-label"
+                        id="select-nation-label"
+                        onChange={handleChangeSelect1}
+                        input={<OutlinedInput label="Select nation" />}
+                        value={nation}
+                      >
+                        {nations.map((d) => (
+                          <MenuItem key={d} value={d}>
+                            {d}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    <div id="divId" />
+                  </>
+                )}
               </CardContent>
             </Card>
           </Container>

@@ -7,6 +7,8 @@ import { SemanticEvent } from "./SemanticEvent";
 import { TimeLine } from "./Timeline";
 import { TimeSeries } from "./TimeSeries";
 import { readJSONFile, readCSVFile } from "./utils-data";
+import { findDateIdx } from "./utils-feature-detection";
+import { getCalendarEvents } from "./utils-lockdown-restriction-data";
 
 // let testDataICU: any;
 let nationCases: any;
@@ -15,13 +17,7 @@ let ukCasesData: any;
 let semanticCSV: any;
 let calendarEvents: any;
 
-export async function createData() {
-  // const parseDate = d3.timeParse("%Y-%m-%d");
-  // testDataICU = await readJSONFile("/static/story-boards/icuGlasgow.json");
-  // testDataICU = testDataICU.map(Object.values).map((d) => {
-  //   return { date: parseDate(d[0]), y: d[1] };
-  // });
-
+export async function prepareData() {
   nationCases = await prepareNationCases();
   nationDeaths = await prepareNationDeaths();
   ukCasesData = await prepareUKCasesData();
@@ -81,8 +77,8 @@ export async function prepareSemanticCSV() {
   return csv;
 }
 
-export async function prepareCalendarEvents() {
-  const lockdownEvents = getCalendarEvents(region, [
+export async function prepareCalendarEvents(region) {
+  const lockdownEvents = await getCalendarEvents(region, [
     SemanticEvent.TYPES.LOCKDOWN_START,
     SemanticEvent.TYPES.LOCKDOWN_END,
   ]);
@@ -95,143 +91,180 @@ export async function prepareCalendarEvents() {
   return lockdownEvents.concat(semanticEvents);
 }
 
-//
+const writeText = (text, date, data) => {
+  // Find idx of event in data and set location of the annotation in opposite half of graph
+  const idx = findDateIdx(date, data);
 
-let getCalendarEvents = (placeName, types) => {
-  // If given place name is a country we will use its first alphabetical local authority
-  let isCountry = countryRegions[placeName];
-  let localAuthority = isCountry ? isCountry[0] : placeName;
-
-  let country;
-  for (let key in countryRegions) {
-    if (countryRegions[key].includes(localAuthority)) country = key;
-  }
-
-  const localAuthorityData = countryRestrictionData[country].filter(
-    (row) => row["Local Authority"] == localAuthority,
-  );
-  const events = [];
-  let eventDates = [];
-  types.forEach((type) => {
-    switch (type) {
-      case SemanticEvent.TYPES.LOCKDOWN:
-        eventDates = findEventStartEnd("National Lockdown", localAuthorityData);
-        eventDates.forEach((d) =>
-          events.push(
-            new SemanticEvent(d.start)
-              .setType(type)
-              .setStart(d.start)
-              .setEnd(d.end)
-              .setDescription("National Lockdown begins."),
-          ),
-        );
-        break;
-      case SemanticEvent.TYPES.LOCKDOWN_START:
-        eventDates = findEventStartEnd("National Lockdown", localAuthorityData);
-        eventDates.forEach((d) =>
-          events.push(
-            new SemanticEvent(d.start)
-              .setType(type)
-              .setDescription("Start of National Lockdown."),
-          ),
-        );
-        break;
-      case SemanticEvent.TYPES.LOCKDOWN_END:
-        eventDates = findEventStartEnd("National Lockdown", localAuthorityData);
-        eventDates.forEach((d) =>
-          events.push(
-            new SemanticEvent(d.end)
-              .setType(type)
-              .setDescription("End of National Lockdown."),
-          ),
-        );
-        break;
-      case SemanticEvent.TYPES.VACCINE_1:
-        eventDates = findEventStartEnd(
-          "Pfizer Vaccine Rollout",
-          localAuthorityData,
-        );
-        eventDates.forEach((d) =>
-          events.push(
-            new SemanticEvent(d.start)
-              .setType(type)
-              .setDescription("Pfizer vaccine rollout begins."),
-          ),
-        );
-        eventDates = findEventStartEnd(
-          "Astrazeneca Vaccine Rollout",
-          localAuthorityData,
-        );
-        eventDates.forEach((d) =>
-          events.push(
-            new SemanticEvent(d.start)
-              .setType(type)
-              .setDescription("Astrazeneca rollout in the UK starts."),
-          ),
-        );
-        eventDates = findEventStartEnd(
-          "Moderna Vaccine Rollout",
-          localAuthorityData,
-        );
-        eventDates.forEach((d) =>
-          events.push(
-            new SemanticEvent(d.start)
-              .setType(type)
-              .setDescription("First Moderna vaccines administered."),
-          ),
-        );
-        break;
-      case SemanticEvent.TYPES.VACCINE_2:
-        eventDates = findEventStartEnd(
-          "Second Dose Rollout",
-          localAuthorityData,
-        );
-        eventDates.forEach((d) =>
-          events.push(
-            new SemanticEvent(d.start)
-              .setType(type)
-              .setDescription(
-                "First person in the UK given second dose of vaccine.",
-              ),
-          ),
-        );
-        break;
-      case SemanticEvent.TYPES.VACCINE_3:
-        eventDates = findEventStartEnd(
-          "Booster Vaccine Rollout",
-          localAuthorityData,
-        );
-        eventDates.forEach((d) =>
-          events.push(
-            new SemanticEvent(d.start)
-              .setType(type)
-              .setDescription("Booster campaign begins in the UK."),
-          ),
-        );
-        break;
-      default:
-        break;
-    }
-  });
-  return events;
+  return { end: idx, date: date.toDateString().slice(4), description: text };
 };
 
+export function prepareAnnotations(region, calendarEvents) {
+  let annos = [{ start: 0, end: 0 }];
+
+  // Load data
+  let cases = nationCases[region];
+  let deaths = nationDeaths[region];
+
+  // ------------- Death based events -------------
+  let firstDeath = false;
+  let deathCount = 0;
+  let deathDate, newDeaths;
+  for (let i = 0; i < deaths.length; i++) {
+    deathDate = deaths[i].date;
+    newDeaths = deaths[i].y;
+    deathCount += newDeaths;
+
+    // Create Anno for first death
+    if (!firstDeath && newDeaths > 0) {
+      annos.push(
+        writeText(`First death recorded in ${region}`, deathDate, cases),
+      );
+      firstDeath = true;
+    }
+
+    // Create Anno for first 1k deaths
+    if (deathCount >= 1000 && deathCount - newDeaths < 1000) {
+      annos.push(
+        writeText(`Deaths in ${region} exceed one thousand.`, deathDate, cases),
+      );
+    }
+
+    // Create Anno for first 20k deaths
+    if (deathCount >= 20000 && deathCount - newDeaths < 20000) {
+      annos.push(
+        writeText(
+          `Total of over 20,000 deaths in ${region}.`,
+          deathDate,
+          cases,
+        ),
+      );
+    }
+
+    // Create Anno for first 50k deaths
+    if (deathCount >= 50000 && deathCount - newDeaths < 50000) {
+      annos.push(
+        writeText(`50,000 total deaths in ${region}.`, deathDate, cases),
+      );
+    }
+  }
+
+  // Create Anno for least deaths since jan 2021
+  let janIdx = findDateIdx(new Date("2021-01-01"), deaths); // Get beginning idx to start search
+  let seg = deaths.slice(janIdx);
+  // Find min deaths value
+  let minDeaths = seg.reduce((min, curr) => (min.y < curr.y ? min : curr));
+
+  annos.push(
+    writeText(
+      `${minDeaths.y} deaths in ${region} - the least since January 2021.`,
+      minDeaths.date,
+      cases,
+    ),
+  );
+
+  // ------------- Cases based events -------------
+  let casesCount = 0;
+  let casesDate, newCases;
+  for (let i = 0; i < cases.length; i++) {
+    casesDate = cases[i].date;
+    newCases = cases[i].y;
+    casesCount += newCases;
+
+    // Create Anno for first 50k cases
+    if (casesCount >= 50000 && casesCount - newCases < 50000) {
+      annos.push(
+        writeText(
+          `Cases in ${region} exceed fifty thousand.`,
+          casesDate,
+          cases,
+        ),
+      );
+    }
+
+    // Create Anno for first 100k cases
+    if (casesCount >= 100000 && casesCount - newCases < 100000) {
+      annos.push(
+        writeText(
+          `Milestone of 100k total cases in ${region}.`,
+          casesDate,
+          cases,
+        ),
+      );
+    }
+
+    // Create Anno for first 1m cases
+    if (casesCount >= 1000000 && casesCount - newCases < 1000000) {
+      annos.push(
+        writeText(
+          `One million cases have been recorded in ${region} since the start of the pandemic.`,
+          casesDate,
+          cases,
+        ),
+      );
+    }
+  }
+
+  // Create Anno for greatest weekly increase
+  let maxIncrease = cases
+    .slice(7)
+    .reduce(
+      (max, curr, i) =>
+        curr.y / cases[i].y > max.ratio && cases[i].y > 0
+          ? { ratio: curr.y / cases[i].y, max: curr }
+          : max,
+      { ratio: 1 },
+    );
+
+  annos.push(
+    writeText(
+      `Compared to last week, today had ${Math.round(
+        maxIncrease.ratio,
+      )}x more new cases.`,
+      maxIncrease.max.date,
+      cases,
+    ),
+  );
+
+  // Create Anno for max cases
+  let maxCases = cases.reduce((max, curr) => (max.y > curr.y ? max : curr));
+  annos.push(
+    writeText(
+      `This day had the largest recorded cases for ${region}, with ${maxCases.y} new cases.`,
+      maxCases.date,
+      cases,
+    ),
+  );
+
+  // ------------- Calendar based events -------------
+  calendarEvents.forEach((e) => {
+    if (findDateIdx(e._date, cases) !== -1)
+      annos.push(writeText(e.description, e._date, cases));
+  });
+
+  annos.sort((a1, a2) => a1.end - a2.end);
+  if (annos[annos.length - 1].end < cases.length - 1)
+    annos.push({ end: cases.length - 1 });
+
+  annos.slice(1).forEach((anno, i) => (anno.start = annos[i].end));
+
+  return annos;
+}
+
 //
+//
+//
+export async function createScrollingSvg(selector, nation) {
+  d3.select(selector).selectAll("*").remove();
 
-let tl, ts;
-let annotations;
+  let calendarEvents = await prepareCalendarEvents(nation);
+  let annotations = await prepareAnnotations(nation, calendarEvents);
+  console.log("annotations = ", annotations);
 
-export function createScrollingSvg(selector) {
   const scrollSvg = ScrollingSvg(
     selector,
-    [
-      { date: "11th October", description: "This is an example" },
-      { date: "16th October", description: "Even more text" },
-      { date: "20th December", description: "This would be a description" },
-      { date: "12th Jan", description: "This is the last event" },
-    ],
+    annotations.slice(1),
+    1200,
     800,
-    500,
     undefined,
     onChangeContainer,
   );
@@ -240,25 +273,17 @@ export function createScrollingSvg(selector) {
   // prettier-ignore
   console.log("utils-story-3: scrollSvg.graphSvg = ", d3.select(scrollSvg).select("#graphSvg"));
 
-  ts = new TimeSeries(testDataICU).svg(
-    d3.select(scrollSvg).select("#graphSvg").node(),
-  );
-  tl = new TimeLine(testDataICU).svg(
+  const casesData = nationCases[nation];
+
+  const ts = new TimeSeries(casesData)
+    .svg(d3.select(scrollSvg).select("#graphSvg").node())
+    .yLabel("New cases by publish date")
+    .border(70);
+  const tl = new TimeLine(casesData).svg(
     d3.select(scrollSvg).select("#timelineSvg").node(),
   );
-
-  //d3.select(scrollSvg.graphSvg).selectAll("*").remove();
-  //d3.select(scrollSvg.timelineSvg).selectAll("*").remove();
   d3.select(scrollSvg).select("#graphSvg").selectAll("*").remove();
   d3.select(scrollSvg).select("#timelineSvg").selectAll("*").remove();
-
-  annotations = [
-    { start: 0, end: 0 },
-    { start: 0, end: 30 },
-    { start: 30, end: 35 },
-    { start: 35, end: 100 },
-    { start: 100, end: testDataICU.length - 1 },
-  ];
 
   tl.annotations(annotations).plot(0);
   ts.animate(annotations, 0).plot();

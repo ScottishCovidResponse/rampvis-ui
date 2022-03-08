@@ -8,7 +8,7 @@ export const readCSVFile = async (file: string) => {
   const csv = Papa.parse(decoder.decode(result.value), {
     header: true,
   }).data;
-  console.log("readCSVFile: csv data = ", csv);
+  // console.log("readCSVFile: csv data = ", csv);
 
   return csv;
 };
@@ -16,7 +16,7 @@ export const readCSVFile = async (file: string) => {
 export const readJSONFile = async (file: string) => {
   const response = await fetch(file);
   const arrayObj = await response.json();
-  console.log("readJSONFile: json data = ", arrayObj);
+  // console.log("readJSONFile: json data = ", arrayObj);
 
   return arrayObj;
 };

@@ -148,7 +148,10 @@ const Story2 = () => {
                       }}
                     >
                       <FormControl sx={{ m: 1, width: 20, mt: 0 }} size="small">
-                        <Chip label="" style={{ backgroundColor: "orange" }} />
+                        <Chip
+                          label=""
+                          style={{ backgroundColor: "orange", borderRadius: 0 }}
+                        />
                       </FormControl>
                       <FormControl
                         sx={{ m: 1, width: 300, mt: 0 }}
@@ -175,7 +178,10 @@ const Story2 = () => {
                       <FormControl sx={{ m: 1, width: 20, mt: 0 }} size="small">
                         <Chip
                           label=""
-                          style={{ backgroundColor: "steelblue" }}
+                          style={{
+                            backgroundColor: "steelblue",
+                            borderRadius: 0,
+                          }}
                         />
                       </FormControl>
                       <FormControl
