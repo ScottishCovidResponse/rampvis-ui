@@ -153,10 +153,9 @@ export class TimeSeries {
 
   height(height) {
     this._height = height;
-    const sameScale = this._ySc1 == this._ySc2;
 
     this._ySc1 = yScFnc(this._data1, this._height, this._border);
-    if (this._data2) this._fitPairedData(sameScale);
+    if (this._data2) this._fitPairedData();
     return this;
   }
 
@@ -165,17 +164,15 @@ export class TimeSeries {
     const sameScale = this._ySc1 == this._ySc2;
 
     this._xSc = xScFnc(this._data1, this._width, this._border);
-    if (this._data2) this._fitPairedData(sameScale);
+    if (this._data2) this._fitPairedData();
     return this;
   }
 
   border(border) {
     this._border = border;
 
-    const sameScale = this._ySc1 == this._ySc2;
-
     this._xSc = xScFnc(this._data1, this._width, this._border);
-    if (this._data2) this._fitPairedData(sameScale);
+    if (this._data2) this._fitPairedData();
     return this;
   }
 
