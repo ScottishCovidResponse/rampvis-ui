@@ -14,6 +14,7 @@ import {
   InputLabel,
   LinearProgress,
   MenuItem,
+  OutlinedInput,
   Select,
   SelectChangeEvent,
   Tooltip,
@@ -181,6 +182,7 @@ const Story = () => {
                           displayEmpty
                           onChange={handleChangeSelect}
                           value={region}
+                          input={<OutlinedInput label="Select region" />}
                         >
                           {regions.map((d) => (
                             <MenuItem key={d} value={d}>

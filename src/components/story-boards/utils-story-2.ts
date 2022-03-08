@@ -564,7 +564,7 @@ export function onClickAnimate(animationCounter: number, selector: string) {
 
   const ts = new TimeSeries(region2CasesData, selector)
     .border(60)
-    .addExtraDatasets(createDataGroup([region1CasesData]))
+    .addExtraDatasets(createDataGroup([region1CasesData]), true)
     .svg(visCtx)
     .title(`Comparison of waves between ${region1} and ${region2}.`)
     .yLabel("Cases per Day")
@@ -590,12 +590,17 @@ export function onClickAnimate(animationCounter: number, selector: string) {
     }
   });
 
+  console.log("utils-story-2.ts: onClickAnimate: annotations = ", annotations);
+  console.log("utils-story-2.ts: onClickAnimate: annoObj = ", annoObj);
+
   ts.animate(annotations, animationCounter, visCtx).plot();
 
+  // legends
   const key = d3
     .select(visCtx)
     .append("g")
-    .attr("transform", "translate(100,100)");
+    .attr("transform", "translate(70,50)");
+
   key.append("text").text("Key");
   key
     .append("rect")
