@@ -62,6 +62,7 @@ export class TimeSeries {
 
   selector;
   line;
+  isSameScale = false;
 
   constructor(data, selector = undefined, w = width, h = height) {
     this.selector = selector;
@@ -109,8 +110,9 @@ export class TimeSeries {
   }
 
   addExtraDatasets(dataGroup, isSameScale = true) {
+    this.isSameScale = isSameScale;
     this._data2 = dataGroup;
-    this._fitPairedData(isSameScale);
+    this._fitPairedData();
     return this;
   }
 
@@ -199,7 +201,7 @@ export class TimeSeries {
     return this._ySc2;
   }
 
-  _fitPairedData(sameScale) {
+  _fitPairedData() {
     let data2Comb = this._data2.group.reduce((comb, arr) => comb.concat(arr));
     let combData = this._data1.concat(data2Comb);
 
@@ -212,7 +214,7 @@ export class TimeSeries {
       combData = this._data1.concat(data2Comb);
     }
 
-    if (!sameScale) {
+    if (!this.isSameScale) {
       this._ySc1 = yScFnc(this._data1, this._height, this._border);
       this._ySc2 = yScFnc(data2Comb, this._height, this._border);
     } else {
@@ -510,7 +512,7 @@ export class TimeSeries {
       .attr("text-anchor", "middle")
       .text(this._yLabel1);
 
-    if (this._data2) {
+    if (this._data2 && !this.isSameScale) {
       const axisRight = d3.axisRight(this._ySc2);
       d3.select(this._ctx)
         .append("g")

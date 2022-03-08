@@ -116,7 +116,7 @@ const Story2 = () => {
           }}
         >
           <Container>
-            <Card sx={{ minWidth: 1200 }}>
+            <Card sx={{ minWidth: 1300 }}>
               <CardHeader
                 avatar={
                   <Avatar className={classes.avatar}>
@@ -142,10 +142,9 @@ const Story2 = () => {
                         },
                       }}
                     >
-                      <FormControl sx={{ m: 0, width: 20, mt: 0 }} size="small">
+                      <FormControl sx={{ m: 1, width: 20, mt: 0 }} size="small">
                         <Chip label="" style={{ backgroundColor: "orange" }} />
                       </FormControl>
-
                       <FormControl
                         sx={{ m: 1, width: 300, mt: 0 }}
                         size="small"
@@ -167,11 +166,13 @@ const Story2 = () => {
                           ))}
                         </Select>
                       </FormControl>
-
+                      <span style={{ width: 30 }}></span>
                       <FormControl sx={{ m: 1, width: 20, mt: 0 }} size="small">
-                        <Chip label="" style={{ backgroundColor: "blue" }} />
+                        <Chip
+                          label=""
+                          style={{ backgroundColor: "steelblue" }}
+                        />
                       </FormControl>
-
                       <FormControl
                         sx={{ m: 1, width: 300, mt: 0 }}
                         size="small"
@@ -193,7 +194,6 @@ const Story2 = () => {
                           ))}
                         </Select>
                       </FormControl>
-
                       <FormControl sx={{ m: 1, width: 100, mt: 0 }}>
                         <Tooltip title="Click to proceed animation">
                           <Button
