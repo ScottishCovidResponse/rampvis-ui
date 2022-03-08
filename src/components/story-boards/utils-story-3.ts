@@ -6,7 +6,7 @@ import { ScrollingSvg } from "./ScrollingSvg";
 import { SemanticEvent } from "./SemanticEvent";
 import { TimeLine } from "./Timeline";
 import { TimeSeries } from "./TimeSeries";
-import { readJSONFile, readCSVFile } from "./utils-data";
+import { readCSVFile } from "./utils-data";
 import { findDateIdx } from "./utils-feature-detection";
 import { getCalendarEvents } from "./utils-lockdown-restriction-data";
 
@@ -15,7 +15,6 @@ let nationCases: any;
 let nationDeaths: any;
 let ukCasesData: any;
 let semanticCSV: any;
-let calendarEvents: any;
 
 export async function prepareData() {
   nationCases = await prepareNationCases();
@@ -99,7 +98,7 @@ const writeText = (text, date, data) => {
 };
 
 export function prepareAnnotations(region, calendarEvents) {
-  const annos = [{ start: 0, end: 0 }];
+  const annos: { start?: number; end: number }[] = [{ start: 0, end: 0 }];
 
   // Load data
   const cases = nationCases[region];
