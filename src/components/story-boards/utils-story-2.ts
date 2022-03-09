@@ -604,7 +604,7 @@ export function onClickAnimate(animationCounter: number, selector: string) {
   key.append("text").text("Key");
   key
     .append("rect")
-    .style("fill", d3.schemeTableau10[0])
+    .style("fill", "orange")
     .attr("width", 10)
     .attr("height", 10)
     .attr("y", 10);
@@ -618,7 +618,7 @@ export function onClickAnimate(animationCounter: number, selector: string) {
 
   key
     .append("rect")
-    .style("fill", d3.schemeTableau10[1])
+    .style("fill", "steelblue")
     .attr("width", 10)
     .attr("height", 10)
     .attr("y", 30);
