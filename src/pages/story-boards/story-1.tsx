@@ -121,7 +121,7 @@ const Story = () => {
             <Card sx={{ minWidth: 1200 }}>
               <CardHeader
                 avatar={
-                  <Avatar className={classes.avatar}>
+                  <Avatar style={{ backgroundColor: blue[500] }}>
                     <AutoStoriesIcon />
                   </Avatar>
                 }

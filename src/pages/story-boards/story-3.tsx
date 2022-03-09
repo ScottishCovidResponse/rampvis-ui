@@ -26,18 +26,8 @@ import {
 } from "src/components/story-boards/utils-story-3";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 0,
-    paddingTop: "56.25%", // 16:9
-  },
   avatar: {
     backgroundColor: blue[500],
-  },
-  icon: {
-    fill: blue[500],
   },
 }));
 
@@ -94,7 +84,7 @@ const Story3 = () => {
             <Card sx={{ minWidth: 1300 }}>
               <CardHeader
                 avatar={
-                  <Avatar className={classes.avatar}>
+                  <Avatar style={{ backgroundColor: blue[500] }}>
                     <AutoStoriesIcon />
                   </Avatar>
                 }

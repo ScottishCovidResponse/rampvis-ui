@@ -263,7 +263,7 @@ export async function createScrollingSvg(selector, nation) {
     selector,
     annotations.slice(1),
     1200,
-    800,
+    700,
     undefined,
     onChangeContainer,
   );
@@ -277,7 +277,7 @@ export async function createScrollingSvg(selector, nation) {
   const ts = new TimeSeries(casesData)
     .svg(d3.select(scrollSvg).select("#graphSvg").node())
     .yLabel("New cases by publish date")
-    .border(70);
+    .border(60);
   const tl = new TimeLine(casesData).svg(
     d3.select(scrollSvg).select("#timelineSvg").node(),
   );
