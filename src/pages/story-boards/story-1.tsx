@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 const Story = () => {
   const classes = useStyles();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [segment, setSegment] = useState<number>(3);
   const [regions, setRegions] = useState<string[]>([]);
   const [region, setRegion] = useState<string>("");
@@ -59,15 +59,15 @@ const Story = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       const _regions = await processDataAndGetRegions();
       setRegions(_regions.map((d) => d));
       segmentData(segment);
-      setLoading(false);
     };
 
     try {
+      setLoading(true);
       fetchData();
+      setLoading(false);
     } catch (error) {
       console.error(error);
       setLoading(false);
@@ -107,7 +107,7 @@ const Story = () => {
   return (
     <>
       <Head>
-        <title>Story</title>
+        <title>Story-1</title>
       </Head>
       <DashboardLayout>
         <Box

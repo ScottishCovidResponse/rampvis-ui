@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 const Story3 = () => {
   const classes = useStyles();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [nations, setNations] = useState<string[]>([
     "England",
     "Wales",
@@ -55,13 +55,13 @@ const Story3 = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       await prepareData();
-      setLoading(false);
     };
 
     try {
+      setLoading(true);
       fetchData();
+      setLoading(false);
     } catch (error) {
       console.error(error);
       setLoading(false);
@@ -80,7 +80,7 @@ const Story3 = () => {
   return (
     <>
       <Head>
-        <title>Story</title>
+        <title>Story-3</title>
       </Head>
       <DashboardLayout>
         <Box

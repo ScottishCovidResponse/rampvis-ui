@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 const Story2 = () => {
   const classes = useStyles();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [regions, setRegions] = useState<string[]>([]);
   const [region1, setRegion1] = useState<string>("");
   const [region2, setRegion2] = useState<string>("");
@@ -60,14 +60,14 @@ const Story2 = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       const _regions = await processDataAndGetRegions();
       setRegions(_regions.map((d) => d));
-      setLoading(false);
     };
 
     try {
+      setLoading(true);
       fetchData();
+      setLoading(false);
     } catch (error) {
       console.error(error);
       setLoading(false);
@@ -110,7 +110,7 @@ const Story2 = () => {
   return (
     <>
       <Head>
-        <title>Story</title>
+        <title>Story-2</title>
       </Head>
       <DashboardLayout>
         <Box
@@ -150,7 +150,10 @@ const Story2 = () => {
                       <FormControl sx={{ m: 1, width: 20, mt: 0 }} size="small">
                         <Chip
                           label=""
-                          style={{ backgroundColor: "orange", borderRadius: 0 }}
+                          style={{
+                            backgroundColor: "orange",
+                            borderRadius: 0,
+                          }}
                         />
                       </FormControl>
                       <FormControl

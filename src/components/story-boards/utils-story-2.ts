@@ -259,11 +259,11 @@ let annotations;
 function createAnnotations(region1, region2) {
   const region1CasesData = dailyCasesByRegion[region1].data;
   const region1Waves = wavesByRegion[region1];
-  const region1Color = d3.schemeTableau10[0];
+  const region1Color = "orange";
 
   const region2CasesData = dailyCasesByRegion[region2].data;
   const region2Waves = wavesByRegion[region2];
-  const region2Color = d3.schemeTableau10[1];
+  const region2Color = "steelblue";
 
   const waveNum = region1Waves.length;
   const cutOff = Math.ceil(waveNum * 0.3);
