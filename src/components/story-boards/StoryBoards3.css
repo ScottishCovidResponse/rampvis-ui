@@ -2,7 +2,7 @@
 /* Storyboard 3 */
 /* Scrolling */
 .scroll-container {
-  height:150px;
+  height:120px;
   white-space: nowrap;
   position: relative;
   overflow-x:scroll;

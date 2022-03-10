@@ -263,7 +263,7 @@ export async function createScrollingSvg(selector, nation) {
     selector,
     annotations.slice(1),
     1200,
-    700,
+    600,
     undefined,
     onChangeContainer,
   );

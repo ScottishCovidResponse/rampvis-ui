@@ -213,7 +213,7 @@ const Story2 = () => {
                         </Tooltip>
                       </FormControl>
                     </FormGroup>
-                    <div id="chart1" style={{ marginTop: "50px" }} />
+                    <div id="chart1" />
                   </>
                 )}
               </CardContent>
