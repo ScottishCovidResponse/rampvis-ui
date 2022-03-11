@@ -1,13 +1,6 @@
 import { useState, ReactElement } from "react";
 import { Helmet } from "react-helmet-async";
-import {
-  Button,
-  Grid,
-  Box,
-  Card,
-  CardContent,
-  CardHeader,
-} from "@mui/material";
+import { Grid, Box, Card, CardContent, CardHeader } from "@mui/material";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import axios from "axios";
 import FirstForm from "src/components/timeseries-sim/FirstForm";
@@ -36,32 +29,28 @@ const API_PY = API + "/timeseries-sim-search";
 const today = new Date();
 const lastDate = new Date(today.setDate(today.getDate() - 2));
 const firstDate = new Date(today.setDate(today.getDate() - 30));
+
+const dateParse = function (date) {
+  return (
+    String(date.getFullYear()) +
+    "-" +
+    String(date.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(date.getDate()).padStart(2, "0")
+  );
+};
+
 const initialFirstRunState = {
   // default user parameters for timeseries search
   targetCountry: "Belgium",
-  firstDate:
-    String(firstDate.getFullYear()) +
-    "-" +
-    String(firstDate.getMonth() + 1).padStart(2, "0") +
-    "-" +
-    String(firstDate.getDate()).padStart(2, "0"),
-  lastDate:
-    String(lastDate.getFullYear()) +
-    "-" +
-    String(lastDate.getMonth() + 1).padStart(2, "0") +
-    "-" +
-    String(lastDate.getDate()).padStart(2, "0"),
+  firstDate: dateParse(firstDate),
+  lastDate: dateParse(lastDate),
   indicator: "biweekly_cases_per_million",
   method: "euclidean",
   numberOfResults: 30,
   minPopulation: 600000,
   startDate: "2021-01-01",
-  endDate:
-    String(lastDate.getFullYear()) +
-    "-" +
-    String(lastDate.getMonth() + 1).padStart(2, "0") +
-    "-" +
-    String(lastDate.getDate()).padStart(2, "0"),
+  endDate: dateParse(lastDate),
   continentCheck: {
     Africa: false,
     Asia: false,
@@ -162,14 +151,11 @@ const TimeseriesSim = () => {
       // icon button click fix to move up to parent until list is found
       listNode = listNode.parentNode;
     }
-    console.log(listNode);
     const country = listNode.textContent;
-    console.log(benchmarkCountries.includes(country));
     setBenchmarkCountries((old) => [...old.filter((item) => item !== country)]);
   };
 
   const removeTimeSeries = (event) => {
-    console.log(event);
     // remove selected benchmark country from the list
     let listNode = event.target;
     while (listNode.localName !== "li") {
@@ -185,6 +171,7 @@ const TimeseriesSim = () => {
   };
 
   const multipleHandleChange = (event) => {
+    console.log(event.target.value);
     // changes user form for timeseries search
     if (event.target.type == "checkbox") {
       const temp_obj = { ...firstRunForm };
@@ -271,6 +258,8 @@ const TimeseriesSim = () => {
     //plotSwitch();
   };
 
+  const [value, setValue] = useState(initialFirstRunState.firstDate);
+
   return (
     <>
       <Helmet>
@@ -288,20 +277,26 @@ const TimeseriesSim = () => {
                   onChange={multipleHandleChange}
                   indicator={covidIndicators}
                   method={similarityMeasures}
+                  formChange={setFirstRunForm}
+                  dateParse={dateParse}
                 />
-                <AdvancedFilter
-                  className={classes.firstRunForm}
-                  open={advancedFilterClickOpen}
-                  state={advancedFilterPopup}
-                  close={advancedFilterClickClose}
-                  continents={continents}
-                  form={firstRunForm}
-                  onChange={multipleHandleChange}
-                />
-                <SearchButton
-                  className={classes.searchButton}
-                  onClick={searchClick}
-                />
+                <h2>
+                  <AdvancedFilter
+                    className={classes.firstRunForm}
+                    open={advancedFilterClickOpen}
+                    state={advancedFilterPopup}
+                    close={advancedFilterClickClose}
+                    continents={continents}
+                    form={firstRunForm}
+                    onChange={multipleHandleChange}
+                  />
+                </h2>
+                <h2>
+                  <SearchButton
+                    className={classes.searchButton}
+                    onClick={searchClick}
+                  />
+                </h2>
                 <InfoPopUp
                   open={infoPopUpClickOpen}
                   state={infoPopUp}

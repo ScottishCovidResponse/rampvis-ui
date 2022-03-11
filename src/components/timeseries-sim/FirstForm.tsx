@@ -1,6 +1,8 @@
 import { TextField, MenuItem } from "@mui/material";
-import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import DatePicker from "@mui/lab/DatePicker";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+
 function FirstForm(props) {
   return (
     <div className={props.className}>
@@ -10,7 +12,7 @@ function FirstForm(props) {
           label="Target Country"
           type="text"
           color="primary"
-          variant="standard"
+          variant="outlined"
           name="targetCountry"
           value={props.form.targetCountry}
           onChange={props.onChange}
@@ -19,43 +21,43 @@ function FirstForm(props) {
           }}
         />
       </h2>
-      <h2>
-        <TextField
-          id="first_run"
-          label="Match First Date"
-          type="date"
-          color="primary"
-          variant="standard"
-          name="firstDate"
-          value={props.form.firstDate}
-          onChange={props.onChange}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-      </h2>
-      <h2>
-        <TextField
-          id="first_run"
-          label="Match Last Date"
-          type="date"
-          color="primary"
-          variant="standard"
-          name="lastDate"
-          value={props.form.lastDate}
-          onChange={props.onChange}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-      </h2>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <h2>
+          <DatePicker
+            label="Match First Date"
+            value={new Date(props.form.firstDate)}
+            inputFormat="dd-MMM-yyyy"
+            onChange={(newFirstDate) => {
+              props.formChange((old) => {
+                return { ...old, firstDate: props.dateParse(newFirstDate) };
+              });
+            }}
+            key="firstDate"
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </h2>
+        <h2>
+          <DatePicker
+            label="Match Last Date"
+            value={new Date(props.form.lastDate)}
+            inputFormat="dd-MMM-yyyy"
+            onChange={(newLastDate) => {
+              props.formChange((old) => {
+                return { ...old, lastDate: props.dateParse(newLastDate) };
+              });
+            }}
+            key="lastDate"
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </h2>
+      </LocalizationProvider>
 
       <h2>
         <TextField
           select
           label="Covid Data Stream"
           value={props.form.indicator}
-          variant="standard"
+          variant="outlined"
           name="indicator"
           onChange={props.onChange}
         >
@@ -72,7 +74,7 @@ function FirstForm(props) {
           label="Similarity Measure"
           name="method"
           value={props.form.method}
-          variant="standard"
+          variant="outlined"
           onChange={props.onChange}
         >
           {props.method.map((option) => (
@@ -84,7 +86,7 @@ function FirstForm(props) {
       </h2>
       <h2>
         <TextField
-          variant="standard"
+          variant="outlined"
           id="first_run"
           label="Number of results"
           type="number"
