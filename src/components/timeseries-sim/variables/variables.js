@@ -81,7 +81,7 @@ export const continents = [
     value: "Asia",
   },
   {
-    value: "Ocenia",
+    value: "Oceania",
   },
   {
     value: "Europe",

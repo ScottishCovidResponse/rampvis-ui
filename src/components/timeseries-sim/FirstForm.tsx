@@ -22,14 +22,18 @@ function FirstForm(props) {
           getOptionLabel={(option) => option.label}
           groupBy={(option) => option.continent}
           onChange={(event) => {
+            const newTargetCountryEvent = event.target as Element;
             props.formChange((old) => {
-              return { ...old, targetCountry: event.target.textContent };
+              return {
+                ...old,
+                targetCountry: newTargetCountryEvent.textContent,
+              };
             });
           }}
           renderInput={(params) => (
             <TextField
               {...params}
-              label="Choose a country"
+              label="Target Country"
               inputProps={{
                 ...params.inputProps,
                 autoComplete: "new-password", // disable autocomplete and autofill
@@ -43,6 +47,8 @@ function FirstForm(props) {
           <DatePicker
             label="Match First Date"
             value={new Date(props.form.firstDate)}
+            minDate={new Date(props.form.startDate)}
+            maxDate={new Date(props.form.lastDate)}
             inputFormat="dd-MMM-yyyy"
             onChange={(newFirstDate) => {
               props.formChange((old) => {
@@ -59,6 +65,8 @@ function FirstForm(props) {
           <DatePicker
             label="Match Last Date"
             value={new Date(props.form.lastDate)}
+            minDate={new Date(props.form.firstDate)}
+            maxDate={new Date(props.form.endDate)}
             inputFormat="dd-MMM-yyyy"
             onChange={(newLastDate) => {
               props.formChange((old) => {

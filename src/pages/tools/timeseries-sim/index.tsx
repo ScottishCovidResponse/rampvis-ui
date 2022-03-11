@@ -257,8 +257,6 @@ const TimeseriesSim = () => {
     //plotSwitch();
   };
 
-  const [value, setValue] = useState(initialFirstRunState.firstDate);
-
   return (
     <>
       <Helmet>
@@ -266,10 +264,17 @@ const TimeseriesSim = () => {
       </Helmet>
       <Box>
         <Grid container spacing={2}>
-          <Grid item xs={3}>
+          <Grid item xs={3} sx={{ minWidth: "350px" }}>
             <Card>
               <CardContent>
                 <CardHeader title="Time Period Search" />
+                <h2>
+                  <InfoPopUp
+                    open={infoPopUpClickOpen}
+                    state={infoPopUp}
+                    close={infoPopUpClickClose}
+                  />
+                </h2>
                 <FirstForm
                   className={classes.firstRunForm}
                   form={firstRunForm}
@@ -288,6 +293,9 @@ const TimeseriesSim = () => {
                     continents={continents}
                     form={firstRunForm}
                     onChange={multipleHandleChange}
+                    formChange={setFirstRunForm}
+                    dateParse={dateParse}
+                    initialValue={initialFirstRunState}
                   />
                 </h2>
                 <h2>
@@ -296,18 +304,11 @@ const TimeseriesSim = () => {
                     onClick={searchClick}
                   />
                 </h2>
-                <h2>
-                  <InfoPopUp
-                    open={infoPopUpClickOpen}
-                    state={infoPopUp}
-                    close={infoPopUpClickClose}
-                  />
-                </h2>
               </CardContent>
             </Card>
           </Grid>
 
-          <Grid item xs={3}>
+          <Grid item xs={3} sx={{ minWidth: "350px" }}>
             <Card>
               <CardContent>
                 <CardHeader title="Comprehensive Country Comparison" />
@@ -319,13 +320,14 @@ const TimeseriesSim = () => {
                   removeFromList={removeCountry}
                   setToDefault={setBenchMarkToDefault}
                   onClick={compareClick}
+                  manualCountrySet={setManualCountry}
                 />
                 <ComparePopUp state={comparePopUp} close={comparePopUpClose} />
               </CardContent>
             </Card>
           </Grid>
 
-          <Grid item xs={3}>
+          <Grid item xs={3} sx={{ minWidth: "350px" }}>
             <Card>
               <CardContent>
                 <CardHeader title="Observation-based Forecasting" />

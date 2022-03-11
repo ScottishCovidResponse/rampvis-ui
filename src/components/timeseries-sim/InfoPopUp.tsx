@@ -5,6 +5,7 @@ import {
   DialogTitle,
   DialogContent,
 } from "@mui/material";
+import { width } from "@mui/system";
 import MathJax from "react-mathjax";
 
 const timeseriesFormula = `\\pmb{t} = \\{t_\\mathrm{1},t_\\mathrm{2},\\cdots,t_\\mathrm{n}\\}`;
@@ -68,14 +69,15 @@ const compressionMeasureTable = `
 
 function InfoPopUp(props) {
   return (
-    <div className={props.className}>
+    <div>
       <Button
-        size="small"
-        variant="outlined"
-        color="primary"
+        sx={{ width: "1" }}
+        size="large"
+        variant="contained"
+        color="secondary"
         onClick={props.open}
       >
-        ?
+        Similarity Matching Info Page
       </Button>
 
       <Dialog
