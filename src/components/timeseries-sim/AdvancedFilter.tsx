@@ -116,7 +116,7 @@ function AdvancedFilter(props) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.close} color="primary">
+          <Button size="large" onClick={props.close} color="primary">
             Apply
           </Button>
         </DialogActions>

@@ -1,6 +1,15 @@
 import { useState, ReactElement } from "react";
 import { Helmet } from "react-helmet-async";
-import { Grid, Box, Card, CardContent, CardHeader } from "@mui/material";
+import {
+  Grid,
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+} from "@mui/material";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import axios from "axios";
 import FirstForm from "src/components/timeseries-sim/FirstForm";
@@ -23,10 +32,11 @@ import { benchmarkPlot } from "src/components/timeseries-sim/plotfunctions/bench
 import PredictPopUp from "src/components/timeseries-sim/PredictPopUp";
 import { predictPlot } from "src/components/timeseries-sim/plotfunctions/predictplot";
 import InfoPopUp from "src/components/timeseries-sim/InfoPopUp";
+import CircularProgress from "@mui/material/CircularProgress";
 const API = process.env.NEXT_PUBLIC_API_PY;
 const API_PY = API + "/timeseries-sim-search";
 const today = new Date();
-const lastDate = new Date(today.setDate(today.getDate() - 2));
+const lastDate = new Date(today.setDate(today.getDate() - 4));
 const firstDate = new Date(today.setDate(today.getDate() - 30));
 
 const dateParse = function (date) {
@@ -187,11 +197,15 @@ const TimeseriesSim = () => {
     }
   };
 
+  const [loadPopUp, setLoadPopUp] = useState(false);
+
   const searchPost = async () => {
     // post request to get similar timeseries back from API
     const apiUrl = API_PY + "/search/";
     //const apiUrl = `${API}/timeseries-sim-search/`;
+
     const response = await axios.post(apiUrl, firstRunForm);
+
     console.log("response = ", response);
     if (response.data?.length > 0) {
       //setResponseDataSearch(response.data);
@@ -242,18 +256,25 @@ const TimeseriesSim = () => {
 
   const predictClick = async () => {
     predictPopUpOpen();
+    setLoadPopUp(true);
     await predictPost();
+    setLoadPopUp(false);
   };
 
   const compareClick = async () => {
     // on clicking search button, fetch data , wait response and summon plots
-    comparePopUpOpen(); // in order to make d3 queries, have to open pop-up first before filling with d3 graphs
+    // in order to make d3 queries, have to open pop-up first before filling with d3 graphs
+    comparePopUpOpen();
+    setLoadPopUp(true);
     await comparePost();
+    setLoadPopUp(false);
   };
 
   const searchClick = async () => {
     // on clicking search button, fetch data , wait response and summon plots
+    setLoadPopUp(true);
     await searchPost();
+    setLoadPopUp(false);
     //plotSwitch();
   };
 
@@ -303,6 +324,13 @@ const TimeseriesSim = () => {
                     className={classes.searchButton}
                     onClick={searchClick}
                   />
+                  <Dialog open={loadPopUp}>
+                    <DialogContent>
+                      <DialogContentText>
+                        <CircularProgress />
+                      </DialogContentText>
+                    </DialogContent>
+                  </Dialog>
                 </h2>
               </CardContent>
             </Card>
