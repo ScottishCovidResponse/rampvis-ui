@@ -321,6 +321,7 @@ const TimeseriesSim = () => {
                   setToDefault={setBenchMarkToDefault}
                   onClick={compareClick}
                   manualCountrySet={setManualCountry}
+                  form={firstRunForm}
                 />
                 <ComparePopUp state={comparePopUp} close={comparePopUpClose} />
               </CardContent>

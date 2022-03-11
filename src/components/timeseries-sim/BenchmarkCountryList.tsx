@@ -1,6 +1,5 @@
 import {
   Button,
-  OutlinedInput,
   List,
   ListItem,
   IconButton,
@@ -11,10 +10,14 @@ import {
 } from "@mui/material";
 import { DeleteOutline } from "@mui/icons-material";
 import { autoFillList } from "src/components/timeseries-sim/variables/variables";
-import { useState } from "react";
 
 function BenchmarkCountryList(props) {
-  const options = autoFillList;
+  const continentList = Object.keys(props.form.continentCheck).filter(
+    (keys) => props.form.continentCheck[keys] == true,
+  );
+  const options = autoFillList.filter((count) =>
+    continentList.includes(count.continent),
+  );
 
   return (
     <div>

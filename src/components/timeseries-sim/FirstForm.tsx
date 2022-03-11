@@ -8,7 +8,15 @@ function FirstForm(props) {
   const initial_country = autoFillList.filter((obj) => {
     return obj.label == props.form.targetCountry;
   })[0];
-  const options = autoFillList;
+
+  const continentList = Object.keys(props.form.continentCheck).filter(
+    (keys) => props.form.continentCheck[keys] == true,
+  );
+
+  const options = autoFillList.filter((count) =>
+    continentList.includes(count.continent),
+  );
+
   return (
     <div className={props.className}>
       <h2>
