@@ -50,7 +50,9 @@ function FirstForm(props) {
               });
             }}
             key="firstDate"
-            renderInput={(params) => <TextField {...params} />}
+            renderInput={(params) => (
+              <TextField sx={{ width: "1" }} {...params} />
+            )}
           />
         </h2>
         <h2>
@@ -64,13 +66,16 @@ function FirstForm(props) {
               });
             }}
             key="lastDate"
-            renderInput={(params) => <TextField {...params} />}
+            renderInput={(params) => (
+              <TextField sx={{ width: "1" }} {...params} />
+            )}
           />
         </h2>
       </LocalizationProvider>
 
       <h2>
         <TextField
+          sx={{ width: "1" }}
           select
           label="Covid Data Stream"
           value={props.form.indicator}
@@ -88,6 +93,7 @@ function FirstForm(props) {
       <h2>
         <TextField
           select
+          sx={{ width: "1" }}
           label="Similarity Measure"
           name="method"
           value={props.form.method}
@@ -103,6 +109,7 @@ function FirstForm(props) {
       </h2>
       <h2>
         <TextField
+          sx={{ width: "1" }}
           variant="outlined"
           id="first_run"
           label="Number of results"
