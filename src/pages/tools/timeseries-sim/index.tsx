@@ -154,14 +154,17 @@ const TimeseriesSim = () => {
     }
   };
 
-  const removeCountry = (event) => {
+  const removeCountry = function (event) {
     // remove selected benchmark country from the list
     let listNode = event.target;
+
     while (listNode.localName !== "li") {
       // icon button click fix to move up to parent until list is found
       listNode = listNode.parentNode;
     }
-    const country = listNode.innerText;
+    console.log(listNode);
+    const country = listNode.textContent;
+    console.log(benchmarkCountries.includes(country));
     setBenchmarkCountries((old) => [...old.filter((item) => item !== country)]);
   };
 
@@ -173,7 +176,7 @@ const TimeseriesSim = () => {
       // icon button click fix to move up to parent until list is found
       listNode = listNode.parentNode;
     }
-    const timeSeries = listNode.innerText;
+    const timeSeries = listNode.textContent;
     setTimeSeriesBag((old) => [...old.filter((item) => item !== timeSeries)]);
   };
 
