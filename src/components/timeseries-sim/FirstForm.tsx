@@ -1,24 +1,41 @@
-import { TextField, MenuItem } from "@mui/material";
+import { TextField, MenuItem, Autocomplete } from "@mui/material";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import { autoFillList } from "src/components/timeseries-sim/variables/variables";
 
 function FirstForm(props) {
+  const initial_country = autoFillList.filter((obj) => {
+    return obj.label == props.form.targetCountry;
+  })[0];
+  const options = autoFillList;
   return (
     <div className={props.className}>
       <h2>
-        <TextField
-          id="first_run"
-          label="Target Country"
-          type="text"
-          color="primary"
-          variant="outlined"
-          name="targetCountry"
-          value={props.form.targetCountry}
-          onChange={props.onChange}
-          InputLabelProps={{
-            shrink: true,
+        <Autocomplete
+          freeSolo
+          value={initial_country}
+          options={options.sort(
+            (a, b) => -b.continent.localeCompare(a.continent),
+          )}
+          autoHighlight
+          getOptionLabel={(option) => option.label}
+          groupBy={(option) => option.continent}
+          onChange={(event) => {
+            props.formChange((old) => {
+              return { ...old, targetCountry: event.target.textContent };
+            });
           }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Choose a country"
+              inputProps={{
+                ...params.inputProps,
+                autoComplete: "new-password", // disable autocomplete and autofill
+              }}
+            />
+          )}
         />
       </h2>
       <LocalizationProvider dateAdapter={AdapterDateFns}>

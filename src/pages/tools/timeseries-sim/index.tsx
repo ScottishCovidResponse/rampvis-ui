@@ -23,7 +23,6 @@ import { benchmarkPlot } from "src/components/timeseries-sim/plotfunctions/bench
 import PredictPopUp from "src/components/timeseries-sim/PredictPopUp";
 import { predictPlot } from "src/components/timeseries-sim/plotfunctions/predictplot";
 import InfoPopUp from "src/components/timeseries-sim/InfoPopUp";
-
 const API = process.env.NEXT_PUBLIC_API_PY;
 const API_PY = API + "/timeseries-sim-search";
 const today = new Date();
@@ -297,11 +296,13 @@ const TimeseriesSim = () => {
                     onClick={searchClick}
                   />
                 </h2>
-                <InfoPopUp
-                  open={infoPopUpClickOpen}
-                  state={infoPopUp}
-                  close={infoPopUpClickClose}
-                />
+                <h2>
+                  <InfoPopUp
+                    open={infoPopUpClickOpen}
+                    state={infoPopUp}
+                    close={infoPopUpClickClose}
+                  />
+                </h2>
               </CardContent>
             </Card>
           </Grid>
