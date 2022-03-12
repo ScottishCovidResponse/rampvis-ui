@@ -18,7 +18,7 @@ function TimeSeriesBag(props) {
               (
                 series, // time series bag list creation
               ) => (
-                <div className={props.className}>
+                <div key={series} className={props.className}>
                   <ListItem
                     key={series}
                     secondaryAction={
