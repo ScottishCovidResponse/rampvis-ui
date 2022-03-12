@@ -61,36 +61,49 @@ function BenchmarkCountryList(props) {
       </h2>
 
       <h2>
-        <List sx={{ position: "relative", overflow: "auto", maxHeight: 300 }}>
-          {props.list.map(
-            (
-              series, // time series bag list creation
-            ) => (
-              <ListItem
-                key={series}
-                secondaryAction={
-                  <IconButton
-                    edge="end"
-                    aria-label="delete"
-                    onClick={props.removeFromList}
-                  >
-                    <DeleteOutline />
-                  </IconButton>
-                }
-              >
-                <ListItemText primary={series} />
-              </ListItem>
-            ),
-          )}
-        </List>
+        <div className={props.className}>
+          <List sx={{ position: "relative", overflow: "auto", maxHeight: 300 }}>
+            {props.list.map(
+              (
+                series, // time series bag list creation
+              ) => (
+                <ListItem
+                  key={series}
+                  secondaryAction={
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      onClick={props.removeFromList}
+                    >
+                      <DeleteOutline />
+                    </IconButton>
+                  }
+                >
+                  <ListItemText primary={series} />
+                </ListItem>
+              ),
+            )}
+          </List>
+        </div>
       </h2>
+
       <h2>
-        <Button variant="outlined" color="primary" onClick={props.setToDefault}>
+        <Button
+          size="large"
+          variant="outlined"
+          color="primary"
+          onClick={props.setToDefault}
+        >
           Set to default
         </Button>
       </h2>
       <h2>
-        <Button variant="contained" color="primary" onClick={props.onClick}>
+        <Button
+          size="large"
+          variant="contained"
+          color="primary"
+          onClick={props.onClick}
+        >
           Compare
         </Button>
       </h2>

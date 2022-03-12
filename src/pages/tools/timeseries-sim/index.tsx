@@ -350,6 +350,7 @@ const TimeseriesSim = () => {
                   onClick={compareClick}
                   manualCountrySet={setManualCountry}
                   form={firstRunForm}
+                  className={classes.listArea}
                 />
                 <ComparePopUp state={comparePopUp} close={comparePopUpClose} />
               </CardContent>
@@ -360,10 +361,13 @@ const TimeseriesSim = () => {
             <Card>
               <CardContent>
                 <CardHeader title="Observation-based Forecasting" />
+                Add similar time periods using search tool results to list
+                below:
                 <TimeSeriesBag
                   list={timeSeriesBag}
                   removeFromList={removeTimeSeries}
                   onClick={predictClick}
+                  className={classes.listArea}
                 />
                 <PredictPopUp state={predictPopUp} close={predictPopUpClose} />
               </CardContent>
