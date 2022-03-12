@@ -12,31 +12,41 @@ function TimeSeriesBag(props) {
   return (
     <div>
       <h2>
-        <List sx={{ position: "relative", overflow: "auto", maxHeight: 300 }}>
-          {props.list.map(
-            (
-              series, // time series bag list creation
-            ) => (
-              <ListItem
-                key={series}
-                secondaryAction={
-                  <IconButton
-                    edge="end"
-                    aria-label="delete"
-                    onClick={props.removeFromList}
+        <div className={props.className}>
+          <List sx={{ position: "relative", overflow: "auto", maxHeight: 300 }}>
+            {props.list.map(
+              (
+                series, // time series bag list creation
+              ) => (
+                <div key={series} className={props.className}>
+                  <ListItem
+                    key={series}
+                    secondaryAction={
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        onClick={props.removeFromList}
+                      >
+                        <DeleteOutline />
+                      </IconButton>
+                    }
                   >
-                    <DeleteOutline />
-                  </IconButton>
-                }
-              >
-                <ListItemText primary={series} />
-              </ListItem>
-            ),
-          )}
-        </List>
+                    <ListItemText primary={series} />
+                  </ListItem>
+                </div>
+              ),
+            )}
+          </List>
+        </div>
       </h2>
+
       <h2>
-        <Button variant="contained" color="primary" onClick={props.onClick}>
+        <Button
+          size="large"
+          variant="contained"
+          color="primary"
+          onClick={props.onClick}
+        >
           Predict
         </Button>
       </h2>

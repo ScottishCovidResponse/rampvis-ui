@@ -1,12 +1,14 @@
 import { useState, ReactElement } from "react";
 import { Helmet } from "react-helmet-async";
 import {
-  Button,
   Grid,
   Box,
   Card,
   CardContent,
   CardHeader,
+  Dialog,
+  DialogContent,
+  DialogContentText,
 } from "@mui/material";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import axios from "axios";
@@ -30,38 +32,34 @@ import { benchmarkPlot } from "src/components/timeseries-sim/plotfunctions/bench
 import PredictPopUp from "src/components/timeseries-sim/PredictPopUp";
 import { predictPlot } from "src/components/timeseries-sim/plotfunctions/predictplot";
 import InfoPopUp from "src/components/timeseries-sim/InfoPopUp";
-
+import CircularProgress from "@mui/material/CircularProgress";
 const API = process.env.NEXT_PUBLIC_API_PY;
 const API_PY = API + "/timeseries-sim-search";
 const today = new Date();
-const lastDate = new Date(today.setDate(today.getDate() - 2));
+const lastDate = new Date(today.setDate(today.getDate() - 4));
 const firstDate = new Date(today.setDate(today.getDate() - 30));
+
+const dateParse = function (date) {
+  return (
+    String(date.getFullYear()) +
+    "-" +
+    String(date.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(date.getDate()).padStart(2, "0")
+  );
+};
+
 const initialFirstRunState = {
   // default user parameters for timeseries search
   targetCountry: "Belgium",
-  firstDate:
-    String(firstDate.getFullYear()) +
-    "-" +
-    String(firstDate.getMonth() + 1).padStart(2, "0") +
-    "-" +
-    String(firstDate.getDate()).padStart(2, "0"),
-  lastDate:
-    String(lastDate.getFullYear()) +
-    "-" +
-    String(lastDate.getMonth() + 1).padStart(2, "0") +
-    "-" +
-    String(lastDate.getDate()).padStart(2, "0"),
+  firstDate: dateParse(firstDate),
+  lastDate: dateParse(lastDate),
   indicator: "biweekly_cases_per_million",
   method: "euclidean",
   numberOfResults: 30,
   minPopulation: 600000,
   startDate: "2021-01-01",
-  endDate:
-    String(lastDate.getFullYear()) +
-    "-" +
-    String(lastDate.getMonth() + 1).padStart(2, "0") +
-    "-" +
-    String(lastDate.getDate()).padStart(2, "0"),
+  endDate: dateParse(lastDate),
   continentCheck: {
     Africa: false,
     Asia: false,
@@ -154,26 +152,26 @@ const TimeseriesSim = () => {
     }
   };
 
-  const removeCountry = (event) => {
+  const removeCountry = function (event) {
     // remove selected benchmark country from the list
     let listNode = event.target;
+
     while (listNode.localName !== "li") {
       // icon button click fix to move up to parent until list is found
       listNode = listNode.parentNode;
     }
-    const country = listNode.innerText;
+    const country = listNode.textContent;
     setBenchmarkCountries((old) => [...old.filter((item) => item !== country)]);
   };
 
   const removeTimeSeries = (event) => {
-    console.log(event);
     // remove selected benchmark country from the list
     let listNode = event.target;
     while (listNode.localName !== "li") {
       // icon button click fix to move up to parent until list is found
       listNode = listNode.parentNode;
     }
-    const timeSeries = listNode.innerText;
+    const timeSeries = listNode.textContent;
     setTimeSeriesBag((old) => [...old.filter((item) => item !== timeSeries)]);
   };
 
@@ -182,6 +180,7 @@ const TimeseriesSim = () => {
   };
 
   const multipleHandleChange = (event) => {
+    console.log(event.target.value);
     // changes user form for timeseries search
     if (event.target.type == "checkbox") {
       const temp_obj = { ...firstRunForm };
@@ -198,11 +197,15 @@ const TimeseriesSim = () => {
     }
   };
 
+  const [loadPopUp, setLoadPopUp] = useState(false);
+
   const searchPost = async () => {
     // post request to get similar timeseries back from API
     const apiUrl = API_PY + "/search/";
     //const apiUrl = `${API}/timeseries-sim-search/`;
+
     const response = await axios.post(apiUrl, firstRunForm);
+
     console.log("response = ", response);
     if (response.data?.length > 0) {
       //setResponseDataSearch(response.data);
@@ -253,18 +256,25 @@ const TimeseriesSim = () => {
 
   const predictClick = async () => {
     predictPopUpOpen();
+    setLoadPopUp(true);
     await predictPost();
+    setLoadPopUp(false);
   };
 
   const compareClick = async () => {
     // on clicking search button, fetch data , wait response and summon plots
-    comparePopUpOpen(); // in order to make d3 queries, have to open pop-up first before filling with d3 graphs
+    // in order to make d3 queries, have to open pop-up first before filling with d3 graphs
+    comparePopUpOpen();
+    setLoadPopUp(true);
     await comparePost();
+    setLoadPopUp(false);
   };
 
   const searchClick = async () => {
     // on clicking search button, fetch data , wait response and summon plots
+    setLoadPopUp(true);
     await searchPost();
+    setLoadPopUp(false);
     //plotSwitch();
   };
 
@@ -275,40 +285,58 @@ const TimeseriesSim = () => {
       </Helmet>
       <Box>
         <Grid container spacing={2}>
-          <Grid item xs={3}>
+          <Grid item xs={3} sx={{ minWidth: "350px" }}>
             <Card>
               <CardContent>
                 <CardHeader title="Time Period Search" />
+                <h2>
+                  <InfoPopUp
+                    open={infoPopUpClickOpen}
+                    state={infoPopUp}
+                    close={infoPopUpClickClose}
+                  />
+                </h2>
                 <FirstForm
                   className={classes.firstRunForm}
                   form={firstRunForm}
                   onChange={multipleHandleChange}
                   indicator={covidIndicators}
                   method={similarityMeasures}
+                  formChange={setFirstRunForm}
+                  dateParse={dateParse}
                 />
-                <AdvancedFilter
-                  className={classes.firstRunForm}
-                  open={advancedFilterClickOpen}
-                  state={advancedFilterPopup}
-                  close={advancedFilterClickClose}
-                  continents={continents}
-                  form={firstRunForm}
-                  onChange={multipleHandleChange}
-                />
-                <SearchButton
-                  className={classes.searchButton}
-                  onClick={searchClick}
-                />
-                <InfoPopUp
-                  open={infoPopUpClickOpen}
-                  state={infoPopUp}
-                  close={infoPopUpClickClose}
-                />
+                <h2>
+                  <AdvancedFilter
+                    className={classes.firstRunForm}
+                    open={advancedFilterClickOpen}
+                    state={advancedFilterPopup}
+                    close={advancedFilterClickClose}
+                    continents={continents}
+                    form={firstRunForm}
+                    onChange={multipleHandleChange}
+                    formChange={setFirstRunForm}
+                    dateParse={dateParse}
+                    initialValue={initialFirstRunState}
+                  />
+                </h2>
+                <h2>
+                  <SearchButton
+                    className={classes.searchButton}
+                    onClick={searchClick}
+                  />
+                  <Dialog open={loadPopUp}>
+                    <DialogContent>
+                      <DialogContentText>
+                        <CircularProgress />
+                      </DialogContentText>
+                    </DialogContent>
+                  </Dialog>
+                </h2>
               </CardContent>
             </Card>
           </Grid>
 
-          <Grid item xs={3}>
+          <Grid item xs={3} sx={{ minWidth: "350px" }}>
             <Card>
               <CardContent>
                 <CardHeader title="Comprehensive Country Comparison" />
@@ -320,20 +348,26 @@ const TimeseriesSim = () => {
                   removeFromList={removeCountry}
                   setToDefault={setBenchMarkToDefault}
                   onClick={compareClick}
+                  manualCountrySet={setManualCountry}
+                  form={firstRunForm}
+                  className={classes.listArea}
                 />
                 <ComparePopUp state={comparePopUp} close={comparePopUpClose} />
               </CardContent>
             </Card>
           </Grid>
 
-          <Grid item xs={3}>
+          <Grid item xs={3} sx={{ minWidth: "350px" }}>
             <Card>
               <CardContent>
                 <CardHeader title="Observation-based Forecasting" />
+                Add similar time periods using search tool results to list
+                below:
                 <TimeSeriesBag
                   list={timeSeriesBag}
                   removeFromList={removeTimeSeries}
                   onClick={predictClick}
+                  className={classes.listArea}
                 />
                 <PredictPopUp state={predictPopUp} close={predictPopUpClose} />
               </CardContent>

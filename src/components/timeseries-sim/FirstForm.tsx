@@ -1,61 +1,101 @@
-import { TextField, MenuItem } from "@mui/material";
-import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
+import { TextField, MenuItem, Autocomplete } from "@mui/material";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import DatePicker from "@mui/lab/DatePicker";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import { autoFillList } from "src/components/timeseries-sim/variables/variables";
+
 function FirstForm(props) {
+  const initial_country = autoFillList.filter((obj) => {
+    return obj.label == props.form.targetCountry;
+  })[0];
+
+  const continentList = Object.keys(props.form.continentCheck).filter(
+    (keys) => props.form.continentCheck[keys] == true,
+  );
+
+  const options = autoFillList.filter((count) =>
+    continentList.includes(count.continent),
+  );
+
   return (
     <div className={props.className}>
       <h2>
-        <TextField
-          id="first_run"
-          label="Target Country"
-          type="text"
-          color="primary"
-          variant="standard"
-          name="targetCountry"
-          value={props.form.targetCountry}
-          onChange={props.onChange}
-          InputLabelProps={{
-            shrink: true,
+        <Autocomplete
+          freeSolo
+          value={initial_country}
+          options={options.sort(
+            (a, b) => -b.continent.localeCompare(a.continent),
+          )}
+          autoHighlight
+          getOptionLabel={(option) => option.label}
+          groupBy={(option) => option.continent}
+          onChange={(event) => {
+            const newTargetCountryEvent = event.target as Element;
+            props.formChange((old) => {
+              return {
+                ...old,
+                targetCountry: newTargetCountryEvent.textContent,
+              };
+            });
           }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Target Country"
+              inputProps={{
+                ...params.inputProps,
+                autoComplete: "new-password", // disable autocomplete and autofill
+              }}
+            />
+          )}
         />
       </h2>
-      <h2>
-        <TextField
-          id="first_run"
-          label="Match First Date"
-          type="date"
-          color="primary"
-          variant="standard"
-          name="firstDate"
-          value={props.form.firstDate}
-          onChange={props.onChange}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-      </h2>
-      <h2>
-        <TextField
-          id="first_run"
-          label="Match Last Date"
-          type="date"
-          color="primary"
-          variant="standard"
-          name="lastDate"
-          value={props.form.lastDate}
-          onChange={props.onChange}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-      </h2>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <h2>
+          <DatePicker
+            label="Match First Date"
+            value={new Date(props.form.firstDate)}
+            minDate={new Date(props.form.startDate)}
+            maxDate={new Date(props.form.lastDate)}
+            inputFormat="dd-MMM-yyyy"
+            onChange={(newFirstDate) => {
+              props.formChange((old) => {
+                return { ...old, firstDate: props.dateParse(newFirstDate) };
+              });
+            }}
+            key="firstDate"
+            renderInput={(params) => (
+              <TextField sx={{ width: "1" }} {...params} />
+            )}
+          />
+        </h2>
+        <h2>
+          <DatePicker
+            label="Match Last Date"
+            value={new Date(props.form.lastDate)}
+            minDate={new Date(props.form.firstDate)}
+            maxDate={new Date(props.form.endDate)}
+            inputFormat="dd-MMM-yyyy"
+            onChange={(newLastDate) => {
+              props.formChange((old) => {
+                return { ...old, lastDate: props.dateParse(newLastDate) };
+              });
+            }}
+            key="lastDate"
+            renderInput={(params) => (
+              <TextField sx={{ width: "1" }} {...params} />
+            )}
+          />
+        </h2>
+      </LocalizationProvider>
 
       <h2>
         <TextField
+          sx={{ width: "1" }}
           select
           label="Covid Data Stream"
           value={props.form.indicator}
-          variant="standard"
+          variant="outlined"
           name="indicator"
           onChange={props.onChange}
         >
@@ -69,10 +109,11 @@ function FirstForm(props) {
       <h2>
         <TextField
           select
+          sx={{ width: "1" }}
           label="Similarity Measure"
           name="method"
           value={props.form.method}
-          variant="standard"
+          variant="outlined"
           onChange={props.onChange}
         >
           {props.method.map((option) => (
@@ -84,7 +125,8 @@ function FirstForm(props) {
       </h2>
       <h2>
         <TextField
-          variant="standard"
+          sx={{ width: "1" }}
+          variant="outlined"
           id="first_run"
           label="Number of results"
           type="number"

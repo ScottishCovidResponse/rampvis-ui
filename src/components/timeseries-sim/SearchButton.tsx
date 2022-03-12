@@ -4,7 +4,12 @@ function SearchButton(props) {
   return (
     <div className={props.className}>
       <h2>
-        <Button variant="contained" color="primary" onClick={props.onClick}>
+        <Button
+          variant="contained"
+          size="large"
+          color="primary"
+          onClick={props.onClick}
+        >
           Search
         </Button>
       </h2>
