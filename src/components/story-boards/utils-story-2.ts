@@ -514,20 +514,16 @@ const writeText = (
 ) => {
   // Find idx of event in data and set location of the annotation in opposite half of graph
   const idx = findDateIdx(date, data);
-  const annoIdx = Math.floor(
-    ((idx < data.length / 2 ? 3 : 1) / 4) * data.length,
-  );
 
-  const annoX = data[annoIdx].date;
   const target = data[idx];
 
   const anno = new GraphAnnotation()
     .title(date.toLocaleDateString())
     .label(text)
-    .backgroundColor("white")
-    .wrap(200);
+    .backgroundColor("#EEE")
+    .wrap(500);
 
-  anno.unscaledX = annoX;
+  anno.left = idx < data.length / 2;
   anno.unscaledTarget = [target.date, target.y];
 
   if (showRedCircle) {
@@ -566,6 +562,7 @@ export function onClickAnimate(animationCounter: number, selector: string) {
     .border(60)
     .addExtraDatasets(createDataGroup([region1CasesData]), true)
     .svg(visCtx)
+    .annoTop()
     .title(`Comparison of waves between ${region1} and ${region2}.`)
     .yLabel("Cases per Day")
     .ticks(30);
@@ -578,14 +575,15 @@ export function onClickAnimate(animationCounter: number, selector: string) {
   annotations.forEach((a) => {
     annoObj = a.annotation;
     if (annoObj) {
-      annoObj.x(xSc(annoObj.unscaledX)).y(ts._height / 2);
+      annoObj.x(xSc(annoObj.unscaledTarget[0])).y(ts._height / 2);
 
       annoObj.target(
         xSc(annoObj.unscaledTarget[0]),
         a.useData2
           ? ySc2(annoObj.unscaledTarget[1])
           : ySc(annoObj.unscaledTarget[1]),
-        false,
+        true,
+        { left: annoObj.left, right: !annoObj.left },
       );
     }
   });
@@ -596,37 +594,37 @@ export function onClickAnimate(animationCounter: number, selector: string) {
   ts.animate(annotations, animationCounter, visCtx).plot();
 
   // legends
-  const key = d3
-    .select(visCtx)
-    .append("g")
-    .attr("transform", "translate(70,50)");
-
-  key.append("text").text("Key");
-  key
-    .append("rect")
-    .style("fill", "orange")
-    .attr("width", 10)
-    .attr("height", 10)
-    .attr("y", 10);
-
-  key
-    .append("text")
-    .attr("y", 20)
-    .attr("x", 15)
-    .style("font-size", 12)
-    .text(`${region1} Weekly Average of Cases`);
-
-  key
-    .append("rect")
-    .style("fill", "steelblue")
-    .attr("width", 10)
-    .attr("height", 10)
-    .attr("y", 30);
-
-  key
-    .append("text")
-    .attr("y", 40)
-    .attr("x", 15)
-    .style("font-size", 12)
-    .text(`${region2} Weekly Average of Cases`);
+  // const key = d3
+  //   .select(visCtx)
+  //   .append("g")
+  //   .attr("transform", "translate(70,50)");
+  //
+  // key.append("text").text("Key");
+  // key
+  //   .append("rect")
+  //   .style("fill", "orange")
+  //   .attr("width", 10)
+  //   .attr("height", 10)
+  //   .attr("y", 10);
+  //
+  // key
+  //   .append("text")
+  //   .attr("y", 20)
+  //   .attr("x", 15)
+  //   .style("font-size", 12)
+  //   .text(`${region1} Weekly Average of Cases`);
+  //
+  // key
+  //   .append("rect")
+  //   .style("fill", "steelblue")
+  //   .attr("width", 10)
+  //   .attr("height", 10)
+  //   .attr("y", 30);
+  //
+  // key
+  //   .append("text")
+  //   .attr("y", 40)
+  //   .attr("x", 15)
+  //   .style("font-size", 12)
+  //   .text(`${region2} Weekly Average of Cases`);
 }

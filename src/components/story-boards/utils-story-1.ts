@@ -414,22 +414,16 @@ export function onSelectRegion(_region: string) {
 const writeText = (text, date, data, showRedCircle = false): any => {
   // Find idx of event in data and set location of the annotation in opposite half of graph
   const idx = findDateIdx(date, data);
-  const annoIdx = Math.floor(
-    ((idx < data.length / 2 ? 3 : 1) / 4) * data.length,
-  );
 
-  const annoX = data[annoIdx].date;
   const target = data[idx];
-
-  console.log("writeText:annoX = ", annoX, ", target = ", target);
 
   const anno = new GraphAnnotation()
     .title(date.toLocaleDateString())
     .label(text)
-    .backgroundColor("white")
-    .wrap(200);
+    .backgroundColor("#EEE")
+    .wrap(500);
 
-  anno.unscaledX = annoX;
+  anno.left = idx < data.length / 2;
   anno.unscaledTarget = [target.date, target.y];
 
   if (showRedCircle) {
@@ -482,6 +476,7 @@ export function onClickAnimate(animationCounter: number, selector: string) {
     .svg(visCtx)
     .title(`Basic story of COVID-19 in ${region}`)
     .yLabel("Cases per Day")
+    .annoTop()
     .ticks(30);
 
   const xSc = ts.getXScale();
@@ -494,12 +489,13 @@ export function onClickAnimate(animationCounter: number, selector: string) {
   annotations.forEach((a: any) => {
     annoObj = a.annotation;
     if (annoObj) {
-      annoObj.x(xSc(annoObj.unscaledX)).y(ts._height / 2);
+      annoObj.x(xSc(annoObj.unscaledTarget[0])).y(ts._height / 2);
 
       annoObj.target(
         xSc(annoObj.unscaledTarget[0]),
         ySc(annoObj.unscaledTarget[1]),
-        false,
+        true,
+        { left: annoObj.left, right: !annoObj.left },
       );
     }
   });

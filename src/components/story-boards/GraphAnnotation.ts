@@ -12,10 +12,12 @@ export class GraphAnnotation {
   _color;
   _backgroundColor;
   _title;
+  _titleText;
   _rect;
   _circle;
   _rectPadding;
   _label;
+  _labelText;
   _connector;
   _textNode;
 
@@ -35,6 +37,7 @@ export class GraphAnnotation {
     this._tx = 0;
     this._ty = 0;
     this._showConnector = false;
+    this._connectorOptions = false;
     this._color = "black";
     this._backgroundColor = "none";
     this._title = d3
@@ -105,11 +108,13 @@ export class GraphAnnotation {
 
   title(title) {
     this._title.textContent = title;
+    this._titleText = title;
     return this;
   }
 
   label(label) {
     this._label.textContent = label;
+    this._labelText = label;
     return this;
   }
 
@@ -128,10 +133,11 @@ export class GraphAnnotation {
     return this;
   }
 
-  target(tx, ty, showConnector = true) {
+  target(tx, ty, showConnector = true, connectorOptions = false) {
     this._tx = tx;
     this._ty = ty;
     this._showConnector = showConnector;
+    this._connectorOptions = connectorOptions;
     return this;
   }
 
@@ -183,15 +189,11 @@ export class GraphAnnotation {
     );
   }
 
-  _wrapText(textElem) {
+  _wrapText(textElem, text) {
     // SVG text is all in a single line - to wrap text we split rows into
     // individual <tspan> elements
-    const text = textElem.textContent;
     let words = text.split(" ");
-
-    // We need the height of a character/row for separating title and label
-    const { height: rowHeight } = textElem.getBoundingClientRect();
-
+    textElem.innerHTML = "";
     // Draw each word onto svg and save its width before removing
     let wordElem;
     words = words.map((word) => {
@@ -211,27 +213,9 @@ export class GraphAnnotation {
     let currentWidth = 0;
     let rowString = [];
     let isLastWord, forceNewLine;
+    let rowNumber = 0;
 
     words.forEach((word, i) => {
-      // A newline can be forced by including ' \n ' with spaces around it
-      forceNewLine = word.word == "\n";
-      if (forceNewLine) {
-        // Multiple consecutive ' \n ' require the tspan to have text to function
-        // We fill the tspan with arbitrary text and then hide it
-        const multiLineBreak = rowString.length == 0;
-        const content = multiLineBreak ? "linebreak" : rowString.join(" ");
-        const visStr = multiLineBreak ? 'visibility="hidden"' : "";
-
-        textElem.appendChild(
-          // @ts-expect-error -- import svg`` ?
-          svg`<tspan x=0 dy="1.1em" ${visStr}>${content}</tspan>`,
-        );
-
-        currentWidth = 0;
-        rowString = [];
-        return;
-      }
-
       // Don't factor in the width taken up by spaces atm
       if (currentWidth + word.width < this._wrap) {
         currentWidth += word.width;
@@ -249,6 +233,7 @@ export class GraphAnnotation {
         );
         currentWidth = word.width;
         rowString = [word.word];
+        rowNumber++;
       }
 
       isLastWord = i == words.length - 1;
@@ -266,15 +251,17 @@ export class GraphAnnotation {
             .text(rowString.join(" ") + " ")
             .node(),
         );
+        rowNumber++;
       }
     });
 
+    const rowHeight = textElem.getBoundingClientRect().height / rowNumber;
     return rowHeight;
   }
 
   _formatText() {
-    const rowHeight = this._wrapText(this._title);
-    this._wrapText(this._label);
+    const rowHeight = this._wrapText(this._title, this._titleText);
+    this._wrapText(this._label, this._labelText);
 
     // Calculate spacing between title and label
     const { height: titleHeight } = this._title.getBoundingClientRect();
@@ -289,17 +276,26 @@ export class GraphAnnotation {
     this._annoWidth = annoWidth;
     this._annoHeight = annoHeight;
 
+    let rectX = this._x - (annoWidth + this._rectPadding) / 2;
+    let textX = this._x - annoWidth / 2;
+
+    if (this._connectorOptions && this._connectorOptions.right) {
+      rectX -= (annoWidth + this._rectPadding) / 2;
+      textX -= annoWidth / 2 + this._rectPadding / 2;
+    } else if (this._connectorOptions && this._connectorOptions.left) {
+      rectX += (annoWidth + this._rectPadding) / 2;
+      textX += annoWidth / 2 + this._rectPadding / 2;
+    }
+
     this._rect.setAttribute(
       "transform",
-      `translate(${this._x - (annoWidth + this._rectPadding) / 2},${
-        this._y - (annoHeight + this._rectPadding) / 2
-      })`,
+      `translate(${rectX},${this._y - (annoHeight + this._rectPadding) / 2})`,
     );
 
     // Translate x,y position to center of anno (rather than top left)
     this._textNode.setAttribute(
       "transform",
-      `translate(${this._x - annoWidth / 2},${this._y - annoHeight / 2})`,
+      `translate(${textX},${this._y - annoHeight / 2})`,
     );
 
     // Align text correctly
@@ -308,38 +304,44 @@ export class GraphAnnotation {
   }
 
   _addConnector() {
-    const dy = this._y - this._ty;
-    const dx = this._x - this._tx;
-
-    const above = dy > 0 ? 1 : 0;
-    const left = dx > 0 ? 1 : 0;
-
     let ix, iy;
-    if (dy == 0) {
-      iy = this._y;
-      ix = this._x + (-1) ** left * (this._annoWidth / 2);
-    }
 
-    if (dx == 0) {
+    if (this._connectorOptions) {
+      iy = this._y - this._annoHeight / 2;
       ix = this._x;
-      iy = this._y + (-1) ** above * (this._annoHeight / 2);
-    }
+    } else {
+      const dy = this._y - this._ty;
+      const dx = this._x - this._tx;
 
-    if (dx !== 0 && dy !== 0) {
-      const rectGrad = this._annoHeight / this._annoWidth;
-      const lineGrad = dy / dx;
-      const c = this._y - lineGrad * this._x;
+      const above = dy > 0;
+      const left = dx > 0;
 
-      const hIntersect =
-        (lineGrad >= rectGrad && lineGrad >= -rectGrad) ||
-        (lineGrad <= rectGrad && lineGrad <= -rectGrad);
-
-      if (hIntersect) {
-        iy = this._y + (-1) ** above * (this._annoHeight / 2);
-        ix = (iy - c) / lineGrad;
-      } else {
+      if (dy == 0) {
+        iy = this._y;
         ix = this._x + (-1) ** left * (this._annoWidth / 2);
-        iy = lineGrad * ix + c;
+      }
+
+      if (dx == 0) {
+        ix = this._x;
+        iy = this._y + (-1) ** above * (this._annoHeight / 2);
+      }
+
+      if (dx !== 0 && dy !== 0) {
+        const rectGrad = this._annoHeight / this._annoWidth;
+        const lineGrad = dy / dx;
+        const c = this._y - lineGrad * this._x;
+
+        const hIntersect =
+          (lineGrad >= rectGrad && lineGrad >= -rectGrad) ||
+          (lineGrad <= rectGrad && lineGrad <= -rectGrad);
+
+        if (hIntersect) {
+          iy = this._y + (-1) ** above * (this._annoHeight / 2);
+          ix = (iy - c) / lineGrad;
+        } else {
+          ix = this._x + (-1) ** left * (this._annoWidth / 2);
+          iy = lineGrad * ix + c;
+        }
       }
     }
 

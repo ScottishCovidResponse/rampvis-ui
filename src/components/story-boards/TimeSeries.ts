@@ -22,7 +22,7 @@ const xScFnc = (data, w = width, b = border) => {
     .scaleTime()
     // @ts-expect-error -- rule out [undefined, undefined] (possible runtime error)
     .domain(xExt)
-    .range([border, w - b]);
+    .range([b, w - b]);
   return xScale;
 };
 
@@ -57,6 +57,7 @@ export class TimeSeries {
   _ySc1;
   _ySc2;
   _annotations;
+  _annoTop;
   _animationList;
   _animationCounter;
 
@@ -85,6 +86,7 @@ export class TimeSeries {
     this._ySc1 = yScFnc(this._data1, this._height, this._border);
     this._ySc2;
     this._annotations;
+    this._annoTop;
     this._animationList;
     this._animationCounter;
 
@@ -256,6 +258,11 @@ export class TimeSeries {
     return this;
   }
 
+  annoTop() {
+    this._annoTop = true;
+    return this;
+  }
+
   _createPaths(points1, points2) {
     // Helper for _addPaths fnc
     // Returns array of objects representing segment path, their length and animation duration
@@ -323,6 +330,12 @@ export class TimeSeries {
       // If annotation obj defined - add to svg and set opacity to 0 (hide it)
       anno = annoObj.id(`anim-anno-${idx}`);
       anno.addTo(this._ctx);
+
+      if (this._annoTop) {
+        anno.y(this._border + anno._annoHeight / 2);
+        anno.updatePos(anno._x, anno._y);
+      }
+
       annoElem = d3.select(`#anim-anno-${idx}`).style("opacity", 0);
 
       if (this._showEventLines) {
