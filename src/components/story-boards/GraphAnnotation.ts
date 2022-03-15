@@ -9,6 +9,7 @@ export class GraphAnnotation {
   _tx;
   _ty;
   _showConnector;
+  _connectorOptions: any;
   _color;
   _backgroundColor;
   _title;
@@ -37,7 +38,6 @@ export class GraphAnnotation {
     this._tx = 0;
     this._ty = 0;
     this._showConnector = false;
-    this._connectorOptions = false;
     this._color = "black";
     this._backgroundColor = "none";
     this._title = d3
@@ -318,11 +318,13 @@ export class GraphAnnotation {
 
       if (dy == 0) {
         iy = this._y;
+        // @ts-expect-error -- investigate
         ix = this._x + (-1) ** left * (this._annoWidth / 2);
       }
 
       if (dx == 0) {
         ix = this._x;
+        // @ts-expect-error -- investigate
         iy = this._y + (-1) ** above * (this._annoHeight / 2);
       }
 
@@ -336,9 +338,11 @@ export class GraphAnnotation {
           (lineGrad <= rectGrad && lineGrad <= -rectGrad);
 
         if (hIntersect) {
+          // @ts-expect-error -- investigate
           iy = this._y + (-1) ** above * (this._annoHeight / 2);
           ix = (iy - c) / lineGrad;
         } else {
+          // @ts-expect-error -- investigate
           ix = this._x + (-1) ** left * (this._annoWidth / 2);
           iy = lineGrad * ix + c;
         }

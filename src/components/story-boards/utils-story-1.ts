@@ -423,6 +423,7 @@ const writeText = (text, date, data, showRedCircle = false): any => {
     .backgroundColor("#EEE")
     .wrap(500);
 
+  // @ts-expect-error -- investigate
   anno.left = idx < data.length / 2;
   anno.unscaledTarget = [target.date, target.y];
 
