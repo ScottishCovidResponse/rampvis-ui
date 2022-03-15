@@ -119,7 +119,7 @@ const Story2 = () => {
                   </Avatar>
                 }
                 title="Story-2"
-                subheader="Select two regions and click the button to animate"
+                subheader="Choose two regions and click play to animate the story"
               />
               <CardContent sx={{ pt: "8px" }}>
                 {loading ? (

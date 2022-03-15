@@ -89,7 +89,7 @@ const Story3 = () => {
                   </Avatar>
                 }
                 title="Story-3"
-                subheader="Select a nation and scroll the timeline to animate"
+                subheader="Choose a nation and scroll the timeline to animate the story"
               />
               <CardContent sx={{ pt: "8px" }}>
                 {loading ? (

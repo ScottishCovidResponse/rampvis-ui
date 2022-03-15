@@ -564,7 +564,7 @@ export function onClickAnimate(animationCounter: number, selector: string) {
     .addExtraDatasets(createDataGroup([region1CasesData]), true)
     .svg(visCtx)
     .annoTop()
-    .title(`Comparison of waves between ${region1} and ${region2}.`)
+    .title(`Comparison of waves between ${region1} and ${region2}`)
     .yLabel("Cases per Day")
     .ticks(30);
 

@@ -126,7 +126,7 @@ const Story = () => {
                   </Avatar>
                 }
                 title="Story-1"
-                subheader="Set a segment value, a region, and click the button to animate"
+                subheader="Choose a segment value, a region, and click play to animate the story"
               />
               <CardContent sx={{ pt: "8px" }}>
                 {loading ? (
