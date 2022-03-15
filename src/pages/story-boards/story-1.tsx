@@ -21,7 +21,9 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+
 import { blue } from "@mui/material/colors";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import {
@@ -97,10 +99,19 @@ const Story = () => {
     }
   };
 
-  const handleClickButton = () => {
+  const handleBackButton = () => {
+    const count = animationCounter - 1;
+    if (count < 0) return;
+
+    setAnimationCounter(count);
+    console.log("Story1: animationCounter = ", count);
+    onClickAnimate(count, "#chart1");
+  };
+
+  const handlePlayButton = () => {
     const count = animationCounter + 1;
     setAnimationCounter(count);
-    console.log(count);
+    console.log("Story1: animationCounter = ", count);
     onClickAnimate(count, "#chart1");
   };
 
@@ -193,12 +204,24 @@ const Story = () => {
                       </FormControl>
 
                       <FormControl sx={{ m: 1, width: 100, mt: 0 }}>
+                        <Button
+                          variant="contained"
+                          disabled={!region}
+                          onClick={handleBackButton}
+                          startIcon={<ArrowBackIosIcon />}
+                          component="span"
+                        >
+                          Back
+                        </Button>
+                      </FormControl>
+
+                      <FormControl sx={{ m: 1, width: 100, mt: 0 }}>
                         <Tooltip title="Click to proceed animation">
                           <Button
                             variant="contained"
                             disabled={!region}
-                            onClick={handleClickButton}
-                            endIcon={<PlayArrowIcon />}
+                            onClick={handlePlayButton}
+                            endIcon={<ArrowForwardIosIcon />}
                             component="span"
                           >
                             Play
