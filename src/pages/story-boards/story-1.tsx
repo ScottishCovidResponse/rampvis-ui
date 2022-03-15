@@ -99,6 +99,14 @@ const Story = () => {
     }
   };
 
+  const handleBeginningButton = () => {
+    const count = 0;
+
+    setAnimationCounter(count);
+    console.log("Story1: animationCounter = ", count);
+    onClickAnimate(count, "#chart1");
+  };
+
   const handleBackButton = () => {
     const count = animationCounter - 1;
     if (count < 0) return;
@@ -207,6 +215,17 @@ const Story = () => {
                         <Button
                           variant="contained"
                           disabled={!region}
+                          onClick={handleBeginningButton}
+                          component="span"
+                        >
+                          Beginning
+                        </Button>
+                      </FormControl>
+
+                      <FormControl sx={{ m: 1, width: 100, mt: 0 }}>
+                        <Button
+                          variant="contained"
+                          disabled={!region}
                           onClick={handleBackButton}
                           startIcon={<ArrowBackIosIcon />}
                           component="span"
@@ -216,17 +235,15 @@ const Story = () => {
                       </FormControl>
 
                       <FormControl sx={{ m: 1, width: 100, mt: 0 }}>
-                        <Tooltip title="Click to proceed animation">
-                          <Button
-                            variant="contained"
-                            disabled={!region}
-                            onClick={handlePlayButton}
-                            endIcon={<ArrowForwardIosIcon />}
-                            component="span"
-                          >
-                            Play
-                          </Button>
-                        </Tooltip>
+                        <Button
+                          variant="contained"
+                          disabled={!region}
+                          onClick={handlePlayButton}
+                          endIcon={<ArrowForwardIosIcon />}
+                          component="span"
+                        >
+                          Play
+                        </Button>
                       </FormControl>
                     </FormGroup>
 
