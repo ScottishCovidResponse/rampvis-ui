@@ -284,7 +284,7 @@ const TimeseriesSim = () => {
         <title>Timeseries Similarity</title>
       </Helmet>
       <Box>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{ marginLeft: "5px" }}>
           <Grid item xs={3} sx={{ minWidth: "350px" }}>
             <Card>
               <CardContent>
@@ -350,7 +350,7 @@ const TimeseriesSim = () => {
                   onClick={compareClick}
                   manualCountrySet={setManualCountry}
                   form={firstRunForm}
-                  className={classes.listArea}
+                  className={classes.benchmarkArea}
                 />
                 <ComparePopUp state={comparePopUp} close={comparePopUpClose} />
               </CardContent>
@@ -367,7 +367,7 @@ const TimeseriesSim = () => {
                   list={timeSeriesBag}
                   removeFromList={removeTimeSeries}
                   onClick={predictClick}
-                  className={classes.listArea}
+                  className={classes.timeseriesArea}
                 />
                 <PredictPopUp state={predictPopUp} close={predictPopUpClose} />
               </CardContent>

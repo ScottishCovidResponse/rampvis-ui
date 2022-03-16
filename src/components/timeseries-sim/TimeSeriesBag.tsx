@@ -1,6 +1,5 @@
 import {
   Button,
-  OutlinedInput,
   List,
   ListItem,
   IconButton,
@@ -18,22 +17,20 @@ function TimeSeriesBag(props) {
               (
                 series, // time series bag list creation
               ) => (
-                <div key={series} className={props.className}>
-                  <ListItem
-                    key={series}
-                    secondaryAction={
-                      <IconButton
-                        edge="end"
-                        aria-label="delete"
-                        onClick={props.removeFromList}
-                      >
-                        <DeleteOutline />
-                      </IconButton>
-                    }
-                  >
-                    <ListItemText primary={series} />
-                  </ListItem>
-                </div>
+                <ListItem
+                  key={series}
+                  secondaryAction={
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      onClick={props.removeFromList}
+                    >
+                      <DeleteOutline />
+                    </IconButton>
+                  }
+                >
+                  <ListItemText primary={series} />
+                </ListItem>
               ),
             )}
           </List>

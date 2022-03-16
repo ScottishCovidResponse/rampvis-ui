@@ -48,13 +48,14 @@ function BenchmarkCountryList(props) {
               )}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid sx={{ alignItems: "center" }} item xs={4}>
             <Button
+              size="large"
               variant="contained"
               color="primary"
               onClick={props.manualValueAdd}
             >
-              +
+              Add
             </Button>
           </Grid>
         </Grid>
