@@ -1,4 +1,14 @@
-import { TextField, MenuItem, Autocomplete } from "@mui/material";
+import {
+  TextField,
+  MenuItem,
+  Autocomplete,
+  Select,
+  Chip,
+  Box,
+  InputLabel,
+  OutlinedInput,
+  FormControl,
+} from "@mui/material";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -107,22 +117,39 @@ function FirstForm(props) {
         </TextField>
       </h2>
       <h2>
-        <TextField
-          select
-          sx={{ width: "1" }}
-          label="Similarity Measure"
-          name="method"
-          value={props.form.method}
-          variant="outlined"
-          onChange={props.onChange}
-        >
-          {props.method.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
+        <FormControl sx={{ width: "100%" }}>
+          <InputLabel>Similarity Measure</InputLabel>
+          <Select
+            multiple
+            value={props.form.method}
+            input={
+              <OutlinedInput
+                id="select-multiple-chip"
+                label="Similarity Measure"
+              />
+            }
+            onChange={(event) => {
+              props.formChange((old) => {
+                return { ...old, method: event.target.value };
+              });
+            }}
+            renderValue={(selected) => (
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                {selected.map((value) => (
+                  <Chip key={value} label={value} />
+                ))}
+              </Box>
+            )}
+          >
+            {props.method.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </h2>
+
       <h2>
         <TextField
           sx={{ width: "1" }}

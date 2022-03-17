@@ -11,8 +11,6 @@ export function benchmarkPlot(data) {
 
   const dataTime = data.filter((item) => item.key !== "categorical_variables");
 
-  const dataCat = data.filter((item) => item.key == "categorical_variables");
-
   const width = 1275.5;
   const height = 400;
   const margin = 5;

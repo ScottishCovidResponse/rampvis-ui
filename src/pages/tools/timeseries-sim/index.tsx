@@ -55,7 +55,7 @@ const initialFirstRunState = {
   firstDate: dateParse(firstDate),
   lastDate: dateParse(lastDate),
   indicator: "biweekly_cases_per_million",
-  method: "euclidean",
+  method: ["euclidean"],
   numberOfResults: 30,
   minPopulation: 600000,
   startDate: "2021-01-01",
@@ -200,17 +200,16 @@ const TimeseriesSim = () => {
   const [loadPopUp, setLoadPopUp] = useState(false);
 
   const searchPost = async () => {
-    // post request to get similar timeseries back from API
-    const apiUrl = API_PY + "/search/";
-    //const apiUrl = `${API}/timeseries-sim-search/`;
+    //const apiUrl = API_PY + "/search/";
+    const apiUrl =
+      "http://0.0.0.0:4010" + "/stat/v1/timeseries-sim-search/search/";
 
     const response = await axios.post(apiUrl, firstRunForm);
 
     console.log("response = ", response);
     if (response.data?.length > 0) {
-      //setResponseDataSearch(response.data);
       console.log("response.data = ", response.data);
-      alignmentPlot(
+      /*  alignmentPlot(
         response.data,
         firstRunForm.indicator,
         timeSeriesBag,
@@ -218,13 +217,14 @@ const TimeseriesSim = () => {
         setTimeSeriesBag,
         setBenchmarkCountries,
       );
+    */
       SegmentedMultiLinePlot(response.data, firstRunForm);
     }
   };
 
   const comparePost = async () => {
     const apiUrl = API_PY + "/compare/";
-    //const apiUrl = `${API}/timeseries-sim-search/`;
+
     console.log({ countries: benchmarkCountries });
     const response = await axios.post(apiUrl, {
       countries: benchmarkCountries,
