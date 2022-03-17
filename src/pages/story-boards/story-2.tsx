@@ -52,7 +52,7 @@ const Story2 = () => {
   useEffect(() => {
     const fetchData = async () => {
       const _regions = await processDataAndGetRegions();
-      setRegions(_regions.map((d) => d));
+      setRegions(_regions);
     };
 
     try {
@@ -204,7 +204,7 @@ const Story2 = () => {
                         </InputLabel>
                         <Select
                           labelId="select-region-2-label"
-                          id="select-region-1-label"
+                          id="select-region-2-label"
                           displayEmpty
                           onChange={handleChangeSelect2}
                           input={<OutlinedInput label="Select region 2" />}

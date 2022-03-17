@@ -15,17 +15,24 @@ import { Rise } from "./Raise";
 import { Fall } from "./Fall";
 import { createDataGroup } from "./utils-data-processing";
 
+// {
+//   { Aberdeenshire: { "country": "Scotland", "data": [{ "date": "", "y": 0 }, ..] }  },
+//   { ... }
+// },
+const dailyCasesByRegion = {};
+
+// {
+//   { Aberdeenshire: { "peak": Peak, "rise": Raise, "fall": Fall  }  },
+//   { ... }
+// },
+const wavesByRegion = {};
+
 export async function processDataAndGetRegions(): Promise<string[]> {
   await createDailyCasesByRegion();
   createPeaksByRegion();
 
   return Object.keys(dailyCasesByRegion).sort();
 }
-
-//
-//
-//
-const dailyCasesByRegion = {};
 
 async function createDailyCasesByRegion() {
   const areaCodeToCountry = {
@@ -57,6 +64,29 @@ async function createDailyCasesByRegion() {
 
   // prettier-ignore
   console.log("createDailyCasesByRegion: dailyCasesByRegion = ", dailyCasesByRegion);
+}
+
+function createPeaksByRegion() {
+  for (const region in dailyCasesByRegion) {
+    let allPeaks = detectFeatures(dailyCasesByRegion[region].data, {
+      peaks: true,
+      metric: "Daily Cases",
+    });
+
+    allPeaks = allPeaks.map((p) => {
+      const { rise, fall } = calcPeakRiseFall(
+        p,
+        dailyCasesByRegion[region].data,
+      );
+      return { peak: p, rise: rise, fall: fall };
+    });
+
+    allPeaks.map(rankFeatures);
+    wavesByRegion[region] = allPeaks;
+  }
+
+  // prettier-ignore
+  console.log("createPeaksByRegion: wavesByRegion = ", wavesByRegion);
 }
 
 // Use properties of a peak object to create rise and fall objects
@@ -115,37 +145,15 @@ const rankFeatures = (featureObj) => {
   fall.setRank(1);
 };
 
-const peaksByRegion = {};
-let wavesByRegion = {};
-
-function createPeaksByRegion() {
-  for (const region in dailyCasesByRegion) {
-    let allPeaks = detectFeatures(dailyCasesByRegion[region].data, {
-      peaks: true,
-      metric: "Daily Cases",
-    });
-
-    allPeaks = allPeaks.map((p) => {
-      const { rise, fall } = calcPeakRiseFall(
-        p,
-        dailyCasesByRegion[region].data,
-      );
-      return { peak: p, rise: rise, fall: fall };
-    });
-    allPeaks.map(rankFeatures);
-
-    peaksByRegion[region] = allPeaks;
-  }
-
-  wavesByRegion = peaksByRegion;
-  // prettier-ignore
-  console.log("createPeaksByRegion: peaksByRegion/wavesByRegion = ", peaksByRegion);
-}
-
 //
+// When a region1 and region2 are selected, return the data for that
 //
-//
+
 let region1, region2;
+let gauss;
+let gaussMatchedWaves;
+let annotations;
+
 export function onSelectRegion(_region1, _region2) {
   region1 = _region1;
   region2 = _region2;
@@ -153,12 +161,6 @@ export function onSelectRegion(_region1, _region2) {
   calculateGaussMatchedWaves(region1, region2);
   createAnnotations(region1, region2);
 }
-
-//
-//
-//
-
-let gauss;
 
 function createCombGauss(region1, region2) {
   const reg1Waves = wavesByRegion[region1];
@@ -188,16 +190,10 @@ function createCombGauss(region1, region2) {
   const reg2Bounds = maxBounds(reg2Gauss);
 
   // Combine gaussian time series
-  const combGauss = combineBounds([reg1Bounds, reg2Bounds]);
+  gauss = combineBounds([reg1Bounds, reg2Bounds]);
 
-  gauss = combGauss;
-  console.log("createCombGauss: combGauss/gauss = ", gauss);
+  console.log("createCombGauss: gauss = ", gauss);
 }
-
-//
-//
-//
-let gaussMatchedWaves;
 
 function calculateGaussMatchedWaves(region1, region2) {
   const peakTimeDistance = (p1, p2) =>
@@ -249,12 +245,6 @@ function calculateGaussMatchedWaves(region1, region2) {
   // prettier-ignore
   console.log("calculateGaussMatchedWaves: gaussMatchedWaves = ", gaussMatchedWaves);
 }
-
-//
-//
-//
-
-let annotations;
 
 function createAnnotations(region1, region2) {
   const region1CasesData = dailyCasesByRegion[region1].data;
@@ -542,18 +532,15 @@ const writeText = (
 };
 
 //
+// Create SVG
+// When play animate button is clicked draw there
 //
-//
+
 let visCtx;
-let ts;
 
 export function createTimeSeriesSVG(selector: string) {
   visCtx = TimeSeries.animationSVG(1200, 400, selector);
 }
-
-//
-//
-//
 
 export function onClickAnimate(animationCounter: number, selector: string) {
   const region1CasesData = dailyCasesByRegion[region1].data;
@@ -593,39 +580,4 @@ export function onClickAnimate(animationCounter: number, selector: string) {
   console.log("utils-story-2.ts: onClickAnimate: annoObj = ", annoObj);
 
   ts.animate(annotations, animationCounter, visCtx).plot();
-
-  // legends
-  // const key = d3
-  //   .select(visCtx)
-  //   .append("g")
-  //   .attr("transform", "translate(70,50)");
-  //
-  // key.append("text").text("Key");
-  // key
-  //   .append("rect")
-  //   .style("fill", "orange")
-  //   .attr("width", 10)
-  //   .attr("height", 10)
-  //   .attr("y", 10);
-  //
-  // key
-  //   .append("text")
-  //   .attr("y", 20)
-  //   .attr("x", 15)
-  //   .style("font-size", 12)
-  //   .text(`${region1} Weekly Average of Cases`);
-  //
-  // key
-  //   .append("rect")
-  //   .style("fill", "steelblue")
-  //   .attr("width", 10)
-  //   .attr("height", 10)
-  //   .attr("y", 30);
-  //
-  // key
-  //   .append("text")
-  //   .attr("y", 40)
-  //   .attr("x", 15)
-  //   .style("font-size", 12)
-  //   .text(`${region2} Weekly Average of Cases`);
 }

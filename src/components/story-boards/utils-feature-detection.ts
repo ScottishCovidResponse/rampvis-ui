@@ -328,27 +328,16 @@ export const detectRises = (timeSeriesData, metric = undefined) => {
   From this selection we will return an array data events representing detected features in the data.
 */
 export const detectFeatures = function (timeSeriesData, options) {
-  // let a = detectRises(timeSeriesData);
-  // a = detectFalls(timeSeriesData);
-  // a = detectPeaks(timeSeriesData);
-
   const features = []
     .concat(options.rises ? detectRises(timeSeriesData) : [])
     .concat(options.falls ? detectFalls(timeSeriesData) : [])
     .concat(options.peaks ? detectPeaks(timeSeriesData) : []);
 
-  // console.log("features 1 = ", features);
-
   if (options.metric) {
     features.forEach((f) => f.setMetric(options.metric));
   }
 
-  // console.log("features 2 = ", features);
-
-  // console.log(
-  //   "features 3 = ",
-  //   features.sort((e1, e2) => e1.rank - e2.rank),
-  // );
+  console.log("detectFeatures: features = ", features);
 
   return features.sort((e1, e2) => e1.rank - e2.rank);
 };
