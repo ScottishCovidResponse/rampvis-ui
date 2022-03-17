@@ -63,7 +63,7 @@ const Story2 = () => {
       console.error(error);
       setLoading(false);
     }
-  }, []);
+  }, [loading]);
 
   const handleChangeSelect1 = (event: SelectChangeEvent) => {
     const selectedRegion1 = event.target.value;

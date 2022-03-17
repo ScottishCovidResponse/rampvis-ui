@@ -56,7 +56,7 @@ const Story3 = () => {
       console.error(error);
       setLoading(false);
     }
-  }, []);
+  }, [loading]);
 
   const handleChangeSelect1 = (event: SelectChangeEvent) => {
     const nation = event.target.value;

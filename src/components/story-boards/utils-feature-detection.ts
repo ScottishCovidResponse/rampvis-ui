@@ -337,7 +337,7 @@ export const detectFeatures = function (timeSeriesData, options) {
     features.forEach((f) => f.setMetric(options.metric));
   }
 
-  console.log("detectFeatures: features = ", features);
+  // console.log("detectFeatures: features = ", features);
 
   return features.sort((e1, e2) => e1.rank - e2.rank);
 };

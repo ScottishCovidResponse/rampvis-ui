@@ -75,7 +75,7 @@ const Story = () => {
       console.error(error);
       setLoading(false);
     }
-  }, []);
+  }, [loading]);
 
   const handleChangeSlider = (event) => {
     const selectedSegment = event.target.value;

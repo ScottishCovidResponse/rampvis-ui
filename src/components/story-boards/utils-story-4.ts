@@ -191,7 +191,6 @@ async function prepareDailyCasesByNation() {
 
 function preparePeaksByNation() {
   for (const nation in dailyCasesByNation) {
-    console.log(nation);
     let allPeaks = detectFeatures(dailyCasesByNation[nation], {
       peaks: true,
       metric: "Daily Cases",
