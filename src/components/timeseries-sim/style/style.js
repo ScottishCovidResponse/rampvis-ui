@@ -37,4 +37,5 @@ export const useStyles = makeStyles((theme) => ({
     borderRadius: "12px",
     minHeight: "200px",
   },
+  segmentedGraph: {},
 }));

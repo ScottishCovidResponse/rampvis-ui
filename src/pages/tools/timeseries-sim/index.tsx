@@ -377,8 +377,7 @@ const TimeseriesSim = () => {
 
         <Grid>
           <Card id="segmentedcard" sx={{ visibility: "hidden" }}>
-            <GraphTitle />
-            <GraphArea />
+            <GraphArea style={classes.segmentedGraph} />
           </Card>
         </Grid>
         <Grid>
