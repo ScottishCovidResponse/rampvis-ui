@@ -14,6 +14,9 @@ import { GraphAnnotation } from "./GraphAnnotation";
 import { DataEvent } from "./DataEvent";
 import { TimeSeries } from "./TimeSeries";
 
+const dailyCasesByRegion = {}; // { region: [{ date: Date, y: number }] }
+let calendarEvents = []; // SemanticEvents
+
 export async function processDataAndGetRegions(): Promise<string[]> {
   await createDailyCasesByRegion();
   createCalenderEvents();
@@ -22,11 +25,6 @@ export async function processDataAndGetRegions(): Promise<string[]> {
 
   return Object.keys(dailyCasesByRegion).sort();
 }
-
-//
-//
-//
-const dailyCasesByRegion = {};
 
 async function createDailyCasesByRegion() {
   const csv: any[] = await readCSVFile(
@@ -50,11 +48,6 @@ async function createDailyCasesByRegion() {
   // prettier-ignore
   console.log("createDailyCasesByRegion: dailyCasesByRegion = ", dailyCasesByRegion);
 }
-
-//
-//
-//
-let calendarEvents = [];
 
 function createCalenderEvents() {
   // We need to construct Calendar Data Because

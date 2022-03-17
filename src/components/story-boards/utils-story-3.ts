@@ -21,6 +21,8 @@ export async function prepareData() {
   nationDeaths = await prepareNationDeaths();
   ukCasesData = await prepareUKCasesData();
   semanticCSV = await prepareSemanticCSV();
+
+  console.log("nationCases = ", nationCases);
 }
 
 export async function prepareNationCases() {

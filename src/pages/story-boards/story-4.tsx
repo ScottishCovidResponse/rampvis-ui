@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import Box from "@mui/material/Box";
-import Slider from "@mui/material/Slider";
 import {
   Avatar,
   Button,
   Card,
   CardContent,
   CardHeader,
+  Chip,
   Container,
+  Fade,
   FormControl,
   FormGroup,
   InputLabel,
@@ -21,50 +22,42 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
+import { blue } from "@mui/material/colors";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
-import { blue } from "@mui/material/colors";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import {
   processDataAndGetRegions,
-  segmentData,
   onSelectRegion,
   onClickAnimate,
   createTimeSeriesSVG,
-} from "src/components/story-boards/utils-story-1";
+  processDataAndGetNations,
+} from "src/components/story-boards/utils-story-4";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 0,
-    paddingTop: "56.25%", // 16:9
-  },
   avatar: {
     backgroundColor: blue[500],
   },
-  icon: {
-    fill: blue[500],
-  },
 }));
 
-const Story = () => {
+const Story4 = () => {
   const classes = useStyles();
 
   const [loading, setLoading] = useState(true);
-  const [segment, setSegment] = useState<number>(3);
   const [regions, setRegions] = useState<string[]>([]);
+  const [nations, setNations] = useState<string[]>([]);
   const [region, setRegion] = useState<string>("");
+  const [nation, setNation] = useState<string>("");
   const [animationCounter, setAnimationCounter] = useState<number>(0);
 
   useEffect(() => {
     const fetchData = async () => {
       const _regions = await processDataAndGetRegions();
-      console.log("Story1: regions", _regions);
       setRegions(_regions);
-      segmentData(segment);
+
+      const _nations = await processDataAndGetNations();
+      setNations(_nations);
     };
 
     try {
@@ -77,23 +70,26 @@ const Story = () => {
     }
   }, []);
 
-  const handleChangeSlider = (event) => {
-    const selectedSegment = event.target.value;
-    console.log("Story1: selectedSegment = ", selectedSegment);
-    if (selectedSegment && selectedSegment !== segment) {
-      setSegment(selectedSegment);
-      segmentData(selectedSegment);
+  const handleNationSelect = (event: SelectChangeEvent) => {
+    const selectedNation = event.target.value;
+    console.log("selectedNation = ", selectedNation);
+    if (selectedNation) {
+      if (selectedNation && region) {
+        onSelectRegion(selectedNation, region);
+      }
+      createTimeSeriesSVG("#chart1");
+      setNation(selectedNation);
+      setAnimationCounter(0);
     }
   };
 
-  // slider formatted value
-  const valuetext = (value) => `${value}`;
-
-  const handleChangeSelect = (event: SelectChangeEvent) => {
+  const handleRegionSelect = (event: SelectChangeEvent) => {
     const selectedRegion = event.target.value;
-    console.log("Story1: selectedRegion = ", selectedRegion);
+    console.log("selectedRegion = ", selectedRegion);
     if (selectedRegion) {
-      onSelectRegion(selectedRegion);
+      if (nation && selectedRegion) {
+        onSelectRegion(nation, selectedRegion);
+      }
       createTimeSeriesSVG("#chart1");
       setRegion(selectedRegion);
       setAnimationCounter(0);
@@ -104,7 +100,7 @@ const Story = () => {
     const count = 0;
 
     setAnimationCounter(count);
-    console.log("Story1: animationCounter = ", count);
+    console.log("Story4: animationCounter = ", count);
     onClickAnimate(count, "#chart1");
   };
 
@@ -113,21 +109,21 @@ const Story = () => {
     if (count < 0) return;
 
     setAnimationCounter(count);
-    console.log("Story1: animationCounter = ", count);
+    console.log("Story4: animationCounter = ", count);
     onClickAnimate(count, "#chart1");
   };
 
   const handlePlayButton = () => {
     const count = animationCounter + 1;
     setAnimationCounter(count);
-    console.log("Story1: animationCounter = ", count);
+    console.log("Story4: animationCounter = ", count);
     onClickAnimate(count, "#chart1");
   };
 
   return (
     <>
       <Head>
-        <title>Story-1</title>
+        <title>Story-4</title>
       </Head>
       <DashboardLayout>
         <Box
@@ -138,15 +134,15 @@ const Story = () => {
           }}
         >
           <Container>
-            <Card sx={{ minWidth: 1200 }}>
+            <Card sx={{ minWidth: 1300 }}>
               <CardHeader
                 avatar={
                   <Avatar style={{ backgroundColor: blue[500] }}>
                     <AutoStoriesIcon />
                   </Avatar>
                 }
-                title="Story-1"
-                subheader="Choose a segment value, a region, and click play to animate the story"
+                title="Story-4"
+                subheader="Choose a nation, a region and click play to animate the story"
               />
               <CardContent sx={{ pt: "8px" }}>
                 {loading ? (
@@ -164,31 +160,46 @@ const Story = () => {
                         },
                       }}
                     >
-                      <InputLabel
-                        sx={{ m: 1, mt: 0 }}
-                        id="segment-slider-label"
-                      >
-                        Set segment value
-                      </InputLabel>
+                      <FormControl sx={{ m: 1, width: 20, mt: 0 }} size="small">
+                        <Chip
+                          label=""
+                          style={{
+                            backgroundColor: "orange",
+                            borderRadius: 0,
+                          }}
+                        />
+                      </FormControl>
                       <FormControl
                         sx={{ m: 1, width: 300, mt: 0 }}
                         size="small"
                       >
-                        <Slider
-                          // labelId="segment-slider"
-                          aria-label="Segments"
-                          // defaultValue={3}
-                          getAriaValueText={valuetext}
-                          step={1}
-                          marks
-                          min={0}
-                          max={5}
-                          value={segment}
-                          valueLabelDisplay="auto"
-                          onChange={handleChangeSlider}
+                        <InputLabel id="select-nation-label">
+                          Select nation{" "}
+                        </InputLabel>
+                        <Select
+                          labelId="select-nation-label"
+                          id="select-nation-label"
+                          onChange={handleNationSelect}
+                          input={<OutlinedInput label="Select nation" />}
+                          value={nation}
+                        >
+                          {nations.map((d) => (
+                            <MenuItem key={d} value={d}>
+                              {d}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                      <span style={{ width: 30 }}></span>
+                      <FormControl sx={{ m: 1, width: 20, mt: 0 }} size="small">
+                        <Chip
+                          label=""
+                          style={{
+                            backgroundColor: "steelblue",
+                            borderRadius: 0,
+                          }}
                         />
                       </FormControl>
-
                       <FormControl
                         sx={{ m: 1, width: 300, mt: 0 }}
                         size="small"
@@ -200,9 +211,9 @@ const Story = () => {
                           labelId="select-region-label"
                           id="select-region-label"
                           displayEmpty
-                          onChange={handleChangeSelect}
-                          value={region}
+                          onChange={handleRegionSelect}
                           input={<OutlinedInput label="Select region" />}
+                          value={region}
                         >
                           {regions.map((d) => (
                             <MenuItem key={d} value={d}>
@@ -215,7 +226,7 @@ const Story = () => {
                       <FormControl sx={{ m: 1, width: 100, mt: 0 }}>
                         <Button
                           variant="contained"
-                          disabled={!region}
+                          disabled={!region || !nation}
                           onClick={handleBeginningButton}
                           component="span"
                         >
@@ -226,7 +237,7 @@ const Story = () => {
                       <FormControl sx={{ m: 1, width: 100, mt: 0 }}>
                         <Button
                           variant="contained"
-                          disabled={!region}
+                          disabled={!region || !nation}
                           onClick={handleBackButton}
                           startIcon={<ArrowBackIosIcon />}
                           component="span"
@@ -238,7 +249,7 @@ const Story = () => {
                       <FormControl sx={{ m: 1, width: 100, mt: 0 }}>
                         <Button
                           variant="contained"
-                          disabled={!region}
+                          disabled={!region || !nation}
                           onClick={handlePlayButton}
                           endIcon={<ArrowForwardIosIcon />}
                           component="span"
@@ -247,7 +258,6 @@ const Story = () => {
                         </Button>
                       </FormControl>
                     </FormGroup>
-
                     <div id="chart1" />
                   </>
                 )}
@@ -260,4 +270,4 @@ const Story = () => {
   );
 };
 
-export default Story;
+export default Story4;
