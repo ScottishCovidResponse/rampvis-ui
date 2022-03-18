@@ -16,7 +16,7 @@ const width = 800,
 
 const xScFnc = (data, w = width, b = border) => {
   const xExt = d3.extent(data, (d: any) => d.date);
-  console.log("data =", data, "xExt", xExt);
+  // console.log("TimeSeries:xScFnc: data =", data, "xExt", xExt);
 
   const xScale = d3
     .scaleTime()
@@ -28,7 +28,7 @@ const xScFnc = (data, w = width, b = border) => {
 
 const yScFnc = (data, h = height, b = border) => {
   const yExt = d3.extent(data, (d: any) => d.y);
-  console.log("data =", data, "yExt", yExt);
+  // console.log("TimeSeries:yScFnc: data =", data, "yExt", yExt);
   const ySc = d3
     .scaleLinear()
     // @ts-expect-error -- rule out [undefined, undefined] (possible runtime error)
@@ -222,7 +222,7 @@ export class TimeSeries {
   }
 
   svg(ctx) {
-    console.log("TimeSeries: ctx = ", ctx);
+    // console.log("TimeSeries: ctx = ", ctx);
     this._ctx = ctx;
     const bounds = ctx.getBoundingClientRect();
     this.width(bounds.width);
