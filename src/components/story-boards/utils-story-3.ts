@@ -260,7 +260,7 @@ let scrollingSvg;
 let timeline;
 let timeseries;
 let maxCounter;
-let counter;
+let counter = 0;
 
 export async function createScrollingSvg(selector, nation) {
   d3.select(selector).selectAll("*").remove();
