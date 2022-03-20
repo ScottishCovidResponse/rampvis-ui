@@ -16,19 +16,19 @@ const width = 800,
 
 const xScFnc = (data, w = width, b = border) => {
   const xExt = d3.extent(data, (d: any) => d.date);
-  console.log("data =", data, "xExt", xExt);
+  // console.log("TimeSeries:xScFnc: data =", data, "xExt", xExt);
 
   const xScale = d3
     .scaleTime()
     // @ts-expect-error -- rule out [undefined, undefined] (possible runtime error)
     .domain(xExt)
-    .range([border, w - b]);
+    .range([b, w - b]);
   return xScale;
 };
 
 const yScFnc = (data, h = height, b = border) => {
   const yExt = d3.extent(data, (d: any) => d.y);
-  console.log("data =", data, "yExt", yExt);
+  // console.log("TimeSeries:yScFnc: data =", data, "yExt", yExt);
   const ySc = d3
     .scaleLinear()
     // @ts-expect-error -- rule out [undefined, undefined] (possible runtime error)
@@ -57,6 +57,7 @@ export class TimeSeries {
   _ySc1;
   _ySc2;
   _annotations;
+  _annoTop;
   _animationList;
   _animationCounter;
 
@@ -85,6 +86,7 @@ export class TimeSeries {
     this._ySc1 = yScFnc(this._data1, this._height, this._border);
     this._ySc2;
     this._annotations;
+    this._annoTop;
     this._animationList;
     this._animationCounter;
 
@@ -220,7 +222,7 @@ export class TimeSeries {
   }
 
   svg(ctx) {
-    console.log("TimeSeries: ctx = ", ctx);
+    // console.log("TimeSeries: ctx = ", ctx);
     this._ctx = ctx;
     const bounds = ctx.getBoundingClientRect();
     this.width(bounds.width);
@@ -253,6 +255,11 @@ export class TimeSeries {
     this._animationCounter = animationCounter;
 
     this.svg(ctx);
+    return this;
+  }
+
+  annoTop() {
+    this._annoTop = true;
     return this;
   }
 
@@ -323,6 +330,12 @@ export class TimeSeries {
       // If annotation obj defined - add to svg and set opacity to 0 (hide it)
       anno = annoObj.id(`anim-anno-${idx}`);
       anno.addTo(this._ctx);
+
+      if (this._annoTop) {
+        anno.y(this._border + anno._annoHeight / 2);
+        anno.updatePos(anno._x, anno._y);
+      }
+
       annoElem = d3.select(`#anim-anno-${idx}`).style("opacity", 0);
 
       if (this._showEventLines) {

@@ -21,7 +21,9 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+
 import { blue } from "@mui/material/colors";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import {
@@ -51,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
 const Story = () => {
   const classes = useStyles();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [segment, setSegment] = useState<number>(3);
   const [regions, setRegions] = useState<string[]>([]);
   const [region, setRegion] = useState<string>("");
@@ -59,24 +61,25 @@ const Story = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       const _regions = await processDataAndGetRegions();
-      setRegions(_regions.map((d) => d));
+      console.log("Story1: regions", _regions);
+      setRegions(_regions);
       segmentData(segment);
-      setLoading(false);
     };
 
     try {
+      setLoading(true);
       fetchData();
+      setLoading(false);
     } catch (error) {
       console.error(error);
       setLoading(false);
     }
-  }, []);
+  }, [loading]);
 
   const handleChangeSlider = (event) => {
     const selectedSegment = event.target.value;
-    console.log("selectedSegment = ", selectedSegment);
+    console.log("Story1: selectedSegment = ", selectedSegment);
     if (selectedSegment && selectedSegment !== segment) {
       setSegment(selectedSegment);
       segmentData(selectedSegment);
@@ -88,7 +91,7 @@ const Story = () => {
 
   const handleChangeSelect = (event: SelectChangeEvent) => {
     const selectedRegion = event.target.value;
-    console.log("selectedRegion = ", selectedRegion);
+    console.log("Story1: selectedRegion = ", selectedRegion);
     if (selectedRegion) {
       onSelectRegion(selectedRegion);
       createTimeSeriesSVG("#chart1");
@@ -97,17 +100,34 @@ const Story = () => {
     }
   };
 
-  const handleClickButton = () => {
+  const handleBeginningButton = () => {
+    const count = 0;
+
+    setAnimationCounter(count);
+    console.log("Story1: animationCounter = ", count);
+    onClickAnimate(count, "#chart1");
+  };
+
+  const handleBackButton = () => {
+    const count = animationCounter - 1;
+    if (count < 0) return;
+
+    setAnimationCounter(count);
+    console.log("Story1: animationCounter = ", count);
+    onClickAnimate(count, "#chart1");
+  };
+
+  const handlePlayButton = () => {
     const count = animationCounter + 1;
     setAnimationCounter(count);
-    console.log(count);
+    console.log("Story1: animationCounter = ", count);
     onClickAnimate(count, "#chart1");
   };
 
   return (
     <>
       <Head>
-        <title>Story</title>
+        <title>Story-1</title>
       </Head>
       <DashboardLayout>
         <Box
@@ -121,12 +141,12 @@ const Story = () => {
             <Card sx={{ minWidth: 1200 }}>
               <CardHeader
                 avatar={
-                  <Avatar className={classes.avatar}>
+                  <Avatar style={{ backgroundColor: blue[500] }}>
                     <AutoStoriesIcon />
                   </Avatar>
                 }
                 title="Story-1"
-                subheader="Set a segment value, a region, and click the button to animate"
+                subheader="Choose a segment value, a region, and click play to animate the story"
               />
               <CardContent sx={{ pt: "8px" }}>
                 {loading ? (
@@ -193,17 +213,38 @@ const Story = () => {
                       </FormControl>
 
                       <FormControl sx={{ m: 1, width: 100, mt: 0 }}>
-                        <Tooltip title="Click to proceed animation">
-                          <Button
-                            variant="contained"
-                            disabled={!region}
-                            onClick={handleClickButton}
-                            endIcon={<PlayArrowIcon />}
-                            component="span"
-                          >
-                            Play
-                          </Button>
-                        </Tooltip>
+                        <Button
+                          variant="contained"
+                          disabled={!region}
+                          onClick={handleBeginningButton}
+                          component="span"
+                        >
+                          Beginning
+                        </Button>
+                      </FormControl>
+
+                      <FormControl sx={{ m: 1, width: 100, mt: 0 }}>
+                        <Button
+                          variant="contained"
+                          disabled={!region}
+                          onClick={handleBackButton}
+                          startIcon={<ArrowBackIosIcon />}
+                          component="span"
+                        >
+                          Back
+                        </Button>
+                      </FormControl>
+
+                      <FormControl sx={{ m: 1, width: 100, mt: 0 }}>
+                        <Button
+                          variant="contained"
+                          disabled={!region}
+                          onClick={handlePlayButton}
+                          endIcon={<ArrowForwardIosIcon />}
+                          component="span"
+                        >
+                          Play
+                        </Button>
                       </FormControl>
                     </FormGroup>
 

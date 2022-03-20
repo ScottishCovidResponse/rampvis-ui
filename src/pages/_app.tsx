@@ -35,7 +35,7 @@ import "src/lib/vis/css/overview-top-level-screen-a.css";
 import "src/lib/vis/css/portal.css";
 import "src/lib/vis/css/pv-legend.css";
 import "src/lib/vis/css/ensemble.css";
-import "src/components/story-boards/StoryBoards3.css";
+import "src/components/story-boards/ScrollingSvg.css";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;

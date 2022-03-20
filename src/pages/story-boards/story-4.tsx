@@ -32,7 +32,8 @@ import {
   onSelectRegion,
   onClickAnimate,
   createTimeSeriesSVG,
-} from "src/components/story-boards/utils-story-2";
+  processDataAndGetNations,
+} from "src/components/story-boards/utils-story-4";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -40,19 +41,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Story2 = () => {
+const Story4 = () => {
   const classes = useStyles();
 
   const [loading, setLoading] = useState(true);
   const [regions, setRegions] = useState<string[]>([]);
-  const [region1, setRegion1] = useState<string>("");
-  const [region2, setRegion2] = useState<string>("");
+  const [nations, setNations] = useState<string[]>([]);
+  const [region, setRegion] = useState<string>("");
+  const [nation, setNation] = useState<string>("");
   const [animationCounter, setAnimationCounter] = useState<number>(0);
 
   useEffect(() => {
     const fetchData = async () => {
       const _regions = await processDataAndGetRegions();
       setRegions(_regions);
+
+      const _nations = await processDataAndGetNations();
+      setNations(_nations);
     };
 
     try {
@@ -65,28 +70,28 @@ const Story2 = () => {
     }
   }, [loading]);
 
-  const handleChangeSelect1 = (event: SelectChangeEvent) => {
-    const selectedRegion1 = event.target.value;
-    console.log("selectedRegion1 = ", selectedRegion1);
-    if (selectedRegion1) {
-      if (selectedRegion1 && region2) {
-        onSelectRegion(selectedRegion1, region2);
+  const handleNationSelect = (event: SelectChangeEvent) => {
+    const selectedNation = event.target.value;
+    console.log("selectedNation = ", selectedNation);
+    if (selectedNation) {
+      if (selectedNation && region) {
+        onSelectRegion(selectedNation, region);
       }
       createTimeSeriesSVG("#chart1");
-      setRegion1(selectedRegion1);
+      setNation(selectedNation);
       setAnimationCounter(0);
     }
   };
 
-  const handleChangeSelect2 = (event: SelectChangeEvent) => {
-    const selectedRegion2 = event.target.value;
-    console.log("selectedRegion2 = ", selectedRegion2);
-    if (selectedRegion2) {
-      if (region1 && selectedRegion2) {
-        onSelectRegion(region1, selectedRegion2);
+  const handleRegionSelect = (event: SelectChangeEvent) => {
+    const selectedRegion = event.target.value;
+    console.log("selectedRegion = ", selectedRegion);
+    if (selectedRegion) {
+      if (nation && selectedRegion) {
+        onSelectRegion(nation, selectedRegion);
       }
       createTimeSeriesSVG("#chart1");
-      setRegion2(selectedRegion2);
+      setRegion(selectedRegion);
       setAnimationCounter(0);
     }
   };
@@ -95,7 +100,7 @@ const Story2 = () => {
     const count = 0;
 
     setAnimationCounter(count);
-    console.log("Story2: animationCounter = ", count);
+    console.log("Story4: animationCounter = ", count);
     onClickAnimate(count, "#chart1");
   };
 
@@ -104,21 +109,21 @@ const Story2 = () => {
     if (count < 0) return;
 
     setAnimationCounter(count);
-    console.log("Story2: animationCounter = ", count);
+    console.log("Story4: animationCounter = ", count);
     onClickAnimate(count, "#chart1");
   };
 
   const handlePlayButton = () => {
     const count = animationCounter + 1;
     setAnimationCounter(count);
-    console.log("Story2: animationCounter = ", count);
+    console.log("Story4: animationCounter = ", count);
     onClickAnimate(count, "#chart1");
   };
 
   return (
     <>
       <Head>
-        <title>Story-2</title>
+        <title>Story-4</title>
       </Head>
       <DashboardLayout>
         <Box
@@ -136,8 +141,8 @@ const Story2 = () => {
                     <AutoStoriesIcon />
                   </Avatar>
                 }
-                title="Story-2"
-                subheader="Choose two regions and click play to animate the story"
+                title="Story-4"
+                subheader="Choose a nation, a region and click play to animate the story"
               />
               <CardContent sx={{ pt: "8px" }}>
                 {loading ? (
@@ -168,17 +173,17 @@ const Story2 = () => {
                         sx={{ m: 1, width: 300, mt: 0 }}
                         size="small"
                       >
-                        <InputLabel id="select-region-1-label">
-                          Select region 1
+                        <InputLabel id="select-nation-label">
+                          Select nation{" "}
                         </InputLabel>
                         <Select
-                          labelId="select-region-1-label"
-                          id="select-region-1-label"
-                          onChange={handleChangeSelect1}
-                          input={<OutlinedInput label="Select region 1" />}
-                          value={region1}
+                          labelId="select-nation-label"
+                          id="select-nation-label"
+                          onChange={handleNationSelect}
+                          input={<OutlinedInput label="Select nation" />}
+                          value={nation}
                         >
-                          {regions.map((d) => (
+                          {nations.map((d) => (
                             <MenuItem key={d} value={d}>
                               {d}
                             </MenuItem>
@@ -199,16 +204,16 @@ const Story2 = () => {
                         sx={{ m: 1, width: 300, mt: 0 }}
                         size="small"
                       >
-                        <InputLabel id="select-region-2-label">
-                          Select region 2
+                        <InputLabel id="select-region-label">
+                          Select region
                         </InputLabel>
                         <Select
-                          labelId="select-region-2-label"
-                          id="select-region-2-label"
+                          labelId="select-region-label"
+                          id="select-region-label"
                           displayEmpty
-                          onChange={handleChangeSelect2}
-                          input={<OutlinedInput label="Select region 2" />}
-                          value={region2}
+                          onChange={handleRegionSelect}
+                          input={<OutlinedInput label="Select region" />}
+                          value={region}
                         >
                           {regions.map((d) => (
                             <MenuItem key={d} value={d}>
@@ -221,7 +226,7 @@ const Story2 = () => {
                       <FormControl sx={{ m: 1, width: 100, mt: 0 }}>
                         <Button
                           variant="contained"
-                          disabled={!region1 || !region2}
+                          disabled={!region || !nation}
                           onClick={handleBeginningButton}
                           component="span"
                         >
@@ -232,7 +237,7 @@ const Story2 = () => {
                       <FormControl sx={{ m: 1, width: 100, mt: 0 }}>
                         <Button
                           variant="contained"
-                          disabled={!region1 || !region2}
+                          disabled={!region || !nation}
                           onClick={handleBackButton}
                           startIcon={<ArrowBackIosIcon />}
                           component="span"
@@ -244,7 +249,7 @@ const Story2 = () => {
                       <FormControl sx={{ m: 1, width: 100, mt: 0 }}>
                         <Button
                           variant="contained"
-                          disabled={!region1 || !region2}
+                          disabled={!region || !nation}
                           onClick={handlePlayButton}
                           endIcon={<ArrowForwardIosIcon />}
                           component="span"
@@ -265,4 +270,4 @@ const Story2 = () => {
   );
 };
 
-export default Story2;
+export default Story4;
