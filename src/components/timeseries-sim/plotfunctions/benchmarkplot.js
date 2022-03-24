@@ -15,6 +15,8 @@ export function benchmarkPlot(data) {
   const height = 400;
   const margin = 5;
   const adj = 50;
+  const fontSize = 20;
+  const labelStretch = 20;
 
   const spaceRemove = (key) => {
     if (key.split(" ").length === 1) {
@@ -22,6 +24,49 @@ export function benchmarkPlot(data) {
     } else {
       return key.split(" ").join("");
     }
+  };
+
+  const labelYPoints = (height, font, n, minLabel, maxLabel) => {
+    let arr = [];
+    let count = n;
+    let min = 0;
+    let max = height;
+    let top = Math.max(maxLabel - (maxLabel - min) / 2, min);
+    let bottom = Math.min(minLabel + (max - minLabel) / 2, max);
+    let remainingArea = bottom - top - 2 * font;
+    let remainingFill = (n - 2) * font;
+    let gap = remainingArea - remainingFill;
+    if (gap < 0) {
+      font -= 1;
+      return labelYPoints(height, font, n, minLabel, maxLabel);
+    } else {
+      let stretch = gap / (n - 2) + font;
+      while (count > 1) {
+        arr.push(top);
+        top += stretch;
+        count -= 1;
+      }
+      arr.push(bottom);
+
+      return { font: font, points: arr };
+    }
+  };
+
+  const labelLinePoints = (lastDate, lastValue, labelStretch, yPoint, font) => {
+    let arr = [];
+    let noJumps = 5;
+    let [count_x, count_y] = [
+      labelStretch / noJumps,
+      (yPoint - font / 3 - lastValue) / noJumps,
+    ];
+
+    while (noJumps >= 0) {
+      arr.push([lastDate, lastValue]);
+      lastDate += count_x;
+      lastValue += count_y;
+      noJumps -= 1;
+    }
+    return arr;
   };
 
   let layout = d3 // creating individual regions for comparison plots
@@ -79,13 +124,7 @@ export function benchmarkPlot(data) {
   ];
   const countries = Object.keys(dataTime[0].value);
   const color = d3.scaleOrdinal().domain(countries).range(colorRange);
-  const queryColor = "#FF6600";
-  const otherColor = "#9ea2a5";
-
-  const queryStrokeWidth = 8;
   const otherStrokeWidth = 4;
-
-  console.log(countries);
 
   const dateRanges = dataTime
     .map((item) => item.value)
@@ -142,13 +181,13 @@ export function benchmarkPlot(data) {
     const xScale = xScales[i];
     const yScale = yScales[i];
 
-    d3.select("#graph" + streams.key)
+    d3.select("#graph" + spaceRemove(streams.key))
       .selectAll(".line")
       .data(graphObj)
       .enter()
       .append("path")
       .attr("class", "multiline")
-      .attr("id", (d) => streams.key + "/" + spaceRemove(d.key))
+      .attr("id", (d) => spaceRemove(streams.key) + "/" + spaceRemove(d.key))
       .attr("fill", "none")
       .attr("stroke", (d) => color(d.key))
       .attr("stroke-width", otherStrokeWidth)
@@ -158,7 +197,7 @@ export function benchmarkPlot(data) {
           .x((d) => xScale(parseTime(d.date)))
           .y((d) => yScale(d.value))(d.data),
       );
-    d3.select("#graph" + streams.key)
+    d3.select("#graph" + spaceRemove(streams.key))
       .append("text")
       .attr("x", width / 2)
       .attr("y", 0 - margin)
@@ -171,34 +210,83 @@ export function benchmarkPlot(data) {
           .join(" "),
       );
 
-    d3.select("#graph" + streams.key)
-      .selectAll("myLabels")
-      .data(graphObj)
+    // playground //
+
+    let labelArray = graphObj.map((streams) => {
+      const country = streams.key;
+      const lastValue = streams.data[streams.data.length - 1].value;
+      return { key: country, end: lastValue };
+    });
+
+    const lastDate = graphObj[0].data[graphObj[0].data.length - 1].date;
+
+    labelArray.sort((a, b) => (a.end < b.end ? 1 : -1)); // sort array by descending of endpoint
+
+    console.log("array", labelArray);
+    const minLabel = yScale(labelArray[labelArray.length - 1].end);
+    const maxLabel = yScale(labelArray[0].end);
+    console.log(minLabel, maxLabel);
+    const yPoints = labelYPoints(
+      height,
+      fontSize,
+      labelArray.length,
+      minLabel,
+      maxLabel,
+    ); // calculate ypoints of labels
+
+    let labelData = labelArray.map((streams, i) => ({
+      ...streams,
+      yPoint: yPoints.points[i],
+      line: labelLinePoints(
+        xScale(parseTime(lastDate)),
+        yScale(streams.end),
+        labelStretch,
+        yPoints.points[i],
+        yPoints.font,
+      ),
+    }));
+
+    //console.log(labelData)
+
+    d3.select("#graph" + spaceRemove(streams.key))
+      .selectAll(".myLabels")
+      .data(labelData)
       .enter()
       .append("g")
       .append("text")
       .attr("class", "myLabels")
       .attr("id", (d) => spaceRemove(d.key))
-      .datum(function (d) {
-        return { name: d.key, value: d.data[d.data.length - 1] };
-      }) // keep only the last value of each time series
       .attr("transform", function (d) {
         return (
-          "translate(" +
-          xScale(dateRanges[0][dateRanges[0].length - 1]) +
-          "," +
-          yScale(d.value.value) +
-          ")"
+          "translate(" + xScale(parseTime(lastDate)) + "," + d.yPoint + ")"
         );
-      })
+      }) // Put the text at the position of the last point
+      .attr("x", labelStretch) // shift the text a bit more right
       .text(function (d) {
-        return d.name;
+        return d.key;
       })
-      .attr("x", 12) // shift the text a bit more right
       .style("fill", function (d) {
-        return color(d.name);
+        return color(d.key);
       })
-      .style("font-size", "20px");
+      .style("font-size", yPoints.font + "px");
+
+    d3.select("#graph" + spaceRemove(streams.key))
+      .selectAll(".line")
+      .data(labelData)
+      .enter()
+      .append("path")
+      .attr("class", "labelLine")
+      .attr("id", (d) => spaceRemove(streams.key) + "/" + spaceRemove(d.key))
+      .attr("fill", "none")
+      .attr("stroke", (d) => color(d.key))
+      .attr("stroke-width", 2)
+      .attr("d", (d) =>
+        d3
+          .line()
+          .x((d) => d[0])
+          .y((d) => d[1])(d.line),
+      )
+      .style("stroke-dasharray", "3,3");
 
     d3.select("#graph" + streams.key)
       .selectAll(".multiline")
@@ -207,8 +295,15 @@ export function benchmarkPlot(data) {
           .select(this)
           ["_groups"][0][0]["attributes"]["id"]["nodeValue"].split("/");
 
+        console.log(country);
         d3.select("#graph" + stream)
           .selectAll(".multiline")
+          .filter(function () {
+            return d3.select(this).attr("id") != stream + "/" + country;
+          })
+          .attr("visibility", "hidden");
+        d3.select("#graph" + stream)
+          .selectAll(".labelLine")
           .filter(function () {
             return d3.select(this).attr("id") != stream + "/" + country;
           })
@@ -227,6 +322,9 @@ export function benchmarkPlot(data) {
           ["_groups"][0][0]["attributes"]["id"]["nodeValue"].split("/");
         d3.select("#graph" + stream)
           .selectAll(".multiline")
+          .attr("visibility", "visible");
+        d3.select("#graph" + stream)
+          .selectAll(".labelLine")
           .attr("visibility", "visible");
         d3.select("#graph" + stream)
           .selectAll(".myLabels")

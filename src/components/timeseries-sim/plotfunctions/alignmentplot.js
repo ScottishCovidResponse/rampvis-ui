@@ -6,10 +6,12 @@ export function alignmentPlot(
   indicator,
   timeSeriesBag,
   benchmarkCountries,
-  checkState,
   setTimeSeriesBag,
   setBenchmarkCountries,
-  setCheckState,
+  setSuccessSnack,
+  setSuccessMessage,
+  setWarningSnack,
+  setWarningMessage,
 ) {
   //------ DATA and Graph Functions ------//
 
@@ -36,6 +38,7 @@ export function alignmentPlot(
 
   const queryStrokeWidth = 8;
   const otherStrokeWidth = 4;
+  let checkCountry = [];
 
   d3.select("#alignmentchart").html(""); //clear charts
   const graphArea = d3.select("#alignmentchart");
@@ -55,9 +58,7 @@ export function alignmentPlot(
         indicator
           .split("_")
           .map((str) => str.charAt(0).toUpperCase() + str.slice(1))
-          .join(" ") +
-        " " +
-        method;
+          .join(" ");
       checkStateTimeSeries[identifier] = "false";
     });
 
@@ -165,29 +166,33 @@ export function alignmentPlot(
         indicator
           .split("_")
           .map((str) => str.charAt(0).toUpperCase() + str.slice(1))
-          .join(" ") +
-        " " +
-        method;
+          .join(" ");
 
       if (
         !timeSeriesBag.includes(identifier) &&
-        checkStateTimeSeries[identifier] === "false"
+        checkStateTimeSeries[identifier] === "false" &&
+        !checkCountry.includes(d.key)
       ) {
         setTimeSeriesBag((old) => [...old, identifier]);
         checkStateTimeSeries[identifier] = "true";
         timeSeriesBag.push(identifier);
+        checkCountry.push(d.key);
         d3.select("#alignmentContainer" + method + spaceRemove(d.key)).attr(
           "style",
           "outline: thin solid red;",
         );
+        setSuccessSnack(() => true);
+        setSuccessMessage(() => d.key + " is added to time-series bag");
       } else if (
         timeSeriesBag.includes(identifier) &&
-        checkStateTimeSeries[identifier] === "true"
+        checkStateTimeSeries[identifier] === "true" &&
+        checkCountry.includes(d.key)
       ) {
         setTimeSeriesBag((old) => [
           ...old.filter((item) => item !== identifier),
         ]);
         checkStateTimeSeries[identifier] = "false";
+        checkCountry = checkCountry.filter((country) => !country == d.key);
         timeSeriesBag = timeSeriesBag.filter((item) => item !== identifier);
         d3.select("#alignmentContainer" + method + spaceRemove(d.key)).attr(
           "style",
@@ -232,8 +237,6 @@ export function alignmentPlot(
           .join(" ") +
         " " +
         method;
-
-      setCheckState((old) => ({ ...old, [identifier]: "false" }));
 
       d3.select("#xaxis" + method + spaceRemove(streams.key)).call(xAxis); // call individual xaxis properties
       d3.select("#yaxis" + method + spaceRemove(streams.key)).call(yAxis); // call individual yaxis properties

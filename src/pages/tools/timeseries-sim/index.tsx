@@ -9,6 +9,8 @@ import {
   Dialog,
   DialogContent,
   DialogContentText,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import axios from "axios";
@@ -89,11 +91,17 @@ const TimeseriesSim = () => {
   const [infoPopUp, setInfoPopUp] = useState(false);
   const [comparePopUp, setComparePopUp] = useState(false);
   const [predictPopUp, setPredictPopUp] = useState(false);
-  const [checkState, setCheckState] = useState({});
+  const [successSnack, setSuccessSnack] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("test");
+  const [warningSnack, setWarningSnack] = useState(false);
+  const [warningMessage, setWarningMessage] = useState("test");
+  const [infoSnack, setInfoSnack] = useState(false);
+  const [infoMessage, setInfoMessage] = useState("test");
+  const [errorSnack, setErrorSnack] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("test");
 
   const advancedFilterClickOpen = () => {
     // sets popup state to true
-    console.log(checkState);
     setAdvancedFilterPopup(true);
   };
   const advancedFilterClickClose = () => {
@@ -214,10 +222,12 @@ const TimeseriesSim = () => {
         firstRunForm.indicator,
         timeSeriesBag,
         benchmarkCountries,
-        checkState,
         setTimeSeriesBag,
         setBenchmarkCountries,
-        setCheckState,
+        setSuccessSnack,
+        setSuccessMessage,
+        setWarningSnack,
+        setWarningMessage,
       );
 
       SegmentedMultiLinePlot(response.data, firstRunForm);
@@ -239,7 +249,10 @@ const TimeseriesSim = () => {
   };
 
   const predictPost = async () => {
-    const apiUrl = API_PY + "/predict/";
+    //const apiUrl = API_PY + "/predict/";
+    const apiUrl =
+      "http://0.0.0.0:4010" + "/stat/v1/timeseries-sim-search/predict/";
+
     const predictObj = {
       series: timeSeriesBag,
       query: {
@@ -422,6 +435,43 @@ const TimeseriesSim = () => {
           </Card>
         </Grid>
       </Box>
+
+      <Snackbar open={successSnack} autoHideDuration={200}>
+        <Alert
+          onClose={() => setSuccessSnack(false)}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          {successMessage}
+        </Alert>
+      </Snackbar>
+      <Snackbar open={warningSnack} autoHideDuration={200}>
+        <Alert
+          onClose={() => setWarningSnack(false)}
+          severity="warning"
+          sx={{ width: "100%" }}
+        >
+          {warningMessage}
+        </Alert>
+      </Snackbar>
+      <Snackbar open={infoSnack} autoHideDuration={200}>
+        <Alert
+          onClose={() => setInfoSnack(false)}
+          severity="info"
+          sx={{ width: "100%" }}
+        >
+          {infoMessage}
+        </Alert>
+      </Snackbar>
+      <Snackbar open={errorSnack} autoHideDuration={200}>
+        <Alert
+          onClose={() => setErrorSnack(false)}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          {errorMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

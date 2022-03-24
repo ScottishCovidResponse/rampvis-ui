@@ -157,6 +157,7 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
     svg
       .append("g")
       .attr("class", "xaxis")
+      .attr("id", "xaxis" + method)
       .attr("transform", "translate(0," + height + ")")
       .call(xaxis)
       .selectAll("text")
@@ -168,6 +169,7 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
     svg
       .append("g")
       .attr("class", "yaxis")
+      .attr("id", "yaxis" + method)
       .call(yaxis)
       .selectAll("text")
       .style("font-size", "14px");
@@ -248,7 +250,7 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
     }));
 
     svg
-      .selectAll("myLabels")
+      .selectAll(".myLabels")
       .data(labelData)
       .enter()
       .append("g")
@@ -284,6 +286,25 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
           .y((d) => d[1])(d.line),
       )
       .style("stroke-dasharray", "3,3");
+
+    const axisChange = (d) => {
+      //mouse interaction to change x-axis dates by manipulating .text() of parsed ticks above
+      const filter = d;
+      const filteredDateObj = dateObj.filter(
+        (streams) => streams.key === filter,
+      )[0];
+      let count = 0;
+      d3.select("#xaxis" + method)
+        .selectAll("g")
+        .selectAll("text")
+        .each(function () {
+          d3.select(this).text(
+            formatTime(parseTime(filteredDateObj.xLabels[count])),
+          );
+          d3.select(this).style("color", color(d));
+          count = count + 1;
+        });
+    };
 
     const lineMouseEnter = (d) => {
       svg.selectAll(".multiline").attr("visibility", "hidden");
@@ -349,25 +370,6 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
         xLabels: dateIndex.map((i) => streams.values[i].date),
       };
     });
-
-    const axisChange = (d) => {
-      //mouse interaction to change x-axis dates by manipulating .text() of parsed ticks above
-      const filter = d;
-      const filteredDateObj = dateObj.filter(
-        (streams) => streams.key === filter,
-      )[0];
-      let count = 0;
-      d3.select(".xaxis")
-        .selectAll("g")
-        .selectAll("text")
-        .each(function () {
-          d3.select(this).text(
-            formatTime(parseTime(filteredDateObj.xLabels[count])),
-          );
-          d3.select(this).style("color", color(d));
-          count = count + 1;
-        });
-    };
 
     // playground - label maker  //
 
