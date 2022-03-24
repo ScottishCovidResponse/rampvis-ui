@@ -33,6 +33,10 @@ import PredictPopUp from "src/components/timeseries-sim/PredictPopUp";
 import { predictPlot } from "src/components/timeseries-sim/plotfunctions/predictplot";
 import InfoPopUp from "src/components/timeseries-sim/InfoPopUp";
 import CircularProgress from "@mui/material/CircularProgress";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import WarningIcon from "@mui/icons-material/Warning";
+import InfoIcon from "@mui/icons-material/Info";
+
 const API = process.env.NEXT_PUBLIC_API_PY;
 const API_PY = API + "/timeseries-sim-search";
 const today = new Date();
@@ -290,6 +294,8 @@ const TimeseriesSim = () => {
     setLoadPopUp(true);
     await searchPost();
     setLoadPopUp(false);
+    setInfoMessage(() => "Plots are generated successfully. Check below");
+    setInfoSnack(() => true);
     //plotSwitch();
   };
 
@@ -436,29 +442,50 @@ const TimeseriesSim = () => {
         </Grid>
       </Box>
 
-      <Snackbar open={successSnack} autoHideDuration={200}>
+      <Snackbar
+        open={successSnack}
+        autoHideDuration={1000}
+        onClose={() => setSuccessSnack(false)}
+      >
         <Alert
           onClose={() => setSuccessSnack(false)}
           severity="success"
-          sx={{ width: "100%" }}
+          sx={{ width: "100%", fontSize: "32px" }}
+          iconMapping={{
+            success: <CheckCircleIcon sx={{ fontSize: "48px" }} />,
+          }}
         >
           {successMessage}
         </Alert>
       </Snackbar>
-      <Snackbar open={warningSnack} autoHideDuration={200}>
+      <Snackbar
+        open={warningSnack}
+        autoHideDuration={1000}
+        onClose={() => setWarningSnack(false)}
+      >
         <Alert
           onClose={() => setWarningSnack(false)}
           severity="warning"
-          sx={{ width: "100%" }}
+          sx={{ width: "100%", fontSize: "32px" }}
+          iconMapping={{
+            warning: <WarningIcon sx={{ fontSize: "48px" }} />,
+          }}
         >
           {warningMessage}
         </Alert>
       </Snackbar>
-      <Snackbar open={infoSnack} autoHideDuration={200}>
+      <Snackbar
+        open={infoSnack}
+        autoHideDuration={1000}
+        onClose={() => setInfoSnack(false)}
+      >
         <Alert
           onClose={() => setInfoSnack(false)}
           severity="info"
-          sx={{ width: "100%" }}
+          sx={{ width: "100%", fontSize: "32px" }}
+          iconMapping={{
+            info: <InfoIcon sx={{ fontSize: "48px" }} />,
+          }}
         >
           {infoMessage}
         </Alert>
