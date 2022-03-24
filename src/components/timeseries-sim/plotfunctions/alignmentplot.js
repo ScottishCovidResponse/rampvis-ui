@@ -194,6 +194,8 @@ export function alignmentPlot(
         checkStateTimeSeries[identifier] = "false";
         checkCountry = checkCountry.filter((country) => !country == d.key);
         timeSeriesBag = timeSeriesBag.filter((item) => item !== identifier);
+        setWarningSnack(() => true);
+        setWarningMessage(() => d.key + " is removed from time-series bag");
         d3.select("#alignmentContainer" + method + spaceRemove(d.key)).attr(
           "style",
           "outline: none;",
