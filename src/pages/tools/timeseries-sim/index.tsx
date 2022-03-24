@@ -36,7 +36,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import WarningIcon from "@mui/icons-material/Warning";
 import InfoIcon from "@mui/icons-material/Info";
-
+import ErrorIcon from "@mui/icons-material/Error";
 const API = process.env.NEXT_PUBLIC_API_PY;
 const API_PY = API + "/timeseries-sim-search";
 const today = new Date();
@@ -232,6 +232,8 @@ const TimeseriesSim = () => {
         setSuccessMessage,
         setWarningSnack,
         setWarningMessage,
+        setErrorSnack,
+        setErrorMessage,
       );
 
       SegmentedMultiLinePlot(response.data, firstRunForm);
@@ -490,11 +492,18 @@ const TimeseriesSim = () => {
           {infoMessage}
         </Alert>
       </Snackbar>
-      <Snackbar open={errorSnack} autoHideDuration={200}>
+      <Snackbar
+        open={errorSnack}
+        autoHideDuration={1000}
+        onClose={() => setErrorSnack(false)}
+      >
         <Alert
           onClose={() => setErrorSnack(false)}
           severity="error"
-          sx={{ width: "100%" }}
+          sx={{ width: "100%", fontSize: "32px" }}
+          iconMapping={{
+            error: <ErrorIcon sx={{ fontSize: "48px" }} />,
+          }}
         >
           {errorMessage}
         </Alert>

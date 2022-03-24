@@ -255,7 +255,7 @@ export function benchmarkPlot(data) {
       .append("g")
       .append("text")
       .attr("class", "myLabels")
-      .attr("id", (d) => spaceRemove(d.key))
+      .attr("id", (d) => spaceRemove(streams.key) + "/" + spaceRemove(d.key))
       .attr("transform", function (d) {
         return (
           "translate(" + xScale(parseTime(lastDate)) + "," + d.yPoint + ")"
@@ -312,7 +312,49 @@ export function benchmarkPlot(data) {
         d3.select("#graph" + stream)
           .selectAll(".myLabels")
           .filter(function () {
-            return d3.select(this).attr("id") !== country;
+            return d3.select(this).attr("id") !== stream + "/" + country;
+          })
+          .attr("visibility", "hidden");
+      })
+      .on("mouseleave", function (d) {
+        const [stream, country] = d3
+          .select(this)
+          ["_groups"][0][0]["attributes"]["id"]["nodeValue"].split("/");
+        d3.select("#graph" + stream)
+          .selectAll(".multiline")
+          .attr("visibility", "visible");
+        d3.select("#graph" + stream)
+          .selectAll(".labelLine")
+          .attr("visibility", "visible");
+        d3.select("#graph" + stream)
+          .selectAll(".myLabels")
+          .attr("visibility", "visible");
+      });
+
+    d3.select("#graph" + streams.key)
+      .selectAll(".myLabels")
+      .on("mouseenter", function (d) {
+        const [stream, country] = d3
+          .select(this)
+          ["_groups"][0][0]["attributes"]["id"]["nodeValue"].split("/");
+
+        d3.select("#graph" + stream)
+          .selectAll(".multiline")
+          .filter(function () {
+            return d3.select(this).attr("id") != stream + "/" + country;
+          })
+          .attr("visibility", "hidden");
+        d3.select("#graph" + stream)
+          .selectAll(".labelLine")
+          .filter(function () {
+            return d3.select(this).attr("id") != stream + "/" + country;
+          })
+          .attr("visibility", "hidden");
+
+        d3.select("#graph" + stream)
+          .selectAll(".myLabels")
+          .filter(function () {
+            return d3.select(this).attr("id") !== stream + "/" + country;
           })
           .attr("visibility", "hidden");
       })

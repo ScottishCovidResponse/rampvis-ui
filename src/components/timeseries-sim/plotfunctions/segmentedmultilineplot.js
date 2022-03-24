@@ -1,5 +1,4 @@
 import * as d3 from "d3";
-import { lastIndexOf } from "lodash";
 
 export function SegmentedMultiLinePlot(response, firstRunForm) {
   // align labels

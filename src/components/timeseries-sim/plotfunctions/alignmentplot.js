@@ -1,4 +1,3 @@
-import { outlinedInputClasses } from "@mui/material";
 import * as d3 from "d3";
 
 export function alignmentPlot(
@@ -12,6 +11,8 @@ export function alignmentPlot(
   setSuccessMessage,
   setWarningSnack,
   setWarningMessage,
+  setErrorSnack,
+  setErrorMessage,
 ) {
   //------ DATA and Graph Functions ------//
 
@@ -200,6 +201,12 @@ export function alignmentPlot(
           "style",
           "outline: none;",
         );
+      } else if (
+        checkStateTimeSeries[identifier] === "false" &&
+        checkCountry.includes(d.key)
+      ) {
+        setErrorSnack(() => true);
+        setErrorMessage(() => d.key + " is already in time-series bag");
       }
     };
 
