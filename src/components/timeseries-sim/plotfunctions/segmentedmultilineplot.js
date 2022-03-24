@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { lastIndexOf } from "lodash";
 
 export function SegmentedMultiLinePlot(response, firstRunForm) {
   // align labels
@@ -10,6 +11,41 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
   const formatTime = d3.timeFormat("%b %d"); // date formatter (date to str)
   const strTime = d3.timeFormat("%Y-%m-%d");
 
+  const labelYPoints = (height, font, n) => {
+    let arr = [];
+    let count = n;
+    let max = height;
+    while (count > 0) {
+      arr.push(max);
+      max -= font;
+      count -= 1;
+    }
+
+    if (arr.some((v) => v < 0)) {
+      font -= 1;
+      return labelYPoints(height, font, n);
+    } else {
+      return { font: font, points: arr.reverse() };
+    }
+  };
+
+  const labelLinePoints = (lastDate, lastValue, labelStretch, yPoint, font) => {
+    let arr = [];
+    let noJumps = 5;
+    let [count_x, count_y] = [
+      labelStretch / noJumps,
+      (yPoint - font / 3 - lastValue) / noJumps,
+    ];
+
+    while (noJumps >= 0) {
+      arr.push([lastDate, lastValue]);
+      lastDate += count_x;
+      lastValue += count_y;
+      noJumps -= 1;
+    }
+    return arr;
+  };
+
   const kFormatter = (num) =>
     Math.abs(num) > 999
       ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
@@ -17,10 +53,12 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
 
   //--- Graph Formatting ---//
 
-  const width = 500;
+  const width = 800;
   const height = 200;
   const margin = 0;
   const adj = 35;
+  const fontSize = 12;
+  const labelStretch = 20;
 
   //------------------------//
 
@@ -87,13 +125,8 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
     const color = d3.scaleOrdinal().domain(keyDomain).range(colorRange); // color picker
     const strokeWidth = d3.scaleOrdinal().domain(keyDomain).range(strokeRange); // stroke width picker
 
-    const indicator = firstRunForm.indicator
-      .split("_")
-      .map((str) => str.charAt(0).toUpperCase() + str.slice(1))
-      .join(" "); // string parsing (new_cases) to (New Cases)
     const targetCountry = firstRunForm.targetCountry;
-    const firstDate = firstRunForm.firstDate;
-    const lastDate = firstRunForm.lastDate;
+
     d3.select("#segmentedchart")
       .append("div")
       .attr("class", "vis-example-container")
@@ -141,8 +174,6 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
 
     //multi-line drawer
 
-    console.log(dataFiltered);
-
     const queryStream = dataFiltered.filter((stream) => stream.isQuery);
     const otherStreams = dataFiltered.filter((stream) => !stream.isQuery);
     svg
@@ -156,6 +187,7 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
       .attr("stroke", (d) => color(d.key))
       .attr("stroke-width", (d) => strokeWidth(d.key))
       .attr("stroke-opacity", (d) => d.transparency)
+
       .attr("d", (d) =>
         d3
           .line()
@@ -190,36 +222,68 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
       .attr("text-anchor", "middle")
       .style("font-size", "12px")
       .text(`${method}`);
+
+    let labelArray = dataFiltered.map((streams) => {
+      const country = streams.key;
+      const lastValue = streams.values[streams.values.length - 1].value;
+      const isQuery = streams.isQuery;
+      return { key: country, end: lastValue, isQuery: isQuery };
+    });
+    const lastDate = dateRange[dateRange.length - 1];
+
+    labelArray.sort((a, b) => (a.end < b.end ? 1 : -1)); // sort array by descending of endpoint
+
+    const yPoints = labelYPoints(height, fontSize, labelArray.length); // calculate ypoints of labels
+
+    let labelData = labelArray.map((streams, i) => ({
+      ...streams,
+      yPoint: yPoints.points[i],
+      line: labelLinePoints(
+        xScale(lastDate),
+        yScale(streams.end),
+        labelStretch,
+        yPoints.points[i],
+        yPoints.font,
+      ),
+    }));
+
     svg
       .selectAll("myLabels")
-      .data(dataFiltered)
+      .data(labelData)
       .enter()
       .append("g")
       .append("text")
       .attr("class", "myLabels")
       .attr("id", (d) => d.key)
-      .datum(function (d) {
-        return { name: d.key, value: d.values[d.values.length - 1] };
-      }) // keep only the last value of each time series
       .attr("transform", function (d) {
-        return (
-          "translate(" +
-          xScale(dateRange[dateRange.length - 1]) +
-          "," +
-          yScale(d.value.value) +
-          ")"
-        );
+        return "translate(" + xScale(lastDate) + "," + d.yPoint + ")";
       }) // Put the text at the position of the last point
-      .attr("x", 12) // shift the text a bit more right
+      .attr("x", labelStretch) // shift the text a bit more right
       .text(function (d) {
-        return d.name;
+        return d.key;
       })
       .style("fill", function (d) {
-        return color(d.name);
+        return color(d.key);
       })
-      .style("font-size", "20px");
+      .style("font-size", yPoints.font + "px");
 
-    //line interaction for changing visibility
+    svg
+      .selectAll(".line")
+      .data(labelData)
+      .enter()
+      .append("path")
+      .attr("class", "multiline")
+      .attr("id", (d) => d.key + "labelLine")
+      .attr("fill", "none")
+      .attr("stroke", (d) => color(d.key))
+      .attr("stroke-width", 1)
+      .attr("d", (d) =>
+        d3
+          .line()
+          .x((d) => d[0])
+          .y((d) => d[1])(d.line),
+      )
+      .style("stroke-dasharray", "3,3");
 
     const lineMouseEnter = (d) => {
       svg.selectAll(".multiline").attr("visibility", "hidden");
@@ -230,7 +294,9 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
         .filter(function () {
           return (
             d3.select(this).attr("id") == d.key ||
-            d3.select(this).attr("id") == targetCountry
+            d3.select(this).attr("id") == targetCountry ||
+            d3.select(this).attr("id") == d.key + "labelLine" ||
+            d3.select(this).attr("id") == targetCountry + "labelLine"
           );
         })
         .attr("visibility", "visible");
@@ -258,6 +324,10 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
 
     svg
       .selectAll(".multiline")
+      .on("mouseenter", lineMouseEnter)
+      .on("mouseleave", lineMouseLeave);
+    svg
+      .selectAll(".myLabels")
       .on("mouseenter", lineMouseEnter)
       .on("mouseleave", lineMouseLeave);
 
@@ -298,6 +368,10 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
           count = count + 1;
         });
     };
+
+    // playground - label maker  //
+
+    // exit  //
   });
 
   d3.select("#segmentedcard").style("visibility", "visible");

@@ -280,7 +280,6 @@ export function alignmentPlot(
           updateBenchmarkCountries(d);
         },
       );
-      console.log(streams.values);
     });
 
     let dataFiltered = Array.from(GraphData);

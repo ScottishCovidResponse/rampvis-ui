@@ -54,7 +54,7 @@ const initialFirstRunState = {
   lastDate: dateParse(lastDate),
   indicator: "biweekly_cases_per_million",
   method: ["euclidean"],
-  numberOfResults: 30,
+  numberOfResults: 20,
   minPopulation: 600000,
   startDate: "2021-01-01",
   endDate: dateParse(lastDate),
