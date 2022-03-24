@@ -12,7 +12,7 @@ import {
   FormControl,
   FormGroup,
   InputLabel,
-  LinearProgress,
+  CircularProgress,
   MenuItem,
   OutlinedInput,
   Select,
@@ -27,7 +27,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { blue } from "@mui/material/colors";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import {
-  processDataAndGetRegions,
+  prepareDataAndGetRegions,
   segmentData,
   onSelectRegion,
   onClickAnimate,
@@ -61,9 +61,8 @@ const Story = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const _regions = await processDataAndGetRegions();
-      console.log("Story1: regions", _regions);
-      setRegions(_regions);
+      const _regions = await prepareDataAndGetRegions();
+      setRegions(_regions.map((d) => d));
       segmentData(segment);
     };
 
@@ -151,7 +150,7 @@ const Story = () => {
               <CardContent sx={{ pt: "8px" }}>
                 {loading ? (
                   <Box sx={{ width: "100%" }}>
-                    <LinearProgress />
+                    <CircularProgress />
                   </Box>
                 ) : (
                   <>

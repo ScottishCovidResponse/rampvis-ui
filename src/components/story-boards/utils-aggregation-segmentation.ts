@@ -112,7 +112,7 @@ export const maxBounds = function (gaussians) {
     Creates a gaussian distribution with mean, height and width parameters.
     DataLen is used to size the return vector to the same length as the
     timeseries data. 
-    If width is not specified we calcuate a default one to keep gaussian curves    a similar shape.
+    If width is not specified we calculate a default one to keep gaussian curves    a similar shape.
   
     Returns array of values [y1, y2, ...].
   */
