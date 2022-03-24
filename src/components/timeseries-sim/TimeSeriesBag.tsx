@@ -6,8 +6,6 @@ import {
   ListItemText,
 } from "@mui/material";
 import { DeleteOutline } from "@mui/icons-material";
-import { minHeight } from "@mui/system";
-
 function TimeSeriesBag(props) {
   return (
     <div>

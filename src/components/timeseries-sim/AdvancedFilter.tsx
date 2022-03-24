@@ -16,7 +16,7 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 
 function AdvancedFilter(props) {
   return (
-    <div className={props.className}>
+    <div>
       <Button
         sx={{ width: "1" }}
         size="large"

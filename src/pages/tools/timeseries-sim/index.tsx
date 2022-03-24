@@ -21,9 +21,7 @@ import {
   similarityMeasures,
   continents,
 } from "src/components/timeseries-sim/variables/variables";
-import { timeSeriesStyles } from "src/components/timeseries-sim/style/style";
 import GraphArea from "src/components/timeseries-sim/GraphArea";
-import GraphTitle from "src/components/timeseries-sim/GraphTitle";
 import { alignmentPlot } from "src/components/timeseries-sim/plotfunctions/alignmentplot";
 import BenchmarkCountryList from "src/components/timeseries-sim/BenchmarkCountryList";
 import TimeSeriesBag from "src/components/timeseries-sim/TimeSeriesBag";
@@ -86,7 +84,6 @@ const defaultTimeSeriesBag = [];
 
 const TimeseriesSim = () => {
   //const { settings } = useSettings();
-  const classes = timeSeriesStyles();
 
   const [advancedFilterPopup, setAdvancedFilterPopup] = useState(false); // advanced filter popup state control
   const [infoPopUp, setInfoPopUp] = useState(false);
@@ -325,7 +322,6 @@ const TimeseriesSim = () => {
                 </p>
 
                 <FirstForm
-                  className={classes.firstRunForm}
                   form={firstRunForm}
                   onChange={multipleHandleChange}
                   indicator={covidIndicators}
@@ -335,7 +331,6 @@ const TimeseriesSim = () => {
                 />
                 <h2>
                   <AdvancedFilter
-                    className={classes.firstRunForm}
                     open={advancedFilterClickOpen}
                     state={advancedFilterPopup}
                     close={advancedFilterClickClose}
@@ -348,11 +343,9 @@ const TimeseriesSim = () => {
                   />
                 </h2>
                 <h2>
-                  <SearchButton
-                    className={classes.firstRunForm}
-                    onClick={searchClick}
-                  />
+                  <SearchButton onClick={searchClick} />
                 </h2>
+
                 <h2>
                   <Dialog open={loadPopUp}>
                     <DialogContent>
@@ -382,7 +375,6 @@ const TimeseriesSim = () => {
                   list={timeSeriesBag}
                   removeFromList={removeTimeSeries}
                   onClick={predictClick}
-                  className={classes.timeseriesArea}
                 />
                 <PredictPopUp state={predictPopUp} close={predictPopUpClose} />
               </CardContent>
@@ -410,7 +402,6 @@ const TimeseriesSim = () => {
                   onClick={compareClick}
                   manualCountrySet={setManualCountry}
                   form={firstRunForm}
-                  className={classes.benchmarkArea}
                 />
                 <ComparePopUp state={comparePopUp} close={comparePopUpClose} />
               </CardContent>
@@ -420,7 +411,7 @@ const TimeseriesSim = () => {
 
         <Grid>
           <Card id="segmentedcard" sx={{ visibility: "hidden" }}>
-            <GraphArea style={classes.segmentedGraph} />
+            <GraphArea />
           </Card>
         </Grid>
         <Grid>

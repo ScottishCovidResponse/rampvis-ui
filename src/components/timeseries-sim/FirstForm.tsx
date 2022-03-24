@@ -28,7 +28,7 @@ function FirstForm(props) {
   );
 
   return (
-    <div className={props.className}>
+    <div style={{ marginBottom: "10px", marginTop: "10px", float: "left" }}>
       <h2>
         <Autocomplete
           freeSolo
