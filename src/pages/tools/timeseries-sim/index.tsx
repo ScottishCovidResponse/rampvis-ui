@@ -211,9 +211,8 @@ const TimeseriesSim = () => {
   const [loadPopUp, setLoadPopUp] = useState(false);
 
   const searchPost = async () => {
-    //const apiUrl = API_PY + "/search/";
-    const apiUrl =
-      "http://0.0.0.0:4010" + "/stat/v1/timeseries-sim-search/search/";
+    const apiUrl = API_PY + "/search/";
+    //const apiUrl = "http://0.0.0.0:4010" + "/stat/v1/timeseries-sim-search/search/";
 
     const response = await axios.post(apiUrl, firstRunForm);
 
@@ -255,9 +254,8 @@ const TimeseriesSim = () => {
   };
 
   const predictPost = async () => {
-    //const apiUrl = API_PY + "/predict/";
-    const apiUrl =
-      "http://0.0.0.0:4010" + "/stat/v1/timeseries-sim-search/predict/";
+    const apiUrl = API_PY + "/predict/";
+    //const apiUrl ="http://0.0.0.0:4010" + "/stat/v1/timeseries-sim-search/predict/";
 
     const predictObj = {
       series: timeSeriesBag,
