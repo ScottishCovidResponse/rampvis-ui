@@ -6,12 +6,21 @@ import {
   ListItemText,
 } from "@mui/material";
 import { DeleteOutline } from "@mui/icons-material";
+import { minHeight } from "@mui/system";
 
 function TimeSeriesBag(props) {
   return (
     <div>
       <h2>
-        <div className={props.className}>
+        <div
+          style={{
+            borderStyle: "solid",
+            borderColor: "#c4c4c4",
+            borderWidth: "1px",
+            borderRadius: "12px",
+            minHeight: "200px",
+          }}
+        >
           <List sx={{ position: "relative", overflow: "auto", maxHeight: 300 }}>
             {props.list.map(
               (

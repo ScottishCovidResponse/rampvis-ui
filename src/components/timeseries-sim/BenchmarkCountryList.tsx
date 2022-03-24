@@ -39,7 +39,7 @@ function BenchmarkCountryList(props) {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Target Country"
+                  label="Manual country input"
                   inputProps={{
                     ...params.inputProps,
                     autoComplete: "new-password", // disable autocomplete and autofill
@@ -62,7 +62,14 @@ function BenchmarkCountryList(props) {
       </h2>
 
       <h2>
-        <div className={props.className}>
+        <div
+          style={{
+            borderStyle: "solid",
+            borderColor: "#c4c4c4",
+            borderWidth: "1px",
+            borderRadius: "12px",
+          }}
+        >
           <List sx={{ position: "relative", overflow: "auto", maxHeight: 300 }}>
             {props.list.map(
               (

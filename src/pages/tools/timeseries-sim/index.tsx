@@ -21,7 +21,7 @@ import {
   similarityMeasures,
   continents,
 } from "src/components/timeseries-sim/variables/variables";
-import { useStyles } from "src/components/timeseries-sim/style/style";
+import { timeSeriesStyles } from "src/components/timeseries-sim/style/style";
 import GraphArea from "src/components/timeseries-sim/GraphArea";
 import GraphTitle from "src/components/timeseries-sim/GraphTitle";
 import { alignmentPlot } from "src/components/timeseries-sim/plotfunctions/alignmentplot";
@@ -86,15 +86,17 @@ const defaultTimeSeriesBag = [];
 
 const TimeseriesSim = () => {
   //const { settings } = useSettings();
-  const classes = useStyles();
+  const classes = timeSeriesStyles();
 
   const [advancedFilterPopup, setAdvancedFilterPopup] = useState(false); // advanced filter popup state control
   const [infoPopUp, setInfoPopUp] = useState(false);
   const [comparePopUp, setComparePopUp] = useState(false);
   const [predictPopUp, setPredictPopUp] = useState(false);
+  const [checkState, setCheckState] = useState({});
 
   const advancedFilterClickOpen = () => {
     // sets popup state to true
+    console.log(checkState);
     setAdvancedFilterPopup(true);
   };
   const advancedFilterClickClose = () => {
@@ -209,15 +211,18 @@ const TimeseriesSim = () => {
     console.log("response = ", response);
     if (response.data?.length > 0) {
       console.log("response.data = ", response.data);
-      /*  alignmentPlot(
+      console.log(timeSeriesBag);
+      alignmentPlot(
         response.data,
         firstRunForm.indicator,
         timeSeriesBag,
         benchmarkCountries,
+        checkState,
         setTimeSeriesBag,
         setBenchmarkCountries,
+        setCheckState,
       );
-    */
+
       SegmentedMultiLinePlot(response.data, firstRunForm);
     }
   };
@@ -289,6 +294,14 @@ const TimeseriesSim = () => {
             <Card>
               <CardContent>
                 <CardHeader title="Time Period Search" />
+
+                <p style={{ fontSize: "13px" }}>
+                  This panel allows the user to enter the criteria for selecting
+                  a target time-series and retrieving most similar patterns from
+                  the past upon clicking search button. The detailed technical
+                  information about the similarity measures is given below:
+                </p>
+
                 <h2>
                   <InfoPopUp
                     open={infoPopUpClickOpen}
@@ -296,6 +309,21 @@ const TimeseriesSim = () => {
                     close={infoPopUpClickClose}
                   />
                 </h2>
+
+                <p style={{ fontSize: "13px" }}>
+                  Two plots are generated as the output of time-period search.
+                  Alignment plot highlights the quality of comparison by
+                  aligning the patterns in time. In the second plot the found
+                  data patterns are placed correctly at the time period when
+                  each data pattern occurs.
+                </p>
+
+                <p style={{ fontSize: "13px" }}>
+                  The user can select a country by clicking the corresponding
+                  time series. This clicking action adds the country to the
+                  Observation-based Forecasting panel.
+                </p>
+
                 <FirstForm
                   className={classes.firstRunForm}
                   form={firstRunForm}
@@ -321,9 +349,11 @@ const TimeseriesSim = () => {
                 </h2>
                 <h2>
                   <SearchButton
-                    className={classes.searchButton}
+                    className={classes.firstRunForm}
                     onClick={searchClick}
                   />
+                </h2>
+                <h2>
                   <Dialog open={loadPopUp}>
                     <DialogContent>
                       <DialogContentText>
@@ -339,7 +369,37 @@ const TimeseriesSim = () => {
           <Grid item xs={3} sx={{ minWidth: "350px" }}>
             <Card>
               <CardContent>
+                <CardHeader title="Observation-based Forecasting" />
+                <p style={{ fontSize: "13px" }}>
+                  This panel allows the user to use the data of the selected
+                  countries to make an ensemble prediction. The prediction is
+                  based on the time periods after the matching data patterns.
+                  The countries can be added to the list from the time-period
+                  search outputs.
+                </p>
+
+                <TimeSeriesBag
+                  list={timeSeriesBag}
+                  removeFromList={removeTimeSeries}
+                  onClick={predictClick}
+                  className={classes.timeseriesArea}
+                />
+                <PredictPopUp state={predictPopUp} close={predictPopUpClose} />
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={3} sx={{ minWidth: "350px" }}>
+            <Card>
+              <CardContent>
                 <CardHeader title="Comprehensive Country Comparison" />
+                <p style={{ fontSize: "13px" }}>
+                  This panel allowss the user to select a set of country to make
+                  routine comparative observation without a search action. The
+                  user can further analyze the dynamics of the pandemic in the
+                  selected countries. Countries selected from the time period
+                  search are also added to the list below:
+                </p>
                 <BenchmarkCountryList
                   list={benchmarkCountries}
                   manualValue={manualCountry}
@@ -353,23 +413,6 @@ const TimeseriesSim = () => {
                   className={classes.benchmarkArea}
                 />
                 <ComparePopUp state={comparePopUp} close={comparePopUpClose} />
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={3} sx={{ minWidth: "350px" }}>
-            <Card>
-              <CardContent>
-                <CardHeader title="Observation-based Forecasting" />
-                Add similar time periods using search tool results to list
-                below:
-                <TimeSeriesBag
-                  list={timeSeriesBag}
-                  removeFromList={removeTimeSeries}
-                  onClick={predictClick}
-                  className={classes.timeseriesArea}
-                />
-                <PredictPopUp state={predictPopUp} close={predictPopUpClose} />
               </CardContent>
             </Card>
           </Grid>
