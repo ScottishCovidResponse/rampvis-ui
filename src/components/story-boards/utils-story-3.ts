@@ -268,6 +268,8 @@ export async function createScrollingSvg(selector, nation) {
   const calendarEvents = await prepareCalendarEvents(nation);
   annotations = await prepareAnnotations(nation, calendarEvents);
   maxCounter = annotations.length - 1;
+  counter = 0;
+
   // prettier-ignore
   console.log("utils-story-3: maxCounter = ", maxCounter, ", annotations = ", annotations);
   const casesData = nationCases[nation];
@@ -303,16 +305,16 @@ export async function createScrollingSvg(selector, nation) {
 export function updateCounter(inc) {
   // prettier-ignore
   console.log("utils-story-3: updateCounter: counter = ", counter, ", inc = ", inc);
+
   if (inc === 0) {
     counter = 0;
-  }
-  if (counter + inc > 0 && counter + inc < maxCounter) {
+  } else if (counter + inc >= 0 && counter + inc <= maxCounter) {
     counter += inc;
   }
+
   console.log("utils-story-3: updateCounter: counter = ", counter);
 
   scrollingSvg.updateCounter(counter);
-
   timeline.annotations(annotations).plot(counter);
   timeseries.animate(annotations, counter).plot();
 }
