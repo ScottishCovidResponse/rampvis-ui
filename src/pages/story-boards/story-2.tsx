@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 const Story2 = () => {
   const classes = useStyles();
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [regions, setRegions] = useState<string[]>([]);
   const [region1, setRegion1] = useState<string>("");
   const [region2, setRegion2] = useState<string>("");
@@ -51,19 +51,19 @@ const Story2 = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const _regions = await processDataAndGetRegions();
       setRegions(_regions);
+      setLoading(false);
     };
 
     try {
-      setLoading(true);
       fetchData();
-      setLoading(false);
     } catch (error) {
       console.error(error);
       setLoading(false);
     }
-  }, [loading]);
+  }, []);
 
   const handleChangeSelect1 = (event: SelectChangeEvent) => {
     const selectedRegion1 = event.target.value;
@@ -141,8 +141,16 @@ const Story2 = () => {
               />
               <CardContent sx={{ pt: "8px" }}>
                 {loading ? (
-                  <Box sx={{ width: "100%" }}>
-                    <LinearProgress />
+                  <Box sx={{ height: 40 }}>
+                    <Fade
+                      in={loading}
+                      style={{
+                        transitionDelay: loading ? "800ms" : "0ms",
+                      }}
+                      unmountOnExit
+                    >
+                      <LinearProgress />
+                    </Fade>
                   </Box>
                 ) : (
                   <>

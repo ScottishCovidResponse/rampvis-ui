@@ -8,6 +8,7 @@ import {
   CardContent,
   CardHeader,
   Container,
+  Fade,
   FormControl,
   FormGroup,
   InputLabel,
@@ -47,22 +48,21 @@ const Story3 = () => {
     "Scotland",
   ]);
   const [nation, setNation] = useState<string>("");
-  // const [animationCounter, setAnimationCounter] = useState<number>(0);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       await prepareData();
+      setLoading(false);
     };
 
     try {
-      setLoading(true);
       fetchData();
-      setLoading(false);
     } catch (error) {
       console.error(error);
       setLoading(false);
     }
-  }, [loading]);
+  }, []);
 
   const handleChangeSelect1 = (event: SelectChangeEvent) => {
     const nation = event.target.value;
@@ -111,8 +111,16 @@ const Story3 = () => {
               />
               <CardContent sx={{ pt: "8px" }}>
                 {loading ? (
-                  <Box sx={{ width: "100%" }}>
-                    <LinearProgress />
+                  <Box sx={{ height: 40 }}>
+                    <Fade
+                      in={loading}
+                      style={{
+                        transitionDelay: loading ? "800ms" : "0ms",
+                      }}
+                      unmountOnExit
+                    >
+                      <LinearProgress />
+                    </Fade>
                   </Box>
                 ) : (
                   <>

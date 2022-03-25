@@ -12,12 +12,12 @@ import {
   FormControl,
   FormGroup,
   InputLabel,
-  CircularProgress,
+  LinearProgress,
   MenuItem,
   OutlinedInput,
   Select,
   SelectChangeEvent,
-  Tooltip,
+  Fade,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
@@ -61,20 +61,20 @@ const Story = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const _regions = await prepareDataAndGetRegions();
       setRegions(_regions.map((d) => d));
       segmentData(segment);
+      setLoading(false);
     };
 
     try {
-      setLoading(true);
       fetchData();
-      setLoading(false);
     } catch (error) {
       console.error(error);
       setLoading(false);
     }
-  }, [loading]);
+  }, []);
 
   const handleChangeSlider = (event) => {
     const selectedSegment = event.target.value;
@@ -149,8 +149,16 @@ const Story = () => {
               />
               <CardContent sx={{ pt: "8px" }}>
                 {loading ? (
-                  <Box sx={{ width: "100%" }}>
-                    <CircularProgress />
+                  <Box sx={{ height: 40 }}>
+                    <Fade
+                      in={loading}
+                      style={{
+                        transitionDelay: loading ? "800ms" : "0ms",
+                      }}
+                      unmountOnExit
+                    >
+                      <LinearProgress />
+                    </Fade>
                   </Box>
                 ) : (
                   <>

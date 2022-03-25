@@ -1,22 +1,17 @@
-import Papa from "papaparse";
+import * as d3 from "d3";
 
 export const readCSVFile = async (file: string) => {
-  const response = await fetch(file);
-  const reader = response.body.getReader();
-  const result = await reader.read(); // raw array
-  const decoder = new TextDecoder("utf-8");
-  const csv = Papa.parse(decoder.decode(result.value), {
-    header: true,
-  }).data;
-  // console.log("readCSVFile: csv data = ", csv);
-
+  const csv = await d3.csv(file);
+  console.log("readCSVFile: csv file = ", file, ",length = ", csv.length);
   return csv;
 };
 
 export const readJSONFile = async (file: string) => {
-  const response = await fetch(file);
-  const arrayObj = await response.json();
-  // console.log("readJSONFile: json data = ", arrayObj);
-
-  return arrayObj;
+  const json = await d3.json(file);
+  console.log("readJSONFile: json file = ", file);
+  return json;
 };
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

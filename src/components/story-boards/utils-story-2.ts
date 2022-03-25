@@ -31,6 +31,7 @@ export async function processDataAndGetRegions(): Promise<string[]> {
   await createDailyCasesByRegion();
   createPeaksByRegion();
 
+  // console.log("processDataAndGetRegions: regions = ", Object.keys(dailyCasesByRegion).sort());
   return Object.keys(dailyCasesByRegion).sort();
 }
 
@@ -54,8 +55,9 @@ async function createDailyCasesByRegion() {
     const cases = +row.newCasesByPublishDateRollingSum / 7;
     const country = areaCodeToCountry[row.areaCode[0]];
 
-    if (!dailyCasesByRegion[region])
+    if (!dailyCasesByRegion[region]) {
       dailyCasesByRegion[region] = { country: country, data: [] };
+    }
 
     dailyCasesByRegion[region].data.push({ date: date, y: cases });
   });
@@ -71,7 +73,7 @@ async function createDailyCasesByRegion() {
 function createPeaksByRegion() {
   for (const region in dailyCasesByRegion) {
     // Detect peaks in regional data
-    let allPeaks = detectFeatures(dailyCasesByRegion[region].data, {
+    const allPeaks = detectFeatures(dailyCasesByRegion[region].data, {
       peaks: true,
       metric: "Daily Cases",
     });
@@ -229,14 +231,14 @@ function calculateGaussMatchedWaves(region1, region2) {
     return { date: largestDataSet[i].date, y: g };
   });
 
-  let gaussPeaks = detectFeatures(gaussTS, {
+  const gaussPeaks = detectFeatures(gaussTS, {
     peaks: true,
   });
 
   const reg1Waves = wavesByRegion[region1];
   const reg2Waves = wavesByRegion[region2];
 
-  let waves = [];
+  const waves = [];
 
   let closestReg1Wave, closestReg2Wave, matchedWith1, matchedWith2;
   // Match gauss to corresponding regional and national waves

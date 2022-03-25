@@ -58,9 +58,9 @@ export class SBEvent {
   get duration() {
     if (!this._start || !this._end)
       throw "This Event object doesn't have an end or start. Set it in the constructor or using the .set functions.";
-    let difference = this._end.getTime() - this._start.getTime();
-    let dayInMs = 1000 * 3600 * 24;
-    return Math.floor(Difference_In_Time / dayInMs);
+    const difference = this._end.getTime() - this._start.getTime();
+    const dayInMs = 1000 * 3600 * 24;
+    return Math.floor(difference / dayInMs);
   }
 
   get rank() {
