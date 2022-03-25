@@ -30,8 +30,7 @@ import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import {
   processDataAndGetRegions,
   onSelectRegion,
-  onClickAnimate,
-  createTimeSeriesSVG,
+  updateCounter,
 } from "src/components/story-boards/utils-story-2";
 
 const useStyles = makeStyles((theme) => ({
@@ -47,7 +46,6 @@ const Story2 = () => {
   const [regions, setRegions] = useState<string[]>([]);
   const [region1, setRegion1] = useState<string>("");
   const [region2, setRegion2] = useState<string>("");
-  const [animationCounter, setAnimationCounter] = useState<number>(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,51 +66,31 @@ const Story2 = () => {
   const handleChangeSelect1 = (event: SelectChangeEvent) => {
     const selectedRegion1 = event.target.value;
     console.log("selectedRegion1 = ", selectedRegion1);
-    if (selectedRegion1) {
-      if (selectedRegion1 && region2) {
-        onSelectRegion(selectedRegion1, region2);
-      }
-      createTimeSeriesSVG("#chart1");
-      setRegion1(selectedRegion1);
-      setAnimationCounter(0);
+    if (selectedRegion1 && region2) {
+      onSelectRegion(selectedRegion1, region2, "#chart1");
     }
+    setRegion1(selectedRegion1);
   };
 
   const handleChangeSelect2 = (event: SelectChangeEvent) => {
     const selectedRegion2 = event.target.value;
     console.log("selectedRegion2 = ", selectedRegion2);
-    if (selectedRegion2) {
-      if (region1 && selectedRegion2) {
-        onSelectRegion(region1, selectedRegion2);
-      }
-      createTimeSeriesSVG("#chart1");
-      setRegion2(selectedRegion2);
-      setAnimationCounter(0);
+    if (region1 && selectedRegion2) {
+      onSelectRegion(region1, selectedRegion2, "#chart1");
     }
+    setRegion2(selectedRegion2);
   };
 
   const handleBeginningButton = () => {
-    const count = 0;
-
-    setAnimationCounter(count);
-    console.log("Story2: animationCounter = ", count);
-    onClickAnimate(count, "#chart1");
+    updateCounter(0);
   };
 
   const handleBackButton = () => {
-    const count = animationCounter - 1;
-    if (count < 0) return;
-
-    setAnimationCounter(count);
-    console.log("Story2: animationCounter = ", count);
-    onClickAnimate(count, "#chart1");
+    updateCounter(-1);
   };
 
   const handlePlayButton = () => {
-    const count = animationCounter + 1;
-    setAnimationCounter(count);
-    console.log("Story2: animationCounter = ", count);
-    onClickAnimate(count, "#chart1");
+    updateCounter(1);
   };
 
   return (

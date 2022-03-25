@@ -25,17 +25,19 @@ import { createDataGroup } from "./utils-data-processing";
 */
 
 let dailyCasesByRegion = {};
-const wavesByRegion = {};
+let peaksByRegion = {};
 
 export async function processDataAndGetRegions(): Promise<string[]> {
-  await createDailyCasesByRegion();
-  createPeaksByRegion();
+  await processDailyCasesByRegion();
+  processPeaksByRegion();
 
   // console.log("processDataAndGetRegions: regions = ", Object.keys(dailyCasesByRegion).sort());
   return Object.keys(dailyCasesByRegion).sort();
 }
 
-async function createDailyCasesByRegion() {
+async function processDailyCasesByRegion() {
+  dailyCasesByRegion = {};
+
   const areaCodeToCountry = {
     S: "Scotland",
     E: "England",
@@ -46,8 +48,6 @@ async function createDailyCasesByRegion() {
   const csv: any[] = await readCSVFile(
     "/static/story-boards/newCasesByPublishDateRollingSum.csv",
   );
-
-  dailyCasesByRegion = {};
 
   csv.forEach((row) => {
     const region = row.areaName;
@@ -70,7 +70,9 @@ async function createDailyCasesByRegion() {
   console.log("createDailyCasesByRegion: dailyCasesByRegion = ", dailyCasesByRegion);
 }
 
-function createPeaksByRegion() {
+function processPeaksByRegion() {
+  peaksByRegion = {};
+
   for (const region in dailyCasesByRegion) {
     // Detect peaks in regional data
     const allPeaks = detectFeatures(dailyCasesByRegion[region].data, {
@@ -93,11 +95,11 @@ function createPeaksByRegion() {
     // Filter waves that do not meet criteria for being longer than 3 weeks
     waves = waves.filter((w) => w.peak.duration >= 21 && w.peak.rank >= 0.3);
 
-    wavesByRegion[region] = waves;
+    peaksByRegion[region] = waves;
   }
 
   // prettier-ignore
-  console.log("createPeaksByRegion: wavesByRegion = ", wavesByRegion);
+  console.log("createPeaksByRegion: peaksByRegion = ", peaksByRegion);
 }
 
 // Use properties of a peak object to create rise and fall objects
@@ -158,25 +160,36 @@ const rankFeatures = (waveObj) => {
 };
 
 //
-// When a region1 and region2 are selected, return the data for that
+// When a region1 and region2 are selected, prepare data for that
 //
 
-let region1, region2;
-let gauss;
-let gaussMatchedWaves;
-let annotations;
+let gauss = [];
+let gaussMatchedWaves = [];
+let annotations = [];
+let visCtx;
+let ts;
+let maxCounter;
+let counter = -1;
 
-export function onSelectRegion(_region1, _region2) {
-  region1 = _region1;
-  region2 = _region2;
-  createCombGauss(region1, region2);
+export function onSelectRegion(_region1, _region2, selector) {
+  const region1 = _region1;
+  const region2 = _region2;
+  console.log("onSelectRegion: region1 = ", region1, ", region2 = ", region2);
+
+  calculateCombGauss(region1, region2);
   calculateGaussMatchedWaves(region1, region2);
-  createAnnotations(region1, region2);
+  calculateAnnotations(region1, region2);
+  createTimeSeriesSVG(region1, region2, selector);
+
+  maxCounter = annotations.length - 1;
+  counter = -1;
 }
 
-function createCombGauss(region1, region2) {
-  const reg1Waves = wavesByRegion[region1];
-  const reg2Waves = wavesByRegion[region2];
+function calculateCombGauss(region1, region2) {
+  gauss = [];
+
+  const reg1Waves = peaksByRegion[region1];
+  const reg2Waves = peaksByRegion[region2];
 
   const region1Peaks = reg1Waves.reduce(
     (arr, obj) => arr.concat([obj.peak]),
@@ -203,11 +216,12 @@ function createCombGauss(region1, region2) {
 
   // Combine gaussian time series
   gauss = combineBounds([reg1Bounds, reg2Bounds]);
-
-  console.log("createCombGauss: gauss = ", gauss);
+  console.log("calculateCombGauss: gauss = ", gauss);
 }
 
 function calculateGaussMatchedWaves(region1, region2) {
+  gaussMatchedWaves = [];
+
   // Peak distance functions
   const peakTimeDistance = (p1, p2) =>
     Math.abs(p1._date.getTime() - p2._date.getTime());
@@ -235,10 +249,11 @@ function calculateGaussMatchedWaves(region1, region2) {
     peaks: true,
   });
 
-  const reg1Waves = wavesByRegion[region1];
-  const reg2Waves = wavesByRegion[region2];
+  const reg1Waves = peaksByRegion[region1];
+  const reg2Waves = peaksByRegion[region2];
 
-  const waves = [];
+  console.log("calculateGaussMatchedWaves: reg1Waves", reg1Waves);
+  console.log("calculateGaussMatchedWaves: reg2Waves", reg2Waves);
 
   let closestReg1Wave, closestReg2Wave, matchedWith1, matchedWith2;
   // Match gauss to corresponding regional and national waves
@@ -261,7 +276,7 @@ function calculateGaussMatchedWaves(region1, region2) {
       closestReg1Wave.paired = true;
       closestReg2Wave.paired = true;
 
-      waves.push({
+      gaussMatchedWaves.push({
         date: gp._date,
         reg1Wave: closestReg1Wave,
         reg2Wave: closestReg2Wave,
@@ -270,78 +285,76 @@ function calculateGaussMatchedWaves(region1, region2) {
   });
 
   reg1Waves.forEach((w) => {
-    if (!w.paired) waves.push({ date: w.peak._date, reg1Wave: w });
+    if (!w.paired) gaussMatchedWaves.push({ date: w.peak._date, reg1Wave: w });
   });
 
   reg2Waves.forEach((w) => {
-    if (!w.paired) waves.push({ date: w.peak._date, reg2Wave: w });
+    if (!w.paired) gaussMatchedWaves.push({ date: w.peak._date, reg2Wave: w });
   });
 
-  gaussMatchedWaves = waves;
   // prettier-ignore
+  console.log("calculateGaussMatchedWaves: gaussMatchedWaves = ", gaussMatchedWaves);
 }
 
-function createAnnotations(region1, region2) {
+function calculateAnnotations(region1, region2) {
+  annotations = [];
+
   const region1CasesData = dailyCasesByRegion[region1].data;
-  const region1Waves = wavesByRegion[region1];
+  const region1Waves = peaksByRegion[region1];
   const region1Color = "orange";
 
   const region2CasesData = dailyCasesByRegion[region2].data;
-  const region2Waves = wavesByRegion[region2];
+  const region2Waves = peaksByRegion[region2];
   const region2Color = "steelblue";
 
-  console.log("region1 waves", region1Waves);
-  console.log("region2 waves", region2Waves);
-  console.log("matched", gaussMatchedWaves);
+  console.log("calculateAnnotations: region1 waves", region1Waves);
+  console.log("calculateAnnotations: region2 waves", region2Waves);
+  console.log("calculateAnnotations: gaussMatchedWaves = ", gaussMatchedWaves);
 
-  const matchedWaves = gaussMatchedWaves;
-
-  const maxReg1Wave = matchedWaves.reduce((max, w) =>
+  const maxReg1Wave = gaussMatchedWaves.reduce((max, w) =>
     w.reg1Wave &&
     (!max.reg1Wave || w.reg1Wave.peak.height > max.reg1Wave.peak.height)
       ? w
       : max,
   ).reg1Wave;
-  const maxReg2Wave = matchedWaves.reduce((max, w) =>
+  const maxReg2Wave = gaussMatchedWaves.reduce((max, w) =>
     w.reg2Wave &&
     (!max.reg2Wave || w.reg2Wave.peak.height > max.reg2Wave.peak.height)
       ? w
       : max,
   ).reg2Wave;
 
-  const maxReg1Rise = matchedWaves.reduce((max, w) =>
+  const maxReg1Rise = gaussMatchedWaves.reduce((max, w) =>
     w.reg1Wave &&
     (!max.reg1Wave || w.reg1Wave.rise._normGrad > max.reg1Wave.rise._normGrad)
       ? w
       : max,
-  ).reg1Wave.rise;
-  const maxReg1Fall = matchedWaves.reduce((max, w) =>
+  ).reg1Wave?.rise;
+  const maxReg1Fall = gaussMatchedWaves.reduce((max, w) =>
     w.reg1Wave &&
     (!max.reg1Wave || w.reg1Wave.fall._normGrad > max.reg1Wave.fall._normGrad)
       ? w
       : max,
-  ).reg1Wave.fall;
+  ).reg1Wave?.fall;
 
-  const maxReg2Rise = matchedWaves.reduce((max, w) =>
+  const maxReg2Rise = gaussMatchedWaves.reduce((max, w) =>
     w.reg2Wave &&
     (!max.reg2Wave || w.reg2Wave.rise._normGrad > max.reg2Wave.rise._normGrad)
       ? w
       : max,
-  ).reg2Wave.rise;
-  const maxReg2Fall = matchedWaves.reduce((max, w) =>
+  ).reg2Wave?.rise;
+  const maxReg2Fall = gaussMatchedWaves.reduce((max, w) =>
     w.reg2Wave &&
     (!max.reg2Wave || w.reg2Wave.fall._normGrad > max.reg2Wave.fall._normGrad)
       ? w
       : max,
-  ).reg2Wave.fall;
+  ).reg2Wave?.fall;
 
-  matchedWaves.sort((w1, w2) => w1.date - w2.date);
-  console.log(maxReg1Wave);
+  gaussMatchedWaves.sort((w1, w2) => w1.date - w2.date);
 
   const STEEP_THRESH = 0.004;
   const SLOW_THRESH = 0.002;
 
-  const graphAnnos: any = [{ start: 0, end: 0 }];
   const ordinal = (n) =>
     n + (n == 1 ? "st" : n == 2 ? "nd" : n == 3 ? "rd" : "th");
 
@@ -349,14 +362,15 @@ function createAnnotations(region1, region2) {
   let reg2WaveN = 0;
   let prev1Wave, prev2Wave;
   let annoText = "";
-  for (let i = 0; i < matchedWaves.length; i++) {
-    const { reg1Wave, reg2Wave } = matchedWaves[i];
+
+  for (let i = 0; i < gaussMatchedWaves.length; i++) {
+    const { reg1Wave, reg2Wave } = gaussMatchedWaves[i];
     if (reg1Wave) reg1WaveN++;
     if (reg2Wave) reg2WaveN++;
 
     // Discuss the rise and peak of wave in reg2
     if (reg2Wave) {
-      graphAnnos.push(
+      annotations.push(
         writeText(
           `${ordinal(reg2WaveN)} wave in ${region2} starts to ${
             reg2Wave.rise._normGrad > STEEP_THRESH ? "quickly" : "slowly"
@@ -368,7 +382,7 @@ function createAnnotations(region1, region2) {
         ),
       );
 
-      graphAnnos.push(
+      annotations.push(
         writeText(
           `Wave reaches ${Math.round(reg2Wave.peak.height)} ${
             reg2Wave.peak.metric
@@ -399,7 +413,7 @@ function createAnnotations(region1, region2) {
         }
 
         if (annoText.length)
-          graphAnnos.push(
+          annotations.push(
             writeText(
               annoText,
               reg2Wave.peak._date,
@@ -413,7 +427,7 @@ function createAnnotations(region1, region2) {
 
     // Discuss the rise and peak of wave in reg1
     if (reg1Wave) {
-      graphAnnos.push(
+      annotations.push(
         writeText(
           `${ordinal(reg1WaveN)} local wave in ${region1} begins to rise ${
             reg1Wave.rise._normGrad > STEEP_THRESH ? "rapidly" : "steadily"
@@ -426,7 +440,7 @@ function createAnnotations(region1, region2) {
         ),
       );
 
-      graphAnnos.push(
+      annotations.push(
         writeText(
           `Wave reaches ${Math.round(reg1Wave.peak.height)} ${
             reg1Wave.peak.metric
@@ -458,7 +472,7 @@ function createAnnotations(region1, region2) {
         }
 
         if (annoText.length)
-          graphAnnos.push(
+          annotations.push(
             writeText(
               annoText,
               reg1Wave.peak._date,
@@ -486,7 +500,7 @@ function createAnnotations(region1, region2) {
         )} days ${daysBetween > 0 ? "after" : "before"} the ${region2} wave.`;
       }
       if (annoText.length)
-        graphAnnos.push(
+        annotations.push(
           writeText(
             annoText,
             reg1Wave.peak._date,
@@ -500,7 +514,7 @@ function createAnnotations(region1, region2) {
 
     // Discuss the fall of the wave in region 2
     if (reg2Wave) {
-      graphAnnos.push(
+      annotations.push(
         writeText(
           `${region2} ${ordinal(reg2WaveN)} wave ${
             reg2Wave.fall.normGrad <= SLOW_THRESH
@@ -528,7 +542,7 @@ function createAnnotations(region1, region2) {
       }
 
       if (annoText.length)
-        graphAnnos.push(
+        annotations.push(
           writeText(
             annoText,
             reg2Wave.fall._end,
@@ -541,7 +555,7 @@ function createAnnotations(region1, region2) {
 
     // Discuss the fall of the wave in region 1
     if (reg1Wave) {
-      graphAnnos.push(
+      annotations.push(
         writeText(
           `${region1} ${ordinal(reg1WaveN)} wave ${
             reg1Wave.fall.normGrad <= SLOW_THRESH
@@ -570,7 +584,7 @@ function createAnnotations(region1, region2) {
       }
 
       if (annoText.length)
-        graphAnnos.push(
+        annotations.push(
           writeText(
             annoText,
             reg1Wave.fall._end,
@@ -583,7 +597,7 @@ function createAnnotations(region1, region2) {
     }
 
     if (reg1Wave && reg2Wave) {
-      graphAnnos.push(
+      annotations.push(
         writeText(
           `In ${region1}, the ${ordinal(reg1WaveN)} wave declines ${
             reg1Wave.fall._normGrad > reg1Wave.fall._normGrad
@@ -604,32 +618,30 @@ function createAnnotations(region1, region2) {
   }
 
   if (
-    !graphAnnos.find(
+    !annotations.find(
       (a: any) => !a.useData2 && a.end == region2CasesData.length - 1,
     )
   ) {
-    graphAnnos.push({ end: region2CasesData.length - 1, color: region2Color });
+    annotations.push({ end: region2CasesData.length - 1, color: region2Color });
   }
 
   if (
-    !graphAnnos.find(
+    !annotations.find(
       (a: any) => a.useData2 && a.end == region1CasesData.length - 1,
     )
   ) {
-    graphAnnos.push({
+    annotations.push({
       end: region1CasesData.length - 1,
       useData2: true,
       color: region1Color,
     });
   }
 
-  const reg2Annos = graphAnnos.filter((a: any) => !a.useData2);
-  const reg1Annos = graphAnnos.filter((a): any => a.useData2);
+  const reg2Annos = annotations.filter((a: any) => !a.useData2);
+  const reg1Annos = annotations.filter((a): any => a.useData2);
 
   reg2Annos.slice(1).forEach((anno, i) => (anno.start = reg2Annos[i].end));
   reg1Annos.slice(1).forEach((anno, i) => (anno.start = reg1Annos[i].end));
-
-  annotations = graphAnnos;
 }
 
 const writeText = (
@@ -669,22 +681,13 @@ const writeText = (
   };
 };
 
-//
-// Create SVG
-// When play animate button is clicked draw there
-//
-
-let visCtx;
-
-export function createTimeSeriesSVG(selector: string) {
+export function createTimeSeriesSVG(region1, region2, selector: string) {
   visCtx = TimeSeries.animationSVG(1200, 400, selector);
-}
 
-export function onClickAnimate(animationCounter: number, selector: string) {
   const region1CasesData = dailyCasesByRegion[region1].data;
   const region2CasesData = dailyCasesByRegion[region2].data;
 
-  const ts = new TimeSeries(region2CasesData, selector)
+  ts = new TimeSeries(region2CasesData, selector)
     .border(60)
     .addExtraDatasets(createDataGroup([region1CasesData]), true)
     .svg(visCtx)
@@ -697,25 +700,38 @@ export function onClickAnimate(animationCounter: number, selector: string) {
   const ySc = ts.getYScale();
   const ySc2 = ts.getYScale2();
 
-  let annoObj;
+  let annObj;
   annotations.forEach((a) => {
-    annoObj = a.annotation;
-    if (annoObj) {
-      annoObj.x(xSc(annoObj.unscaledTarget[0])).y(ts._height / 2);
+    annObj = a.annotation;
+    if (annObj) {
+      annObj.x(xSc(annObj.unscaledTarget[0])).y(ts._height / 2);
 
-      annoObj.target(
-        xSc(annoObj.unscaledTarget[0]),
+      annObj.target(
+        xSc(annObj.unscaledTarget[0]),
         a.useData2
-          ? ySc2(annoObj.unscaledTarget[1])
-          : ySc(annoObj.unscaledTarget[1]),
+          ? ySc2(annObj.unscaledTarget[1])
+          : ySc(annObj.unscaledTarget[1]),
         true,
-        { left: annoObj.left, right: !annoObj.left },
+        { left: annObj.left, right: !annObj.left },
       );
     }
   });
+}
 
-  console.log("utils-story-2.ts: onClickAnimate: annotations = ", annotations);
-  console.log("utils-story-2.ts: onClickAnimate: annoObj = ", annoObj);
+//
+// When play animate button is clicked draw there
+//
 
-  ts.animate(annotations, animationCounter, visCtx).plot();
+export function updateCounter(inc: number) {
+  // prettier-ignore
+  console.log("utils-story-2: updateCounter: counter = ", counter, ", inc = ", inc);
+
+  if (inc === 0) {
+    counter = 0;
+  } else if (counter + inc >= 0 && counter + inc <= maxCounter) {
+    counter += inc;
+  }
+  console.log("utils-story-2: updateCounter: counter = ", counter);
+
+  ts.animate(annotations, counter, visCtx).plot();
 }
