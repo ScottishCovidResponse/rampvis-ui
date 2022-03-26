@@ -321,3 +321,18 @@ export const autoFillList = [
   { label: "Zambia", continent: "Africa" },
   { label: "Zimbabwe", continent: "Africa" },
 ];
+
+export const recommendationDict = {
+  new_deaths: "euclidean",
+  new_cases: "chebyshev",
+  new_deaths_per_million: "euclidean",
+  new_cases_per_million: "chebyshev",
+  biweekly_cases_per_million: "euclidean",
+  biweekly_deaths_per_million: "chebyshev",
+  biweekly_cases: "euclidean",
+  biweekly_deaths: "chebyshev",
+  weekly_cases_per_million: "euclidean",
+  weekly_deaths_per_million: "chebyshev",
+  weekly_cases: "euclidean",
+  weekly_deaths: "chebyshev",
+};

@@ -27,6 +27,17 @@ function FirstForm(props) {
     continentList.includes(count.continent),
   );
 
+  const recommendedMeasure = props.recommendation[props.form.indicator];
+  console.log(recommendedMeasure);
+  let colorDict = {};
+  props.method.map((measure) => {
+    if (measure.value == recommendedMeasure) {
+      colorDict[measure.value] = "warning";
+    } else {
+      colorDict[measure.value] = "default";
+    }
+  });
+
   return (
     <div style={{ marginBottom: "10px", marginTop: "10px", float: "left" }}>
       <h2>
@@ -136,7 +147,7 @@ function FirstForm(props) {
             renderValue={(selected) => (
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                 {selected.map((value) => (
-                  <Chip key={value} label={value} />
+                  <Chip color={colorDict[value]} key={value} label={value} />
                 ))}
               </Box>
             )}
