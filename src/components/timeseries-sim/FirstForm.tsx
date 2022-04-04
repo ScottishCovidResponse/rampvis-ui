@@ -29,8 +29,8 @@ function FirstForm(props) {
 
   const recommendedMeasure = props.recommendation[props.form.indicator];
   console.log(recommendedMeasure);
-  let chipDict = {};
-  let styleDict = {};
+  const chipDict = {};
+  const styleDict = {};
   props.method.map((measure) => {
     if (measure.value == recommendedMeasure) {
       chipDict[measure.value] = "warning";
