@@ -9,6 +9,8 @@ import {
   Dialog,
   DialogContent,
   DialogContentText,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import axios from "axios";
@@ -20,10 +22,9 @@ import {
   covidIndicators,
   similarityMeasures,
   continents,
+  recommendationDict,
 } from "src/components/timeseries-sim/variables/variables";
-import { useStyles } from "src/components/timeseries-sim/style/style";
 import GraphArea from "src/components/timeseries-sim/GraphArea";
-import GraphTitle from "src/components/timeseries-sim/GraphTitle";
 import { alignmentPlot } from "src/components/timeseries-sim/plotfunctions/alignmentplot";
 import BenchmarkCountryList from "src/components/timeseries-sim/BenchmarkCountryList";
 import TimeSeriesBag from "src/components/timeseries-sim/TimeSeriesBag";
@@ -33,10 +34,14 @@ import PredictPopUp from "src/components/timeseries-sim/PredictPopUp";
 import { predictPlot } from "src/components/timeseries-sim/plotfunctions/predictplot";
 import InfoPopUp from "src/components/timeseries-sim/InfoPopUp";
 import CircularProgress from "@mui/material/CircularProgress";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import WarningIcon from "@mui/icons-material/Warning";
+import InfoIcon from "@mui/icons-material/Info";
+import ErrorIcon from "@mui/icons-material/Error";
 const API = process.env.NEXT_PUBLIC_API_PY;
 const API_PY = API + "/timeseries-sim-search";
 const today = new Date();
-const lastDate = new Date(today.setDate(today.getDate() - 4));
+const lastDate = new Date(today.setDate(today.getDate() - 1));
 const firstDate = new Date(today.setDate(today.getDate() - 30));
 
 const dateParse = function (date) {
@@ -55,18 +60,19 @@ const initialFirstRunState = {
   firstDate: dateParse(firstDate),
   lastDate: dateParse(lastDate),
   indicator: "biweekly_cases_per_million",
-  method: "euclidean",
-  numberOfResults: 30,
+  method: ["euclidean"],
+  numberOfResults: 20,
   minPopulation: 600000,
   startDate: "2021-01-01",
   endDate: dateParse(lastDate),
   continentCheck: {
-    Africa: false,
-    Asia: false,
-    Australia: false,
+    Africa: true,
+    Asia: true,
+    Australia: true,
     Europe: true,
-    "North America": false,
-    "South America": false,
+    "North America": true,
+    "South America": true,
+    Oceania: true,
   },
 };
 
@@ -86,12 +92,19 @@ const defaultTimeSeriesBag = [];
 
 const TimeseriesSim = () => {
   //const { settings } = useSettings();
-  const classes = useStyles();
 
   const [advancedFilterPopup, setAdvancedFilterPopup] = useState(false); // advanced filter popup state control
   const [infoPopUp, setInfoPopUp] = useState(false);
   const [comparePopUp, setComparePopUp] = useState(false);
   const [predictPopUp, setPredictPopUp] = useState(false);
+  const [successSnack, setSuccessSnack] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("test");
+  const [warningSnack, setWarningSnack] = useState(false);
+  const [warningMessage, setWarningMessage] = useState("test");
+  const [infoSnack, setInfoSnack] = useState(false);
+  const [infoMessage, setInfoMessage] = useState("test");
+  const [errorSnack, setErrorSnack] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("test");
 
   const advancedFilterClickOpen = () => {
     // sets popup state to true
@@ -145,8 +158,7 @@ const TimeseriesSim = () => {
     // add followed manual country input to benchmark list
     if (
       manualCountry.length > 0 &&
-      !benchmarkCountries.includes(manualCountry) &&
-      benchmarkCountries.length <= 10
+      !benchmarkCountries.includes(manualCountry)
     ) {
       setBenchmarkCountries((old) => [...old, manualCountry]);
     }
@@ -200,16 +212,16 @@ const TimeseriesSim = () => {
   const [loadPopUp, setLoadPopUp] = useState(false);
 
   const searchPost = async () => {
-    // post request to get similar timeseries back from API
     const apiUrl = API_PY + "/search/";
-    //const apiUrl = `${API}/timeseries-sim-search/`;
+    //const apiUrl =
+    "http://0.0.0.0:4010" + "/stat/v1/timeseries-sim-search/search/";
 
     const response = await axios.post(apiUrl, firstRunForm);
 
     console.log("response = ", response);
     if (response.data?.length > 0) {
-      //setResponseDataSearch(response.data);
       console.log("response.data = ", response.data);
+      console.log(timeSeriesBag);
       alignmentPlot(
         response.data,
         firstRunForm.indicator,
@@ -217,14 +229,22 @@ const TimeseriesSim = () => {
         benchmarkCountries,
         setTimeSeriesBag,
         setBenchmarkCountries,
+        setSuccessSnack,
+        setSuccessMessage,
+        setWarningSnack,
+        setWarningMessage,
+        setErrorSnack,
+        setErrorMessage,
       );
+
       SegmentedMultiLinePlot(response.data, firstRunForm);
     }
   };
 
   const comparePost = async () => {
     const apiUrl = API_PY + "/compare/";
-    //const apiUrl = `${API}/timeseries-sim-search/`;
+    //const apiUrl ="http://0.0.0.0:4010" + "/stat/v1/timeseries-sim-search/compare/";
+
     console.log({ countries: benchmarkCountries });
     const response = await axios.post(apiUrl, {
       countries: benchmarkCountries,
@@ -238,6 +258,8 @@ const TimeseriesSim = () => {
 
   const predictPost = async () => {
     const apiUrl = API_PY + "/predict/";
+    //const apiUrl ="http://0.0.0.0:4010" + "/stat/v1/timeseries-sim-search/predict/";
+
     const predictObj = {
       series: timeSeriesBag,
       query: {
@@ -275,6 +297,8 @@ const TimeseriesSim = () => {
     setLoadPopUp(true);
     await searchPost();
     setLoadPopUp(false);
+    setInfoMessage(() => "Plots are generated successfully. Check below");
+    setInfoSnack(() => true);
     //plotSwitch();
   };
 
@@ -284,11 +308,19 @@ const TimeseriesSim = () => {
         <title>Timeseries Similarity</title>
       </Helmet>
       <Box>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{ marginLeft: "5px" }}>
           <Grid item xs={3} sx={{ minWidth: "350px" }}>
             <Card>
               <CardContent>
                 <CardHeader title="Time Period Search" />
+
+                <p style={{ fontSize: "13px" }}>
+                  This panel allows the user to enter the criteria for selecting
+                  a target time-series and retrieving most similar patterns from
+                  the past upon clicking search button. The detailed technical
+                  information about the similarity measures is given below:
+                </p>
+
                 <h2>
                   <InfoPopUp
                     open={infoPopUpClickOpen}
@@ -296,18 +328,32 @@ const TimeseriesSim = () => {
                     close={infoPopUpClickClose}
                   />
                 </h2>
+
+                <p style={{ fontSize: "13px" }}>
+                  Two plots are generated as the output of time-period search.
+                  Alignment plot highlights the quality of comparison by
+                  aligning the patterns in time. In the second plot the found
+                  data patterns are placed correctly at the time period when
+                  each data pattern occurs.
+                </p>
+
+                <p style={{ fontSize: "13px" }}>
+                  The user can select a country by clicking the corresponding
+                  time series. This clicking action adds the country to the
+                  Observation-based Forecasting panel.
+                </p>
+
                 <FirstForm
-                  className={classes.firstRunForm}
                   form={firstRunForm}
                   onChange={multipleHandleChange}
                   indicator={covidIndicators}
                   method={similarityMeasures}
                   formChange={setFirstRunForm}
                   dateParse={dateParse}
+                  recommendation={recommendationDict}
                 />
                 <h2>
                   <AdvancedFilter
-                    className={classes.firstRunForm}
                     open={advancedFilterClickOpen}
                     state={advancedFilterPopup}
                     close={advancedFilterClickClose}
@@ -320,10 +366,10 @@ const TimeseriesSim = () => {
                   />
                 </h2>
                 <h2>
-                  <SearchButton
-                    className={classes.searchButton}
-                    onClick={searchClick}
-                  />
+                  <SearchButton onClick={searchClick} />
+                </h2>
+
+                <h2>
                   <Dialog open={loadPopUp}>
                     <DialogContent>
                       <DialogContentText>
@@ -339,7 +385,36 @@ const TimeseriesSim = () => {
           <Grid item xs={3} sx={{ minWidth: "350px" }}>
             <Card>
               <CardContent>
+                <CardHeader title="Observation-based Forecasting" />
+                <p style={{ fontSize: "13px" }}>
+                  This panel allows the user to use the data of the selected
+                  countries to make an ensemble prediction. The prediction is
+                  based on the time periods after the matching data patterns.
+                  The countries can be added to the list from the time-period
+                  search outputs.
+                </p>
+
+                <TimeSeriesBag
+                  list={timeSeriesBag}
+                  removeFromList={removeTimeSeries}
+                  onClick={predictClick}
+                />
+                <PredictPopUp state={predictPopUp} close={predictPopUpClose} />
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={3} sx={{ minWidth: "350px" }}>
+            <Card>
+              <CardContent>
                 <CardHeader title="Comprehensive Country Comparison" />
+                <p style={{ fontSize: "13px" }}>
+                  This panel allows the user to select a set of country to make
+                  routine comparative observation without a search action. The
+                  user can further analyze the dynamics of the pandemic in the
+                  selected countries. Countries selected from the time period
+                  search are also added to the list below:
+                </p>
                 <BenchmarkCountryList
                   list={benchmarkCountries}
                   manualValue={manualCountry}
@@ -350,26 +425,8 @@ const TimeseriesSim = () => {
                   onClick={compareClick}
                   manualCountrySet={setManualCountry}
                   form={firstRunForm}
-                  className={classes.listArea}
                 />
                 <ComparePopUp state={comparePopUp} close={comparePopUpClose} />
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={3} sx={{ minWidth: "350px" }}>
-            <Card>
-              <CardContent>
-                <CardHeader title="Observation-based Forecasting" />
-                Add similar time periods using search tool results to list
-                below:
-                <TimeSeriesBag
-                  list={timeSeriesBag}
-                  removeFromList={removeTimeSeries}
-                  onClick={predictClick}
-                  className={classes.listArea}
-                />
-                <PredictPopUp state={predictPopUp} close={predictPopUpClose} />
               </CardContent>
             </Card>
           </Grid>
@@ -377,7 +434,6 @@ const TimeseriesSim = () => {
 
         <Grid>
           <Card id="segmentedcard" sx={{ visibility: "hidden" }}>
-            <GraphTitle />
             <GraphArea />
           </Card>
         </Grid>
@@ -389,6 +445,71 @@ const TimeseriesSim = () => {
           </Card>
         </Grid>
       </Box>
+
+      <Snackbar
+        open={successSnack}
+        autoHideDuration={2000}
+        onClose={() => setSuccessSnack(false)}
+      >
+        <Alert
+          onClose={() => setSuccessSnack(false)}
+          severity="success"
+          sx={{ width: "100%", fontSize: "32px" }}
+          iconMapping={{
+            success: <CheckCircleIcon sx={{ fontSize: "48px" }} />,
+          }}
+        >
+          {successMessage}
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={warningSnack}
+        autoHideDuration={2000}
+        onClose={() => setWarningSnack(false)}
+      >
+        <Alert
+          onClose={() => setWarningSnack(false)}
+          severity="warning"
+          sx={{ width: "100%", fontSize: "32px" }}
+          iconMapping={{
+            warning: <WarningIcon sx={{ fontSize: "48px" }} />,
+          }}
+        >
+          {warningMessage}
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={infoSnack}
+        autoHideDuration={2000}
+        onClose={() => setInfoSnack(false)}
+      >
+        <Alert
+          onClose={() => setInfoSnack(false)}
+          severity="info"
+          sx={{ width: "100%", fontSize: "32px" }}
+          iconMapping={{
+            info: <InfoIcon sx={{ fontSize: "48px" }} />,
+          }}
+        >
+          {infoMessage}
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={errorSnack}
+        autoHideDuration={2000}
+        onClose={() => setErrorSnack(false)}
+      >
+        <Alert
+          onClose={() => setErrorSnack(false)}
+          severity="error"
+          sx={{ width: "100%", fontSize: "32px" }}
+          iconMapping={{
+            error: <ErrorIcon sx={{ fontSize: "48px" }} />,
+          }}
+        >
+          {errorMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

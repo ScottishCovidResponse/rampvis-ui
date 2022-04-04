@@ -1,12 +1,56 @@
-import {
-  getListItemSecondaryActionClassesUtilityClass,
-  speedDialActionClasses,
-} from "@mui/material";
 import * as d3 from "d3";
-import { parse } from "date-fns";
-
 export function predictPlot(data, country) {
   console.log("predictPlot: data = ", data[0]);
+
+  const labelYPoints = (height, font, n, minLabel, maxLabel) => {
+    let arr = [];
+    let count = n;
+    let min = 0;
+    let max = height;
+    let top = Math.max(maxLabel - (maxLabel - min) / 2, min);
+    let bottom = Math.min(minLabel + (max - minLabel) / 2, max);
+    let remainingArea = bottom - top - 2 * font;
+    let remainingFill = (n - 2) * font;
+    let gap = remainingArea - remainingFill;
+    if (gap < 0) {
+      font -= 1;
+      return labelYPoints(height, font, n, minLabel, maxLabel);
+    } else {
+      let stretch = gap / (n - 2) + font;
+      while (count > 1) {
+        arr.push(top);
+        top += stretch;
+        count -= 1;
+      }
+      arr.push(bottom);
+
+      return { font: font, points: arr };
+    }
+  };
+
+  const labelLinePoints = (
+    lastDate,
+    lastValue,
+    labelStretch,
+    yPoint,
+    font,
+    width,
+  ) => {
+    let arr = [];
+    let noJumps = 5;
+    let [count_x, count_y] = [
+      (width + labelStretch - lastDate) / noJumps,
+      (yPoint - font / 3 - lastValue) / noJumps,
+    ];
+
+    while (noJumps >= 0) {
+      arr.push([lastDate, lastValue]);
+      lastDate += count_x;
+      lastValue += count_y;
+      noJumps -= 1;
+    }
+    return arr;
+  };
 
   const spaceRemove = (key) => {
     if (key.split(" ").length === 1) {
@@ -28,7 +72,8 @@ export function predictPlot(data, country) {
   const height = 400;
   const margin = 5;
   const adj = 50;
-
+  const fontSize = 14;
+  const labelStretch = 20;
   const queryColor = "#FF6600";
   const meanColor = "#426cab";
   const seriesColor = "#4178ad";
@@ -261,6 +306,11 @@ export function predictPlot(data, country) {
 
   layout
     .append("path")
+    .attr("class", "myarea")
+    .attr("id", (d) => "moveArea" + spaceRemove(d.key));
+
+  layout
+    .append("path")
     .attr("class", "myline")
     .attr("id", (d) => "meanCurve" + spaceRemove(d.key));
 
@@ -280,26 +330,141 @@ export function predictPlot(data, country) {
       return { date: pairs[0], value: pairs[1] };
     });
 
-    const seriesCurves = Object.keys(selectedCurvesData[key]).map(
-      (countries) => {
-        return {
-          country: countries,
-          values: Object.entries(selectedCurvesData[key][countries]).map(
-            (pairs) => {
-              return { date: pairs[0], value: pairs[1] };
-            },
-          ),
-        };
-      },
-    );
+    let seriesCurves = Object.keys(selectedCurvesData[key]).map((countries) => {
+      return {
+        country: countries,
+        values: Object.entries(selectedCurvesData[key][countries]).map(
+          (pairs) => {
+            return { date: pairs[0], value: pairs[1] };
+          },
+        ),
+      };
+    });
     const xScale = xScales[i];
     const yScale = yScales[i];
+
+    const [xStart, yStart] = [
+      xScale(parseTime(queryCurve[queryCurve.length - 1].date)),
+      yScale(queryCurve[queryCurve.length - 1].value),
+    ];
+    seriesCurves.sort((a, b) =>
+      a.values[0].value > b.values[0].value ? 1 : -1,
+    );
+    const [xMin, yMin, xMax, yMax] = [
+      xScale(parseTime(seriesCurves[0].values[0].date)),
+      yScale(seriesCurves[0].values[0].value),
+      xScale(parseTime(seriesCurves[seriesCurves.length - 1].values[0].date)),
+      yScale(seriesCurves[seriesCurves.length - 1].values[0].value),
+    ];
+
+    const pointMaker = (xStart, yStart, xMin, yMin, xMax, yMax) => {
+      const noJumps = 10;
+      const y1 = yStart;
+      const y2 = yStart;
+      const countX = (xMin - xStart) / noJumps;
+      const countY1 = (yMax - yStart) / noJumps;
+      const countY2 = (yMin - yStart) / noJumps;
+      let arr = [];
+      while (noJumps >= 0) {
+        arr.push({ x: xStart, y1: y1, y2: y2 });
+        xStart += countX;
+        y1 += countY1;
+        y2 += countY2;
+        noJumps -= 1;
+      }
+      return arr;
+    };
+
+    const points = pointMaker(xStart, yStart, xMin, yMin + 10, xMax, yMax - 10);
+    const moveArea = d3
+      .area()
+      .x((d) => d.x)
+      .y1((d) => d.y1)
+      .y0((d) => d.y2);
+
+    seriesCurves = seriesCurves.map((streams) => {
+      return {
+        ...streams,
+        endPoint: streams.values[streams.values.length - 1],
+      };
+    });
+
+    let seriesEndpoints = seriesCurves.map((streams) => {
+      return {
+        country: streams.country,
+        x: xScale(parseTime(streams.endPoint.date)),
+        y: yScale(streams.endPoint.value),
+      };
+    });
+
+    seriesEndpoints.sort((a, b) => (a.y > b.y ? 1 : -1));
+    const maxLabel = seriesEndpoints[0].y;
+    const minLabel = seriesEndpoints[seriesEndpoints.length - 1].y;
+    const yPoints = labelYPoints(
+      height,
+      fontSize,
+      seriesEndpoints.length,
+      minLabel,
+      maxLabel,
+    );
+    console.log(seriesEndpoints);
+    console.log(yPoints);
+
+    let labelData = seriesEndpoints.map((streams, i) => ({
+      ...streams,
+      yPoint: yPoints.points[i],
+      line: labelLinePoints(
+        streams.x,
+        streams.y,
+        labelStretch,
+        yPoints.points[i],
+        yPoints.font,
+        width,
+      ),
+    }));
+
+    d3.select("#graph" + spaceRemove(key))
+      .selectAll(".myLabels")
+      .data(labelData)
+      .enter()
+      .append("g")
+      .append("text")
+      .attr("class", "myLabels")
+      .attr("id", (d) => spaceRemove(d.country) + spaceRemove(key))
+      .attr("transform", function (d) {
+        return "translate(" + xScale(maxDatePerGraph[i]) + "," + d.yPoint + ")";
+      }) // Put the text at the position of the last point
+      .attr("x", labelStretch + 5) // shift the text a bit more right
+      .text(function (d) {
+        return d.country;
+      })
+      .style("fill", "black")
+      .style("font-size", yPoints.font + "px");
+
+    d3.select("#graph" + spaceRemove(key))
+      .selectAll(".line")
+      .data(labelData)
+      .enter()
+      .append("path")
+      .attr("class", "labelLine")
+      .attr("id", (d) => spaceRemove(d.country) + spaceRemove(key))
+      .attr("fill", "none")
+      .attr("stroke", "black")
+      .attr("stroke-width", 2)
+      .attr("d", (d) =>
+        d3
+          .line()
+          .x((d) => d[0])
+          .y((d) => d[1])(d.line),
+      )
+      .style("stroke-dasharray", "3,3")
+      .style("opacity", "0.2");
 
     d3.select("#queryCurve" + spaceRemove(key))
       .datum(queryCurve)
       .attr("fill", "none")
       .attr("stroke", queryColor)
-      .attr("stroke-width", 10)
+      .attr("stroke-width", 8)
       .attr(
         "d",
         d3
@@ -308,17 +473,24 @@ export function predictPlot(data, country) {
           .y((d) => yScale(d.value)),
       );
 
+    d3.select("#moveArea" + spaceRemove(key))
+      .attr("fill", "lightsteelblue")
+      .attr("opacity", "0.3")
+      .attr("stroke", meanColor)
+      .attr("d", moveArea(points));
+
     if (queryValidationCurveData[key] !== "empty") {
       const validationCurve = Object.entries(queryValidationCurveData[key]).map(
         (pairs) => {
           return { date: pairs[0], value: pairs[1] };
         },
       );
+
       d3.select("#validationCurve" + spaceRemove(key))
         .datum(validationCurve)
         .attr("fill", "none")
         .attr("stroke", validationColor)
-        .attr("stroke-width", 10)
+        .attr("stroke-width", 8)
         .attr(
           "d",
           d3
@@ -332,7 +504,7 @@ export function predictPlot(data, country) {
       .datum(meanCurve)
       .attr("fill", "none")
       .attr("stroke", meanColor)
-      .attr("stroke-width", 10)
+      .attr("stroke-width", 8)
       .attr(
         "d",
         d3
@@ -350,7 +522,7 @@ export function predictPlot(data, country) {
       .attr("id", (d) => d.country)
       .attr("fill", "none")
       .attr("stroke", seriesColor)
-      .attr("stroke-width", 5)
+      .attr("stroke-width", 3)
       .attr("stroke-opacity", 0.3)
       .attr("d", (d) =>
         d3

@@ -39,7 +39,7 @@ function BenchmarkCountryList(props) {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Target Country"
+                  label="Manual country input"
                   inputProps={{
                     ...params.inputProps,
                     autoComplete: "new-password", // disable autocomplete and autofill
@@ -48,20 +48,28 @@ function BenchmarkCountryList(props) {
               )}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid sx={{ alignItems: "center" }} item xs={4}>
             <Button
+              size="large"
               variant="contained"
               color="primary"
               onClick={props.manualValueAdd}
             >
-              +
+              Add
             </Button>
           </Grid>
         </Grid>
       </h2>
 
       <h2>
-        <div className={props.className}>
+        <div
+          style={{
+            borderStyle: "solid",
+            borderColor: "#c4c4c4",
+            borderWidth: "1px",
+            borderRadius: "12px",
+          }}
+        >
           <List sx={{ position: "relative", overflow: "auto", maxHeight: 300 }}>
             {props.list.map(
               (

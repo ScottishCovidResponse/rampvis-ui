@@ -1,39 +1,43 @@
 import {
   Button,
-  OutlinedInput,
   List,
   ListItem,
   IconButton,
   ListItemText,
 } from "@mui/material";
 import { DeleteOutline } from "@mui/icons-material";
-
 function TimeSeriesBag(props) {
   return (
     <div>
       <h2>
-        <div className={props.className}>
+        <div
+          style={{
+            borderStyle: "solid",
+            borderColor: "#c4c4c4",
+            borderWidth: "1px",
+            borderRadius: "12px",
+            minHeight: "200px",
+          }}
+        >
           <List sx={{ position: "relative", overflow: "auto", maxHeight: 300 }}>
             {props.list.map(
               (
                 series, // time series bag list creation
               ) => (
-                <div key={series} className={props.className}>
-                  <ListItem
-                    key={series}
-                    secondaryAction={
-                      <IconButton
-                        edge="end"
-                        aria-label="delete"
-                        onClick={props.removeFromList}
-                      >
-                        <DeleteOutline />
-                      </IconButton>
-                    }
-                  >
-                    <ListItemText primary={series} />
-                  </ListItem>
-                </div>
+                <ListItem
+                  key={series}
+                  secondaryAction={
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      onClick={props.removeFromList}
+                    >
+                      <DeleteOutline />
+                    </IconButton>
+                  }
+                >
+                  <ListItemText primary={series} />
+                </ListItem>
               ),
             )}
           </List>

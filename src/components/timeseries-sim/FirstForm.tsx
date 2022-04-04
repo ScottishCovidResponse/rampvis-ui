@@ -1,4 +1,14 @@
-import { TextField, MenuItem, Autocomplete } from "@mui/material";
+import {
+  TextField,
+  MenuItem,
+  Autocomplete,
+  Select,
+  Chip,
+  Box,
+  InputLabel,
+  OutlinedInput,
+  FormControl,
+} from "@mui/material";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -17,8 +27,27 @@ function FirstForm(props) {
     continentList.includes(count.continent),
   );
 
+  const recommendedMeasure = props.recommendation[props.form.indicator];
+  console.log(recommendedMeasure);
+  const chipDict = {};
+  const styleDict = {};
+  props.method.map((measure) => {
+    if (measure.value == recommendedMeasure) {
+      chipDict[measure.value] = "warning";
+      styleDict[measure.value] = {
+        "& .MuiTouchRipple-root": {
+          backgroundColor: "rgba(250,152,0,255)",
+          opacity: "0.3",
+        },
+      };
+    } else {
+      chipDict[measure.value] = "default";
+      styleDict[measure.value] = {};
+    }
+  });
+
   return (
-    <div className={props.className}>
+    <div style={{ marginBottom: "10px", marginTop: "10px", float: "left" }}>
       <h2>
         <Autocomplete
           freeSolo
@@ -91,7 +120,7 @@ function FirstForm(props) {
 
       <h2>
         <TextField
-          sx={{ width: "1" }}
+          sx={{ width: "100%" }}
           select
           label="Covid Data Stream"
           value={props.form.indicator}
@@ -107,22 +136,43 @@ function FirstForm(props) {
         </TextField>
       </h2>
       <h2>
-        <TextField
-          select
-          sx={{ width: "1" }}
-          label="Similarity Measure"
-          name="method"
-          value={props.form.method}
-          variant="outlined"
-          onChange={props.onChange}
-        >
-          {props.method.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
+        <FormControl sx={{ width: "100%" }}>
+          <InputLabel>Similarity Measure</InputLabel>
+          <Select
+            multiple
+            value={props.form.method}
+            input={
+              <OutlinedInput
+                id="select-multiple-chip"
+                label="Similarity Measure"
+              />
+            }
+            onChange={(event) => {
+              props.formChange((old) => {
+                return { ...old, method: event.target.value };
+              });
+            }}
+            renderValue={(selected) => (
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                {selected.map((value) => (
+                  <Chip color={chipDict[value]} key={value} label={value} />
+                ))}
+              </Box>
+            )}
+          >
+            {props.method.map((option) => (
+              <MenuItem
+                sx={styleDict[option.value]}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </h2>
+
       <h2>
         <TextField
           sx={{ width: "1" }}
