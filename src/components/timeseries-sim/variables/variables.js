@@ -71,6 +71,26 @@ export const similarityMeasures = [
     label: "Longest Common Subsequence Distance",
     value: "lcs",
   },
+
+  {
+    label: "Pearson Correlation",
+    value: "pearson",
+  },
+  /*
+  {
+    label: "Cosine Distance",
+    value: "cosine"
+  },
+  {
+    label: "Jensen Shannon",
+    value: "jensenshannon"
+  },
+  */
+
+  {
+    label: "Bray-Curtis",
+    value: "braycurtis",
+  },
 ];
 
 export const continents = [
@@ -301,7 +321,7 @@ export const autoFillList = [
   { label: "Tonga", continent: "Oceania" },
   { label: "Trinidad and Tobago", continent: "North America" },
   { label: "Tunisia", continent: "Africa" },
-  { label: "Turkey", continent: "Asia" },
+  { label: "Turkey", continent: "Europe" },
   { label: "Turkmenistan", continent: "Asia" },
   { label: "Turks and Caicos Islands", continent: "North America" },
   { label: "Tuvalu", continent: "Oceania" },

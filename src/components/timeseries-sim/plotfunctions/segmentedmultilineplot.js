@@ -52,7 +52,7 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
 
   //--- Graph Formatting ---//
 
-  const width = 800;
+  const width = 700;
   const height = 200;
   const margin = 0;
   const adj = 35;
@@ -130,8 +130,8 @@ export function SegmentedMultiLinePlot(response, firstRunForm) {
       .append("div")
       .attr("class", "vis-example-container")
       .attr("id", "segmented" + " " + method)
-      .style("width", "100%")
-      .style("height", "100%")
+      .style("width", width)
+      .style("height", height)
       .style("margin", margin);
 
     let canvas = document.getElementById("segmented" + " " + method);

@@ -29,12 +29,20 @@ function FirstForm(props) {
 
   const recommendedMeasure = props.recommendation[props.form.indicator];
   console.log(recommendedMeasure);
-  let colorDict = {};
+  let chipDict = {};
+  let styleDict = {};
   props.method.map((measure) => {
     if (measure.value == recommendedMeasure) {
-      colorDict[measure.value] = "warning";
+      chipDict[measure.value] = "warning";
+      styleDict[measure.value] = {
+        "& .MuiTouchRipple-root": {
+          backgroundColor: "rgba(250,152,0,255)",
+          opacity: "0.3",
+        },
+      };
     } else {
-      colorDict[measure.value] = "default";
+      chipDict[measure.value] = "default";
+      styleDict[measure.value] = {};
     }
   });
 
@@ -112,7 +120,7 @@ function FirstForm(props) {
 
       <h2>
         <TextField
-          sx={{ width: "1" }}
+          sx={{ width: "100%" }}
           select
           label="Covid Data Stream"
           value={props.form.indicator}
@@ -147,13 +155,17 @@ function FirstForm(props) {
             renderValue={(selected) => (
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                 {selected.map((value) => (
-                  <Chip color={colorDict[value]} key={value} label={value} />
+                  <Chip color={chipDict[value]} key={value} label={value} />
                 ))}
               </Box>
             )}
           >
             {props.method.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
+              <MenuItem
+                sx={styleDict[option.value]}
+                key={option.value}
+                value={option.value}
+              >
                 {option.label}
               </MenuItem>
             ))}

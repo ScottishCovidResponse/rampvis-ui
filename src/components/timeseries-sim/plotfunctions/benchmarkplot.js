@@ -167,210 +167,212 @@ export function benchmarkPlot(data) {
     const linedata = streams.value;
     const countries = Object.keys(linedata);
 
-    const graphObj = countries.map((country) => {
-      const linedatum = linedata[country];
-      const dates = Object.keys(linedatum);
-      const values = Object.values(linedatum);
-      const d3Obj = dates.map((date, i) => {
-        return { date: date, value: values[i] };
+    if (countries.length > 0) {
+      const graphObj = countries.map((country) => {
+        const linedatum = linedata[country];
+        const dates = Object.keys(linedatum);
+        const values = Object.values(linedatum);
+        const d3Obj = dates.map((date, i) => {
+          return { date: date, value: values[i] };
+        });
+
+        return { key: country, data: d3Obj };
       });
 
-      return { key: country, data: d3Obj };
-    });
+      const xScale = xScales[i];
+      const yScale = yScales[i];
 
-    const xScale = xScales[i];
-    const yScale = yScales[i];
-
-    d3.select("#graph" + spaceRemove(streams.key))
-      .selectAll(".line")
-      .data(graphObj)
-      .enter()
-      .append("path")
-      .attr("class", "multiline")
-      .attr("id", (d) => spaceRemove(streams.key) + "/" + spaceRemove(d.key))
-      .attr("fill", "none")
-      .attr("stroke", (d) => color(d.key))
-      .attr("stroke-width", otherStrokeWidth)
-      .attr("d", (d) =>
-        d3
-          .line()
-          .x((d) => xScale(parseTime(d.date)))
-          .y((d) => yScale(d.value))(d.data),
-      );
-    d3.select("#graph" + spaceRemove(streams.key))
-      .append("text")
-      .attr("x", width / 2)
-      .attr("y", 0 - margin)
-      .attr("text-anchor", "middle")
-      .style("font-size", "16px")
-      .text(
-        streams.key
-          .split("_")
-          .map((str) => str.charAt(0).toUpperCase() + str.slice(1))
-          .join(" "),
-      );
-
-    // playground //
-
-    let labelArray = graphObj.map((streams) => {
-      const country = streams.key;
-      const lastValue = streams.data[streams.data.length - 1].value;
-      return { key: country, end: lastValue };
-    });
-
-    const lastDate = graphObj[0].data[graphObj[0].data.length - 1].date;
-
-    labelArray.sort((a, b) => (a.end < b.end ? 1 : -1)); // sort array by descending of endpoint
-
-    console.log("array", labelArray);
-    const minLabel = yScale(labelArray[labelArray.length - 1].end);
-    const maxLabel = yScale(labelArray[0].end);
-    console.log(minLabel, maxLabel);
-    const yPoints = labelYPoints(
-      height,
-      fontSize,
-      labelArray.length,
-      minLabel,
-      maxLabel,
-    ); // calculate ypoints of labels
-
-    let labelData = labelArray.map((streams, i) => ({
-      ...streams,
-      yPoint: yPoints.points[i],
-      line: labelLinePoints(
-        xScale(parseTime(lastDate)),
-        yScale(streams.end),
-        labelStretch,
-        yPoints.points[i],
-        yPoints.font,
-      ),
-    }));
-
-    //console.log(labelData)
-
-    d3.select("#graph" + spaceRemove(streams.key))
-      .selectAll(".myLabels")
-      .data(labelData)
-      .enter()
-      .append("g")
-      .append("text")
-      .attr("class", "myLabels")
-      .attr("id", (d) => spaceRemove(streams.key) + "/" + spaceRemove(d.key))
-      .attr("transform", function (d) {
-        return (
-          "translate(" + xScale(parseTime(lastDate)) + "," + d.yPoint + ")"
+      d3.select("#graph" + spaceRemove(streams.key))
+        .selectAll(".line")
+        .data(graphObj)
+        .enter()
+        .append("path")
+        .attr("class", "multiline")
+        .attr("id", (d) => spaceRemove(streams.key) + "/" + spaceRemove(d.key))
+        .attr("fill", "none")
+        .attr("stroke", (d) => color(d.key))
+        .attr("stroke-width", otherStrokeWidth)
+        .attr("d", (d) =>
+          d3
+            .line()
+            .x((d) => xScale(parseTime(d.date)))
+            .y((d) => yScale(d.value))(d.data),
         );
-      }) // Put the text at the position of the last point
-      .attr("x", labelStretch) // shift the text a bit more right
-      .text(function (d) {
-        return d.key;
-      })
-      .style("fill", function (d) {
-        return color(d.key);
-      })
-      .style("font-size", yPoints.font + "px");
+      d3.select("#graph" + spaceRemove(streams.key))
+        .append("text")
+        .attr("x", width / 2)
+        .attr("y", 0 - margin)
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .text(
+          streams.key
+            .split("_")
+            .map((str) => str.charAt(0).toUpperCase() + str.slice(1))
+            .join(" "),
+        );
 
-    d3.select("#graph" + spaceRemove(streams.key))
-      .selectAll(".line")
-      .data(labelData)
-      .enter()
-      .append("path")
-      .attr("class", "labelLine")
-      .attr("id", (d) => spaceRemove(streams.key) + "/" + spaceRemove(d.key))
-      .attr("fill", "none")
-      .attr("stroke", (d) => color(d.key))
-      .attr("stroke-width", 2)
-      .attr("d", (d) =>
-        d3
-          .line()
-          .x((d) => d[0])
-          .y((d) => d[1])(d.line),
-      )
-      .style("stroke-dasharray", "3,3");
+      // playground //
 
-    d3.select("#graph" + streams.key)
-      .selectAll(".multiline")
-      .on("mouseenter", function (d) {
-        const [stream, country] = d3
-          .select(this)
-          ["_groups"][0][0]["attributes"]["id"]["nodeValue"].split("/");
-
-        console.log(country);
-        d3.select("#graph" + stream)
-          .selectAll(".multiline")
-          .filter(function () {
-            return d3.select(this).attr("id") != stream + "/" + country;
-          })
-          .attr("visibility", "hidden");
-        d3.select("#graph" + stream)
-          .selectAll(".labelLine")
-          .filter(function () {
-            return d3.select(this).attr("id") != stream + "/" + country;
-          })
-          .attr("visibility", "hidden");
-
-        d3.select("#graph" + stream)
-          .selectAll(".myLabels")
-          .filter(function () {
-            return d3.select(this).attr("id") !== stream + "/" + country;
-          })
-          .attr("visibility", "hidden");
-      })
-      .on("mouseleave", function (d) {
-        const [stream, country] = d3
-          .select(this)
-          ["_groups"][0][0]["attributes"]["id"]["nodeValue"].split("/");
-        d3.select("#graph" + stream)
-          .selectAll(".multiline")
-          .attr("visibility", "visible");
-        d3.select("#graph" + stream)
-          .selectAll(".labelLine")
-          .attr("visibility", "visible");
-        d3.select("#graph" + stream)
-          .selectAll(".myLabels")
-          .attr("visibility", "visible");
+      let labelArray = graphObj.map((streams) => {
+        const country = streams.key;
+        const lastValue = streams.data[streams.data.length - 1].value;
+        return { key: country, end: lastValue };
       });
 
-    d3.select("#graph" + streams.key)
-      .selectAll(".myLabels")
-      .on("mouseenter", function (d) {
-        const [stream, country] = d3
-          .select(this)
-          ["_groups"][0][0]["attributes"]["id"]["nodeValue"].split("/");
+      const lastDate = graphObj[0].data[graphObj[0].data.length - 1].date;
 
-        d3.select("#graph" + stream)
-          .selectAll(".multiline")
-          .filter(function () {
-            return d3.select(this).attr("id") != stream + "/" + country;
-          })
-          .attr("visibility", "hidden");
-        d3.select("#graph" + stream)
-          .selectAll(".labelLine")
-          .filter(function () {
-            return d3.select(this).attr("id") != stream + "/" + country;
-          })
-          .attr("visibility", "hidden");
+      labelArray.sort((a, b) => (a.end < b.end ? 1 : -1)); // sort array by descending of endpoint
 
-        d3.select("#graph" + stream)
-          .selectAll(".myLabels")
-          .filter(function () {
-            return d3.select(this).attr("id") !== stream + "/" + country;
-          })
-          .attr("visibility", "hidden");
-      })
-      .on("mouseleave", function (d) {
-        const [stream, country] = d3
-          .select(this)
-          ["_groups"][0][0]["attributes"]["id"]["nodeValue"].split("/");
-        d3.select("#graph" + stream)
-          .selectAll(".multiline")
-          .attr("visibility", "visible");
-        d3.select("#graph" + stream)
-          .selectAll(".labelLine")
-          .attr("visibility", "visible");
-        d3.select("#graph" + stream)
-          .selectAll(".myLabels")
-          .attr("visibility", "visible");
-      });
+      console.log("array", labelArray);
+      const minLabel = yScale(labelArray[labelArray.length - 1].end);
+      const maxLabel = yScale(labelArray[0].end);
+      console.log(minLabel, maxLabel);
+      const yPoints = labelYPoints(
+        height,
+        fontSize,
+        labelArray.length,
+        minLabel,
+        maxLabel,
+      ); // calculate ypoints of labels
+
+      let labelData = labelArray.map((streams, i) => ({
+        ...streams,
+        yPoint: yPoints.points[i],
+        line: labelLinePoints(
+          xScale(parseTime(lastDate)),
+          yScale(streams.end),
+          labelStretch,
+          yPoints.points[i],
+          yPoints.font,
+        ),
+      }));
+
+      //console.log(labelData)
+
+      d3.select("#graph" + spaceRemove(streams.key))
+        .selectAll(".myLabels")
+        .data(labelData)
+        .enter()
+        .append("g")
+        .append("text")
+        .attr("class", "myLabels")
+        .attr("id", (d) => spaceRemove(streams.key) + "/" + spaceRemove(d.key))
+        .attr("transform", function (d) {
+          return (
+            "translate(" + xScale(parseTime(lastDate)) + "," + d.yPoint + ")"
+          );
+        }) // Put the text at the position of the last point
+        .attr("x", labelStretch) // shift the text a bit more right
+        .text(function (d) {
+          return d.key;
+        })
+        .style("fill", function (d) {
+          return color(d.key);
+        })
+        .style("font-size", yPoints.font + "px");
+
+      d3.select("#graph" + spaceRemove(streams.key))
+        .selectAll(".line")
+        .data(labelData)
+        .enter()
+        .append("path")
+        .attr("class", "labelLine")
+        .attr("id", (d) => spaceRemove(streams.key) + "/" + spaceRemove(d.key))
+        .attr("fill", "none")
+        .attr("stroke", (d) => color(d.key))
+        .attr("stroke-width", 2)
+        .attr("d", (d) =>
+          d3
+            .line()
+            .x((d) => d[0])
+            .y((d) => d[1])(d.line),
+        )
+        .style("stroke-dasharray", "3,3");
+
+      d3.select("#graph" + streams.key)
+        .selectAll(".multiline")
+        .on("mouseenter", function (d) {
+          const [stream, country] = d3
+            .select(this)
+            ["_groups"][0][0]["attributes"]["id"]["nodeValue"].split("/");
+
+          console.log(country);
+          d3.select("#graph" + stream)
+            .selectAll(".multiline")
+            .filter(function () {
+              return d3.select(this).attr("id") != stream + "/" + country;
+            })
+            .attr("visibility", "hidden");
+          d3.select("#graph" + stream)
+            .selectAll(".labelLine")
+            .filter(function () {
+              return d3.select(this).attr("id") != stream + "/" + country;
+            })
+            .attr("visibility", "hidden");
+
+          d3.select("#graph" + stream)
+            .selectAll(".myLabels")
+            .filter(function () {
+              return d3.select(this).attr("id") !== stream + "/" + country;
+            })
+            .attr("visibility", "hidden");
+        })
+        .on("mouseleave", function (d) {
+          const [stream, country] = d3
+            .select(this)
+            ["_groups"][0][0]["attributes"]["id"]["nodeValue"].split("/");
+          d3.select("#graph" + stream)
+            .selectAll(".multiline")
+            .attr("visibility", "visible");
+          d3.select("#graph" + stream)
+            .selectAll(".labelLine")
+            .attr("visibility", "visible");
+          d3.select("#graph" + stream)
+            .selectAll(".myLabels")
+            .attr("visibility", "visible");
+        });
+
+      d3.select("#graph" + streams.key)
+        .selectAll(".myLabels")
+        .on("mouseenter", function (d) {
+          const [stream, country] = d3
+            .select(this)
+            ["_groups"][0][0]["attributes"]["id"]["nodeValue"].split("/");
+
+          d3.select("#graph" + stream)
+            .selectAll(".multiline")
+            .filter(function () {
+              return d3.select(this).attr("id") != stream + "/" + country;
+            })
+            .attr("visibility", "hidden");
+          d3.select("#graph" + stream)
+            .selectAll(".labelLine")
+            .filter(function () {
+              return d3.select(this).attr("id") != stream + "/" + country;
+            })
+            .attr("visibility", "hidden");
+
+          d3.select("#graph" + stream)
+            .selectAll(".myLabels")
+            .filter(function () {
+              return d3.select(this).attr("id") !== stream + "/" + country;
+            })
+            .attr("visibility", "hidden");
+        })
+        .on("mouseleave", function (d) {
+          const [stream, country] = d3
+            .select(this)
+            ["_groups"][0][0]["attributes"]["id"]["nodeValue"].split("/");
+          d3.select("#graph" + stream)
+            .selectAll(".multiline")
+            .attr("visibility", "visible");
+          d3.select("#graph" + stream)
+            .selectAll(".labelLine")
+            .attr("visibility", "visible");
+          d3.select("#graph" + stream)
+            .selectAll(".myLabels")
+            .attr("visibility", "visible");
+        });
+    }
   });
 }

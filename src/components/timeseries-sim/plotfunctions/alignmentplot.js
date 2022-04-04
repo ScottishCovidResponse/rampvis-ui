@@ -18,6 +18,11 @@ export function alignmentPlot(
 
   console.log("alignmentPlot: data = ", response);
 
+  const kFormatter = (num) =>
+    Math.abs(num) > 999
+      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
+      : Math.sign(num) * Math.abs(num);
+
   const spaceRemove = (key) => {
     if (key.split(" ").length === 1) {
       return key;
@@ -95,6 +100,7 @@ export function alignmentPlot(
     const yScale = d3.scaleLinear().rangeRound([height, 0]).domain([min, max]);
 
     const yAxis = d3.axisLeft(yScale).ticks(3);
+    yAxis.tickFormat(kFormatter);
 
     let layout = d3 // creating individual regions for alignment plots
       .select("#alignmentchart" + method)
@@ -104,7 +110,7 @@ export function alignmentPlot(
 
       .append("div")
       .attr("id", (d) => "alignmentContainer" + method + spaceRemove(d.key))
-      .style("width", "100%")
+      .style("width", width)
       .style("height", height * 2 + "px")
       .style("margin", margin) // add divs for individual alignment plots
 

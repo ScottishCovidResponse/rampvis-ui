@@ -41,7 +41,7 @@ import ErrorIcon from "@mui/icons-material/Error";
 const API = process.env.NEXT_PUBLIC_API_PY;
 const API_PY = API + "/timeseries-sim-search";
 const today = new Date();
-const lastDate = new Date(today.setDate(today.getDate() - 4));
+const lastDate = new Date(today.setDate(today.getDate() - 1));
 const firstDate = new Date(today.setDate(today.getDate() - 30));
 
 const dateParse = function (date) {
@@ -66,12 +66,13 @@ const initialFirstRunState = {
   startDate: "2021-01-01",
   endDate: dateParse(lastDate),
   continentCheck: {
-    Africa: false,
-    Asia: false,
-    Australia: false,
+    Africa: true,
+    Asia: true,
+    Australia: true,
     Europe: true,
-    "North America": false,
-    "South America": false,
+    "North America": true,
+    "South America": true,
+    Oceania: true,
   },
 };
 
@@ -157,8 +158,7 @@ const TimeseriesSim = () => {
     // add followed manual country input to benchmark list
     if (
       manualCountry.length > 0 &&
-      !benchmarkCountries.includes(manualCountry) &&
-      benchmarkCountries.length <= 10
+      !benchmarkCountries.includes(manualCountry)
     ) {
       setBenchmarkCountries((old) => [...old, manualCountry]);
     }
@@ -212,9 +212,9 @@ const TimeseriesSim = () => {
   const [loadPopUp, setLoadPopUp] = useState(false);
 
   const searchPost = async () => {
-    //const apiUrl = API_PY + "/search/";
-    const apiUrl =
-      "http://0.0.0.0:4010" + "/stat/v1/timeseries-sim-search/search/";
+    const apiUrl = API_PY + "/search/";
+    //const apiUrl =
+    "http://0.0.0.0:4010" + "/stat/v1/timeseries-sim-search/search/";
 
     const response = await axios.post(apiUrl, firstRunForm);
 
@@ -243,6 +243,7 @@ const TimeseriesSim = () => {
 
   const comparePost = async () => {
     const apiUrl = API_PY + "/compare/";
+    //const apiUrl ="http://0.0.0.0:4010" + "/stat/v1/timeseries-sim-search/compare/";
 
     console.log({ countries: benchmarkCountries });
     const response = await axios.post(apiUrl, {
@@ -256,9 +257,8 @@ const TimeseriesSim = () => {
   };
 
   const predictPost = async () => {
-    //const apiUrl = API_PY + "/predict/";
-    const apiUrl =
-      "http://0.0.0.0:4010" + "/stat/v1/timeseries-sim-search/predict/";
+    const apiUrl = API_PY + "/predict/";
+    //const apiUrl ="http://0.0.0.0:4010" + "/stat/v1/timeseries-sim-search/predict/";
 
     const predictObj = {
       series: timeSeriesBag,
@@ -409,7 +409,7 @@ const TimeseriesSim = () => {
               <CardContent>
                 <CardHeader title="Comprehensive Country Comparison" />
                 <p style={{ fontSize: "13px" }}>
-                  This panel allowss the user to select a set of country to make
+                  This panel allows the user to select a set of country to make
                   routine comparative observation without a search action. The
                   user can further analyze the dynamics of the pandemic in the
                   selected countries. Countries selected from the time period
@@ -448,7 +448,7 @@ const TimeseriesSim = () => {
 
       <Snackbar
         open={successSnack}
-        autoHideDuration={1000}
+        autoHideDuration={2000}
         onClose={() => setSuccessSnack(false)}
       >
         <Alert
@@ -464,7 +464,7 @@ const TimeseriesSim = () => {
       </Snackbar>
       <Snackbar
         open={warningSnack}
-        autoHideDuration={1000}
+        autoHideDuration={2000}
         onClose={() => setWarningSnack(false)}
       >
         <Alert
@@ -480,7 +480,7 @@ const TimeseriesSim = () => {
       </Snackbar>
       <Snackbar
         open={infoSnack}
-        autoHideDuration={1000}
+        autoHideDuration={2000}
         onClose={() => setInfoSnack(false)}
       >
         <Alert
@@ -496,7 +496,7 @@ const TimeseriesSim = () => {
       </Snackbar>
       <Snackbar
         open={errorSnack}
-        autoHideDuration={1000}
+        autoHideDuration={2000}
         onClose={() => setErrorSnack(false)}
       >
         <Alert
