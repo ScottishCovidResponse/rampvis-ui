@@ -15,6 +15,10 @@ import { Rise } from "./Raise";
 import { Fall } from "./Fall";
 import { createDataGroup } from "./utils-data-processing";
 
+//
+// Region data
+//
+
 // {
 //   { Aberdeenshire: { "country": "Scotland", "data": [{ "date": "", "y": 0 }, ..] }  },
 //   { ... }
@@ -146,66 +150,124 @@ const rankFeatures = (featureObj) => {
 };
 
 //
-// When a region1 and region2 are selected, return the data for that
+// Nation data
+//
+let dailyCasesByNation = {};
+const wavesByNation = {};
+
+export async function processDataAndGetNations(): Promise<string[]> {
+  await prepareDailyCasesByNation();
+  preparePeaksByNation();
+
+  return Object.keys(dailyCasesByNation).sort();
+}
+
+async function prepareDailyCasesByNation() {
+  const csv = await readCSVFile("/static/story-boards/nation_cases.csv");
+
+  const casesObj = {};
+  csv.forEach((d) => {
+    // there is a undefined value in the areaName, exclude it
+    if (d.areaName) {
+      if (!casesObj[d.areaName]) {
+        casesObj[d.areaName] = [];
+      }
+      casesObj[d.areaName].push({
+        date: new Date(d.date),
+        y: +d.newCasesByPublishDate,
+      });
+    }
+  });
+
+  for (const nation in casesObj) {
+    casesObj[nation].sort((r1, r2) => r1.date - r2.date);
+  }
+
+  dailyCasesByNation = casesObj;
+
+  // prettier-ignore
+  console.log("prepareDailyCasesByNation: dailyCasesByNation = ", dailyCasesByNation);
+}
+
+function preparePeaksByNation() {
+  for (const nation in dailyCasesByNation) {
+    let allPeaks = detectFeatures(dailyCasesByNation[nation], {
+      peaks: true,
+      metric: "Daily Cases",
+    });
+    allPeaks = allPeaks.map((p) => {
+      const { rise, fall } = calcPeakRiseFall(p, dailyCasesByNation[nation]);
+      return { peak: p, rise: rise, fall: fall };
+    });
+    allPeaks.map(rankFeatures);
+    wavesByNation[nation] = allPeaks;
+  }
+
+  // prettier-ignore
+  console.log("preparePeaksByNation: wavesByNation = ", wavesByNation);
+}
+
+//
+// When a nation and region are selected, return the data for that
 //
 
-let region1, region2;
+let nation, region;
 let gauss;
 let gaussMatchedWaves;
 let annotations;
 
-export function onSelectRegion(_region1, _region2) {
-  region1 = _region1;
-  region2 = _region2;
-  createCombGauss(region1, region2);
-  calculateGaussMatchedWaves(region1, region2);
-  createAnnotations(region1, region2);
+export function onSelectRegion(_nation, _region) {
+  nation = _nation;
+  region = _region;
+  createCombGauss(nation, region);
+  calculateGaussMatchedWaves(nation, region);
+  createAnnotations(nation, region);
 }
 
-function createCombGauss(region1, region2) {
-  const reg1Waves = wavesByRegion[region1];
-  const reg2Waves = wavesByRegion[region2];
+function createCombGauss(nation, region) {
+  const nationWaves = wavesByNation[nation];
+  const regionWaves = wavesByRegion[region];
 
-  const region1Peaks = reg1Waves.reduce(
+  const nationPeaks = nationWaves.reduce(
     (arr, obj) => arr.concat([obj.peak]),
     [],
   );
-  const region2Peaks = reg2Waves.reduce(
+  const regionPeaks = regionWaves.reduce(
     (arr, obj) => arr.concat([obj.peak]),
     [],
   );
 
-  const reg1DailyCases = dailyCasesByRegion[region1].data;
-  const reg2DailyCases = dailyCasesByRegion[region2].data;
+  const nationDailyCases = dailyCasesByNation[nation];
+  const regionDailyCases = dailyCasesByRegion[region].data;
 
   const largestDataSet =
-    reg1DailyCases.length > reg2DailyCases.length
-      ? reg1DailyCases
-      : reg2DailyCases;
+    nationDailyCases.length > regionDailyCases.length
+      ? nationDailyCases
+      : regionDailyCases;
 
-  const reg1Gauss = eventsToGaussian(region1Peaks, largestDataSet);
-  const reg1Bounds = maxBounds(reg1Gauss);
+  const nationGauss = eventsToGaussian(nationPeaks, largestDataSet);
+  const nationBounds = maxBounds(nationGauss);
 
-  const reg2Gauss = eventsToGaussian(region2Peaks, largestDataSet);
-  const reg2Bounds = maxBounds(reg2Gauss);
+  const regionGauss = eventsToGaussian(regionPeaks, largestDataSet);
+  const regionBounds = maxBounds(regionGauss);
 
   // Combine gaussian time series
-  gauss = combineBounds([reg1Bounds, reg2Bounds]);
+  gauss = combineBounds([nationBounds, regionBounds]);
 
   console.log("createCombGauss: gauss = ", gauss);
 }
 
-function calculateGaussMatchedWaves(region1, region2) {
+function calculateGaussMatchedWaves(nation, region) {
   const peakTimeDistance = (p1, p2) =>
     Math.abs(p1._date.getTime() - p2._date.getTime());
 
-  const reg1DailyCases = dailyCasesByRegion[region1].data;
-  const reg2DailyCases = dailyCasesByRegion[region2].data;
+  const nationDailyCases = dailyCasesByNation[nation];
+  const regionDailyCases = dailyCasesByRegion[region].data;
 
   const largestDataSet =
-    reg1DailyCases.length > reg2DailyCases.length
-      ? reg1DailyCases
-      : reg2DailyCases;
+    nationDailyCases.length > regionDailyCases.length
+      ? nationDailyCases
+      : regionDailyCases;
 
   const gaussTS = gauss.map((g, i) => {
     return { date: largestDataSet[i].date, y: g };
@@ -215,18 +277,18 @@ function calculateGaussMatchedWaves(region1, region2) {
     peaks: true,
   });
 
-  const reg1Waves = wavesByRegion[region1];
-  const reg2Waves = wavesByRegion[region2];
+  const nationWaves = wavesByNation[nation];
+  const regionWaves = wavesByRegion[region];
 
-  let closestReg1Wave, closestReg2Wave;
+  let closestNationWave, closestRegionWave;
   // Match gauss to corresponding regional and national waves
   gaussPeaks = gaussPeaks.map((gp) => {
-    closestReg1Wave = reg1Waves.reduce((closest, curr) =>
+    closestNationWave = nationWaves.reduce((closest, curr) =>
       peakTimeDistance(closest.peak, gp) < peakTimeDistance(curr.peak, gp)
         ? closest
         : curr,
     );
-    closestReg2Wave = reg2Waves.reduce((closest, curr) =>
+    closestRegionWave = regionWaves.reduce((closest, curr) =>
       peakTimeDistance(closest.peak, gp) < peakTimeDistance(curr.peak, gp)
         ? closest
         : curr,
@@ -234,8 +296,8 @@ function calculateGaussMatchedWaves(region1, region2) {
 
     return {
       gaussHeight: gp.height,
-      reg1Wave: closestReg1Wave,
-      reg2Wave: closestReg2Wave,
+      nationWave: closestNationWave,
+      regionWave: closestRegionWave,
     };
   });
 
@@ -246,16 +308,16 @@ function calculateGaussMatchedWaves(region1, region2) {
   console.log("calculateGaussMatchedWaves: gaussMatchedWaves = ", gaussMatchedWaves);
 }
 
-function createAnnotations(region1, region2) {
-  const region1CasesData = dailyCasesByRegion[region1].data;
-  const region1Waves = wavesByRegion[region1];
-  const region1Color = "orange";
+function createAnnotations(nation, region) {
+  const nationCasesData = dailyCasesByNation[nation];
+  const nationWaves = wavesByNation[nation];
+  const nationColor = "orange";
 
-  const region2CasesData = dailyCasesByRegion[region2].data;
-  const region2Waves = wavesByRegion[region2];
-  const region2Color = "steelblue";
+  const regionCasesData = dailyCasesByRegion[region].data;
+  const regionWaves = wavesByRegion[region];
+  const regionColor = "steelblue";
 
-  const waveNum = region1Waves.length;
+  const waveNum = nationWaves.length;
   const cutOff = Math.ceil(waveNum * 0.3);
 
   const matchedWaves = gaussMatchedWaves;
@@ -265,16 +327,26 @@ function createAnnotations(region1, region2) {
 
   const topWaves = matchedWaves.slice(-cutOff);
 
-  const maxReg1Wave = topWaves[topWaves.length - 1].reg1Wave;
-  const maxReg2Wave = topWaves[topWaves.length - 1].reg2Wave;
+  const maxNationWave = topWaves[topWaves.length - 1].nationWave;
+  const maxRegionWave = topWaves[topWaves.length - 1].regionWave;
 
-  const maxReg1Rise = d3.max(topWaves.map((w) => w.reg1Wave.rise._normGrad));
-  const maxReg1Fall = d3.max(topWaves.map((w) => w.reg1Wave.fall._normGrad));
+  const maxNationRise = d3.max(
+    topWaves.map((w) => w.nationWave.rise._normGrad),
+  );
+  const maxNationFall = d3.max(
+    topWaves.map((w) => w.nationWave.fall._normGrad),
+  );
 
-  const maxReg2Rise = d3.max(topWaves.map((w) => w.reg2Wave.rise._normGrad));
-  const maxReg2Fall = d3.max(topWaves.map((w) => w.reg2Wave.fall._normGrad));
+  const maxRegionRise = d3.max(
+    topWaves.map((w) => w.regionWave.rise._normGrad),
+  );
+  const maxRegionFall = d3.max(
+    topWaves.map((w) => w.regionWave.fall._normGrad),
+  );
 
-  topWaves.sort((w1, w2) => w1.reg1Wave.peak._date - w2.reg1Wave.peak._date);
+  topWaves.sort(
+    (w1, w2) => w1.nationWave.peak._date - w2.nationWave.peak._date,
+  );
 
   const STEEP_THRESH = 0.004;
   const SLOW_THRESH = 0.002;
@@ -285,137 +357,137 @@ function createAnnotations(region1, region2) {
     const n = i + 1;
     const ordinal = n + (n == 1 ? "st" : n == 2 ? "nd" : n == 3 ? "rd" : "th");
 
-    const { reg1Wave, reg2Wave } = topWaves[i];
+    const { nationWave, regionWave } = topWaves[i];
 
     graphAnnos.push(
       writeText(
-        `${ordinal} wave in ${region2} starts to ${
-          reg2Wave.rise._normGrad > STEEP_THRESH ? "quickly" : "slowly"
+        `${ordinal} wave in ${region} starts to ${
+          regionWave.rise._normGrad > STEEP_THRESH ? "quickly" : "slowly"
         } rise.`,
-        reg2Wave.rise._start,
-        region2CasesData,
+        regionWave.rise._start,
+        regionCasesData,
         false,
-        region2Color,
+        regionColor,
       ),
     );
 
     graphAnnos.push(
       writeText(
-        `Wave reaches ${Math.round(reg2Wave.peak.height)} ${
-          reg2Wave.peak.metric
+        `Wave reaches ${Math.round(regionWave.peak.height)} ${
+          regionWave.peak.metric
         }.`,
-        reg2Wave.peak._date,
-        region2CasesData,
+        regionWave.peak._date,
+        regionCasesData,
         true,
-        region2Color,
+        regionColor,
       ),
     );
 
     if (i > 0) {
-      const prevWave = topWaves[i - 1].reg2Wave;
+      const prevWave = topWaves[i - 1].regionWave;
       const prevH = prevWave.peak.height;
-      const currH = reg2Wave.peak.height;
+      const currH = regionWave.peak.height;
 
       annoText = "";
 
       const hRatio = Math.max(prevH, currH) / Math.min(prevH, currH);
 
-      if (reg2Wave == maxReg2Wave) {
-        annoText = `This was the greatest wave ${region2} has experienced.`;
+      if (regionWave == maxRegionWave) {
+        annoText = `This was the greatest wave ${region} has experienced.`;
       } else if (hRatio >= 0.8 && hRatio <= 1.2) {
-        annoText = `This wave was similar in size to the ${region2}'s previous peak.`;
+        annoText = `This wave was similar in size to the ${region}'s previous peak.`;
       } else {
         annoText = `This was ${hRatio > 1.5 ? "far" : "slightly"} ${
           currH > prevH ? "greater" : "smaller"
-        } than ${region2}'s last wave.`;
+        } than ${region}'s last wave.`;
       }
 
       graphAnnos.push(
         writeText(
           annoText,
-          reg2Wave.peak._date,
-          region2CasesData,
+          regionWave.peak._date,
+          regionCasesData,
           false,
-          region2Color,
+          regionColor,
         ),
       );
     }
 
     graphAnnos.push(
       writeText(
-        `${ordinal} local wave in ${region1} begins to rise ${
-          reg1Wave.rise._normGrad > STEEP_THRESH ? "rapidly" : "steadily"
+        `${ordinal} local wave in ${nation} begins to rise ${
+          nationWave.rise._normGrad > STEEP_THRESH ? "rapidly" : "steadily"
         }.`,
-        reg1Wave.rise._start,
-        region1CasesData,
+        nationWave.rise._start,
+        nationCasesData,
         false,
-        region1Color,
+        nationColor,
         true,
       ),
     );
 
     graphAnnos.push(
       writeText(
-        `Wave reaches ${Math.round(reg1Wave.peak.height)} ${
-          reg1Wave.peak.metric
+        `Wave reaches ${Math.round(nationWave.peak.height)} ${
+          nationWave.peak.metric
         }.`,
-        reg1Wave.peak._date,
-        region1CasesData,
+        nationWave.peak._date,
+        nationCasesData,
         true,
-        region1Color,
+        nationColor,
         true,
       ),
     );
 
     const daysBetween =
-      (reg1Wave.peak._date.getTime() - reg2Wave.peak._date.getTime()) /
+      (nationWave.peak._date.getTime() - regionWave.peak._date.getTime()) /
       (1000 * 3600 * 24);
 
     annoText = "";
     if (daysBetween == 0) {
       annoText = "Both waves peak on the same day.";
     } else {
-      annoText = `Peak of the ${region1} wave is ${Math.abs(
-        daysBetween,
-      )} days ${daysBetween > 0 ? "before" : "after"} the ${region2} wave.`;
+      annoText = `Peak of the ${nation} wave is ${Math.abs(daysBetween)} days ${
+        daysBetween > 0 ? "before" : "after"
+      } the ${region} wave.`;
     }
     graphAnnos.push(
       writeText(
         annoText,
-        reg1Wave.peak._date,
-        region1CasesData,
+        nationWave.peak._date,
+        nationCasesData,
         false,
-        region1Color,
+        nationColor,
         true,
       ),
     );
 
     if (i > 0) {
-      const prevWave = topWaves[i - 1].reg1Wave;
+      const prevWave = topWaves[i - 1].nationWave;
       const prevH = prevWave.peak.height;
-      const currH = reg1Wave.peak.height;
+      const currH = nationWave.peak.height;
 
       annoText = "";
 
       const hRatio = Math.max(prevH, currH) / Math.min(prevH, currH);
 
-      if (reg1Wave == maxReg1Wave) {
-        annoText = `This was the greatest wave ${region1} has experienced.`;
+      if (nationWave == maxNationWave) {
+        annoText = `This was the greatest wave ${nation} has experienced.`;
       } else if (hRatio >= 0.8 && hRatio <= 1.2) {
         annoText = "This wave is similar in size to the previous local wave.";
       } else {
         annoText = `This was ${hRatio > 1.5 ? "far" : "slightly"} ${
           currH > prevH ? "greater" : "lower"
-        } than ${region1}'s last wave.`;
+        } than ${nation}'s last wave.`;
       }
 
       graphAnnos.push(
         writeText(
           annoText,
-          reg1Wave.peak._date,
-          region1CasesData,
+          nationWave.peak._date,
+          nationCasesData,
           false,
-          region1Color,
+          nationColor,
           true,
         ),
       );
@@ -423,65 +495,65 @@ function createAnnotations(region1, region2) {
 
     graphAnnos.push(
       writeText(
-        `${region2} ${ordinal} wave ${
-          reg2Wave.fall.normGrad <= SLOW_THRESH
+        `${region} ${ordinal} wave ${
+          regionWave.fall.normGrad <= SLOW_THRESH
             ? "slowly falls back down"
-            : reg2Wave.fall.rank >= STEEP_THRESH
+            : regionWave.fall.rank >= STEEP_THRESH
             ? "rapidly declines"
             : "steadily reduces"
         }.`,
-        reg2Wave.fall._end,
-        region2CasesData,
+        regionWave.fall._end,
+        regionCasesData,
         false,
-        region2Color,
+        regionColor,
       ),
     );
 
     graphAnnos.push(
       writeText(
-        `In ${region1}, the ${ordinal} wave declines ${
-          reg1Wave.fall._normGrad > reg1Wave.fall._normGrad
+        `In ${nation}, the ${ordinal} wave declines ${
+          nationWave.fall._normGrad > nationWave.fall._normGrad
             ? "quicker"
             : "slower"
-        } than in ${region2}.`,
-        reg1Wave.fall._end,
-        region1CasesData,
+        } than in ${region}.`,
+        nationWave.fall._end,
+        nationCasesData,
         false,
-        region1Color,
+        nationColor,
         true,
       ),
     );
 
     annoText = "";
-    const regRise = reg1Wave.rise._normGrad;
-    const regFall = reg1Wave.fall._normGrad;
-    if (regRise == maxReg1Rise && regFall == maxReg1Fall) {
+    const regRise = nationWave.rise._normGrad;
+    const regFall = nationWave.fall._normGrad;
+    if (regRise == maxNationRise && regFall == maxNationFall) {
       annoText =
         "This wave was the fastest rising and falling of all of ${region1}'s' waves.";
-    } else if (regRise == maxReg1Rise) {
-      annoText = `This local wave emerged the fastest of all waves in ${region1}.`;
-    } else if (regFall == maxReg1Fall) {
-      annoText = `This local wave was ${region1}'s fastest falling.`;
+    } else if (regRise == maxNationRise) {
+      annoText = `This local wave emerged the fastest of all waves in ${nation}.`;
+    } else if (regFall == maxNationFall) {
+      annoText = `This local wave was ${nation}'s fastest falling.`;
     }
   }
 
   if (
     !graphAnnos.find(
-      (a: any) => !a.useData2 && a.end == region2CasesData.length - 1,
+      (a: any) => !a.useData2 && a.end == regionCasesData.length - 1,
     )
   ) {
-    graphAnnos.push({ end: region2CasesData.length - 1, color: region2Color });
+    graphAnnos.push({ end: regionCasesData.length - 1, color: regionColor });
   }
 
   if (
     !graphAnnos.find(
-      (a: any) => a.useData2 && a.end == region1CasesData.length - 1,
+      (a: any) => a.useData2 && a.end == nationCasesData.length - 1,
     )
   ) {
     graphAnnos.push({
-      end: region1CasesData.length - 1,
+      end: nationCasesData.length - 1,
       useData2: true,
-      color: region1Color,
+      color: nationColor,
     });
   }
 
@@ -543,15 +615,22 @@ export function createTimeSeriesSVG(selector: string) {
 }
 
 export function onClickAnimate(animationCounter: number, selector: string) {
-  const region1CasesData = dailyCasesByRegion[region1].data;
-  const region2CasesData = dailyCasesByRegion[region2].data;
+  console.log("onClickAnimate: ", nation, region);
+  console.log(
+    "onClickAnimate",
+    dailyCasesByNation[nation],
+    dailyCasesByRegion[region],
+  );
 
-  const ts = new TimeSeries(region2CasesData, selector)
+  const nationCasesData = dailyCasesByNation[nation];
+  const regionCasesData = dailyCasesByRegion[region].data;
+
+  const ts = new TimeSeries(regionCasesData, selector)
     .border(60)
-    .addExtraDatasets(createDataGroup([region1CasesData]), true)
+    .addExtraDatasets(createDataGroup([nationCasesData]), true)
     .svg(visCtx)
     .annoTop()
-    .title(`Comparison of waves between ${region1} and ${region2}`)
+    .title(`Comparison of waves between ${nation} and ${region}`)
     .yLabel("Cases per Day")
     .ticks(30);
 
