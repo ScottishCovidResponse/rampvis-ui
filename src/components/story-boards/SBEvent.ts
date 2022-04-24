@@ -55,6 +55,14 @@ export class SBEvent {
     return this._end.toLocaleDateString();
   }
 
+  get duration() {
+    if (!this._start || !this._end)
+      throw "This Event object doesn't have an end or start. Set it in the constructor or using the .set functions.";
+    const difference = this._end.getTime() - this._start.getTime();
+    const dayInMs = 1000 * 3600 * 24;
+    return Math.floor(difference / dayInMs);
+  }
+
   get rank() {
     if (!this._rank) throw "Rank is not set getter needs to be defined";
     return this._rank;

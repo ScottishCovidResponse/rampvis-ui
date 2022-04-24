@@ -17,7 +17,7 @@ import {
   OutlinedInput,
   Select,
   SelectChangeEvent,
-  Tooltip,
+  Fade,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
@@ -27,7 +27,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { blue } from "@mui/material/colors";
 import DashboardLayout from "src/components/dashboard-layout/DashboardLayout";
 import {
-  processDataAndGetRegions,
+  prepareDataAndGetRegions,
   segmentData,
   onSelectRegion,
   onClickAnimate,
@@ -61,21 +61,20 @@ const Story = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const _regions = await processDataAndGetRegions();
-      console.log("Story1: regions", _regions);
-      setRegions(_regions);
+      setLoading(true);
+      const _regions = await prepareDataAndGetRegions();
+      setRegions(_regions.map((d) => d));
       segmentData(segment);
+      setLoading(false);
     };
 
     try {
-      setLoading(true);
       fetchData();
-      setLoading(false);
     } catch (error) {
       console.error(error);
       setLoading(false);
     }
-  }, [loading]);
+  }, []);
 
   const handleChangeSlider = (event) => {
     const selectedSegment = event.target.value;
@@ -150,8 +149,16 @@ const Story = () => {
               />
               <CardContent sx={{ pt: "8px" }}>
                 {loading ? (
-                  <Box sx={{ width: "100%" }}>
-                    <LinearProgress />
+                  <Box sx={{ height: 40 }}>
+                    <Fade
+                      in={loading}
+                      style={{
+                        transitionDelay: loading ? "800ms" : "0ms",
+                      }}
+                      unmountOnExit
+                    >
+                      <LinearProgress />
+                    </Fade>
                   </Box>
                 ) : (
                   <>

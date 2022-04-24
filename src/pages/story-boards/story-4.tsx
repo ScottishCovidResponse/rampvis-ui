@@ -53,22 +53,21 @@ const Story4 = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const _regions = await processDataAndGetRegions();
       setRegions(_regions);
-
       const _nations = await processDataAndGetNations();
       setNations(_nations);
+      setLoading(false);
     };
 
     try {
-      setLoading(true);
       fetchData();
-      setLoading(false);
     } catch (error) {
       console.error(error);
       setLoading(false);
     }
-  }, [loading]);
+  }, []);
 
   const handleNationSelect = (event: SelectChangeEvent) => {
     const selectedNation = event.target.value;
@@ -146,8 +145,16 @@ const Story4 = () => {
               />
               <CardContent sx={{ pt: "8px" }}>
                 {loading ? (
-                  <Box sx={{ width: "100%" }}>
-                    <LinearProgress />
+                  <Box sx={{ height: 40 }}>
+                    <Fade
+                      in={loading}
+                      style={{
+                        transitionDelay: loading ? "800ms" : "0ms",
+                      }}
+                      unmountOnExit
+                    >
+                      <LinearProgress />
+                    </Fade>
                   </Box>
                 ) : (
                   <>

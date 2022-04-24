@@ -14,19 +14,21 @@ import { GraphAnnotation } from "./GraphAnnotation";
 import { DataEvent } from "./DataEvent";
 import { TimeSeries } from "./TimeSeries";
 
-const dailyCasesByRegion = {}; // { region: [{ date: Date, y: number }] }
-let calendarEvents = []; // SemanticEvents
+const dailyCasesByRegion = {};
+let calendarEvents = [];
+const peaksByRegion = {};
+const gaussByRegion = {};
 
-export async function processDataAndGetRegions(): Promise<string[]> {
-  await createDailyCasesByRegion();
-  createCalenderEvents();
-  createPeaksByRegion();
-  createGaussByRegion();
+export async function prepareDataAndGetRegions(): Promise<string[]> {
+  await prepareDailyCasesByRegion();
+  prepareCalenderEvents();
+  preparePeaksByRegion();
+  prepareGaussByRegion();
 
   return Object.keys(dailyCasesByRegion).sort();
 }
 
-async function createDailyCasesByRegion() {
+async function prepareDailyCasesByRegion() {
   const csv: any[] = await readCSVFile(
     "/static/story-boards/newCasesByPublishDateRollingSum.csv",
   );
@@ -46,10 +48,10 @@ async function createDailyCasesByRegion() {
   }
 
   // prettier-ignore
-  console.log("createDailyCasesByRegion: dailyCasesByRegion = ", dailyCasesByRegion);
+  // console.log("prepareDailyCasesByRegion: dailyCasesByRegion = ", dailyCasesByRegion);
 }
 
-function createCalenderEvents() {
+function prepareCalenderEvents() {
   // We need to construct Calendar Data Because
   // Lockdown events
   const lockdownStart1 = new SemanticEvent(new Date("2020-03-24"))
@@ -93,7 +95,7 @@ function createCalenderEvents() {
     booster,
   ];
 
-  console.log("createCalenderEvents: calendarEvents = ", calendarEvents);
+  // console.log("prepareCalenderEvents: calendarEvents = ", calendarEvents);
 
   const ranking = {};
   ranking[SemanticEvent.TYPES.LOCKDOWN_START] = 5;
@@ -103,24 +105,18 @@ function createCalenderEvents() {
   calendarEvents.forEach((e) => e.setRank(ranking[e.type]));
 
   // prettier-ignore
-  console.log("createCalenderEvents: calendarEvents (ranked) = ", calendarEvents);
+  // console.log("prepareCalenderEvents: calendarEvents (ranked) = ", calendarEvents);
 }
 
-//
-//
-//
-const peaksByRegion = {};
-
-function createPeaksByRegion() {
+function preparePeaksByRegion() {
   for (const region in dailyCasesByRegion) {
-    //console.log(region);
     peaksByRegion[region] = detectFeatures(dailyCasesByRegion[region], {
       peaks: true,
       metric: "Daily Cases",
     });
   }
 
-  console.log("createPeaksByRegion: peaksByRegion = ", peaksByRegion);
+  // console.log("preparePeaksByRegion: peaksByRegion = ", peaksByRegion);
 
   const rankPeaks = (peaks) => {
     const sorted = [...peaks].sort((p1, p2) => p1.height - p2.height);
@@ -135,26 +131,19 @@ function createPeaksByRegion() {
     rankPeaks(peaksByRegion[region]);
   }
 
-  console.log("createPeaksByRegion: peaksByRegion (ranked) = ", peaksByRegion);
+  // console.log("preparePeaksByRegion: peaksByRegion (ranked) = ", peaksByRegion);
 }
 
-//
-//
-//
-const gaussByRegion = {};
-
-function createGaussByRegion() {
+function prepareGaussByRegion() {
   for (const region in peaksByRegion) {
     const peaks = peaksByRegion[region];
     const dailyCases = dailyCasesByRegion[region];
-
-    console.log("createGaussByRegion: dailyCases = ", dailyCases);
 
     // Calculate gaussian time series for peaks
     const peaksGauss = eventsToGaussian(peaks, dailyCases);
     const peaksBounds = maxBounds(peaksGauss);
 
-    console.log("createGaussByRegion: peaksBounds = ", peaksBounds);
+    // console.log("createGaussByRegion: peaksBounds = ", peaksBounds);
 
     // Calculate gaussian time series for calendar events
     const calGauss = eventsToGaussian(calendarEvents, dailyCases);
@@ -166,7 +155,7 @@ function createGaussByRegion() {
   }
 
   // prettier-ignore
-  console.log("createGaussByRegion: gaussByRegion = ", gaussByRegion, Object.keys(gaussByRegion));
+  console.log("prepareGaussByRegion: gaussByRegion = ", gaussByRegion, Object.keys(gaussByRegion));
 }
 
 //
@@ -174,6 +163,9 @@ function createGaussByRegion() {
 //
 const splitsByRegion = {};
 let segNum: number;
+let region;
+let casesData;
+const annotations: { start?: number; end: number }[] = [{ start: 0, end: 0 }];
 
 export function segmentData(_segNum: number) {
   segNum = _segNum;
@@ -188,14 +180,6 @@ export function segmentData(_segNum: number) {
   // prettier-ignore
   console.log("segmentData: splitsByRegion = ", splitsByRegion);
 }
-
-//
-// region
-//
-
-let region;
-let casesData;
-const annotations: { start?: number; end: number }[] = [{ start: 0, end: 0 }];
 
 export function onSelectRegion(_region: string) {
   region = _region;
