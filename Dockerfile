@@ -10,7 +10,6 @@ ENV PATH /usr/src/ui/node_modules/.bin:$PATH
 # install and cache app dependencies
 COPY package.json /usr/src/ui/
 COPY yarn.lock /usr/src/ui/
-COPY .env.local_ /usr/src/ui/.env.local
 RUN yarn install --frozen-lockfile
 
 # add app
