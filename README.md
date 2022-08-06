@@ -4,7 +4,17 @@ RAMPVIS user interface implemented in React.
 
 ## Getting Started
 
-### Prerequisites
+### Start Development Instance in Container
+
+Start the backend server; please visit https://github.com/ScottishCovidResponse/rampvis-api
+
+```bash
+docker-compose up -d
+```
+
+Navigate to [localhost:3000](localhost:3000) to open the UI.
+
+### Start Development Instance Locally
 
 Please make sure you have [Node.js](https://nodejs.org) (LTS version) and [Yarn](https://www.npmjs.com/package/yarn) (`npm install --global yarn`).
 
@@ -16,24 +26,15 @@ yarn --version
 ## should output ≥ 1.22
 ```
 
-### Start Development Instance
-
-Install the dependencies.
+Install the dependencies and run the app in development mode using production APIs (you don’t need to start the development instances of the API endpoints).
 
 ```sh
 yarn install
-```
-
-Run the app in development mode using production APIs (you don’t need to start the development instances of the API endpoints).
-
-```sh
 yarn dev
 ```
 
 While the web server is running, you can open [http://localhost:3000](http://localhost:3000) in your browser to view the app.
 To stop the server, press `CTRL+C` in the terminal.
-
----
 
 If you want to use local API endpoints instead of the default remote ones, create a new file called `.env.local` with the following contents:
 
@@ -41,6 +42,8 @@ If you want to use local API endpoints instead of the default remote ones, creat
 NEXT_PUBLIC_API_JS=http://localhost:4000/api/v1
 NEXT_PUBLIC_API_PY=http://localhost:4010/stat/v1
 ```
+
+---
 
 The URLs may differ from the examples above depending on your server settings.
 

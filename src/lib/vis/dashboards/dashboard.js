@@ -1643,10 +1643,11 @@ dashboard.visualizeProgress = function (parent, config, lastDate) {
     }
   }
 
-  forignObject
-    .append("xhtml:div")
-    .attr("id", "vegadiv-" + parent.attr("id") + random)
-    .style("position", "absolute");
+  forignObject &&
+    forignObject
+      .append("xhtml:div")
+      .attr("id", "vegadiv-" + parent.attr("id") + random)
+      .style("position", "absolute");
 
   vegaEmbed("#vegadiv-" + parent.attr("id") + random, vegaProgressChart, {
     actions: false,
@@ -2364,7 +2365,7 @@ dashboardComponents.setWidgetTitle = function (div, config, lastDateUpdated) {
     .style("margin-bottom", "2px");
   div
     .append("p")
-    .html(lastDateUpdated.format("MMM DD, YYYY"))
+    .html(lastDateUpdated?.format("MMM DD, YYYY"))
     .style("margin", "0px")
     .style("font-weight", "100")
     .style("font-size", ".8em")

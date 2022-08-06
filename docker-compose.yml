@@ -1,0 +1,21 @@
+version: "3.7"
+
+services:
+  rampvis-ui:
+    container_name: rampvis-ui
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ".:/usr/src/ui"
+      - "/usr/src/ui/node_modules"
+      - "/usr/src/ui/.next"
+    ports:
+      - 3000:3000
+    # env_file:
+    #   - .env
+
+networks:
+  default:
+    external: true
+    name: rampvis-api-network
