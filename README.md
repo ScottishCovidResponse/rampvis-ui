@@ -7,15 +7,18 @@ RAMPVIS user interface implemented in React.
 - This is tested in Ubuntu 22.04 and WSL2
 - Start the backend server; please visit https://github.com/ScottishCovidResponse/rampvis-api
 
-### Start Development Instance in Container
 
-Stop and clean everything if required. Example commands:
+### Stop & Clean (optional)
+
+Following commands will stop the container and and clean the image.
 
 ```sh
 docker-compose stop
 docker-compose rm
 docker rmi rampvis-ui-rampvis-ui
 ```
+
+### Start Development Instance in Container
 
 Start the server
 
