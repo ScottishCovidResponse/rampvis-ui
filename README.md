@@ -7,7 +7,6 @@ RAMPVIS user interface implemented in React.
 - This is tested in Ubuntu 22.04 and WSL2
 - Start the backend server; please visit https://github.com/ScottishCovidResponse/rampvis-api
 
-
 ### Stop & Clean (optional)
 
 Following commands will stop the container and and clean the image.
