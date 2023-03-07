@@ -1,14 +1,14 @@
 import { BaseGeoMapLayerConfig } from "../types";
 import { GlyphConfig } from "./shared/glyphs";
+import { GridConfig } from "./shared/grid/blueprints";
 
 export interface GriddedGlyphsLayerConfig extends BaseGeoMapLayerConfig {
   geoMapLayerType: "griddedGlyphs";
 
-  glyph: GlyphConfig;
-
   dataAggregateDistance: number;
+  glyph: GlyphConfig;
+  grid: GridConfig;
   showDataPoints: boolean;
-
-  gridPixelSize: number;
+  showGridOutline: boolean;
   smooth: boolean;
 }

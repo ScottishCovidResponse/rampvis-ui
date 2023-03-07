@@ -1,4 +1,3 @@
-import InfoIcon from "@mui/icons-material/Info";
 import GeoMapLayerPanelEssentials from "../shared/GeoMapLayerPanelEssentials";
 import { GeoMapLayerPanel } from "../types";
 import * as React from "react";
@@ -10,7 +9,6 @@ import {
   FormGroup,
   Slider,
   SliderProps,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { GriddedGlyphsLayerConfig } from "./types";
@@ -22,6 +20,8 @@ import {
   aggregateDistanceSetup,
   gridPixelSizeSetup,
 } from "./shared/helpersForConfig";
+import { GridConfig } from "./shared/grid/blueprints";
+import GridPanel from "./shared/grid/GridPanel";
 
 const GriddedGlyphsLayerPanel: GeoMapLayerPanel<GriddedGlyphsLayerConfig> = ({
   layerConfig,
@@ -48,17 +48,17 @@ const GriddedGlyphsLayerPanel: GeoMapLayerPanel<GriddedGlyphsLayerConfig> = ({
     });
   };
 
-  const handleGridSizeChange: SliderProps["onChange"] = (event, value) => {
+  const handleShowGridChange = () => {
     onLayerConfigChange?.({
       ...layerConfig,
-      gridPixelSize: Array.isArray(value) ? value[0] : value,
+      showGridOutline: !layerConfig.showGridOutline,
     });
   };
 
-  const handleSmoothCheckboxChange = () => {
+  const handleGridConfigChange = (gridConfig: GridConfig) => {
     onLayerConfigChange?.({
       ...layerConfig,
-      smooth: !layerConfig.smooth,
+      grid: gridConfig,
     });
   };
 
@@ -80,28 +80,31 @@ const GriddedGlyphsLayerPanel: GeoMapLayerPanel<GriddedGlyphsLayerConfig> = ({
         Math.max(gridPixelSizeSetup.min, newValue),
       );
 
-      if (cappedValue !== layerConfig.gridPixelSize) {
+      if (cappedValue !== layerConfig.grid.pixelSize) {
         onLayerConfigChange?.({
           ...layerConfig,
-          gridPixelSize: cappedValue,
+          grid: {
+            ...layerConfig.grid,
+            pixelSize: cappedValue,
+          },
         });
       }
     };
     return {
       ArrowLeft: (event) => {
-        applyGridPixelSize(layerConfig.gridPixelSize - 1);
+        applyGridPixelSize(layerConfig.grid.pixelSize - 1);
         event.preventDefault();
       },
       "Shift+ArrowLeft": (event) => {
-        applyGridPixelSize(layerConfig.gridPixelSize - 5);
+        applyGridPixelSize(layerConfig.grid.pixelSize - 5);
         event.preventDefault();
       },
       ArrowRight: (event) => {
-        applyGridPixelSize(layerConfig.gridPixelSize + 1);
+        applyGridPixelSize(layerConfig.grid.pixelSize + 1);
         event.preventDefault();
       },
       "Shift+ArrowRight": (event) => {
-        applyGridPixelSize(layerConfig.gridPixelSize + 5);
+        applyGridPixelSize(layerConfig.grid.pixelSize + 5);
         event.preventDefault();
       },
       g: (event) => {
@@ -150,30 +153,21 @@ const GriddedGlyphsLayerPanel: GeoMapLayerPanel<GriddedGlyphsLayerConfig> = ({
           label="show data points"
         />
       </FormGroup>
-      <Divider sx={{ marginTop: 2, marginBottom: 3 }}>Gridding</Divider>
+      <Divider sx={{ marginTop: 2, marginBottom: 1 }}>Gridding</Divider>
+      <FormControlLabel
+        sx={{ marginBottom: 2 }}
+        control={
+          <Checkbox checked={layerConfig.showGridOutline} disabled={disabled} />
+        }
+        onChange={handleShowGridChange}
+        label="show grid outline"
+      />
+      <GridPanel
+        disabled={disabled}
+        gridConfig={layerConfig.grid}
+        onGridConfigChange={handleGridConfigChange}
+      />
 
-      <FormGroup sx={{ marginTop: 2 }}>
-        <FormControl>
-          <Typography gutterBottom>
-            grid size in pixels: {layerConfig.gridPixelSize}
-          </Typography>
-          <Slider
-            disabled={disabled}
-            value={layerConfig.gridPixelSize}
-            step={5}
-            min={gridPixelSizeSetup.min}
-            max={gridPixelSizeSetup.max}
-            onChange={handleGridSizeChange}
-          />
-        </FormControl>
-
-        <FormControlLabel
-          control={<Checkbox checked={layerConfig.smooth} />}
-          onChange={handleSmoothCheckboxChange}
-          label={<>smooth </>}
-          disabled={disabled}
-        />
-      </FormGroup>
       <Divider sx={{ marginTop: 3, marginBottom: 2 }}>Glyph</Divider>
       <GlyphPanel
         disabled={disabled}

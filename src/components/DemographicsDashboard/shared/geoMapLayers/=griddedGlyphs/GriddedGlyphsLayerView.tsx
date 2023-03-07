@@ -46,7 +46,7 @@ const GriddedGlyphsLayerView: GeoMapLayerView<GriddedGlyphsLayerConfig> = ({
 
   const {
     dataAggregateDistance,
-    gridPixelSize,
+    grid: { pixelSize: gridPixelSize },
     glyph: glyphConfig,
     showDataPoints,
     smooth,
